@@ -210,7 +210,7 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
 @media (max-width: 720px) {
   .nav { gap: 0; padding: 0.25rem 0.35rem; }
   /* Tap targets >= ~44px tall (0.65rem*2 padding + text), per WCAG/Apple minimums */
-  .nav__link { padding: 0.65rem 0.85rem; font-size: 0.75rem; }
+  .nav__link { padding: 0.9rem 0.85rem; font-size: 0.75rem; }
 }
 
 /* ---------- stream-text chars ---------- */
