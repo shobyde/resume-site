@@ -93,11 +93,26 @@ export function initScrollStream() {
 
   let sc = 0;
   let rafPending = false;
+  let fullyFaded = false; // hero text is out of view (opacity 0) -> skip writes
   // Cache once - recompute only on resize, not on every scroll event.
   let scrollRange = document.body.scrollHeight - innerHeight;
 
   function apply() {
     rafPending = false;
+    // Beyond sc>=0.4 this element's opacity is pinned at 0 and the hero is
+    // far above the viewport - its transform/opacity no longer affect any
+    // visible pixels, so stop writing styles until we scroll back up.
+    if (sc >= 0.4) {
+      if (!fullyFaded) {
+        fullyFaded = true;
+        for (let i = 0; i < els.length; i++) {
+          els[i].style.transform = 'translateY(16px)';
+          els[i].style.opacity = '0';
+        }
+      }
+      return;
+    }
+    fullyFaded = false;
     for (let i = 0; i < els.length; i++) {
       els[i].style.transform = `translateY(${sc * 40 * (i + 1)}px)`;
       els[i].style.opacity = String(Math.max(0, Math.min(1, 1 - sc * 2.5)));
