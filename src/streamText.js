@@ -70,11 +70,7 @@ export function initStreamText() {
       const t = targets.find((t) => t.el === e.target);
       if (!t) continue;
       const timers = [];
-      t.chars.forEach((c, i) => {
-        const d = Math.min(i * 3, 320);
-        c.style.transition = `opacity 0.15s ease`;
-        timers.push(setTimeout(() => { c.style.opacity = '1'; }, d));
-      });
+      t.chars.forEach((c, i) => inkReveal(c, i, timers));
       pending.push({ el: t.el, timers });
     }
   }, { rootMargin: '0px 0px -15% 0px', threshold: 0 });
@@ -82,7 +78,35 @@ export function initStreamText() {
 }
 
 function showAllInstant(el) {
-  el.querySelectorAll('.stream-ch').forEach((c) => { c.style.opacity = '1'; });
+  el.querySelectorAll('.stream-ch').forEach((c) => {
+    c.style.opacity = '1';
+    c.style.textShadow = 'none';
+    c.style.transform = 'none';
+  });
+}
+
+/* ---------- ink-cascade reveal (handwritten "second voice") ----------
+   Each char lands like a pen stroke: randomized 40-90ms hand pause
+   (instead of the old uniform 3ms tick), +/-1.2deg nib-tilt jitter,
+   and an ink halo that blooms while the glyph appears, then settles
+   to a hairline. Live-gated: if reduced motion turns on mid-reveal,
+   the motionprefchange listener clears pending timers and settles
+   every char fully-opaque, upright, shadow-free. */
+function inkReveal(char, i, timers) {
+  const opacity = `opacity 0.15s ease, text-shadow 0.45s ease, transform 0.3s var(--ease-out)`;
+  char.style.transition = opacity;
+  const d = i * 55 + Math.random() * 40; // 0..55ms spacing + 0-40ms jitter (hand pause)
+  timers.push(setTimeout(() => {
+    if (motionPrefs.reduced) return;
+    char.style.opacity = '1';
+    char.style.transform = `rotate(${(Math.random() * 2 - 1) * 1.2}deg)`;
+    char.style.textShadow = '0 0 0.5px rgba(230,221,208,0.9), 0 0 1.2px rgba(230,221,208,0.55)';
+    timers.push(setTimeout(() => {
+      if (motionPrefs.reduced) return;
+      char.style.textShadow = 'none';
+      char.style.transform = 'none';
+    }, 500));
+  }, d));
 }
 
 /* ---------- parallax drift for hero text during scroll ---------- */

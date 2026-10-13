@@ -102,6 +102,7 @@ function buildPage() {
       <div class="eyebrow" style="justify-content:center">05 - Contact</div>
       <h2 class="section-title reveal">Let's build something.</h2>
       <p class="section-sub reveal">Open to interesting problems, consulting work, or just a coffee chat about code.</p>
+      <p class="contact__sign reveal hand">~ Sho</p>
       <div class="contact__links reveal">
         <a href="mailto:${DATA.contact.email}" class="btn btn--primary">Email me</a>
         <a href="${DATA.contact.linkedin}" target="_blank" rel="noopener" class="btn">LinkedIn</a>
@@ -199,22 +200,59 @@ function heroIntro() {
       ? `<span class="word">${c}</span>`
       : `<span class="word"><span class="char">${c}</span></span>`).join('');
 
+  // Staggered per-element fades - offset so they land in reading order.
+  // The name's container fade completes BEFORE the ink cascade finishes,
+  // so it never clips the char-level reveal.
   const tl = [
     ['#heroName', 'opacity:1', 0],
     ['#heroTag', 'opacity:1', 2],
     ['#heroRole', 'opacity:1', 0],
-    ['#heroCta', 'opacity:1', 0],
-    ['#heroScroll', 'opacity:1', 0],
+    ['#heroCta', 'opacity:1', 0.4],
+    ['#heroScroll', 'opacity:1', 0.6],
   ];
-  // Reduced motion: no staged cascading fades - everything shows at once.
-  tl.forEach(([sel, style, d]) => setTimeout(() => { document.querySelector(sel).style.opacity = 1; }, reduced ? 0 : 900 + d * 1000));
+  tl.forEach(([sel, style, d]) => setTimeout(() => { document.querySelector(sel).style.opacity = 1; }, reduced ? 0 : 200 + d * 600));
 
-  if (reduced) return; // no char-by-char rise animation
+  if (reduced) return; // no character-level ink animation
 
-  // stagger chars
-  document.querySelectorAll('.hero__name .char').forEach((ch, i) => {
-    ch.style.transition = `transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) ${0.15 + i * 0.045}s`;
-    requestAnimationFrame(() => requestAnimationFrame(() => { ch.style.transform = 'translateY(0)'; }));
+  // Ink-cascade entrance ("written into place"): each character appears
+  // like a pen stroke landing - randomized delay (hand pauses between
+  // letters), slight rotation jitter (nib tilt), and a text-shadow that
+  // blooms from nothing to a hairline (ink spreading through the page
+  // fiber). Live-gates on motionPrefs: turning reduced motion on
+  // mid-reveal snaps every char to fully inked with no jitter.
+  const inkEls = [...document.querySelectorAll('.hero__name .char')];
+  const inkTimers = [];
+  const settleAll = () => {
+    inkTimers.forEach(clearTimeout);
+    inkTimers.length = 0;
+    inkEls.forEach((ch) => {
+      ch.style.transition = 'none';
+      ch.style.opacity = '1';
+      ch.style.transform = 'none';
+      ch.style.textShadow = 'none';
+    });
+  };
+  window.addEventListener('motionprefchange', () => { if (motionPrefs.reduced) settleAll(); });
+
+  inkEls.forEach((ch, i) => {
+    // 40-90ms hand pauses; a slightly longer beat after each word gap.
+    const jitter = () => (Math.random() * 2 - 1) * 1.2; // +/-1.2deg
+    const d = 0.15 + i * 0.045 + Math.random() * 0.05;
+    const rot = jitter();
+    ch.style.transition = `opacity 0.25s ease, transform 0.4s var(--ease-out), text-shadow 0.5s ease`;
+    inkTimers.push(setTimeout(() => {
+      if (motionPrefs.reduced) return; // live gate inside timers too
+      ch.style.opacity = '1';
+      ch.style.transform = `rotate(${rot}deg)`;
+      // ink bloom: 0 -> hairline spread while the glyph lands
+      ch.style.textShadow = '0 0 0.5px rgba(230,221,208,0.9), 0 0 1.2px rgba(230,221,208,0.55)';
+      // then fade the bloom to a resting hairline - a fresh stroke settles
+      inkTimers.push(setTimeout(() => {
+        if (motionPrefs.reduced) return;
+        ch.style.textShadow = '0 0 1px rgba(230,221,208,0.25)';
+        ch.style.transform = `rotate(0deg)`;
+      }, 650));
+    }, d * 1000));
   });
 }
 
