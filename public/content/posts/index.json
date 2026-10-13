@@ -1,0 +1,30 @@
+[
+  {
+    "slug": "2026-10-13-ui-direction-generative-ui",
+    "date": "2026-10-13",
+    "title": "The UI Is Becoming the Agent's Body",
+    "tag": "ui-direction",
+    "excerpt": "Generative UI, A2UI, and why token streaming is already yesterday's problem"
+  },
+  {
+    "slug": "2026-10-13-teaching-cs",
+    "date": "2026-10-13",
+    "title": "Teaching CS at 7:30 AM",
+    "tag": "teaching",
+    "excerpt": "One year, one classroom, no prior coders"
+  },
+  {
+    "slug": "2026-10-13-site-kickoff",
+    "date": "2026-10-13",
+    "title": "Site kickoff",
+    "tag": "dev",
+    "excerpt": "This site, this log, and the plan"
+  },
+  {
+    "slug": "2026-10-13-approval-is-the-new-click",
+    "date": "2026-10-13",
+    "title": "Approval Is the New Click",
+    "tag": "ui-direction",
+    "excerpt": "Why the next decade of UI design is really about delegation, trust, and giving the machine a brake pedal"
+  }
+]
