@@ -163,7 +163,7 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
 
 /* hide native cursor on pointer devices (we draw our own) */
 @media (hover: hover) and (pointer: fine) {
-  body, a, button, .skill-group, .post-card, .stat { cursor: none; }
+  *, a, button { cursor: none !important; }
 }
 
 /* ---------- Layout ---------- */
