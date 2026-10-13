@@ -86,7 +86,7 @@ function initAnimated() {
   const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 3000);
   camera.position.set(0, 0, 1000);
 
-  const COUNT = 4000;
+  const COUNT = isMobile ? 1400 : 4000;
   const positions = new Float32Array(COUNT * 3);
   const colors = new Float32Array(COUNT * 3);
   const speeds = new Float32Array(COUNT);
