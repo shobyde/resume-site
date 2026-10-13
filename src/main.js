@@ -16,7 +16,7 @@ function buildPage() {
     <div class="tl-item">
       <div class="tl-item__period mono">${item.period}</div>
       <h3 class="tl-item__role">${item.role}</h3>
-      <div class="tl-item__org">${item.org} <em>· ${item.loc}</em></div>
+      <div class="tl-item__org">${item.org} <em>· ${item.loc || 'remote'}</em></div>
       <ul class="tl-item__bullets">${item.bullets.map((b) => `<li>${b}</li>`).join('')}</ul>
     </div>
   `).join('');
@@ -161,7 +161,9 @@ async function boot() {
   // three.js init (independent from DOM)
   try { initBackground(); } catch (e) { console.warn('WebGL unavailable:', e); }
 
-  await (document.fonts ? document.fonts.ready : Promise.resolve());
+  // never let fonts/network hang the boot — hard cap at 2.5s
+  const withTimeout = (p, ms) => Promise.race([p, new Promise((r) => setTimeout(r, ms))]);
+  await withTimeout(document.fonts ? document.fonts.ready : Promise.resolve(), 2500);
 
   // hero animations
   heroIntro();
@@ -170,7 +172,7 @@ async function boot() {
   initReveals();
   initMagnetic();
   initCounters();
-  await initBlog();
+  await withTimeout(initBlog(), 3000);
   navSpy();
   clearInterval(timer);
   document.getElementById('nav').classList.add('is-visible');
@@ -214,5 +216,16 @@ function navSpy() {
   }, { rootMargin: '-40% 0px -55% 0px' });
   sections.forEach((s) => s && spy.observe(s));
 }
+
+// failsafe: never leave the loader spinning — force-close at 4s no matter what
+setTimeout(() => {
+  const l = document.getElementById('loader');
+  if (l && !l.classList.contains('is-done')) {
+    l.classList.add('is-done');
+    const n = document.getElementById('nav');
+    if (n) n.classList.add('is-visible');
+    console.warn('[failsafe] loader force-closed at 4s');
+  }
+}, 4000);
 
 boot();

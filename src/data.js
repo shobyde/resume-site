@@ -3,14 +3,14 @@
    ============================================================ */
 export const DATA = {
   hero: {
-    tag: '// software engineer — Granite Falls, WA',
+    tag: '// software engineer — Pacific Northwest',
     name: 'Sho Byde',
     role: 'Building <span class="accent">APIs, cloud systems & client-facing apps</span> for 12+ years — now teaching machines and mentoring humans.',
   },
   about: {
     p1: `I've spent <strong>over 12 years</strong> in software and web development, working primarily in Agile environments across Node.js, Express, Next.js, Vite, and Yii — with deep fluency in JavaScript, PHP, Python, Terraform, C#, and MySQL.`,
     p2: `My track record includes <strong>leading projects</strong>, shipping client-facing applications, implementing OAuth/RBAC authentication at scale, and building large-scale APIs. I care just as much about the people: fostering positive workplace culture, mentoring, and contributing to team life.`,
-    p3: `Outside of work I taught an intro computer science class at Granite Falls High School — before my regular workday, every day, for a full school year.`,
+    p3: `Outside of work I taught an intro computer science class at a local high school — before my regular workday, every day, for a full school year.`,
   },
   stats: [
     { num: 12, suffix: '+', label: 'Years in software' },
@@ -22,7 +22,6 @@ export const DATA = {
     {
       role: 'Software Development Engineer 1-3 / Engineering Manager (IC)',
       org: 'Conversica',
-      loc: 'Bellingham, WA',
       period: 'Jul 2021 — Present',
       bullets: [
         'Collaborated with product teams to distribute tickets and create technical designs for client-facing changes.',
@@ -37,8 +36,7 @@ export const DATA = {
     },
     {
       role: 'Volunteer Teacher — Intro to Computer Science',
-      org: 'Granite Falls High School',
-      loc: 'Granite Falls, WA',
+      org: 'a local high school',
       period: 'Sep 2022 — Jun 2023',
       bullets: [
         'Taught an introductory computer science class during the first period (7:30–8:25) before my regular workday.',
@@ -52,7 +50,6 @@ export const DATA = {
     {
       role: 'Software Developer',
       org: 'Intuli',
-      loc: 'Arlington, WA',
       period: 'Aug 2014 — Jul 2021',
       bullets: [
         'Managed and oversaw a small group of junior developers. Assigning work packages, providing quality assurance procedures, and assisting in projects when needed.',
@@ -66,7 +63,6 @@ export const DATA = {
     {
       role: 'Game Developer',
       org: 'DigiPen (Sno-Isle)',
-      loc: 'Everett, WA',
       period: 'Sep 2012 — Jun 2013',
       bullets: [
         'Created physics based engines in C++.',
@@ -85,8 +81,6 @@ export const DATA = {
   ],
   contact: {
     email: 'shobyde@gmail.com',
-    phone: '360-322-2543',
     linkedin: 'https://www.linkedin.com/in/sho-byde-556954138/',
-    location: 'Granite Falls, WA 98252',
   },
 };
