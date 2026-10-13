@@ -18,7 +18,8 @@
   font-family: var(--font-mono);
   color: var(--accent2);
   font-size: 0.85rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   margin-bottom: 1.5rem;
   opacity: 0;
 }
@@ -26,7 +27,7 @@
   font-family: var(--font-head);
   font-size: clamp(3.5rem, 12vw, 9rem);
   font-weight: 700;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.015em;
   line-height: 0.95;
   margin-bottom: 0.3em;
   opacity: 0;
@@ -40,14 +41,13 @@
   opacity: 0;
 }
 .hero__role .accent {
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--accent);
+  font-style: italic;
 }
+
 .hero__scroll {
   position: absolute;
-  bottom: 2.5rem;
+  bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-mono);
@@ -87,19 +87,21 @@
   font-weight: 500;
   white-space: nowrap;
   background: var(--card);
-  /* Buttons are short — never let a trailing arrow wrap to its own line */
-  white-space: nowrap;
   backdrop-filter: blur(10px);
   transition: background 0.25s, border-color 0.25s, transform 0.1s;
   will-change: transform;
 }
-.btn:hover { background: var(--card-hover); border-color: var(--accent); }
+.btn:hover {
+  background: var(--card-hover);
+  border-color: var(--accent);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35); /* letterpress press-in */
+}
 .btn--primary {
   background: linear-gradient(135deg, var(--accent), var(--accent-dim));
   border-color: transparent;
   color: #fff;
 }
-.btn--primary:hover { box-shadow: var(--shadow-glow); }
+.btn--primary:hover { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(230, 221, 208, 0.12); }
 .hero__cta { display: flex; gap: 1rem; margin-top: 2.5rem; opacity: 0; }
 
 /* ---------- About ---------- */
@@ -120,7 +122,7 @@
   transition: border-color 0.3s, transform 0.3s var(--ease-out), background 0.3s;
 }
 .stat:hover {
-  border-color: var(--accent);
+  border-color: rgba(138, 122, 79, 0.55);
   background: var(--card-hover);
   transform: translateY(-4px);
 }
@@ -169,7 +171,7 @@
   border-radius: 50%;
   background: var(--bg);
   border: 2px solid var(--accent);
-  box-shadow: 0 0 12px rgba(124, 108, 255, 0.5);
+  box-shadow: 0 0 12px rgba(138, 122, 79, 0.55);
 }
 .tl-item__period {
   font-family: var(--font-mono);
@@ -232,8 +234,8 @@
 }
 .tag:hover {
   border-color: var(--accent);
-  color: #fff;
-  background: rgba(124, 108, 255, 0.12);
+  color: var(--fg);
+  background: rgba(176, 118, 60, 0.12);
   transform: translateY(-2px);
 }
 @media (max-width: 860px) { .skills__grid { grid-template-columns: 1fr 1fr; } }
@@ -264,7 +266,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), rgba(124, 108, 255, 0.1), transparent 50%);
+  background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), rgba(176, 118, 60, 0.10), transparent 50%);
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
@@ -335,7 +337,7 @@
 .modal__body ul { margin: 1em 0 1.2em 1.4em; }
 .modal__body li { margin-bottom: 0.4em; }
 .modal__body pre {
-  background: #08080c;
+  background: #141110;
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.2rem;
@@ -351,7 +353,7 @@
   width: 42px; height: 42px;
   border-radius: 50%;
   border: 1px solid var(--border-strong);
-  background: rgba(18, 18, 26, 0.8);
+  background: rgba(26, 23, 20, 0.8);
   color: var(--fg);
   display: grid;
   place-items: center;
