@@ -210,12 +210,22 @@ h1, h2 {
   padding: clamp(5rem, 12vh, 9rem) 0;
   position: relative;
 }
+/* Sections whose eyebrow follows body-heavy content breathe too long;
+   the Experience section (02) sat ~400px past the last About paragraph
+   before its next eyebrow under the tall clamp tail. Trim just the
+   bottom gap on the content-dense sections; hero/contact keep full air. */
+.section--tight {
+  padding-bottom: clamp(2.5rem, 5vh, 4rem);
+}
 
 /* ---------- Nav ---------- */
+/* Left-aligned to the container's left edge (RDR2 composition: one
+   alignment system for nav + content). Matches .container's inline
+   padding so the pill sits exactly where content starts. */
 .nav {
   position: fixed;
-  top: 1.2rem; left: 50%;
-  transform: translateX(-50%);
+  top: 1.2rem;
+  left: clamp(1.2rem, 4vw, 3rem);
   z-index: 100;
   display: flex;
   gap: 0.25rem;

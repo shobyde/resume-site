@@ -6,6 +6,7 @@ import { initBackground } from './background.js';
 import { initCursor, initSmoothScroll, initReveals, initMagnetic } from './motion.js';
 import { initStreamText, initScrollStream } from './streamText.js';
 import { initBlog } from './blog.js';
+import { motionPrefs } from './motionPrefs.js';
 import './styles/main.css';
 import './styles/sections.css';
 
@@ -61,7 +62,7 @@ function buildPage() {
 
   <main class="container">
     <!-- ABOUT -->
-    <section class="section" id="about">
+    <section class="section section--tight" id="about">
       <div class="eyebrow">01 — About</div>
       <h2 class="section-title reveal">Where code meets culture</h2>
       <div class="about__grid">
@@ -125,6 +126,7 @@ function buildPage() {
 }
 
 function initCounters() {
+  const reduced = motionPrefs.reduced;
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (!e.isIntersecting) continue;
@@ -132,6 +134,7 @@ function initCounters() {
       const el = e.target;
       const target = +el.dataset.count;
       const suffix = el.dataset.suffix || '';
+      if (reduced) { el.textContent = target + suffix; continue; } // final value, no count-up
       const dur = 1400;
       const start = performance.now();
       (function tick(now) {
@@ -150,6 +153,7 @@ async function boot() {
   const loader = document.getElementById('loader');
   const fill = document.getElementById('loaderFill');
   const pct = document.getElementById('loaderPct');
+  const reduced = motionPrefs.reduced;
 
   // fake-ish but tied to real progress
   let progress = 0;
@@ -186,10 +190,14 @@ async function boot() {
 
 function heroIntro() {
   const name = document.getElementById('heroName');
+  const reduced = motionPrefs.reduced;
   const chars = DATA.hero.name.split('');
   name.innerHTML = chars.map((c) => c === ' '
     ? '<span class="word">&nbsp;</span>'
-    : `<span class="word"><span class="char">${c}</span></span>`).join('');
+    : reduced
+      // Reduced motion: plain text, no per-char spans to animate.
+      ? `<span class="word">${c}</span>`
+      : `<span class="word"><span class="char">${c}</span></span>`).join('');
 
   const tl = [
     ['#heroName', 'opacity:1', 0],
@@ -198,7 +206,10 @@ function heroIntro() {
     ['#heroCta', 'opacity:1', 0],
     ['#heroScroll', 'opacity:1', 0],
   ];
-  tl.forEach(([sel, style, d]) => setTimeout(() => { document.querySelector(sel).style.opacity = 1; }, 900 + d * 1000));
+  // Reduced motion: no staged cascading fades — everything shows at once.
+  tl.forEach(([sel, style, d]) => setTimeout(() => { document.querySelector(sel).style.opacity = 1; }, reduced ? 0 : 900 + d * 1000));
+
+  if (reduced) return; // no char-by-char rise animation
 
   // stagger chars
   document.querySelectorAll('.hero__name .char').forEach((ch, i) => {
