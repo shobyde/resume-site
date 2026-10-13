@@ -4,6 +4,7 @@
 import { DATA } from './data.js';
 import { initBackground } from './background.js';
 import { initCursor, initSmoothScroll, initReveals, initMagnetic } from './motion.js';
+import { initStreamText, initScrollStream } from './streamText.js';
 import { initBlog } from './blog.js';
 import './styles/main.css';
 import './styles/sections.css';
@@ -170,6 +171,8 @@ async function boot() {
   initCursor();
   initSmoothScroll();
   initReveals();
+  initStreamText();
+  initScrollStream();
   initMagnetic();
   initCounters();
   await withTimeout(initBlog(), 3000);

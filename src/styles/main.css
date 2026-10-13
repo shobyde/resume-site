@@ -161,6 +161,11 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
 }
 @media (hover: none) { .cursor, .cursor-ring { display: none; } }
 
+/* hide native cursor on pointer devices (we draw our own) */
+@media (hover: hover) and (pointer: fine) {
+  body, a, button, .skill-group, .post-card, .stat { cursor: none; }
+}
+
 /* ---------- Layout ---------- */
 .container {
   max-width: 1200px;
@@ -206,3 +211,6 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
   .nav { gap: 0; padding: 0.3rem 0.4rem; }
   .nav__link { padding: 0.4rem 0.65rem; font-size: 0.75rem; }
 }
+
+/* ---------- stream-text chars ---------- */
+.stream-ch { will-change: opacity; }
