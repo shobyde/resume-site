@@ -379,10 +379,12 @@
 @media (max-width: 600px) { .footer { flex-direction: column; gap: 1rem; } }
 
 /* ---------- Reveal helper ---------- */
-.reveal { opacity: 0; }
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
 .reveal.is-inview {
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
-  transform: translateY(24px);
 }
