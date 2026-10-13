@@ -1,15 +1,11 @@
 /* ============================================================
    StreamText — sentences reveal char-by-char ("streaming-in")
-   driven by scroll progress into the viewport, like an LLM
-   emitting deltas.
+   as they scroll into view, like an LLM emitting deltas.
+   Position-checked every animation frame (works with Lenis).
    ============================================================ */
 
-const STREAM_CLASS = 'stream-text';
-
 function splitChars(el) {
-  // wrap each char in a span (preserve spaces), remember original text
   const text = el.textContent;
-  el.dataset.original = text;
   el.innerHTML = '';
   const frag = document.createDocumentFragment();
   for (const ch of text) {
@@ -24,42 +20,37 @@ function splitChars(el) {
 }
 
 export function initStreamText() {
-  const targets = document.querySelectorAll(
-    '.about__text p, .section-sub, .tl-item__bullets li, .modal__body p'
-  );
-  const state = new WeakMap();
+  const targets = [...document.querySelectorAll(
+    '.about__text p, .section-sub, .tl-item__bullets li'
+  )].map((el) => ({ el, chars: splitChars(el), done: false }));
 
-  targets.forEach((el) => {
-    const chars = splitChars(el);
-    state.set(el, { chars, played: 0 });
-  });
-
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) {
-      if (!e.isIntersecting) continue;
-      const { chars, played } = state.get(e.target) || {};
-      if (!chars || played) continue;
-      state.get(e.target).played = 1;
-      // stream the chars in fast, staggered like LLM deltas
-      chars.forEach((c, i) => {
-        c.style.transition = `opacity 0.18s ease ${Math.min(i * 4, 350)}ms`;
-        setTimeout(() => { c.style.opacity = '1'; }, Math.min(i * 4, 350));
-      });
-      io.unobserve(e.target);
-    }
-  }, { threshold: 0.35 });
-
-  targets.forEach((el) => io.observe(el));
-  return io;
+  let pending = targets.filter((t) => t.el);
+  function tick() {
+    requestAnimationFrame(tick);
+    if (!pending.length) return;
+    const vh = innerHeight;
+    pending = pending.filter((t) => {
+      const r = t.el.getBoundingClientRect();
+      // reveal when element is comfortably inside the viewport
+      if (r.top < vh * 0.85 && r.bottom > 0) {
+        t.chars.forEach((c, i) => {
+          const d = Math.min(i * 3, 320);
+          c.style.transition = `opacity 0.15s ease`;
+          setTimeout(() => { c.style.opacity = '1'; }, d);
+        });
+        return false; // remove from pending
+      }
+      return true; // keep watching
+    });
+  }
+  tick();
 }
 
-/* ---------- scroll-linked variant: opacity follows scroll position ---------- */
+/* ---------- parallax drift for hero text during scroll ---------- */
 export function initScrollStream() {
-  // For hero/large text: fade chars based on scroll progress (streaming as you read)
   const els = document.querySelectorAll('.hero__role');
   const onScroll = () => {
     const sc = window.scrollY / (document.body.scrollHeight - innerHeight);
-    // parallax-shift hero text per scroll depth to feel "alive"
     els.forEach((el, i) => {
       el.style.transform = `translateY(${sc * 40 * (i + 1)}px)`;
       el.style.opacity = String(Math.max(0, Math.min(1, 1 - sc * 2.5)));
