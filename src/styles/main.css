@@ -15,7 +15,7 @@
   --border-strong: rgba(255, 255, 255, 0.16);
   --card: rgba(255, 255, 255, 0.03);
   --card-hover: rgba(255, 255, 255, 0.06);
-  --radius: 18px;
+  --radius: 8px;
   --font-head: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -190,7 +190,7 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border);
-  border-radius: 100px;
+  border-radius: var(--radius);
   opacity: 0;
   transition: opacity 0.8s 0.4s var(--ease-out);
 }
@@ -208,8 +208,9 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
 .nav__link.is-active { color: #fff; background: var(--accent-dim); }
 
 @media (max-width: 720px) {
-  .nav { gap: 0; padding: 0.3rem 0.4rem; }
-  .nav__link { padding: 0.4rem 0.65rem; font-size: 0.75rem; }
+  .nav { gap: 0; padding: 0.25rem 0.35rem; }
+  /* Tap targets >= ~44px tall (0.65rem*2 padding + text), per WCAG/Apple minimums */
+  .nav__link { padding: 0.65rem 0.85rem; font-size: 0.75rem; }
 }
 
 /* ---------- stream-text chars ---------- */

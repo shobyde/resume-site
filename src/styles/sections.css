@@ -79,13 +79,16 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.9rem 1.8rem;
-  border-radius: 100px;
+  border-radius: var(--radius);
   border: 1px solid var(--border-strong);
   color: var(--fg);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
+  white-space: nowrap;
   background: var(--card);
+  /* Buttons are short — never let a trailing arrow wrap to its own line */
+  white-space: nowrap;
   backdrop-filter: blur(10px);
   transition: background 0.25s, border-color 0.25s, transform 0.1s;
   will-change: transform;

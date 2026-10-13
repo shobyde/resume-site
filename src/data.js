@@ -3,7 +3,7 @@
    ============================================================ */
 export const DATA = {
   hero: {
-    tag: '// software engineer — Pacific Northwest',
+    tag: '// software engineer — PNW',
     name: 'Sho Byde',
     role: 'Building <span class="accent">APIs, cloud systems & client-facing apps</span> for 12+ years — now teaching machines and mentoring humans.',
   },
