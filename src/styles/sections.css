@@ -2,6 +2,44 @@
    Hero, About, Experience, Skills, Blog sections
    ============================================================ */
 
+/* ---------- Engraved section dividers ----------
+   Hairline rules with a compass-star ornament between sections.
+   Static pseudo-elements: no per-frame cost, exempt from motionPrefs. */
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: min(560px, 72%);
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent, rgba(230, 221, 208, 0.22) 22%,
+    rgba(230, 221, 208, 0.22) 78%, transparent);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+/* compass-star rosette marking the rule's center */
+.section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% -50%;
+  width: 22px;
+  height: 22px;
+  background: var(--bg) padding-box;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'><g fill='none' stroke='%23b0763c' stroke-width='1'><path d='M11 2 12.6 9.4 20 11 12.6 12.6 11 20 9.4 12.6 2 11 9.4 9.4Z'/><circle cx='11' cy='11' r='2.4'/></g></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+}
+/* the contact section is centered; keep the rule centered there too, and
+   avoid a stray divider hanging over the footer edge */
+.section.contact::before { width: min(360px, 60%); }
+
+/* ---------- Engraved hairline between Experience/Skills blocks kept at
+   .section boundaries only; timeline spine stays as-is ---------- */
+
 /* ---------- Hero ---------- */
 .hero {
   min-height: 100svh;
@@ -15,12 +53,13 @@
 }
 .hero__inner { max-width: 1200px; margin: 0 auto; width: 100%; }
 .hero__tag {
-  font-family: var(--font-mono);
+  font-family: var(--font-hand);
   color: var(--accent2);
-  font-size: 0.85rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  margin-bottom: 1.4rem;
   opacity: 0;
 }
 .hero__name {
@@ -32,8 +71,11 @@
   margin-bottom: 0.3em;
   opacity: 0;
 }
-.hero__name .word { display: inline-block; overflow: hidden; vertical-align: bottom; }
-.hero__name .char { display: inline-block; transform: translateY(110%); transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+.hero__name .word { display: inline-block; vertical-align: bottom; }
+/* Ink entrance: each char is invisible until its "pen stroke" lands.
+   No mask/slide - the char appears in place via opacity + a nib-tilt
+   rotation, then settles upright (all driven from heroIntro in main.js). */
+.hero__name .char { display: inline-block; opacity: 0; transform-origin: 50% 70%; }
 .hero__role {
   font-size: clamp(1.1rem, 2.5vw, 1.6rem);
   color: var(--fg-dim);
@@ -73,35 +115,80 @@
   50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
 }
 
-/* ---------- Magnetic button ---------- */
+/* ---------- Magnetic button: flat inked-swatch stamps ---------- */
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
   padding: 0.9rem 1.8rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  border: 1px solid rgba(230, 221, 208, 0.16);
   color: var(--fg);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
   white-space: nowrap;
-  background: var(--card);
-  backdrop-filter: blur(10px);
-  transition: background 0.25s, border-color 0.25s, transform 0.1s;
+  background:
+    linear-gradient(180deg, rgba(46, 40, 33, 0.9), rgba(26, 23, 20, 0.95));
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(230, 221, 208, 0.08),
+    inset 0 2px 5px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(0, 0, 0, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.1s, box-shadow 0.15s, border-color 0.25s, color 0.25s;
   will-change: transform;
 }
 .btn:hover {
-  background: var(--card-hover);
-  border-color: var(--accent);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35); /* letterpress press-in */
-}
-.btn--primary {
-  background: linear-gradient(135deg, var(--accent), var(--accent-dim));
-  border-color: transparent;
   color: #fff;
+  border-color: rgba(176, 118, 60, 0.6);
+  box-shadow:
+    inset 0 1px 0 rgba(230, 221, 208, 0.10),
+    inset 0 3px 6px rgba(0, 0, 0, 0.5),
+    0 1px 0 rgba(0, 0, 0, 0.5);
+  transform: translateY(1px); /* letterpress press-in */
 }
-.btn--primary:hover { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(230, 221, 208, 0.12); }
+.btn:active { transform: translateY(2px); }
+/* primary CTA: flat inked swatch, stamped look - no SaaS gradient */
+.btn--primary {
+  background:
+    linear-gradient(180deg, #96612f, #7a4a20);
+  border-color: rgba(0, 0, 0, 0.4);
+  color: #f4ead9;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 234, 205, 0.18),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.35),
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    0 1px 0 rgba(0, 0, 0, 0.55),
+    0 4px 14px rgba(0, 0, 0, 0.35);
+}
+.btn--primary:hover {
+  background: linear-gradient(180deg, #8a5728, #6e411c);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 234, 205, 0.12),
+    inset 0 3px 7px rgba(0, 0, 0, 0.55),
+    0 1px 0 rgba(0, 0, 0, 0.55);
+}
+/* secondary CTA: engraved underline rule */
+.btn:not(.btn--primary) {
+  text-decoration: none;
+}
+.btn:not(.btn--primary)::after {
+  content: '';
+  position: absolute;
+  left: 1.4rem;
+  right: 1.4rem;
+  bottom: 0.55rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.7);   /* engraved shadow line */
+  opacity: 0.55;
+  transition: opacity 0.25s;
+}
+.btn:not(.btn--primary):hover::after { opacity: 1; }
 .hero__cta { display: flex; gap: 1rem; margin-top: 2.5rem; opacity: 0; }
 
 /* ---------- About ---------- */
@@ -368,6 +455,16 @@
 .contact .section-title { font-size: clamp(2.5rem, 7vw, 5rem); }
 .contact .section-sub { margin: 0 auto 2.8rem; max-width: 45ch; text-align: center; }
 .contact__links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+/* handwritten sign-off: the second voice closing the page. Caveat runs
+   small, so bump size well above body copy. Static styling only (no
+   motion), so no motionPrefs gate is needed. */
+.contact__sign {
+  font-family: var(--font-hand);
+  font-size: 2.1rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin: -0.6rem 0 2.6rem;
+}
 
 /* ---------- Footer ---------- */
 .footer {

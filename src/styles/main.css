@@ -20,6 +20,7 @@
   --font-head: 'Zilla Slab', 'Lora', serif;
   --font-body: 'Source Serif 4', 'Lora', serif;
   --font-mono: 'JetBrains Mono', monospace;
+  --font-hand: 'Caveat', cursive;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
   --shadow-glow: 0 0 60px rgba(176, 118, 60, 0.18);
@@ -80,15 +81,21 @@ h1, h2 {
   max-width: 55ch;
   margin-bottom: 3rem;
 }
+/* ---------- Handwritten second voice ----------
+   Caveat 600 is the "pen on parchment" voice. Used sparingly -
+   eyebrows and the contact sign-off - never as body copy. Sizes are
+   bumped ~1.7x because Caveat runs small at its x-height. Static
+   styling; exempt from motionPrefs. */
 .eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.03em;
   color: var(--accent);
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.1rem;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 0.8rem;
 }
 .eyebrow::before {
@@ -99,28 +106,23 @@ h1, h2 {
   background: linear-gradient(90deg, var(--accent), transparent);
 }
 .mono { font-family: var(--font-mono); }
+.hand { font-family: var(--font-hand); font-weight: 600; }
 
-/* ---------- Parchment film-grain overlay ----------
-   SVG turbulence grain, small tiling square upscaled with a slow
-   gradient-position shuffle; barely visible, screen-blended over
-   everything, flips off under prefers-reduced-motion. */
+/* ---------- Parchment film-grain + mottle overlay ----------
+   Two static SVG-noise layers: fine turbulence grain plus a large-scale
+   parchment mottle; screen-blended over everything, fully static (no
+   per-frame cost, and anything static is exempt from motionPrefs). */
 .grain {
   position: fixed;
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  opacity: 0.16;
+  opacity: 0.34;
   mix-blend-mode: screen;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='linear' slope='0.28'/></feComponentTransfer></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
-  background-size: 220px 220px;
-  animation: grainShift 0.9s steps(4) infinite;
-}
-@keyframes grainShift {
-  0% { background-position: 0 0; }
-  100% { background-position: 220px 165px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .grain { animation: none; }
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='900'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='3' seed='7' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='linear' slope='0.55' intercept='0'/></feComponentTransfer><feComponentTransfer><feFuncR type='linear' intercept='0'/><feFuncG type='linear' intercept='0'/><feFuncB type='linear' intercept='0'/></feComponentTransfer></filter><rect width='900' height='900' filter='url(%23m)'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='linear' slope='0.28'/></feComponentTransfer></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
+  background-size: 900px 900px, 220px 220px;
 }
 
 /* ---------- Loader ---------- */
@@ -222,6 +224,9 @@ h1, h2 {
 /* Left-aligned to the container's left edge (RDR2 composition: one
    alignment system for nav + content). Matches .container's inline
    padding so the pill sits exactly where content starts. */
+/* Leather/letterpress nav pill: debossed hide, stitched inset,
+   parchment hairline outer rule. Static (no animation) so it is
+   exempt from motionPrefs and costs nothing per frame. */
 .nav {
   position: fixed;
   top: 1.2rem;
@@ -229,27 +234,59 @@ h1, h2 {
   z-index: 100;
   display: flex;
   gap: 0.25rem;
-  padding: 0.4rem 0.6rem;
-  background: rgba(26, 23, 20, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
+  padding: 0.45rem 0.7rem;
+  background:
+    linear-gradient(180deg, rgba(46, 40, 33, 0.78), rgba(24, 21, 18, 0.82));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(230, 221, 208, 0.14);       /* parchment hairline */
   border-radius: var(--radius);
+  box-shadow:
+    inset 0 1px 0 rgba(230, 221, 208, 0.07),          /* top-edge catchlight */
+    inset 0 2px 6px rgba(0, 0, 0, 0.45),              /* debossed center */
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+    0 1px 0 rgba(0, 0, 0, 0.5),
+    0 6px 18px rgba(0, 0, 0, 0.35);
   opacity: 0;
   transition: opacity 0.8s 0.4s var(--ease-out);
+}
+/* stitched inner seam */
+.nav::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px dashed rgba(230, 221, 208, 0.14);
+  border-radius: 5px;
+  pointer-events: none;
+}
+/* engraved parchment outer rule */
+.nav::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 1px solid rgba(230, 221, 208, 0.10);
+  border-radius: calc(var(--radius) + 3px);
+  pointer-events: none;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
 }
 .nav.is-visible { opacity: 1; }
 .nav__link {
   padding: 0.5rem 1rem;
-  border-radius: 4px;
   color: var(--fg-dim);
   text-decoration: none;
   font-size: 0.85rem;
+  letter-spacing: 0.02em;
   transition: color 0.2s, background 0.2s;
   white-space: nowrap;
 }
 .nav__link:hover { color: var(--fg); background: rgba(230, 221, 208, 0.06); }
-.nav__link.is-active { color: var(--fg); background: var(--accent-dim); }
+.nav__link.is-active {
+  color: var(--fg);
+  background: linear-gradient(180deg, rgba(176,118,60,0.34), rgba(90,61,34,0.45));
+  box-shadow:
+    inset 0 1px 0 rgba(230, 221, 208, 0.10),
+    inset 0 1px 3px rgba(0, 0, 0, 0.45);
+}
 
 @media (max-width: 720px) {
   .nav { gap: 0; padding: 0.25rem 0.35rem; }
@@ -258,7 +295,14 @@ h1, h2 {
 }
 
 /* ---------- stream-text chars ---------- */
-.stream-ch { will-change: opacity; }
+/* inline-block so the pen-tilt rotation actually applies (transforms
+   are no-ops on plain inline boxes); transform-origin near the nib
+   line so glyphs tilt like a pen stroke, not a flag on a pole. */
+.stream-ch {
+  display: inline-block;
+  will-change: opacity;
+  transform-origin: 50% 70%;
+}
 
 /* ============================================================
    Reduced motion: kill all CSS animation/transition to ~zero so
