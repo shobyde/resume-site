@@ -3,7 +3,7 @@
 Hermes cron writes one markdown file per day into this folder and regenerates
 `index.json`. The site fetches `/content/posts/index.json` at runtime and renders
 the 6 latest posts as cards; clicking one fetches the raw `.md` and renders it
-in a modal. No build step needed for new posts — Cloudflare Pages picks up the
+in a modal. No build step needed for new posts - Cloudflare Pages picks up the
 newly committed files on push.
 
 ## File format

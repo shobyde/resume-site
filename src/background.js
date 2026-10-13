@@ -1,9 +1,9 @@
 /* ============================================================
-   Three.js background — animated particle field + rings.
+   Three.js background - animated particle field + rings.
 
    prefers-reduced-motion: the WebGL scene is skipped entirely.
    A static CSS gradient stands in on the canvas (same palette)
-   and no renderer is created — zero per-frame CPU/GPU cost.
+   and no renderer is created - zero per-frame CPU/GPU cost.
    Toggling the OS setting live tears down / re-inits without a
    reload. A module-level generation token ensures a superseded
    instance stops its own animation loop and event listeners.
@@ -213,7 +213,7 @@ function initAnimated() {
     points.rotation.x = mouse.y * 0.05;
 
     for (const ring of ringGroup.children) {
-      // slow, uniform engraving creep — reads as depth, not rotation
+      // slow, uniform engraving creep - reads as depth, not rotation
       ring.rotation.z += ring.userData.creep * 0.016;
     }
     ringGroup.rotation.y = Math.sin(t * 0.4) * 0.06;
@@ -228,7 +228,7 @@ function initAnimated() {
   }
 
   // --- animate: paused whenever the tab is hidden or the (fixed)
-  // canvas scrolls out of view. Pauses are event-driven — the loop
+  // canvas scrolls out of view. Pauses are event-driven - the loop
   // fully stops (cancelAnimationFrame instead of idle-spinning). ---
   let visible = true;
   let tabHidden = document.hidden;
@@ -254,7 +254,7 @@ function initAnimated() {
   });
   // the visibilitychange listener isn't in zombieListeners because
   // it's harmless post-teardown (updateLoop is generation-gated), but
-  // the IO observer must stop observing the live canvas — done in
+  // the IO observer must stop observing the live canvas - done in
   // teardown() above.
 
   let request_id = 0;

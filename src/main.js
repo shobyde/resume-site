@@ -1,5 +1,5 @@
 /* ============================================================
-   Main — assembles DOM, wires everything up
+   Main - assembles DOM, wires everything up
    ============================================================ */
 import { DATA } from './data.js';
 import { initBackground } from './background.js';
@@ -63,7 +63,7 @@ function buildPage() {
   <main class="container">
     <!-- ABOUT -->
     <section class="section section--tight" id="about">
-      <div class="eyebrow">01 — About</div>
+      <div class="eyebrow">01 - About</div>
       <h2 class="section-title reveal">Where code meets culture</h2>
       <div class="about__grid">
         <div class="about__text reveal">
@@ -77,29 +77,29 @@ function buildPage() {
 
     <!-- EXPERIENCE -->
     <section class="section" id="experience">
-      <div class="eyebrow">02 — Experience</div>
+      <div class="eyebrow">02 - Experience</div>
       <h2 class="section-title reveal">The journey so far</h2>
       <div class="timeline">${exp}</div>
     </section>
 
     <!-- SKILLS -->
     <section class="section" id="skills">
-      <div class="eyebrow">03 — Skills</div>
+      <div class="eyebrow">03 - Skills</div>
       <h2 class="section-title reveal">Tools of the trade</h2>
       <div class="skills__grid">${skills}</div>
     </section>
 
     <!-- BLOG -->
     <section class="section" id="blog">
-      <div class="eyebrow">04 — Daily Log</div>
+      <div class="eyebrow">04 - Daily Log</div>
       <h2 class="section-title reveal">Written by the machine, curated by me</h2>
-      <p class="section-sub">An AI-assisted daily log — news, notes, and build updates, published automatically every morning and curated by a human (me).</p>
+      <p class="section-sub">An AI-assisted daily log - news, notes, and build updates, published automatically every morning and curated by a human (me).</p>
       <div class="blog__grid" id="blogGrid"></div>
     </section>
 
     <!-- CONTACT -->
     <section class="section contact" id="contact">
-      <div class="eyebrow" style="justify-content:center">05 — Contact</div>
+      <div class="eyebrow" style="justify-content:center">05 - Contact</div>
       <h2 class="section-title reveal">Let's build something.</h2>
       <p class="section-sub reveal">Open to interesting problems, consulting work, or just a coffee chat about code.</p>
       <div class="contact__links reveal">
@@ -166,7 +166,7 @@ async function boot() {
   // three.js init (independent from DOM)
   try { initBackground(); } catch (e) { console.warn('WebGL unavailable:', e); }
 
-  // never let fonts/network hang the boot — hard cap at 2.5s
+  // never let fonts/network hang the boot - hard cap at 2.5s
   const withTimeout = (p, ms) => Promise.race([p, new Promise((r) => setTimeout(r, ms))]);
   await withTimeout(document.fonts ? document.fonts.ready : Promise.resolve(), 2500);
 
@@ -206,7 +206,7 @@ function heroIntro() {
     ['#heroCta', 'opacity:1', 0],
     ['#heroScroll', 'opacity:1', 0],
   ];
-  // Reduced motion: no staged cascading fades — everything shows at once.
+  // Reduced motion: no staged cascading fades - everything shows at once.
   tl.forEach(([sel, style, d]) => setTimeout(() => { document.querySelector(sel).style.opacity = 1; }, reduced ? 0 : 900 + d * 1000));
 
   if (reduced) return; // no char-by-char rise animation
@@ -231,7 +231,7 @@ function navSpy() {
   sections.forEach((s) => s && spy.observe(s));
 }
 
-// failsafe: never leave the loader spinning — force-close at 4s no matter what
+// failsafe: never leave the loader spinning - force-close at 4s no matter what
 setTimeout(() => {
   const l = document.getElementById('loader');
   if (l && !l.classList.contains('is-done')) {

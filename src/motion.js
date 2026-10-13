@@ -21,7 +21,7 @@ function masterFrame(time) {
     if (fn(time) === false) listeners.delete(fn);
   }
   if (listeners.size === 0) {
-    masterRunning = false; // fully idle — no rAF outstanding
+    masterRunning = false; // fully idle - no rAF outstanding
   } else {
     requestAnimationFrame(masterFrame);
   }

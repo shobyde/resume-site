@@ -1,5 +1,5 @@
 /* ============================================================
-   Blog loader — reads content/posts/index.json, renders cards,
+   Blog loader - reads content/posts/index.json, renders cards,
    opens posts in a side modal. Cron pipeline writes new files.
    ============================================================ */
 
@@ -11,10 +11,10 @@ export async function initBlog() {
   try {
     const res = await fetch('/content/posts/index.json');
     if (res.ok) posts = await res.json();
-  } catch (e) { /* offline or no file — show empty state below */ }
+  } catch (e) { /* offline or no file - show empty state below */ }
 
   if (!posts.length) {
-    grid.innerHTML = `<p style="color:var(--fg-mute);font-size:.9rem">No posts yet — the daily writer hasn't woken up. Check back tomorrow morning.</p>`;
+    grid.innerHTML = `<p style="color:var(--fg-mute);font-size:.9rem">No posts yet - the daily writer hasn't woken up. Check back tomorrow morning.</p>`;
     return { posts: [] };
   }
 
@@ -76,7 +76,7 @@ async function openPost(post) {
     if (!res.ok) throw new Error(res.status);
     body.innerHTML = mdToHtml(await res.text());
   } catch (e) {
-    body.innerHTML = `<p>Couldn't load this post (${e.message}). Try refreshing — or ask Hermes to republish it.</p>`;
+    body.innerHTML = `<p>Couldn't load this post (${e.message}). Try refreshing - or ask Hermes to republish it.</p>`;
   }
 }
 

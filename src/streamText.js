@@ -1,9 +1,9 @@
 /* ============================================================
-   StreamText — sentences reveal char-by-char ("streaming-in")
+   StreamText - sentences reveal char-by-char ("streaming-in")
    as they scroll into view, like an LLM emitting deltas.
    Reveals via IntersectionObserver (no per-frame layout reads).
 
-   prefers-reduced-motion: the split/stagger never happens —
+   prefers-reduced-motion: the split/stagger never happens -
    copy stays as plain text, fully visible. Toggling the OS
    setting live completes any in-flight reveal instantly and
    stops the hero scroll parallax.
@@ -11,7 +11,7 @@
 import { motionPrefs } from './motionPrefs.js';
 
 // Split into word spans containing char spans. Spaces stay as
-// real, breakable text nodes BETWEEN word spans — wrapping an
+// real, breakable text nodes BETWEEN word spans - wrapping an
 // element's chars individually with &nbsp; makes <p> render as
 // one unbreakable line (no word wrap).
 function splitChars(el) {
@@ -61,7 +61,7 @@ export function initStreamText() {
   // pending element every animation frame, forcing a full layout read
   // 60x/second even when the page was idle at the top. IO only fires
   // at actual scroll intersections (and matches Lenis, which moves
-  // real scrollY — no need for per-frame polling).
+  // real scrollY - no need for per-frame polling).
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (!e.isIntersecting) continue;
@@ -93,7 +93,7 @@ export function initScrollStream() {
 
   let sc = 0;
   let rafPending = false;
-  // Cache once — recompute only on resize, not on every scroll event.
+  // Cache once - recompute only on resize, not on every scroll event.
   let scrollRange = document.body.scrollHeight - innerHeight;
 
   function apply() {
@@ -104,7 +104,7 @@ export function initScrollStream() {
     }
   }
 
-  // Batch: scroll events can fire more often than frames — coalesce
+  // Batch: scroll events can fire more often than frames - coalesce
   // writes into one rAF callback instead of per-event style writes.
   const onScroll = () => {
     if (motionPrefs.reduced) return; // live gate: ignore scroll while reduced

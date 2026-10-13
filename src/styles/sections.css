@@ -225,7 +225,7 @@
 .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .tag {
   padding: 0.35rem 0.8rem;
-  border-radius: 100px;
+  border-radius: 6px;
   border: 1px solid var(--border);
   font-size: 0.8rem;
   color: var(--fg-dim);
@@ -339,7 +339,7 @@
 .modal__body pre {
   background: #141110;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius);
   padding: 1.2rem;
   overflow-x: auto;
   margin: 1.5em 0;

@@ -1,16 +1,16 @@
 /* ============================================================
-   Resume data — the single source of truth for page content
+   Resume data - the single source of truth for page content
    ============================================================ */
 export const DATA = {
   hero: {
-    tag: '// software engineer — PNW',
+    tag: 'Software engineer · PNW',
     name: 'Sho Byde',
-    role: 'Building <span class="accent">APIs, cloud systems & client-facing apps</span> for 12+ years — now teaching machines and mentoring humans.',
+    role: 'Building <span class="accent">APIs, cloud systems & client-facing apps</span> for 12+ years - now teaching machines and mentoring humans.',
   },
   about: {
-    p1: `I've spent <strong>over 12 years</strong> in software and web development, working primarily in Agile environments across Node.js, Express, Next.js, Vite, and Yii — with deep fluency in JavaScript, PHP, Python, Terraform, C#, and MySQL.`,
+    p1: `I've spent <strong>over 12 years</strong> in software and web development, working primarily in Agile environments across Node.js, Express, Next.js, Vite, and Yii - with deep fluency in JavaScript, PHP, Python, Terraform, C#, and MySQL.`,
     p2: `My track record includes <strong>leading projects</strong>, shipping client-facing applications, implementing OAuth/RBAC authentication at scale, and building large-scale APIs. I care just as much about the people: fostering positive workplace culture, mentoring, and contributing to team life.`,
-    p3: `Outside of work I taught an intro computer science class at a local high school — before my regular workday, every day, for a full school year.`,
+    p3: `Outside of work I taught an intro computer science class at a local high school - before my regular workday, every day, for a full school year.`,
   },
   stats: [
     { num: 12, suffix: '+', label: 'Years in software' },
@@ -22,7 +22,7 @@ export const DATA = {
     {
       role: 'Software Development Engineer 1-3 / Engineering Manager (IC)',
       org: 'Conversica',
-      period: 'Jul 2021 — Present',
+      period: 'Jul 2021 - Present',
       bullets: [
         'Collaborated with product teams to distribute tickets and create technical designs for client-facing changes.',
         'Part of a dedicated team resolving customer escalations, directly interacting with customer support and account managers.',
@@ -35,9 +35,9 @@ export const DATA = {
       ],
     },
     {
-      role: 'Volunteer Teacher — Intro to Computer Science',
+      role: 'Volunteer Teacher - Intro to Computer Science',
       org: 'a local high school',
-      period: 'Sep 2022 — Jun 2023',
+      period: 'Sep 2022 - Jun 2023',
       bullets: [
         'Taught an introductory computer science class during the first period (7:30–8:25) before my regular workday.',
         'Collaborated with IT to install and set up VS Code and configure firewall rules, enabling student access in a rural community.',
@@ -50,7 +50,7 @@ export const DATA = {
     {
       role: 'Software Developer',
       org: 'Intuli',
-      period: 'Aug 2014 — Jul 2021',
+      period: 'Aug 2014 - Jul 2021',
       bullets: [
         'Managed and oversaw a small group of junior developers. Assigning work packages, providing quality assurance procedures, and assisting in projects when needed.',
         'Interfaced with multi-million dollar companies. Doing support or service requests when needed, and accommodating product alterations in production systems.',
@@ -63,7 +63,7 @@ export const DATA = {
     {
       role: 'Game Developer',
       org: 'DigiPen (Sno-Isle)',
-      period: 'Sep 2012 — Jun 2013',
+      period: 'Sep 2012 - Jun 2013',
       bullets: [
         'Created physics based engines in C++.',
         'Interfaced with large groups of developers, and provided feedback on products.',
