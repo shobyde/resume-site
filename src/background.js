@@ -1,12 +1,5 @@
 /* ============================================================
-   Three.js background - animated particle field + logo points
-   ============================================================ */
-import * as THREE from 'three';
-=======
-   Three.js background - animated particle field + logo points
-   ============================================================ */
-import * as THREE from 'three';
->>>>>>> b722b66 (Site updates: streaming text, cursor fix, full-page articles, daily log, diagrams)
+   Three.js background - parchment journal scene.
 
    Four deliberate period passes, tuned perceptible-but-subtle so
    the warm-ink fg copy stays readable on the light ground. A
@@ -231,32 +224,18 @@ function initAnimated() {
     group.position.set(cfg.x, cfg.y, cfg.z);
     group.rotation.z = cfg.baseAngle;
 
-=======
-  // round star sprite texture
-  const starCanvas = document.createElement('canvas');
-  starCanvas.width = starCanvas.height = 32;
-  const sctx = starCanvas.getContext('2d');
-  const grad = sctx.createRadialGradient(16,16,0,16,16,16);
-  grad.addColorStop(0, 'rgba(255,255,255,1)');
-  grad.addColorStop(0.4, 'rgba(255,255,255,0.6)');
-  grad.addColorStop(1, 'rgba(255,255,255,0)');
-  sctx.fillStyle = grad;
-  sctx.fillRect(0,0,32,32);
-  const starTex = new THREE.CanvasTexture(starCanvas);
-  const pMat = new THREE.PointsMaterial({
-    size: 2.6,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.75,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-    sizeAttenuation: true,
-    map: starTex,
-    alphaTest: 0.01,
-  });
-  const points = new THREE.Points(pGeo, pMat);
-  scene.add(points);
-
+    // Beam volume: elongated soft plane, warm honey wash over the paper.
+    const beamMat = new THREE.MeshBasicMaterial({
+      map: beamTexture,
+      color: 0xd8b070,
+      transparent: true,
+      opacity: cfg.opacity,
+      depthWrite: false,
+      blending: THREE.NormalBlending,
+      side: THREE.DoubleSide,
+    });
+    const beam = new THREE.Mesh(new THREE.PlaneGeometry(1500, 420), beamMat);
+    group.add(beam);
 
     // Motes live in shaft-local space: gauss-distributed across the
     // beam's short axis (denser = stronger = "inside the sunbeam"),
@@ -519,12 +498,12 @@ function initAnimated() {
     mouse.x += (mouse.tx - mouse.x) * 0.04;
     mouse.y += (mouse.ty - mouse.y) * 0.04;
 
-=======
-    // drift particles toward the camera (fly-through)
-    const pos = pGeo.attributes.position.array;
-    for (let i = 0; i < COUNT; i++) {
-      pos[i * 3 + 2] += speeds[i] * 1.8;
-      if (pos[i * 3 + 2] > 1000) pos[i * 3 + 2] = -1000;
+    // 1. shafts breathe with the lamp; cradle a barely-there sway
+    for (const s of shaftState) {
+      s.beamMat.opacity = s.cfg.opacity * (0.6 + flickV * 0.5);
+      s.group.rotation.z = s.cfg.baseAngle
+        + Math.sin(elapsed * 0.17 + s.cfg.swayPhase) * 0.018;
+      updateShaftMotes(s, elapsed);
     }
 
     // 2. rose turns imperceptibly, like a water wheel under a porch
@@ -532,10 +511,20 @@ function initAnimated() {
     rose.rotation.y = mouse.x * 0.04;
     rose.rotation.x = -mouse.y * 0.03;
 
-    // scroll: camera rises, rings drift
-=======
-    // scroll: camera rises, rings drift
->>>>>>> b722b66 (Site updates: streaming text, cursor fix, full-page articles, daily log, diagrams)
+    // 3. smoke drifts, wraps, breathes
+    for (const s of smokeSprites) {
+      s.position.x += s.userData.vx * 0.016;
+      if (s.position.x > innerWidth + s.scale.x + 300) s.position.x = -s.scale.x - 300;
+      s.position.y += Math.sin(elapsed * 0.11 + s.userData.bobPhase) * 0.05;
+      // base opacities 0.05-0.08; multiplier retuned so the flicker
+      // modulates without pushing final visible opacity past ~0.08
+      s.material.opacity = (0.05 + smokeSprites.indexOf(s) * 0.015) * (0.55 + flickV * 0.35);
+    }
+
+    // 4. lamplight breathes
+    lampMat.opacity = 0.095 * flickV;
+
+    // camera: settled parallax only - no rotating world
     const sc = scrollY * 0.25;
     camera.position.y = -sc * 0.4 + mouse.y * 12;
     camera.position.x = mouse.x * 18;

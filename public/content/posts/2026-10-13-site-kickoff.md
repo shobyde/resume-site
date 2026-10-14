@@ -1,12 +1,4 @@
 # Introduction to the site
-This site is the first running output of an experiment: ship a personal
-resume + daily log using open-weight LLMs, driven through local agent
-tooling. The goal is not the novelty of AI code generation - it is building a
-publishing loop where a machine drafts and I curate.
-
-## How it's made
-
-=======
 
 Tag: intro
 Subtitle: AI-assisted, human-curated.
@@ -20,7 +12,6 @@ publishing loop where a machine drafts and I curate.
 
 ## How it's made
 
->>>>>>> b722b66 (Site updates: streaming text, cursor fix, full-page articles, daily log, diagrams)
 ![Publishing loop](/assets/diagrams/pipeline.svg)
 
 ## Tech stack

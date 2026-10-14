@@ -2,10 +2,6 @@
 
 Each post is a markdown file plus an entry in `index.json`. A Hermes agent
 generates these; keep the schema stable.
-=======
-Each post is a markdown file plus an entry in `index.json`. A Hermes agent
-generates these; keep the schema stable.
->>>>>>> b722b66 (Site updates: streaming text, cursor fix, full-page articles, daily log, diagrams)
 
 ## Files
 
