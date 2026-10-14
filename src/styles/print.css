@@ -1,33 +1,56 @@
 /* ============================================================
    Print stylesheet - "Download resume" produces a clean
-   black-on-white résumé from the same on-page content.
+   black-on-white résumé: contact header + About + Experience
+   + Skills. Projects, the daily log, and marketing chrome are
+   screen-only.
    ============================================================ */
 @media print {
   :root { --bg: #fff; --fg: #111; --fg-dim: #333; --fg-mute: #555; --accent2: #111; --accent: #111; }
   html { scroll-behavior: auto; }
   body { background: #fff !important; color: #111; font-size: 11pt; }
-  #bg3d, .loader, .nav, .progress, .skip-link, .hero__scroll,
-  .project-card__toggle, .project-card__details, .modal, .modal-overlay,
-  #blog, .stats, .grain { display: none !important; }
-  .hero { min-height: 0; padding: 0 0 1rem; }
-  .hero__headline { font-size: 22pt; max-width: none; }
-  .hero__cta { display: none; }
-  .section { padding: 1.2rem 0; }
-  .container { max-width: none; padding: 0 1cm; }
-  .section-title { font-size: 15pt; border-bottom: 1px solid #999; padding-bottom: 0.3rem; }
-  .eyebrow { display: none; }
-  .projects__grid, .skills__grid, .about__grid { display: block; }
-  .project-card, .skill-group, .stat { border: none; padding: 0.4rem 0; background: none; }
-  .tl-item { page-break-inside: avoid; }
-  /* reveal-on-scroll states must not hide content in print */
+
+  /* screen-only chrome */
+  #bg3d, .loader, .nav, .progress, .skip-link, .hero__scroll, .stats,
+  #projects, #blog, #contact, .footer,
+  .modal, .modal-overlay, .grain { display: none !important; }
+
+  /* hero collapses to an identity + contact header */
+  .hero { min-height: 0; padding: 0 0 0.8rem; }
+  .hero__tag, .hero__headline, .hero__role, .hero__cta { display: none !important; }
+  .print-name {
+    display: block; font-size: 24pt; font-weight: 700;
+    margin: 0 0 0.2rem; letter-spacing: 0.01em;
+  }
+  .print-contact {
+    display: block; font-size: 10pt; color: #333; margin: 0 0 0.4rem;
+  }
+  .print-contact a { color: #333; text-decoration: none; }
+
+  .section { padding: 1rem 0; }
+  .container { max-width: none; padding: 0 1.4cm; }
+  .section-title {
+    font-size: 14pt; border-bottom: 1px solid #999; padding-bottom: 0.3rem;
+    margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .eyebrow, .section-sub { display: none; }
+  .about__grid, .skills__grid { display: block; }
+  .skill-group { border: none; padding: 0.35rem 0; background: none; }
+  .skill-group__title { font-size: 10pt; margin-bottom: 0.2rem; }
+  .tl-item { page-break-inside: avoid; page-break-before: auto; }
+  .tl-item__role { font-size: 12pt; }
+  .tl-item__bullets li { font-size: 10pt; margin-bottom: 0.25rem; }
+  .tl-item + .tl-item { page-break-inside: avoid; }
+
+  /* reveal-on-scroll and stream-text states must not hide content */
   .reveal, .tl-item, [class*="hero__anim"] {
     opacity: 1 !important; transform: none !important;
     transition: none !important; animation: none !important;
   }
-  /* stream-text wraps each glyph in an initially-hidden span */
   .stream-ch, [class*="stream"] {
     opacity: 1 !important; transform: none !important;
     animation: none !important;
   }
-  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #555; }
+
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 8pt; color: #555; }
+  .print-contact a::after { content: ""; }
 }

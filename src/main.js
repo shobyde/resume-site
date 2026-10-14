@@ -79,6 +79,13 @@ function buildPage() {
       <p class="hero__tag hero__anim hero__anim--1">${DATA.hero.tag}</p>
       <h1 class="hero__headline hero__anim hero__anim--2" aria-label="${DATA.hero.headlineText}">${DATA.hero.headline}</h1>
       <p class="hero__role hero__anim hero__anim--3">${DATA.hero.role}</p>
+      <!-- print-only: compact name header + contact line on the résumé PDF -->
+      <p class="print-name">Sho Byde</p>
+      <p class="print-contact">
+        <a href="mailto:${DATA.contact.email}">${DATA.contact.email}</a> ·
+        <a href="${DATA.contact.linkedin}">LinkedIn</a> ·
+        <a href="https://shobyde.com/">shobyde.com</a>
+      </p>
       <div class="hero__cta hero__anim hero__anim--4">
         <a href="#projects" class="btn btn--primary">Explore my work →</a>
         <button class="btn" type="button" id="resumeBtn">Download résumé</button>

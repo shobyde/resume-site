@@ -193,6 +193,8 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
   transition: opacity 0.8s 0.4s var(--ease-out);
 }
 .nav.is-visible { opacity: 1; }
+/* résumé-only identity header (revealed by print.css) */
+.print-name, .print-contact { display: none; }
 .nav__link {
   padding: 0.5rem 1rem;
   border-radius: 100px;
