@@ -50,7 +50,7 @@ export const DATA = {
       stack: ['Vite', 'Vanilla JS', 'Three.js (WebGL)', 'Lenis', 'Cloudflare Pages', 'LLM agent tooling'],
       links: [
         { label: 'Visit site', url: 'https://shobyde.com/' },
-        { label: 'Case study: how it was built', url: '/?post=2026-10-13-site-kickoff' },
+        { label: 'Case study: how it was built', url: '/posts/2026-10-13-site-kickoff/' },
       ],
       details: {
         architecture: 'Static Vite build deployed to Cloudflare Pages. The daily log is a content store (markdown + a generated index.json) that the client fetches at runtime — writing never requires a redeploy of logic. A WebGL starfield, scroll-reveals, and a streaming-text engine run the page; every animated subsystem is gated on prefers-reduced-motion and the page stays fully readable with JavaScript disabled.',

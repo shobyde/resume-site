@@ -23,7 +23,7 @@ export async function initBlog() {
   visible.forEach((post, i) => {
     const a = document.createElement('a');
     a.className = 'post-card reveal';
-    a.href = `?post=${post.slug}`;
+    a.href = `/posts/${post.slug}/`;
     a.dataset.slug = post.slug;
     a.style.transitionDelay = `${i * 60}ms`;
     a.innerHTML = `
@@ -37,7 +37,7 @@ export async function initBlog() {
       a.style.setProperty('--mx', `${e.clientX - r.left}px`);
       a.style.setProperty('--my', `${e.clientY - r.top}px`);
     });
-    a.addEventListener('click', (e) => { e.preventDefault(); openArticle(post); });
+    // real URL: static /posts/<slug>/ page (SEO + shareable). No click interception.
     grid.appendChild(a);
   });
 
@@ -47,22 +47,12 @@ export async function initBlog() {
   }, { threshold: 0.1 });
   grid.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
-  // open article if URL requests one
+  // legacy ?post= deep links redirect to the static page (SEO canonical)
   const req = new URLSearchParams(location.search).get('post');
   if (req) {
-    const p = posts.find((x) => x.slug === req);
-    if (p) openArticle(p);
+    location.replace(`/posts/${req}/`);
+    return { posts };
   }
-  addEventListener('popstate', () => {
-    const slug = new URLSearchParams(location.search).get('post');
-    if (slug) {
-      const p = posts.find((x) => x.slug === slug);
-      if (p) openArticle(p);
-    } else {
-      closeArticle();
-      document.title = 'Sho Byde - Software Engineer';
-    }
-  });
   return { posts };
 }
 
@@ -193,8 +183,5 @@ function inline(s) {
     .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
 }
 function esc(s) {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
-function escapeCode(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }

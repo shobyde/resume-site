@@ -85,6 +85,15 @@ def main():
     (POSTS / "index.json").write_text(json.dumps(index, indent=2), encoding="utf-8")
     print(json.dumps({"written": str(path.relative_to(ROOT)), "total_posts": len(index)}))
 
+    # refresh public/content copy + static SEO pages so the next build is current
+    import subprocess
+    pub = ROOT / "public"
+    pub.mkdir(exist_ok=True)
+    subprocess.run(["cp", "-r", str(POSTS), str(pub / "content" if (pub / "content").exists() else pub)], check=True)
+    seo = ROOT / "scripts" / "gen_seo_pages.py"
+    if seo.exists():
+        subprocess.run([sys.executable, str(seo)], check=True)
+
 
 if __name__ == "__main__":
     main()
