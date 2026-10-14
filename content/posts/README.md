@@ -1,15 +1,11 @@
 # Daily Log articles
 
-<<<<<<< HEAD
-Hermes cron writes one markdown file per day into this folder and regenerates
-`index.json`. The site fetches `/content/posts/index.json` at runtime and renders
-the 6 latest posts as cards; clicking one fetches the raw `.md` and renders it
-in a modal. No build step needed for new posts - Cloudflare Pages picks up the
-newly committed files on push.
+Each post is a markdown file plus an entry in `index.json`. A Hermes agent
+generates these; keep the schema stable.
 =======
 Each post is a markdown file plus an entry in `index.json`. A Hermes agent
 generates these; keep the schema stable.
->>>>>>> a4f7d2d (Site updates: streaming text, cursor fix, full-page articles, daily log, diagrams)
+>>>>>>> b722b66 (Site updates: streaming text, cursor fix, full-page articles, daily log, diagrams)
 
 ## Files
 

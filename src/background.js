@@ -1,11 +1,12 @@
 /* ============================================================
-<<<<<<< HEAD
-   Three.js background - parchment journal scene.
+   Three.js background - animated particle field + logo points
+   ============================================================ */
+import * as THREE from 'three';
 =======
    Three.js background - animated particle field + logo points
    ============================================================ */
 import * as THREE from 'three';
->>>>>>> a4f7d2d (Site updates: streaming text, cursor fix, full-page articles, daily log, diagrams)
+>>>>>>> b722b66 (Site updates: streaming text, cursor fix, full-page articles, daily log, diagrams)
 
    Four deliberate period passes, tuned perceptible-but-subtle so
    the warm-ink fg copy stays readable on the light ground. A
@@ -230,19 +231,6 @@ function initAnimated() {
     group.position.set(cfg.x, cfg.y, cfg.z);
     group.rotation.z = cfg.baseAngle;
 
-<<<<<<< HEAD
-    // Beam volume: elongated soft plane, warm honey wash over the paper.
-    const beamMat = new THREE.MeshBasicMaterial({
-      map: beamTexture,
-      color: 0xd8b070,
-      transparent: true,
-      opacity: cfg.opacity,
-      depthWrite: false,
-      blending: THREE.NormalBlending,
-      side: THREE.DoubleSide,
-    });
-    const beam = new THREE.Mesh(new THREE.PlaneGeometry(1500, 420), beamMat);
-    group.add(beam);
 =======
   // round star sprite texture
   const starCanvas = document.createElement('canvas');
@@ -269,7 +257,6 @@ function initAnimated() {
   const points = new THREE.Points(pGeo, pMat);
   scene.add(points);
 
->>>>>>> a4f7d2d (Site updates: streaming text, cursor fix, full-page articles, daily log, diagrams)
 
     // Motes live in shaft-local space: gauss-distributed across the
     // beam's short axis (denser = stronger = "inside the sunbeam"),
@@ -532,20 +519,12 @@ function initAnimated() {
     mouse.x += (mouse.tx - mouse.x) * 0.04;
     mouse.y += (mouse.ty - mouse.y) * 0.04;
 
-<<<<<<< HEAD
-    // 1. shafts breathe with the lamp; cradle a barely-there sway
-    for (const s of shaftState) {
-      s.beamMat.opacity = s.cfg.opacity * (0.6 + flickV * 0.5);
-      s.group.rotation.z = s.cfg.baseAngle
-        + Math.sin(elapsed * 0.17 + s.cfg.swayPhase) * 0.018;
-      updateShaftMotes(s, elapsed);
 =======
     // drift particles toward the camera (fly-through)
     const pos = pGeo.attributes.position.array;
     for (let i = 0; i < COUNT; i++) {
       pos[i * 3 + 2] += speeds[i] * 1.8;
       if (pos[i * 3 + 2] > 1000) pos[i * 3 + 2] = -1000;
->>>>>>> a4f7d2d (Site updates: streaming text, cursor fix, full-page articles, daily log, diagrams)
     }
 
     // 2. rose turns imperceptibly, like a water wheel under a porch
@@ -553,24 +532,10 @@ function initAnimated() {
     rose.rotation.y = mouse.x * 0.04;
     rose.rotation.x = -mouse.y * 0.03;
 
-<<<<<<< HEAD
-    // 3. smoke drifts, wraps, breathes
-    for (const s of smokeSprites) {
-      s.position.x += s.userData.vx * 0.016;
-      if (s.position.x > innerWidth + s.scale.x + 300) s.position.x = -s.scale.x - 300;
-      s.position.y += Math.sin(elapsed * 0.11 + s.userData.bobPhase) * 0.05;
-      // base opacities 0.05-0.08; multiplier retuned so the flicker
-      // modulates without pushing final visible opacity past ~0.08
-      s.material.opacity = (0.05 + smokeSprites.indexOf(s) * 0.015) * (0.55 + flickV * 0.35);
-    }
-
-    // 4. lamplight breathes
-    lampMat.opacity = 0.095 * flickV;
-
-    // camera: settled parallax only - no rotating world
+    // scroll: camera rises, rings drift
 =======
     // scroll: camera rises, rings drift
->>>>>>> a4f7d2d (Site updates: streaming text, cursor fix, full-page articles, daily log, diagrams)
+>>>>>>> b722b66 (Site updates: streaming text, cursor fix, full-page articles, daily log, diagrams)
     const sc = scrollY * 0.25;
     camera.position.y = -sc * 0.4 + mouse.y * 12;
     camera.position.x = mouse.x * 18;
