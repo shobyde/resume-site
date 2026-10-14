@@ -17,10 +17,10 @@ export const DATA = {
     p3: `Outside of work I taught an intro computer science class at a local high school — before my regular workday, every day, for a full school year.`,
   },
   stats: [
-    { num: 12, suffix: '+', label: 'Years in software' },
-    { num: 5, suffix: '', label: 'Languages shipped in prod' },
-    { num: 3, suffix: '/4', label: 'Game design awards won' },
-    { num: 1, suffix: 'yr', label: 'Volunteer CS teaching' },
+    { num: 12, suffix: '+', label: 'Years in development' },
+    { num: 5, suffix: '+', label: 'Languages shipped in production' },
+    { num: 1, suffix: '', label: 'Year of volunteer teaching' },
+    { text: '∞', label: 'Tokens spent so you don’t have to' },
   ],
   projects: [
     {

@@ -33,9 +33,18 @@
     margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em;
   }
   .eyebrow, .section-sub { display: none; }
-  .about__grid, .skills__grid { display: block; }
-  .skill-group { border: none; padding: 0.35rem 0; background: none; }
-  .skill-group__title { font-size: 10pt; margin-bottom: 0.2rem; }
+  .about__grid { display: block; }
+  /* skills keep their boxed grid — borderless text looked broken on paper */
+  .skills__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8pt; }
+  .skill-group {
+    border: 1px solid #bbb; border-radius: 4pt; padding: 8pt 10pt;
+    background: none; page-break-inside: avoid;
+  }
+  .skill-group__title { font-size: 8.5pt; margin-bottom: 5pt; }
+  .tag {
+    border: 1px solid #999; border-radius: 100px;
+    padding: 1.5pt 6pt; font-size: 8.5pt; color: #222;
+  }
   .tl-item { page-break-inside: avoid; page-break-before: auto; }
   .tl-item__role { font-size: 12pt; }
   .tl-item__bullets li { font-size: 10pt; margin-bottom: 0.25rem; }

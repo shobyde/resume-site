@@ -78,26 +78,33 @@ async function openArticle(post) {
   if (!view) {
     view = document.createElement('div');
     view.id = 'articleView';
-    view.style.cssText = 'position:fixed;inset:0;z-index:800;background:var(--bg,#0b0b0f);overflow:auto;padding:clamp(1rem,4vw,3rem);';
     document.body.appendChild(view);
   }
   view.style.display = 'block';
   view.innerHTML = `
-    <div style="max-width:760px;margin:0 auto;">
-      <a href="/" id="articleBack" style="display:inline-block;margin-bottom:1.5rem;color:#fff;text-decoration:underline;font-weight:600;">← back to site</a>
-      <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);margin:.2rem 0 .6rem">${escapeHtml(post.title)}</h1>
-      <div style="color:var(--fg-mute,#888);font-size:.85rem;margin-bottom:2rem;">${post.date} · ${post.tag || 'log'} · by ${post.author || 'Sho Byde'}</div>
-      <div id="articleBody"><p style="color:var(--fg-mute)">Loading…</p></div>
-    </div>
+    <article class="article">
+      <a href="/" class="article__back">&larr; Back</a>
+      <div class="article__meta">${post.date} · ${esc(post.tag || 'log')} · by ${esc(post.author || 'Sho Byde')}</div>
+      <h1 class="article__title">${escapeHtml(post.title)}</h1>
+      <p class="article__deck" hidden></p>
+      <div class="article__body" id="articleBody"><p class="article__loading">Loading…</p></div>
+    </article>
   `;
-  document.getElementById('articleBack').addEventListener('click', (e) => { e.preventDefault(); closeArticle(); });
+  view.querySelector('.article__back').addEventListener('click', (e) => { e.preventDefault(); closeArticle(); });
   document.addEventListener('keydown', onArticleEsc);
 
   const body = document.getElementById('articleBody');
   try {
     const res = await fetch(`/content/posts/${post.slug}.md`);
     if (!res.ok) throw new Error(res.status);
-    body.innerHTML = mdToHtml(await res.text());
+    const { meta, html } = mdToHtml(await res.text());
+    body.innerHTML = html;
+    const deck = view.querySelector('.article__deck');
+    if (meta.Subtitle) { deck.textContent = meta.Subtitle; deck.hidden = false; }
+    if (meta.Tag && post.tag !== meta.Tag) {
+      view.querySelector('.article__meta').textContent =
+        `${post.date} · ${meta.Tag} · by ${post.author || 'Sho Byde'}`;
+    }
   } catch (e) {
     body.innerHTML = `<p>Couldn't load this post (${e.message}).</p>`;
   }
@@ -120,36 +127,70 @@ function escapeHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-/* ---------- tiny markdown renderer ---------- */
+/* ---------- markdown renderer ----------
+   Returns { meta: {Tag, Subtitle, ...}, html }. The header block
+   (lines like "Tag: x" / "Subtitle: y" before the first ---) is
+   parsed as meta; the H1 title line is consumed by the view. */
 function mdToHtml(md) {
-  // strip front-matter up to first horizontal rule
-  md = md.replace(/^[\s\S]*?^---\s*$/m, '');
-  // fenced code
-  md = md.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
-    return `<pre><code class="lang-${lang}">${escapeCode(code.trim())}</code></pre>`;
-  });
-  const lines = md.split('\n');
-  let html = '', inList = false;
-  for (const line of lines) {
-    const nowList = line.startsWith('- ') || line.startsWith('* ');
-    if (nowList && !inList) { html += '<ul>'; inList = true; }
-    else if (!nowList && inList) { html += '</ul>'; inList = false; }
-    if (inList) html += `<li>${inline(line.slice(2))}</li>`;
-    else if (line.startsWith('### ')) html += `<h2>${inline(line.slice(4))}</h2>`;
-    else if (line.startsWith('## ')) html += `<h2>${inline(line.slice(3))}</h2>`;
-    else if (line.startsWith('# ')) html += `<h2>${inline(line.slice(2))}</h2>`;
-    else if (line.trim() === '') { /* spacer */ }
-    else html += `<p>${inline(line)}</p>`;
+  const meta = {};
+  // split off the front header: everything up to the first '---' rule
+  let head = '', rest = md;
+  const m = md.match(/([\s\S]*?)^---\s*$/m);
+  if (m) { head = m[1]; rest = md.slice(m[0].length); }
+  for (const line of head.split('\n')) {
+    const kv = line.match(/^([A-Za-z][\w-]*):\s*(.+)$/);
+    if (kv) meta[kv[1]] = kv[2].trim();
   }
-  if (inList) html += '</ul>';
-  return html;
+
+  // fenced code -> placeholders so blocks don't eat it
+  const fences = [];
+  rest = rest.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
+    fences.push(`<pre class="article__pre"><code>${escapeCode(code.trim())}</code></pre>`);
+    return `\u0000FENCE${fences.length - 1}\u0000`;
+  });
+
+  const blocks = [];
+  let cur = [];
+  const flush = () => { if (cur.length) { blocks.push(cur.join('\n')); cur = []; } };
+  for (const line of rest.split('\n')) {
+    if (line.trim() === '') { flush(); continue; }
+    // block-level starts force a break from a preceding paragraph
+    if (/^(#{1,4} |> |- |\* |\d+\. |\u0000FENCE)/.test(line) && cur.length &&
+        !/^(> |- |\* |\d+\. )/.test(cur[0])) flush();
+    if (/^(> |- |\* |\d+\. )/.test(line) && cur.length &&
+        !/^(> |- |\* |\d+\. |\u0000FENCE)/.test(cur[0])) flush();
+    cur.push(line);
+  }
+  flush();
+
+  let html = '';
+  for (const b of blocks) {
+    if (/^\u0000FENCE\d+\u0000$/.test(b.trim())) { html += fences[+b.trim().match(/\d+/)[0]]; continue; }
+    if (/^#### /.test(b)) html += `<h4>${inline(b.slice(5))}</h4>`;
+    else if (/^### /.test(b)) html += `<h3>${inline(b.slice(4))}</h3>`;
+    else if (/^## /.test(b)) html += `<h2>${inline(b.slice(3))}</h2>`;
+    else if (/^# /.test(b)) html += `<h2>${inline(b.slice(2))}</h2>`;
+    else if (/^(-{3,}|\*{3,})$/.test(b.trim())) html += '<hr>';
+    else if (/^> /.test(b)) {
+      html += `<blockquote>${b.split('\n').map((l) => inline(l.replace(/^> ?/, ''))).join('<br>')}</blockquote>`;
+    } else if (/^- |^\* /.test(b)) {
+      html += `<ul>${b.split('\n').map((l) => `<li>${inline(l.replace(/^(- |\* )/, ''))}</li>`).join('')}</ul>`;
+    } else if (/^\d+\. /.test(b)) {
+      html += `<ol>${b.split('\n').map((l) => `<li>${inline(l.replace(/^\d+\. /, ''))}</li>`).join('')}</ol>`;
+    } else {
+      // paragraph: soft-wrapped lines join into one <p>
+      html += `<p>${inline(b.split('\n').join(' '))}</p>`;
+    }
+  }
+  return { meta, html };
 }
 function inline(s) {
-  return s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-          .replace(/\*(.+?)\*/g, '<em>$1</em>')
-          .replace(/`(.+?)`/g, '<code>$1</code>')
-          .replace(/!\[(.+?)\]\((.+?)\)/g, '<img src="$2" alt="$1" style="max-width:100%;border-radius:10px;margin:1rem 0;" loading="lazy" />')
-          .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:var(--accent)">$1</a>');
+  return escapeCode(s)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`(.+?)`/g, '<code>$1</code>')
+    .replace(/!\[(.+?)\]\((.+?)\)/g, '<img src="$2" alt="$1" loading="lazy" />')
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
 }
 function esc(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

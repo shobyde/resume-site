@@ -35,7 +35,9 @@ function buildPage() {
 
   const stats = DATA.stats.map((s) => `
     <div class="stat reveal">
-      <div class="stat__num" data-count="${s.num}" data-suffix="${s.suffix}">0${s.suffix}</div>
+      ${s.text
+        ? `<div class="stat__num">${s.text}</div>`
+        : `<div class="stat__num" data-count="${s.num}" data-suffix="${s.suffix}">0${s.suffix}</div>`}
       <div class="stat__label">${s.label}</div>
     </div>
   `).join('');
@@ -151,6 +153,7 @@ function buildPage() {
         <a href="mailto:${DATA.contact.email}" class="btn btn--primary">Email me</a>
         <a href="${DATA.contact.linkedin}" target="_blank" rel="noopener" class="btn">LinkedIn</a>
       </div>
+      <p class="contact__note reveal">The printable version is generated right from this page — everything here is already public. If you need my phone number or a formal PDF résumé with references, just email me and I'll send it over.</p>
     </section>
   </main>
 
@@ -180,7 +183,7 @@ function initResumePrint() {
 }
 
 function initCounters() {
-  const els = document.querySelectorAll('.stat__num');
+  const els = document.querySelectorAll('.stat__num[data-count]');
   if (motionPrefs.reduced) {
     els.forEach((el) => { el.textContent = el.dataset.count + (el.dataset.suffix || ''); });
     return;
