@@ -3,6 +3,11 @@ dist/
 .env
 *.log
 node_modules/
-public/
+public/*
+!public/content
+!public/favicon.svg
+!public/assets
+!public/posts
+!public/sitemap.xml
 scripts/__pycache__/
 .worktrees/

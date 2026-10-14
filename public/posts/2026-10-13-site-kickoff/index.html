@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Introduction to the site - Sho Byde</title>
+<meta name="description" content="AI-assisted, human-curated." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-13-site-kickoff/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Introduction to the site" />
+<meta property="og:description" content="AI-assisted, human-curated." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-13-site-kickoff/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-13T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Introduction to the site" />
+<meta name="twitter:description" content="AI-assisted, human-curated." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Introduction to the site",
+  "description": "AI-assisted, human-curated.",
+  "url": "https://shobyde.com/posts/2026-10-13-site-kickoff/",
+  "datePublished": "2026-10-13T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "intro"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Introduction to the site</h1>
+  <div class="meta">2026-10-13 &middot; intro &middot; by Sho Byde</div>
+  <p>This site is the first running output of an experiment: ship a personal</p>
+<p>resume + daily log using open-weight LLMs, driven through local agent</p>
+<p>tooling. The goal is not the novelty of AI code generation - it is building a</p>
+<p>publishing loop where a machine drafts and I curate.</p>
+<h2>How it's made</h2>
+<p><img src="/assets/diagrams/pipeline.svg" alt="Publishing loop" loading="lazy" /></p>
+<h2>Tech stack</h2>
+<p><img src="/assets/diagrams/stack.svg" alt="Tech stack" loading="lazy" /></p>
+<h2>Tooling</h2>
+<ul>
+<li>OpenCode Go (opencode-go) for repo-aware agent runs.</li>
+<li>pi for orchestration / skills / MCP integration.</li>
+<li>Open-weight LLMs (local and API-routed) for drafting site code and</li>
+</ul>
+<p>  daily blog entries.</p>
+<ul>
+<li>Human (me) reviews, merges, and curates.</li>
+</ul>
+<h2>Why open-weight</h2>
+<ul>
+<li>Inspectable prompts and outputs.</li>
+<li>Reproducible behavior; can pin a model version.</li>
+<li>No lock-in to a single vendor's content policy.</li>
+</ul>
+<h2>What ships daily</h2>
+<p>A cron-triggered agent writes 1-2 markdown posts from curated AI news,</p>
+<p>commits them to the repo, and they appear here the next morning.</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

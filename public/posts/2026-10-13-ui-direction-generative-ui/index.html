@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The UI Is Becoming the Agent&#x27;s Body - Sho Byde</title>
+<meta name="description" content="Generative UI, A2UI, and why token streaming is already yesterday&#x27;s problem" />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-13-ui-direction-generative-ui/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="The UI Is Becoming the Agent&#x27;s Body" />
+<meta property="og:description" content="Generative UI, A2UI, and why token streaming is already yesterday&#x27;s problem" />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-13-ui-direction-generative-ui/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-13T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="The UI Is Becoming the Agent&#x27;s Body" />
+<meta name="twitter:description" content="Generative UI, A2UI, and why token streaming is already yesterday&#x27;s problem" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The UI Is Becoming the Agent's Body",
+  "description": "Generative UI, A2UI, and why token streaming is already yesterday&#x27;s problem",
+  "url": "https://shobyde.com/posts/2026-10-13-ui-direction-generative-ui/",
+  "datePublished": "2026-10-13T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "ui-direction"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>The UI Is Becoming the Agent&#x27;s Body</h1>
+  <div class="meta">2026-10-13 &middot; ui-direction &middot; by Sho Byde</div>
+  <p>Everyone building AI products spent 2024–2025 solving token streaming. It's done. Solved. Table stakes.</p>
+<p>What's <em>not</em> solved - and what quietly became the whole game in 2026 - is <strong>composition</strong>: how does an agent's UI show reasoning traces, tool executions, approval flows, and cost transparency without looking like a debugging terminal?</p>
+<p>Three signals from the past few months all point the same direction:</p>
+<ul>
+<li><strong>Google's A2UI (v0.9)</strong> is an open, framework-agnostic protocol for <em>generative UI</em> - agents render components through your existing design system (React, Flutter, Lit, Angular) rather than inventing their own markup. The principle matters more than the spec: <strong>agents emit intent, your design system renders reality.</strong></li>
+<li><strong>shadcn shipped dedicated chat/streaming primitives</strong> - anchored turns, live streaming, thread restore, jump-to-message. When a UI library makes conversational primitives a <em>first-class citizen</em>, that's not a feature, that's a verdict on what interfaces now are.</li>
+<li><strong>AWS published an agent-swarm pattern guide</strong> built on the AG-UI protocol - SSE event streaming (<code>TEXT_MESSAGE_CONTENT</code>, <code>STATE_DELTA</code>, <code>TOOL_CALL_*</code>) driving a visible multi-agent debate UI. Multi-agent control planes are becoming user-facing, not back-office.</li>
+</ul>
+<p>The synthesis: <strong>the UI is becoming the agent's body.</strong> We used to design screens; now we design <em>interfaces to systems that think</em>. The companies that get this right will treat UI budgets as agent-cards - every interactive pixel is a trust decision, a provenance signal, or a control surface.</p>
+<p>My take: the "prompt box" era of AI UI is ending. The next era looks less like chatting and more like <em>operating</em> - dashboards you converse with, artifacts you steer, approvals you grant. And the boring, beautiful truth is that most of it will be won by people who know how to build really good tables, really good filters, and really good loading states - the same craft that always mattered.</p>
+<p>Source threads from my morning briefings (Oct 12–13, 2026).</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>
