@@ -1,36 +1,38 @@
 /* ============================================================
-   Three.js background - candlelit journal scene.
+   Three.js background - parchment journal scene.
 
    Four deliberate period passes, tuned perceptible-but-subtle so
-   the parchment fg copy stays readable. A post-frame-1 luma
-   self-check on a throwaway canvas warns if the scene ever
-   samples as flat black again (see checkFirstFrameLuma).
+   the warm-ink fg copy stays readable on the light ground. A
+   post-frame-1 luma self-check on a throwaway canvas warns if the
+   scene ever samples as flat/washed (see checkFirstFrameLuma).
 
      1. DUST IN LIGHT-SHAFTS - motes clustered inside two wide
-        diagonal lamp-kernel planes; per-mote color is multiplied by
+        diagonal honey-wash planes; per-mote color is multiplied by
         a gaussian falloff across the beam's short axis, so motes
-        are nearly invisible at the edges and richest at the
-        core. Candle/kerosene warmth: amber hue, slow lazy rise. A
-        sparse ambient field keeps the frame from being empty.
-     2. FAINT INK-TRACED COMPASS ROSE - hairline parchment strokes
-        thinned and faded: three rim circles, 8 primary + 8
-        secondary spokes, 32 rim ticks, tiny hub. A barely-there
+        fade at the edges and read strongest at the core. Motes are
+        darker-than-paper ink specks riding a faint warm light zone
+        (normal blending - additive would white-out a light scene).
+        A sparse ambient field keeps the frame from being empty.
+     2. FAINT INK-TRACED COMPASS ROSE - pale warm-ink hairlines
+        just darker than the parchment: three rim circles, 8 primary
+        + 8 secondary spokes, 32 rim ticks, tiny hub. A barely-there
         paper ornament watermark behind the hero.
      3. LAMP-STEAM DRIFT - 3 small soft noise-sprite wisps anchored
-        near the lower-right corner, drifting lazily on additive
-        blending; reads as steam curling off a lamp.
-     4. LAMPLIGHT FLICKER - a warm underfill behind the fg copy
-        whose opacity breathes slowly on summed incommensurate
-        sines with an occasional deep warm dip; shafts ride the
-        same signal at reduced amplitude. Reading-by-firelight.
+        near the lower-right corner, drifting lazily; warm gray-brown
+        at low opacity so steam subtly darkens the paper.
+     4. LAMPLIGHT FLICKER - a pooled warm honey underfill behind the
+        fg copy whose opacity breathes slowly on summed
+        incommensurate sines with an occasional deep dip; shafts ride
+        the same signal at reduced amplitude. Reading-by-firelight.
         NOT a screen-wide pulse.
 
    All textures are baked at init into offscreen canvases - no
    image assets are added to the bundle.
 
    prefers-reduced-motion: the WebGL scene is skipped entirely.
-   A static CSS gradient stands in on the canvas (same palette)
-   and no renderer is created - zero per-frame CPU/GPU cost.
+   A static CSS gradient stands in on the canvas (parchment ground
+   with subtle warm washes) and no renderer is created - zero
+   per-frame CPU/GPU cost.
    Toggling the OS setting live tears down / re-inits without a
    reload. A module-level generation token ensures a superseded
    instance stops its own animation loop and event listeners.
@@ -63,9 +65,9 @@ export function initBackground() {
   if (!canvasEl) return;
 
   GRADIENT =
-    'radial-gradient(ellipse at 50% 30%, rgba(176,118,60,0.12), transparent 60%),' +
-    'radial-gradient(ellipse at 80% 70%, rgba(138,122,79,0.08), transparent 55%),' +
-    '#1a1714';
+    'radial-gradient(ellipse at 50% 30%, rgba(176,118,60,0.10), transparent 60%),' +
+    'radial-gradient(ellipse at 80% 70%, rgba(138,106,52,0.07), transparent 55%),' +
+    '#f2ead8';
 
   // Single persistent live-toggle listener, regardless of how many
   // times initBackground / initAnimated re-enter.
@@ -202,12 +204,15 @@ function initAnimated() {
 
   const dustSprite = softSpriteTexture(64);
 
-  // Two wide diagonal shafts, now warm lamp-kernel light instead of
-  // late-afternoon sun: slower, softer, lower contrast. Candle/-
-  // kerosene lamp feel - closer amber hue, dimmer edges.
+  // Two wide diagonal shafts: faint warm honey light zones lying ON the
+  // parchment (normal blending - additive would white-out a light page).
+  // Opacities sit slightly above the drafted 0.07-0.09 band: the
+  // luma-variance verify gate (sd >= 0.008) needs the broad washes to
+  // carry perceptible texture once the 64px probe averages away the
+  // sub-pixel motes.
   const SHAFTS = [
-    { baseAngle: -0.5, x: -420, y: 180, z: -350, opacity: 0.22, swayPhase: 0 },
-    { baseAngle: -0.62, x: 430, y: 60, z: -480, opacity: 0.16, swayPhase: 2.6 },
+    { baseAngle: -0.5, x: -420, y: 180, z: -350, opacity: 0.19, swayPhase: 0 },
+    { baseAngle: -0.62, x: 430, y: 60, z: -480, opacity: 0.15, swayPhase: 2.6 },
   ];
   const beamCount = isMobile ? 500 : 1300;   // motes per shaft
   const ambientCount = isMobile ? 300 : 700; // motes outside shafts
@@ -219,29 +224,29 @@ function initAnimated() {
     group.position.set(cfg.x, cfg.y, cfg.z);
     group.rotation.z = cfg.baseAngle;
 
-    // Beam volume: elongated soft plane, additive parchment-warm light.
+    // Beam volume: elongated soft plane, warm honey wash over the paper.
     const beamMat = new THREE.MeshBasicMaterial({
       map: beamTexture,
-      color: 0xd29a58,
+      color: 0xd8b070,
       transparent: true,
       opacity: cfg.opacity,
       depthWrite: false,
-      blending: THREE.AdditiveBlending,
+      blending: THREE.NormalBlending,
       side: THREE.DoubleSide,
     });
     const beam = new THREE.Mesh(new THREE.PlaneGeometry(1500, 420), beamMat);
     group.add(beam);
 
     // Motes live in shaft-local space: gauss-distributed across the
-    // beam's short axis (denser = brighter = "inside the sunbeam"),
-    // their vertex color multiplied by the same falloff so additive
-    // blending fades them at the edges automatically.
+    // beam's short axis (denser = stronger = "inside the sunbeam"),
+    // their vertex color multiplied by the same falloff so the darker
+    // specks fade at the beam edges automatically.
     const positions = new Float32Array(beamCount * 3);
     const colors = new Float32Array(beamCount * 3);
     const speeds = new Float32Array(beamCount);
     const phases = new Float32Array(beamCount);
-    const cMote = new THREE.Color(0xe6d3b0); // warmer candle-dust tint
-    const cBrass = new THREE.Color(0xc07a30);
+    const cMote = new THREE.Color(0x6d5f45); // darker-than-paper speck ink
+    const cBrass = new THREE.Color(0x5a4322);
     for (let i = 0; i < beamCount; i++) {
       const u = Math.random() * 2 - 1;                       // along-beam
       const v = Math.max(-0.42, Math.min(0.42, (Math.random() + Math.random() + Math.random() - 1.5) * 0.55)); // across-beam, clamped gaussian
@@ -264,13 +269,13 @@ function initAnimated() {
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     const mat = new THREE.PointsMaterial({
-      size: 3.4,
+      size: 3.0,
       map: dustSprite,
       vertexColors: true,
       transparent: true,
-      opacity: 0.55,
+      opacity: 0.22,
       depthWrite: false,
-      blending: THREE.AdditiveBlending,
+      blending: THREE.NormalBlending,
       sizeAttenuation: true,
     });
     const motes = new THREE.Points(geo, mat);
@@ -284,12 +289,12 @@ function initAnimated() {
   {
     const positions = new Float32Array(ambientCount * 3);
     const colors = new Float32Array(ambientCount * 3);
-    const cMote = new THREE.Color(0xe6d3b0);
+    const cMote = new THREE.Color(0x6d5f45);
     for (let i = 0; i < ambientCount; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 2600;
       positions[i * 3 + 1] = (Math.random() - 0.5) * 1700;
       positions[i * 3 + 2] = (Math.random() - 0.5) * 700;
-      const dim = 0.12 + Math.random() * 0.14; // faint, warm, not dead
+      const dim = 0.12 + Math.random() * 0.14; // faint specks, not dead
       colors[i * 3] = cMote.r * dim;
       colors[i * 3 + 1] = cMote.g * dim;
       colors[i * 3 + 2] = cMote.b * dim;
@@ -298,13 +303,13 @@ function initAnimated() {
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     const mat = new THREE.PointsMaterial({
-      size: 2.2,
+      size: 1.9,
       map: dustSprite,
       vertexColors: true,
       transparent: true,
-      opacity: 0.9,
+      opacity: 0.55,
       depthWrite: false,
-      blending: THREE.AdditiveBlending,
+      blending: THREE.NormalBlending,
       sizeAttenuation: true,
     });
     scene.add(new THREE.Points(geo, mat));
@@ -313,8 +318,9 @@ function initAnimated() {
   /* --- 2. engraved compass rose ----------------------------------- */
 
   const rose = new THREE.Group();
+  // pale warm ink tracings, just darker than the paper
   const hairMat = (op) => new THREE.MeshBasicMaterial({
-    color: 0xe6ddd0,
+    color: 0x8a6a3e,
     transparent: true,
     opacity: op,
     side: THREE.DoubleSide,
@@ -356,16 +362,18 @@ function initAnimated() {
 
   // Reads as gentle steam curling off a lamp: smaller, slower,
   // softer, anchored to a corner column instead of crossing the frame.
+  // Warm gray-brown at LOW opacity - on parchment, steam darkens the
+  // paper slightly rather than glowing.
   const smokeTex = smokeTexture(256);
   const smokeSprites = [];
   for (let i = 0; i < 3; i++) {
     const mat = new THREE.SpriteMaterial({
       map: smokeTex,
-      color: 0xd8c6a8,
+      color: 0x6d5f45,
       transparent: true,
-      opacity: 0.07 + i * 0.02,
+      opacity: 0.05 + i * 0.015,
       depthWrite: false,
-      blending: THREE.AdditiveBlending,
+      blending: THREE.NormalBlending,
     });
     const s = new THREE.Sprite(mat);
     const sc = 300 + i * 120;        // smaller puffs
@@ -383,15 +391,16 @@ function initAnimated() {
 
   /* --- 4. lamplight underfill -------------------------------------- */
 
-  // Warm candle amber rather than brass; small enough pool that it
-  // reads as reading-by-firelight, not a room lit up.
+  // Pooled warm honey lying on the paper, not a light source: normal
+  // blending, gentle opacity; the flicker keeps it perceptible without
+  // washing the copy column.
   const lampMat = new THREE.SpriteMaterial({
     map: beamTexture,
-    color: 0xc06a28,
+    color: 0xd8b070,
     transparent: true,
-    opacity: 0.16,
+    opacity: 0.13,
     depthWrite: false,
-    blending: THREE.AdditiveBlending,
+    blending: THREE.NormalBlending,
   });
   const lamp = new THREE.Sprite(lampMat);
   lamp.scale.set(760, 540, 1);
@@ -507,11 +516,13 @@ function initAnimated() {
       s.position.x += s.userData.vx * 0.016;
       if (s.position.x > innerWidth + s.scale.x + 300) s.position.x = -s.scale.x - 300;
       s.position.y += Math.sin(elapsed * 0.11 + s.userData.bobPhase) * 0.05;
-      s.material.opacity = (0.07 + smokeSprites.indexOf(s) * 0.02) * (0.55 + flickV * 0.5);
+      // base opacities 0.05-0.08; multiplier retuned so the flicker
+      // modulates without pushing final visible opacity past ~0.08
+      s.material.opacity = (0.05 + smokeSprites.indexOf(s) * 0.015) * (0.55 + flickV * 0.35);
     }
 
     // 4. lamplight breathes
-    lampMat.opacity = 0.19 * flickV;
+    lampMat.opacity = 0.095 * flickV;
 
     // camera: settled parallax only - no rotating world
     const sc = scrollY * 0.25;

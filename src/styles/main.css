@@ -4,18 +4,19 @@
    palette + serif type system. Theme direction: kanban t_ed380f92.
    ============================================================ */
 :root {
-  --bg: #1a1714;
-  --bg-elev: #26211c;
-  --fg: #eadbbf;
-  --fg-dim: #c3ac8a;
-  --fg-mute: #95805f;
-  --accent: #b0763c;
-  --accent2: #9c8452;
-  --accent-dim: #5a3d22;
-  --border: rgba(230, 221, 208, 0.08);
-  --border-strong: rgba(230, 221, 208, 0.16);
-  --card: rgba(230, 221, 208, 0.04);
-  --card-hover: rgba(230, 221, 208, 0.07);
+  --bg: #f2ead8;          /* parchment page ground - warm cream, never pure white */
+  --bg-elev: #f8f2e3;
+  --fg: #2d241a;          /* warm near-black ink */
+  --fg-dim: #594834;      /* body-copy ink: darkened from the drafted #6d5f4b
+                             (5.17:1 on --bg) to clear the 7:1 body gate */
+  --fg-mute: #97866e;
+  --accent: #a4571c;      /* deep burnt sienna - retuned for light-bg contrast */
+  --accent2: #8a6a34;
+  --accent-dim: #e3d4b0;  /* repurposed on light: stamp-ghost / faint fill */
+  --border: rgba(90, 61, 34, 0.16);
+  --border-strong: rgba(90, 61, 34, 0.32);
+  --card: #faf6ea;        /* fresh sheets laid on the page */
+  --card-hover: #fffdf6;
   --radius: 8px;
   --font-head: 'Caveat', 'Zilla Slab', serif;
   --font-body: 'Source Serif 4', 'Lora', serif;
@@ -24,7 +25,7 @@
   --font-hand: 'Caveat', cursive;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --shadow-glow: 0 0 60px rgba(176, 118, 60, 0.18);
+  --shadow-glow: 0 2px 8px rgba(90, 61, 34, 0.12), 0 12px 28px rgba(90, 61, 34, 0.08);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -56,7 +57,7 @@ body {
   pointer-events: none;
 }
 
-::selection { background: var(--accent); color: #1a1714; }
+::selection { background: var(--accent); color: #f4ead9; }
 
 /* ---------- Typography ---------- */
 /* Handwritten-first: Caveat 600 is the lead heading voice (the actual
@@ -69,10 +70,11 @@ h1, h2, h3, h4 {
   letter-spacing: 0.01em;
 }
 
-/* letterpress topography: headings get a subtle ink-stamp feel via a
-   faint texture shadow; body text stays clean for readability */
+/* letterpress topography on light paper: an embossed stamp feel - a
+   pale paper highlight under the stroke edge plus a faint ink deboss;
+   body text stays clean for readability */
 h1, h2 {
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35), 0 -1px 0 rgba(230, 221, 208, 0.03);
+  text-shadow: 0 1px 0 rgba(255, 250, 238, 0.55), -1px 0 0 rgba(90, 61, 34, 0.18);
 }
 
 .section-title {
@@ -135,18 +137,20 @@ p a:hover, .modal__body a:hover, .about__text a:hover { color: var(--accent); }
 
 /* ---------- Parchment film-grain + mottle overlay ----------
    Two static SVG-noise layers: fine turbulence grain plus a large-scale
-   parchment mottle; screen-blended over everything, fully static (no
-   per-frame cost, and anything static is exempt from motionPrefs). */
+   parchment mottle; multiply-blended so they speckle the paper with
+   warm fiber instead of washing it out (screen would white-out a
+   light page), fully static (no per-frame cost, and anything static
+   is exempt from motionPrefs). */
 .grain {
   position: fixed;
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  opacity: 0.34;
-  mix-blend-mode: screen;
+  opacity: 0.19;
+  mix-blend-mode: multiply;
   background-image:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='900'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='3' seed='7' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='linear' slope='0.55' intercept='0'/></feComponentTransfer><feComponentTransfer><feFuncR type='linear' intercept='0'/><feFuncG type='linear' intercept='0'/><feFuncB type='linear' intercept='0'/></feComponentTransfer></filter><rect width='900' height='900' filter='url(%23m)'/></svg>"),
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='linear' slope='0.28'/></feComponentTransfer></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='900'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='3' seed='7' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='linear' slope='0.3' intercept='0'/></feComponentTransfer><feComponentTransfer><feFuncR type='linear' intercept='0'/><feFuncG type='linear' intercept='0'/><feFuncB type='linear' intercept='0'/></feComponentTransfer></filter><rect width='900' height='900' filter='url(%23m)'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='linear' slope='0.16'/></feComponentTransfer></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
   background-size: 900px 900px, 220px 220px;
 }
 
@@ -178,7 +182,7 @@ p a:hover, .modal__body a:hover, .about__text a:hover { color: var(--accent); }
 .loader__bar {
   width: 100%;
   height: 2px;
-  background: rgba(230, 221, 208, 0.08);
+  background: rgba(90, 61, 34, 0.12);
   border-radius: 2px;
   overflow: hidden;
 }
@@ -212,13 +216,13 @@ p a:hover, .modal__body a:hover, .about__text a:hover { color: var(--accent); }
 }
 .cursor-ring {
   width: 38px; height: 38px;
-  border: 1px solid rgba(230, 221, 208, 0.25);
+  border: 1px solid rgba(90, 61, 34, 0.35);
   transition: transform 0.15s ease, opacity 0.2s, border-color 0.2s, background 0.2s;
 }
 .cursor-ring.is-active {
   transform: scale(1.6) !important;
   border-color: var(--accent);
-  background: rgba(176, 118, 60, 0.10);
+  background: rgba(164, 87, 28, 0.14);
 }
 @media (hover: none) { .cursor, .cursor-ring { display: none; } }
 
@@ -261,17 +265,17 @@ p a:hover, .modal__body a:hover, .about__text a:hover { color: var(--accent); }
   gap: 0.25rem;
   padding: 0.45rem 0.7rem;
   background:
-    linear-gradient(180deg, rgba(46, 40, 33, 0.78), rgba(24, 21, 18, 0.82));
+    linear-gradient(180deg, rgba(250, 244, 230, 0.88), rgba(240, 230, 210, 0.92));
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(230, 221, 208, 0.14);       /* parchment hairline */
+  border: 1px solid rgba(90, 61, 34, 0.28);          /* inked hairline */
   border-radius: var(--radius);
   box-shadow:
-    inset 0 1px 0 rgba(230, 221, 208, 0.07),          /* top-edge catchlight */
-    inset 0 2px 6px rgba(0, 0, 0, 0.45),              /* debossed center */
-    inset 0 -2px 4px rgba(0, 0, 0, 0.3),
-    0 1px 0 rgba(0, 0, 0, 0.5),
-    0 6px 18px rgba(0, 0, 0, 0.35);
+    inset 0 1px 0 rgba(255, 252, 244, 0.8),           /* top-edge catchlight */
+    inset 0 2px 6px rgba(90, 61, 34, 0.18),           /* debossed center */
+    inset 0 -2px 4px rgba(90, 61, 34, 0.12),
+    0 1px 0 rgba(90, 61, 34, 0.18),
+    0 6px 18px rgba(90, 61, 34, 0.22);
   opacity: 0;
   transition: opacity 0.8s 0.4s var(--ease-out);
 }
@@ -280,7 +284,7 @@ p a:hover, .modal__body a:hover, .about__text a:hover { color: var(--accent); }
   content: '';
   position: absolute;
   inset: 3px;
-  border: 1px dashed rgba(230, 221, 208, 0.14);
+  border: 1px dashed rgba(90, 61, 34, 0.25);
   border-radius: 5px;
   pointer-events: none;
 }
@@ -289,10 +293,10 @@ p a:hover, .modal__body a:hover, .about__text a:hover { color: var(--accent); }
   content: '';
   position: absolute;
   inset: -4px;
-  border: 1px solid rgba(230, 221, 208, 0.10);
+  border: 1px solid rgba(90, 61, 34, 0.18);
   border-radius: calc(var(--radius) + 3px);
   pointer-events: none;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+  box-shadow: 0 1px 0 rgba(90, 61, 34, 0.2);
 }
 .nav.is-visible { opacity: 1; }
 .nav__link {
@@ -304,13 +308,13 @@ p a:hover, .modal__body a:hover, .about__text a:hover { color: var(--accent); }
   transition: color 0.2s, background 0.2s;
   white-space: nowrap;
 }
-.nav__link:hover { color: var(--fg); background: rgba(230, 221, 208, 0.06); }
+.nav__link:hover { color: var(--fg); background: rgba(90, 61, 34, 0.08); }
 .nav__link.is-active {
   color: var(--fg);
-  background: linear-gradient(180deg, rgba(176,118,60,0.34), rgba(90,61,34,0.45));
+  background: linear-gradient(180deg, rgba(164,87,28,0.22), rgba(122,74,32,0.3));
   box-shadow:
-    inset 0 1px 0 rgba(230, 221, 208, 0.10),
-    inset 0 1px 3px rgba(0, 0, 0, 0.45);
+    inset 0 1px 0 rgba(255, 250, 238, 0.5),
+    inset 0 1px 3px rgba(90, 61, 34, 0.25);
 }
 
 @media (max-width: 720px) {
