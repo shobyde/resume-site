@@ -25,6 +25,11 @@
         incommensurate sines with an occasional deep dip; shafts ride
         the same signal at reduced amplitude. Reading-by-firelight.
         NOT a screen-wide pulse.
+     5. INK-STAR STREAM - the old dark-theme fly-through field, rebuilt
+        for parchment: sparse ink-dark stars drifting toward the camera
+        (+z), size-attenuated so they widen as they pass, wrap to the
+        far plane on exit. Normal blending - additive white would
+        vanish (or white-out) on a light ground.
 
    All textures are baked at init into offscreen canvases - no
    image assets are added to the bundle.
@@ -315,6 +320,52 @@ function initAnimated() {
     scene.add(new THREE.Points(geo, mat));
   }
 
+  /* --- 5. ink-star stream: fly-through toward the camera ----------- */
+
+  // Round star sprite: crisp core + soft halo, baked once.
+  const starCanvas = document.createElement('canvas');
+  starCanvas.width = starCanvas.height = 32;
+  const sctx = starCanvas.getContext('2d');
+  const sgrad = sctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+  sgrad.addColorStop(0, 'rgba(255,255,255,1)');
+  sgrad.addColorStop(0.4, 'rgba(255,255,255,0.6)');
+  sgrad.addColorStop(1, 'rgba(255,255,255,0)');
+  sctx.fillStyle = sgrad;
+  sctx.fillRect(0, 0, 32, 32);
+  const starTex = new THREE.CanvasTexture(starCanvas);
+
+  const STAR_COUNT = isMobile ? 700 : 1600;
+  const starPos = new Float32Array(STAR_COUNT * 3);
+  const starCol = new Float32Array(STAR_COUNT * 3);
+  const starSpeeds = new Float32Array(STAR_COUNT);
+  const cInk = new THREE.Color(0x6d5f45);    // warm ink, darker than paper
+  const cBrass = new THREE.Color(0x5a4322);  // a few deeper brass flecks
+  for (let i = 0; i < STAR_COUNT; i++) {
+    starPos[i * 3] = (Math.random() - 0.5) * 2400;
+    starPos[i * 3 + 1] = (Math.random() - 0.5) * 1600;
+    starPos[i * 3 + 2] = (Math.random() - 0.5) * 2000; // straddle camera z=1000
+    const c = Math.random() < 0.15 ? cBrass : cInk;
+    const dim = 0.25 + Math.random() * 0.65;           // twinkle-by-brightness
+    starCol[i * 3] = c.r * dim;
+    starCol[i * 3 + 1] = c.g * dim;
+    starCol[i * 3 + 2] = c.b * dim;
+    starSpeeds[i] = 0.9 + Math.random() * 2.2;         // world units toward +z
+  }
+  const starGeo = new THREE.BufferGeometry();
+  starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+  starGeo.setAttribute('color', new THREE.BufferAttribute(starCol, 3));
+  const starMat = new THREE.PointsMaterial({
+    size: 3.2,
+    map: starTex,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.5,
+    depthWrite: false,
+    blending: THREE.NormalBlending,
+    sizeAttenuation: true,
+  });
+  scene.add(new THREE.Points(starGeo, starMat));
+
   /* --- 2. engraved compass rose ----------------------------------- */
 
   const rose = new THREE.Group();
@@ -480,6 +531,7 @@ function initAnimated() {
     disposeTexture(dustSprite);
     disposeTexture(beamTexture);
     disposeTexture(smokeTex);
+    disposeTexture(starTex);
   }
 
   function animate() {
@@ -497,6 +549,21 @@ function initAnimated() {
 
     mouse.x += (mouse.tx - mouse.x) * 0.04;
     mouse.y += (mouse.ty - mouse.y) * 0.04;
+
+    // 0. ink-stars drift toward the camera (fly-through); on exit they
+    // respawn at the far plane with fresh x/y so the wrap is unseeable
+    {
+      const pos = starGeo.attributes.position.array;
+      for (let i = 0; i < STAR_COUNT; i++) {
+        pos[i * 3 + 2] += starSpeeds[i];
+        if (pos[i * 3 + 2] > 1100) { // just behind the camera plane
+          pos[i * 3] = (Math.random() - 0.5) * 2400;
+          pos[i * 3 + 1] = (Math.random() - 0.5) * 1600;
+          pos[i * 3 + 2] = -1100;
+        }
+      }
+      starGeo.attributes.position.needsUpdate = true;
+    }
 
     // 1. shafts breathe with the lamp; cradle a barely-there sway
     for (const s of shaftState) {
