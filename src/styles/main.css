@@ -7,7 +7,7 @@
   --bg-elev: #12121a;
   --fg: #e8e8ee;
   --fg-dim: #8a8a95;
-  --fg-mute: #5a5a66;
+  --fg-mute: #858592; /* bumped for >=4.5:1 contrast on #0b0b0f */
   --accent: #7c6cff;
   --accent2: #00d9b8;
   --accent-dim: #3a2f8f;
@@ -106,14 +106,8 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
   font-size: 2rem;
   letter-spacing: 0.02em;
   margin-bottom: 2rem;
-  background: linear-gradient(90deg, var(--fg), var(--accent), var(--accent2), var(--fg));
-  background-size: 300% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 2.5s linear infinite;
+  color: var(--fg);
 }
-@keyframes shimmer { to { background-position: 300% 0; } }
 .loader__bar {
   width: 100%;
   height: 2px;
@@ -135,34 +129,39 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
   margin-top: 1rem;
 }
 
-/* ---------- Custom cursor ---------- */
-.cursor, .cursor-ring {
+/* ---------- Focus visibility ---------- */
+:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.skip-link {
+  position: fixed;
+  top: -3rem;
+  left: 1rem;
+  z-index: 1001;
+  padding: 0.6rem 1.1rem;
+  background: var(--bg-elev);
+  color: var(--fg);
+  border: 1px solid var(--accent2);
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 1rem; }
+
+/* ---------- Reading progress ---------- */
+.progress {
   position: fixed;
   top: 0; left: 0;
-  z-index: 1000;
+  z-index: 101;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform: scaleX(0);
+  transform-origin: left;
   pointer-events: none;
-  border-radius: 50%;
-  will-change: transform;
-}
-.cursor {
-  width: 8px; height: 8px;
-  background: var(--fg);
-  mix-blend-mode: difference;
-}
-.cursor-ring {
-  width: 38px; height: 38px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  transition: transform 0.15s ease, opacity 0.2s, border-color 0.2s, background 0.2s;
-}
-.cursor-ring.is-active {
-  border-color: var(--accent);
-  background: rgba(124, 108, 255, 0.08);
-}
-@media (hover: none) { .cursor, .cursor-ring { display: none; } }
-
-/* hide native cursor on pointer devices (we draw our own) */
-@media (hover: hover) and (pointer: fine) {
-  *, a, button { cursor: none !important; }
 }
 
 /* ---------- Layout ---------- */
@@ -207,10 +206,30 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
 .nav__link.is-active { color: #fff; background: var(--accent-dim); }
 
 @media (max-width: 720px) {
-  .nav { gap: 0; padding: 0.25rem 0.35rem; }
-  /* Tap targets >= ~44px tall (0.65rem*2 padding + text), per WCAG/Apple minimums */
-  .nav__link { padding: 0.9rem 0.85rem; font-size: 0.75rem; }
+  /* 6 links can't fit 360px: compact the pills, and let the nav scroll
+     horizontally as a fallback instead of widening the document */
+  .nav {
+    gap: 0; padding: 0.25rem 0.3rem;
+    max-width: calc(100vw - 1.5rem);
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  /* Tap targets >= ~44px tall (0.9rem*2 padding + text), per WCAG/Apple minimums */
+  .nav__link { padding: 0.9rem 0.6rem; font-size: 0.72rem; }
 }
 
 /* ---------- stream-text chars ---------- */
 .stream-ch { will-change: opacity; }
+
+/* ---------- Reduced motion: global kill switch ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  html { scroll-behavior: auto; }
+}

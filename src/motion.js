@@ -1,34 +1,14 @@
 /* ============================================================
-   Motion helpers: custom cursor, Lenis smooth scroll, reveals
+   Motion helpers: Lenis smooth scroll, scroll reveals,
+   magnetic buttons, reading-progress bar.
+   (The old custom-cursor overlay was removed: it hid the
+   native cursor and is hostile to keyboard/pointer-finder users.)
    ============================================================ */
 import Lenis from 'lenis';
-
-export function initCursor() {
-  if (matchMedia('(hover: none)').matches) return;
-  const dot = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let x = -100, y = -100, rx = -100, ry = -100;
-
-  addEventListener('pointermove', (e) => { x = e.clientX; y = e.clientY; }, { passive: true });
-  document.addEventListener('pointerover', (e) => {
-    if (e.target.closest('a, button, .skill-group, .post-card, .stat')) ring.classList.add('is-active');
-  });
-  document.addEventListener('pointerout', (e) => {
-    if (e.target.closest('a, button, .skill-group, .post-card, .stat')) ring.classList.remove('is-active');
-  });
-
-  (function loop() {
-    requestAnimationFrame(loop);
-    rx += (x - rx) * 0.16;
-    ry += (y - ry) * 0.16;
-    dot.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
-    const rScale = ring.classList.contains('is-active') ? 1.6 : 1;
-    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%) scale(${rScale})`;
-  })();
-  dot.style.opacity = ring.style.opacity = 1;
-}
+import { motionPrefs } from './motionPrefs.js';
 
 export function initSmoothScroll() {
+  if (motionPrefs.reduced) return null;
   const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1.05 });
   function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
   requestAnimationFrame(raf);
@@ -49,14 +29,32 @@ export function initReveals() {
 }
 
 export function initMagnetic() {
-  if (matchMedia('(hover: none)').matches) return;
+  if (matchMedia('(hover: none)').matches || motionPrefs.reduced) return;
   document.querySelectorAll('.btn').forEach((btn) => {
     btn.addEventListener('pointermove', (e) => {
       const r = btn.getBoundingClientRect();
       const dx = e.clientX - (r.left + r.width / 2);
       const dy = e.clientY - (r.top + r.height / 2);
-      btn.style.transform = `translate(${dx * 0.25}px, ${dy * 0.25}px)`;
+      btn.style.transform = `translate(${dx * 0.15}px, ${dy * 0.15}px)`;
     });
     btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
   });
+}
+
+export function initProgress() {
+  const bar = document.getElementById('progress');
+  if (!bar) return;
+  let ticking = false;
+  const update = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const p = max > 0 ? Math.min(scrollY / max, 1) : 0;
+    bar.style.transform = `scaleX(${p})`;
+    ticking = false;
+  };
+  addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }, { passive: true });
+  update();
 }

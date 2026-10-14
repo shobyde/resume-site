@@ -4,35 +4,70 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sho Byde - Software Engineer</title>
-  <meta name="description" content="Sho Byde - Software Development Engineer with 12+ years building APIs, cloud systems, and client-facing applications. Now with AI-assisted daily logs." />
+  <meta name="description" content="Sho Byde is a software development engineer with 12+ years building APIs, cloud systems, and client-facing applications. Selected projects, experience, and an engineering daily log." />
+  <link rel="canonical" href="https://shobyde.com/" />
   <meta name="theme-color" content="#0b0b0f" />
+
+  <!-- Open Graph / social -->
   <meta property="og:title" content="Sho Byde - Software Engineer" />
-  <meta property="og:description" content="12+ years building APIs, cloud systems, and client-facing applications." />
+  <meta property="og:description" content="12+ years building APIs, cloud systems, and client-facing applications. Selected projects and an engineering daily log." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://shobyde.com" />
+  <meta property="og:url" content="https://shobyde.com/" />
+  <meta property="og:site_name" content="shobyde.com" />
+  <meta property="og:image" content="https://shobyde.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Sho Byde - Software Engineer. I build software that solves real problems." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Sho Byde - Software Engineer" />
+  <meta name="twitter:description" content="12+ years building APIs, cloud systems, and client-facing applications." />
+  <meta name="twitter:image" content="https://shobyde.com/og-image.png" />
+
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@600;700&family=Gochi+Hand&family=Zilla+Slab:wght@300;400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@600;700&family=Gochi+Hand&family=Zilla+Slab:wght@300;400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" /></noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" /></noscript>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Sho Byde",
+    "url": "https://shobyde.com/",
+    "jobTitle": "Software Development Engineer",
+    "email": "mailto:shobyde@gmail.com",
+    "sameAs": ["https://www.linkedin.com/in/sho-byde-556954138/"],
+    "description": "Software engineer with 12+ years building APIs, cloud systems, and client-facing applications."
+  }
+  </script>
+
+  <!-- Gate hidden-until-JS states on html.js so content is never invisible without JS -->
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="site" id="app"></div>
-  <canvas id="bg3d"></canvas>
+  <canvas id="bg3d" aria-hidden="true"></canvas>
 
   <!-- Loading overlay -->
-  <div class="grain" aria-hidden="true"></div>
-  <div class="loader" id="loader">
+  <div class="loader" id="loader" aria-hidden="true">
     <div class="loader__inner">
-      <div class="loader__name"> Sho Byde </div>
+      <div class="loader__name">Sho Byde</div>
       <div class="loader__bar"><div class="loader__fill" id="loaderFill"></div></div>
       <div class="loader__pct" id="loaderPct">0%</div>
     </div>
   </div>
 
-  <!-- Custom cursor -->
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
+  <noscript>
+    <style>.loader{display:none}</style>
+    <div style="max-width:640px;margin:10vh auto;padding:0 1.5rem;font:16px/1.6 system-ui,sans-serif;color:#e8e8ee">
+      <h1 style="font-size:1.6rem;margin-bottom:1rem">Sho Byde - Software Engineer</h1>
+      <p>JavaScript is required for the full interactive site. The résumé content lives in the site's data module
+      and is available on request: <a style="color:#00d9b8" href="mailto:shobyde@gmail.com">shobyde@gmail.com</a> /
+      <a style="color:#00d9b8" href="https://www.linkedin.com/in/sho-byde-556954138/">LinkedIn</a>.</p>
+    </div>
+  </noscript>
 
   <script type="module" src="/src/main.js"></script>
 </body>

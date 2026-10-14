@@ -3,6 +3,7 @@
    Deferred splitting: only split elements when they approach
    the viewport, so initial page load / scroll stay light.
    ============================================================ */
+import { motionPrefs } from './motionPrefs.js';
 
 function splitChars(el) {
   const text = el.textContent;
@@ -33,6 +34,7 @@ function splitChars(el) {
 }
 
 export function initStreamText() {
+  if (motionPrefs.reduced) return; // text stays fully visible, no per-char fade
   const els = [...document.querySelectorAll('.about__text p, .section-sub, .tl-item__bullets li')];
   // split up front so characters start hidden (no flash of full text)
   const map = new Map(els.map((el) => [el, { el, chars: splitChars(el), done: false }]));
@@ -57,6 +59,7 @@ export function initStreamText() {
 }
 
 export function initScrollStream() {
+  if (motionPrefs.reduced) return;
   const els = document.querySelectorAll('.hero__role');
   let ticking = false;
   const onScroll = () => {

@@ -13,14 +13,14 @@ export async function initBlog() {
     if (res.ok) posts = await res.json();
   } catch (e) { /* offline or no file - show empty state below */ }
 
-  posts = posts.filter((p) => /kickoff|intro/i.test(p.slug + ' ' + (p.title||'')));
+  const visible = posts.slice(0, 3); // card grid shows 3 latest; deep links resolve against all posts
   if (!posts.length) {
     grid.innerHTML = `<p style="color:var(--fg-mute);font-size:.9rem">No posts yet - the daily writer hasn't woken up. Check back tomorrow morning.</p>`;
     return { posts: [] };
   }
 
-  // show 6 latest
-  posts.slice(0, 1).forEach((post, i) => {
+  // show 3 latest
+  visible.forEach((post, i) => {
     const a = document.createElement('a');
     a.className = 'post-card reveal';
     a.href = `?post=${post.slug}`;
@@ -47,7 +47,6 @@ export async function initBlog() {
   }, { threshold: 0.1 });
   grid.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
-  wireModal();
   // open article if URL requests one
   const req = new URLSearchParams(location.search).get('post');
   if (req) {
@@ -67,16 +66,7 @@ export async function initBlog() {
   return { posts };
 }
 
-/* ---------- modal ---------- */
-function wireModal() {
-  const overlay = document.getElementById('modalOverlay');
-  const modal = document.getElementById('postModal');
-  overlay.addEventListener('click', closeModal);
-  document.getElementById('modalClose').addEventListener('click', closeModal);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-  modal.parentElement.addEventListener('click', (e) => e.stopPropagation());
-}
-
+/* ---------- full-page article view ---------- */
 async function openArticle(post) {
   try { history.pushState({post: post.slug}, '', `?post=${post.slug}`); } catch {}
   document.title = `${post.title} - Sho Byde`;
@@ -101,6 +91,7 @@ async function openArticle(post) {
     </div>
   `;
   document.getElementById('articleBack').addEventListener('click', (e) => { e.preventDefault(); closeArticle(); });
+  document.addEventListener('keydown', onArticleEsc);
 
   const body = document.getElementById('articleBody');
   try {
@@ -113,18 +104,14 @@ async function openArticle(post) {
   view.scrollTop = 0;
 }
 
+function onArticleEsc(e) { if (e.key === 'Escape') closeArticle(); }
+
 function closeArticle() {
   const view = document.getElementById('articleView');
   if (view) view.style.display = 'none';
+  document.removeEventListener('keydown', onArticleEsc);
   const site = document.getElementById('app');
   if (site) site.style.display = '';
-  document.title = 'Sho Byde - Software Engineer';
-  try { history.pushState({}, '', window.location.pathname); } catch {}
-}
-
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('is-open');
-  document.getElementById('postModal').classList.remove('is-open');
   document.title = 'Sho Byde - Software Engineer';
   try { history.pushState({}, '', window.location.pathname); } catch {}
 }
