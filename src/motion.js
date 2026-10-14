@@ -51,10 +51,10 @@ export function initCursor() {
     lastMove = performance.now();
   }, { passive: true });
   document.addEventListener('pointerover', (e) => {
-    if (e.target.closest('a, button, .skill-group, .post-card, .stat')) ring.classList.add('is-active');
+    if (e.target.closest('a, button, .skill-group, .post-row, .stat')) ring.classList.add('is-active');
   });
   document.addEventListener('pointerout', (e) => {
-    if (e.target.closest('a, button, .skill-group, .post-card, .stat')) ring.classList.remove('is-active');
+    if (e.target.closest('a, button, .skill-group, .post-row, .stat')) ring.classList.remove('is-active');
   });
 
   // Idle-throttled: once no pointermove has landed for ~500ms and

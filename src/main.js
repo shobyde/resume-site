@@ -5,6 +5,7 @@ import { DATA } from './data.js';
 import { initBackground } from './background.js';
 import { initCursor, initSmoothScroll, initReveals, initMagnetic } from './motion.js';
 import { initStreamText, initScrollStream } from './streamText.js';
+import { initFeedback } from './feedback.js';
 import { initBlog } from './blog.js';
 import { motionPrefs } from './motionPrefs.js';
 import './styles/main.css';
@@ -38,6 +39,7 @@ function buildPage() {
   `).join('');
 
   return `
+  <div id="homeView">
   <nav class="nav" id="nav">
     <a href="#about" class="nav__link">About</a>
     <a href="#experience" class="nav__link">Experience</a>
@@ -94,7 +96,7 @@ function buildPage() {
       <div class="eyebrow">04 - Daily Log</div>
       <h2 class="section-title reveal">Written by the machine, curated by me</h2>
       <p class="section-sub">An AI-assisted daily log - news, notes, and build updates, published automatically every morning and curated by a human (me).</p>
-      <div class="blog__grid" id="blogGrid"></div>
+      <div class="blog__list" id="blogGrid"></div>
     </section>
 
     <!-- CONTACT -->
@@ -114,14 +116,18 @@ function buildPage() {
     <div>© ${new Date().getFullYear()} Sho Byde</div>
     <div>Built with Three.js · Hosted on Cloudflare Pages</div>
   </footer></div>
+  </div><!-- /homeView -->
 
-  <!-- Post modal -->
-  <div class="modal-overlay" id="modalOverlay"></div>
-  <div class="modal" id="postModal">
-    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
-    <div class="modal__meta" id="modalMeta"></div>
-    <h2 class="modal__title" id="modalTitle"></h2>
-    <div class="modal__body" id="modalBody"></div>
+  <!-- Dedicated post page (hash-routed at #/post/<slug>) -->
+  <div class="postview" id="postView" hidden>
+    <div class="postview__sheet">
+      <div class="postview__head">
+        <a href="#blog" class="postview__back hand">&larr; Back to the log</a>
+        <div class="postview__meta mono" id="postMeta"></div>
+      </div>
+      <h1 class="postview__title" id="postTitle"></h1>
+      <div class="postview__body" id="postBody"></div>
+    </div>
   </div>
   `;
 }
@@ -179,6 +185,7 @@ async function boot() {
   initStreamText();
   initScrollStream();
   initMagnetic();
+  initFeedback();
   initCounters();
   await withTimeout(initBlog(), 3000);
   navSpy();
@@ -228,30 +235,32 @@ function heroIntro() {
     inkEls.forEach((ch) => {
       ch.style.transition = 'none';
       ch.style.opacity = '1';
-      ch.style.transform = 'none';
-      ch.style.textShadow = 'none';
+      ch.style.transform = '';
+      ch.style.textShadow = '';
     });
   };
   window.addEventListener('motionprefchange', () => { if (motionPrefs.reduced) settleAll(); });
 
   inkEls.forEach((ch, i) => {
-    // 40-90ms hand pauses; a slightly longer beat after each word gap.
-    const jitter = () => (Math.random() * 2 - 1) * 1.2; // +/-1.2deg
+    // ~40-90ms hand pauses; a slightly longer beat after each word gap.
+    // Settles to fully upright with a shrinking, dimmer bloom so the
+    // cascade reads as a confident hand, not a flickering sparkle.
+    const jitter = () => (Math.random() * 2 - 1) * 0.8; // +/-0.8deg nib tilt
     const d = 0.15 + i * 0.045 + Math.random() * 0.05;
     const rot = jitter();
-    ch.style.transition = `opacity 0.25s ease, transform 0.4s var(--ease-out), text-shadow 0.5s ease`;
+    ch.style.transition = `opacity 0.25s ease, transform 0.55s var(--ease-out), text-shadow 0.6s ease`;
     inkTimers.push(setTimeout(() => {
       if (motionPrefs.reduced) return; // live gate inside timers too
       ch.style.opacity = '1';
       ch.style.transform = `rotate(${rot}deg)`;
       // ink bloom: 0 -> hairline spread while the glyph lands
-      ch.style.textShadow = '0 0 0.5px rgba(230,221,208,0.9), 0 0 1.2px rgba(230,221,208,0.55)';
+      ch.style.textShadow = '0 0 0.4px rgba(230,221,208,0.65), 0 0 1px rgba(230,221,208,0.4)';
       // then fade the bloom to a resting hairline - a fresh stroke settles
       inkTimers.push(setTimeout(() => {
         if (motionPrefs.reduced) return;
-        ch.style.textShadow = '0 0 1px rgba(230,221,208,0.25)';
+        ch.style.textShadow = '0 0 1px rgba(230,221,208,0.16)';
         ch.style.transform = `rotate(0deg)`;
-      }, 650));
+      }, 850));
     }, d * 1000));
   });
 }

@@ -93,19 +93,19 @@ function showAllInstant(el) {
    the motionprefchange listener clears pending timers and settles
    every char fully-opaque, upright, shadow-free. */
 function inkReveal(char, i, timers) {
-  const opacity = `opacity 0.15s ease, text-shadow 0.45s ease, transform 0.3s var(--ease-out)`;
+  const opacity = `opacity 0.15s ease, text-shadow 0.55s ease, transform 0.4s var(--ease-out)`;
   char.style.transition = opacity;
   const d = i * 55 + Math.random() * 40; // 0..55ms spacing + 0-40ms jitter (hand pause)
   timers.push(setTimeout(() => {
     if (motionPrefs.reduced) return;
     char.style.opacity = '1';
-    char.style.transform = `rotate(${(Math.random() * 2 - 1) * 1.2}deg)`;
-    char.style.textShadow = '0 0 0.5px rgba(230,221,208,0.9), 0 0 1.2px rgba(230,221,208,0.55)';
+    char.style.transform = `rotate(${(Math.random() * 2 - 1) * 0.8}deg)`;
+    char.style.textShadow = '0 0 0.4px rgba(230,221,208,0.65), 0 0 1px rgba(230,221,208,0.4)';
     timers.push(setTimeout(() => {
       if (motionPrefs.reduced) return;
       char.style.textShadow = 'none';
       char.style.transform = 'none';
-    }, 500));
+    }, 700));
   }, d));
 }
 

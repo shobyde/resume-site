@@ -1,5 +1,5 @@
 /* ============================================================
-   Three.js background - old-West motif scene.
+   Three.js background - candlelit journal scene.
 
    Four deliberate period passes, tuned perceptible-but-subtle so
    the parchment fg copy stays readable. A post-frame-1 luma
@@ -7,22 +7,23 @@
    samples as flat black again (see checkFirstFrameLuma).
 
      1. DUST IN LIGHT-SHAFTS - motes clustered inside two wide
-        diagonal sunbeam planes; per-mote color is multiplied by
+        diagonal lamp-kernel planes; per-mote color is multiplied by
         a gaussian falloff across the beam's short axis, so motes
         are nearly invisible at the edges and richest at the
-        core. A sparse ambient field keeps the frame from being
-        empty between shafts.
-     2. ENGRAVED COMPASS ROSE - hairline parchment strokes:
-        three rim circles, 8 primary + 8 secondary spokes, 32
-        rim ticks, tiny hub. Slow-rotating watermark behind the
-        hero, like a plate engraving.
-     3. GUNSMOKE DRIFT - 3 large soft noise-sprite puffs on
-        additive blending drifting horizontally, heavier and
-        slower than dust.
+        core. Candle/kerosene warmth: amber hue, slow lazy rise. A
+        sparse ambient field keeps the frame from being empty.
+     2. FAINT INK-TRACED COMPASS ROSE - hairline parchment strokes
+        thinned and faded: three rim circles, 8 primary + 8
+        secondary spokes, 32 rim ticks, tiny hub. A barely-there
+        paper ornament watermark behind the hero.
+     3. LAMP-STEAM DRIFT - 3 small soft noise-sprite wisps anchored
+        near the lower-right corner, drifting lazily on additive
+        blending; reads as steam curling off a lamp.
      4. LAMPLIGHT FLICKER - a warm underfill behind the fg copy
-        whose opacity breathes on summed incommensurate sines
-        with an occasional irregular dip; shafts ride the same
-        signal at reduced amplitude. NOT a screen-wide pulse.
+        whose opacity breathes slowly on summed incommensurate
+        sines with an occasional deep warm dip; shafts ride the
+        same signal at reduced amplitude. Reading-by-firelight.
+        NOT a screen-wide pulse.
 
    All textures are baked at init into offscreen canvases - no
    image assets are added to the bundle.
@@ -38,7 +39,7 @@
    guard), so re-entering initBackground after a live toggle
    never stacks duplicate listeners.
    ============================================================ */
-import * as THREE from 'three';
+ import * as THREE from 'three';
 import { motionPrefs } from './motionPrefs.js';
 
 let canvasEl = null;
@@ -201,11 +202,12 @@ function initAnimated() {
 
   const dustSprite = softSpriteTexture(64);
 
-  // Two wide diagonal shafts, like late-afternoon sun through a
-  // saloon window: rotation ~-0.5 rad (upper-left to lower-right).
+  // Two wide diagonal shafts, now warm lamp-kernel light instead of
+  // late-afternoon sun: slower, softer, lower contrast. Candle/-
+  // kerosene lamp feel - closer amber hue, dimmer edges.
   const SHAFTS = [
-    { baseAngle: -0.5, x: -420, y: 180, z: -350, opacity: 0.30, swayPhase: 0 },
-    { baseAngle: -0.62, x: 430, y: 60, z: -480, opacity: 0.22, swayPhase: 2.6 },
+    { baseAngle: -0.5, x: -420, y: 180, z: -350, opacity: 0.22, swayPhase: 0 },
+    { baseAngle: -0.62, x: 430, y: 60, z: -480, opacity: 0.16, swayPhase: 2.6 },
   ];
   const beamCount = isMobile ? 500 : 1300;   // motes per shaft
   const ambientCount = isMobile ? 300 : 700; // motes outside shafts
@@ -220,7 +222,7 @@ function initAnimated() {
     // Beam volume: elongated soft plane, additive parchment-warm light.
     const beamMat = new THREE.MeshBasicMaterial({
       map: beamTexture,
-      color: 0xc9a26a,
+      color: 0xd29a58,
       transparent: true,
       opacity: cfg.opacity,
       depthWrite: false,
@@ -238,8 +240,8 @@ function initAnimated() {
     const colors = new Float32Array(beamCount * 3);
     const speeds = new Float32Array(beamCount);
     const phases = new Float32Array(beamCount);
-    const cMote = new THREE.Color(0xe6ddd0);
-    const cBrass = new THREE.Color(0xb0763c);
+    const cMote = new THREE.Color(0xe6d3b0); // warmer candle-dust tint
+    const cBrass = new THREE.Color(0xc07a30);
     for (let i = 0; i < beamCount; i++) {
       const u = Math.random() * 2 - 1;                       // along-beam
       const v = Math.max(-0.42, Math.min(0.42, (Math.random() + Math.random() + Math.random() - 1.5) * 0.55)); // across-beam, clamped gaussian
@@ -247,15 +249,15 @@ function initAnimated() {
       positions[i * 3 + 1] = v * 200;
       positions[i * 3 + 2] = (Math.random() - 0.5) * 120;
       const depth = Math.exp(-(v * v) * 14);                 // rich core, dim rim
-      const c = Math.random() < 0.12 ? cBrass : cMote;
+      const c = Math.random() < 0.2 ? cBrass : cMote;
       const slight = Math.random() < 0.5 ? 1 : 0.6; // coarse ratio variance
       colors[i * 3] = c.r * depth * slight;
       colors[i * 3 + 1] = c.g * depth * slight;
       colors[i * 3 + 2] = c.b * depth * slight;
-      // most motes rise slowly; ~1 in 4 is heavier and settles
+      // most motes rise slowly and lazily; ~1 in 4 is heavier and settles
       speeds[i] = Math.random() < 0.25
-        ? -(0.05 + Math.random() * 0.18)
-        : (0.08 + Math.random() * 0.3);
+        ? -(0.04 + Math.random() * 0.14)
+        : (0.06 + Math.random() * 0.22);
       phases[i] = Math.random() * Math.PI * 2;
     }
     const geo = new THREE.BufferGeometry();
@@ -266,7 +268,7 @@ function initAnimated() {
       map: dustSprite,
       vertexColors: true,
       transparent: true,
-      opacity: 0.75,
+      opacity: 0.55,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
       sizeAttenuation: true,
@@ -282,12 +284,12 @@ function initAnimated() {
   {
     const positions = new Float32Array(ambientCount * 3);
     const colors = new Float32Array(ambientCount * 3);
-    const cMote = new THREE.Color(0xe6ddd0);
+    const cMote = new THREE.Color(0xe6d3b0);
     for (let i = 0; i < ambientCount; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 2600;
       positions[i * 3 + 1] = (Math.random() - 0.5) * 1700;
       positions[i * 3 + 2] = (Math.random() - 0.5) * 700;
-      const dim = 0.16 + Math.random() * 0.16; // faint but readable
+      const dim = 0.12 + Math.random() * 0.14; // faint, warm, not dead
       colors[i * 3] = cMote.r * dim;
       colors[i * 3 + 1] = cMote.g * dim;
       colors[i * 3 + 2] = cMote.b * dim;
@@ -319,20 +321,21 @@ function initAnimated() {
     depthWrite: false,
     blending: THREE.NormalBlending,
   });
-  // rim circles - stroke widths tuned to survive downscale to 1 device px
-  for (let [r, w, op] of [[300, 0.008, 0.20], [244, 0.007, 0.14], [120, 0.006, 0.11], [18, 0.05, 0.16]]) {
+  // rim circles - stroke widths trimmed so the rose reads as a faint
+  // ink-tracing ornament, not engraved plate linework
+  for (let [r, w, op] of [[300, 0.006, 0.11], [244, 0.005, 0.08], [120, 0.004, 0.06], [18, 0.04, 0.09]]) {
     const ring = new THREE.Mesh(new THREE.RingGeometry(r * (1 - w), r, 128), hairMat(op));
     rose.add(ring);
   }
-  // 8 primary spokes + 8 shorter secondary spokes
+  // 8 primary spokes + 8 shorter secondary spokes - hairline-thin, faded
   for (let i = 0; i < 8; i++) {
     const a = (i / 8) * Math.PI * 2;
-    const long = new THREE.Mesh(new THREE.PlaneGeometry(8, 290), hairMat(0.16));
+    const long = new THREE.Mesh(new THREE.PlaneGeometry(5, 290), hairMat(0.09));
     long.position.set(Math.sin(a) * 145, Math.cos(a) * 145, 0);
     long.rotation.z = -a;
     rose.add(long);
     const a2 = a + Math.PI / 8;
-    const short = new THREE.Mesh(new THREE.PlaneGeometry(5, 148), hairMat(0.11));
+    const short = new THREE.Mesh(new THREE.PlaneGeometry(3.5, 148), hairMat(0.065));
     short.position.set(Math.sin(a2) * 196, Math.cos(a2) * 196, 0);
     short.rotation.z = -a2;
     rose.add(short);
@@ -340,7 +343,7 @@ function initAnimated() {
   // 32 rim ticks
   for (let i = 0; i < 32; i++) {
     const a = (i / 32) * Math.PI * 2;
-    const tick = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 12), hairMat(0.14));
+    const tick = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 12), hairMat(0.08));
     tick.position.set(Math.sin(a) * 312, Math.cos(a) * 312, 0);
     tick.rotation.z = -a;
     rose.add(tick);
@@ -349,27 +352,30 @@ function initAnimated() {
   rose.position.set(-140, 120, -300);
   scene.add(rose);
 
-  /* --- 3. gunsmoke drift ------------------------------------------ */
+  /* --- 3. lamp-steam drift (was gunsmoke) -------------------------- */
 
+  // Reads as gentle steam curling off a lamp: smaller, slower,
+  // softer, anchored to a corner column instead of crossing the frame.
   const smokeTex = smokeTexture(256);
   const smokeSprites = [];
   for (let i = 0; i < 3; i++) {
     const mat = new THREE.SpriteMaterial({
       map: smokeTex,
-      color: 0xcdbfae,
+      color: 0xd8c6a8,
       transparent: true,
-      opacity: 0.16 + i * 0.038,
+      opacity: 0.07 + i * 0.02,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
     });
     const s = new THREE.Sprite(mat);
-    const sc = 520 + i * 190;
-    s.scale.set(sc, sc * 0.72, 1);
-    s.position.set(-900 + i * 700, -160 + i * 90, -420 - i * 60);
+    const sc = 300 + i * 120;        // smaller puffs
+    s.scale.set(sc, sc * 0.78, 1);
+    // clustered near the lower-right corner, nested depths
+    s.position.set(520 + i * 90, -260 + i * 70, -420 - i * 60);
     s.userData = {
-      vx: 5 + i * 2.5,        // slow horizontal drift, px/sec
+      vx: 2.2 + i * 1.2,             // barely-there drift, ~1/3 the old speed
       bobPhase: i * 2.1,
-      bobAmp: 14 + i * 6,
+      bobAmp: 8 + i * 4,
     };
     smokeSprites.push(s);
     scene.add(s);
@@ -377,32 +383,34 @@ function initAnimated() {
 
   /* --- 4. lamplight underfill -------------------------------------- */
 
+  // Warm candle amber rather than brass; small enough pool that it
+  // reads as reading-by-firelight, not a room lit up.
   const lampMat = new THREE.SpriteMaterial({
     map: beamTexture,
-    color: 0xb0763c,
+    color: 0xc06a28,
     transparent: true,
-    opacity: 0.18,
+    opacity: 0.16,
     depthWrite: false,
     blending: THREE.AdditiveBlending,
   });
   const lamp = new THREE.Sprite(lampMat);
-  lamp.scale.set(880, 620, 1);
+  lamp.scale.set(760, 540, 1);
   lamp.position.set(-140, 60, -520); // behind the fg copy, not fullscreen
   scene.add(lamp);
 
-  // Irregular period-correct flicker: summed incommensurate sines + an
-  // occasional asymmetric dip - never a metronome, never big.
+  // Slow firelight breathing: longer-period summed sines, tighter
+  // amplitude, plus an occasional deep warm dip. Breathing ~ every 20s.
   function flick(t) {
-    let v = 0.78
-      + 0.10 * Math.sin(t * 0.9 + 1.7)
-      + 0.07 * Math.sin(t * 2.31)
-      + 0.05 * Math.sin(t * 5.13 + 0.6);
-    // deterministic pseudo-random dip that hits ~1s in 12
-    const s = Math.floor(t);
+    let v = 0.88
+      + 0.08 * Math.sin(t * 0.31 + 1.7)
+      + 0.05 * Math.sin(t * 1.13)
+      + 0.03 * Math.sin(t * 3.07 + 0.6);
+    // deterministic pseudo-random dip that hits ~1s in 16
+    const s = Math.floor(t * 0.75); // dilated clock -> slower dip cadence
     let h = Math.sin(s * 12.9898) * 43758.5453;
     h -= Math.floor(h);
-    if (h > 0.915) v *= 0.86 + (h - 0.915) * 0.6;
-    return Math.max(0.45, v);
+    if (h > 0.935) v *= 0.72 + (h - 0.935) * 0.8; // deeper, warmer falloff
+    return Math.max(0.55, v);
   }
 
   let scrollY = 0;
@@ -499,7 +507,7 @@ function initAnimated() {
       s.position.x += s.userData.vx * 0.016;
       if (s.position.x > innerWidth + s.scale.x + 300) s.position.x = -s.scale.x - 300;
       s.position.y += Math.sin(elapsed * 0.11 + s.userData.bobPhase) * 0.05;
-      s.material.opacity = (0.16 + smokeSprites.indexOf(s) * 0.038) * (0.55 + flickV * 0.5);
+      s.material.opacity = (0.07 + smokeSprites.indexOf(s) * 0.02) * (0.55 + flickV * 0.5);
     }
 
     // 4. lamplight breathes

@@ -6,19 +6,20 @@
 :root {
   --bg: #1a1714;
   --bg-elev: #26211c;
-  --fg: #e6ddd0;
-  --fg-dim: #a89885;
-  --fg-mute: #6f6355;
+  --fg: #eadbbf;
+  --fg-dim: #c3ac8a;
+  --fg-mute: #95805f;
   --accent: #b0763c;
-  --accent2: #8a7a4f;
+  --accent2: #9c8452;
   --accent-dim: #5a3d22;
   --border: rgba(230, 221, 208, 0.08);
   --border-strong: rgba(230, 221, 208, 0.16);
   --card: rgba(230, 221, 208, 0.04);
   --card-hover: rgba(230, 221, 208, 0.07);
   --radius: 8px;
-  --font-head: 'Zilla Slab', 'Lora', serif;
+  --font-head: 'Caveat', 'Zilla Slab', serif;
   --font-body: 'Source Serif 4', 'Lora', serif;
+  --font-body-hand: 'Architects Daughter', 'Gochi Hand', 'Source Serif 4', serif;
   --font-mono: 'JetBrains Mono', monospace;
   --font-hand: 'Caveat', cursive;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -37,9 +38,9 @@ html.lenis, html.lenis body { height: auto; }
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
+  font-family: var(--font-body-hand);
+  font-size: 17px;
+  line-height: 1.85;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -58,6 +59,10 @@ body {
 ::selection { background: var(--accent); color: #1a1714; }
 
 /* ---------- Typography ---------- */
+/* Handwritten-first: Caveat 600 is the lead heading voice (the actual
+   pen), with Zilla Slab retained as fallback so the layout never
+   collapses if the display face fails to load. Handprint titles run
+   small, so weights and a hair of tracking keep them legible. */
 h1, h2, h3, h4 {
   font-family: var(--font-head);
   font-weight: 600;
@@ -71,7 +76,8 @@ h1, h2 {
 }
 
 .section-title {
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: clamp(2.6rem, 6.5vw, 4.2rem);
+  font-weight: 700;
   line-height: 1.1;
   margin-bottom: 0.4em;
 }
@@ -81,11 +87,12 @@ h1, h2 {
   max-width: 55ch;
   margin-bottom: 3rem;
 }
-/* ---------- Handwritten second voice ----------
-   Caveat 600 is the "pen on parchment" voice. Used sparingly -
-   eyebrows and the contact sign-off - never as body copy. Sizes are
-   bumped ~1.7x because Caveat runs small at its x-height. Static
-   styling; exempt from motionPrefs. */
+/* ---------- Handwritten voices ----------
+   Caveat 600 is the lead "pen on parchment" voice (now also headings +
+   name). Architects Daughter is the body handprint - legible journal
+   hand, looser rhythm, no poster tracking. Sizes for Caveat are bumped
+   ~1.7x because it runs small at its x-height; Architects Daughter
+   needs only a mild bump. Static styling; exempt from motionPrefs. */
 .eyebrow {
   font-family: var(--font-hand);
   font-size: 1.35rem;
@@ -107,6 +114,24 @@ h1, h2 {
 }
 .mono { font-family: var(--font-mono); }
 .hand { font-family: var(--font-hand); font-weight: 600; }
+
+/* ---------- Hand-inked link underline ----------
+   Double-stroke pen underline: an irregular, slightly wavy main
+   stroke plus a faint second pass underneath, with a small curl tail
+   at the right edge (nib lift-off). Static SVG data-uri on
+   text-decoration? No - decoration lines can't carry images, so it's
+   a background-image underline sized to the text box. */
+p a, .modal__body a, .about__text a {
+  color: var(--accent2);
+  text-decoration: none;
+  padding-bottom: 0.12em;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 5' preserveAspectRatio='none'><g fill='none' stroke='%238a7a4f' vector-effect='non-scaling-stroke'><path d='M0 2 Q2.5 1 5 2 T10 2 T15 2 T19.5 1.8 L21 1.2 Q21.8 1 22.2 2 Q22.5 3 21.6 3.4 Z' stroke-width='1.1' opacity='0.85'/><path d='M0 3.6 Q3 2.6 6 3.6 T11 3.6 T16 3.6 T20 3.4' stroke-width='0.8' opacity='0.45'/></g></svg>");
+  background-position: 0 100%;
+  background-size: 100% 0.36em;
+  background-repeat: no-repeat;
+  transition: color 0.25s;
+}
+p a:hover, .modal__body a:hover, .about__text a:hover { color: var(--accent); }
 
 /* ---------- Parchment film-grain + mottle overlay ----------
    Two static SVG-noise layers: fine turbulence grain plus a large-scale
@@ -139,7 +164,7 @@ h1, h2 {
 .loader__inner { text-align: center; width: min(400px, 80vw); }
 .loader__name {
   font-family: var(--font-head);
-  font-size: 2rem;
+  font-size: 2.4rem;
   letter-spacing: 0.02em;
   margin-bottom: 2rem;
   background: linear-gradient(90deg, var(--fg), var(--accent), var(--accent2), var(--fg));
