@@ -1,5 +1,8 @@
-node_modules/
 dist/
 .DS_Store
-*.log
 .env
+*.log
+node_modules/
+public/
+scripts/__pycache__/
+.worktrees/
