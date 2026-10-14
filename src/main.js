@@ -5,9 +5,11 @@ import { DATA } from './data.js';
 import { initBackground } from './background.js';
 import { initCursor, initSmoothScroll, initReveals, initMagnetic } from './motion.js';
 import { initStreamText, initScrollStream } from './streamText.js';
+import { hwEnqueue, HW_HERO_OPTS } from './handwrite.js';
 import { initFeedback } from './feedback.js';
 import { initBlog } from './blog.js';
 import { motionPrefs } from './motionPrefs.js';
+import './stains.js';
 import './styles/main.css';
 import './styles/sections.css';
 
@@ -197,71 +199,44 @@ async function boot() {
 }
 
 function heroIntro() {
+  const tag = document.getElementById('heroTag');
   const name = document.getElementById('heroName');
+  const role = document.getElementById('heroRole');
+  const cta = document.getElementById('heroCta');
+  const scroll = document.getElementById('heroScroll');
   const reduced = motionPrefs.reduced;
-  const chars = DATA.hero.name.split('');
-  name.innerHTML = chars.map((c) => c === ' '
-    ? '<span class="word">&nbsp;</span>'
-    : reduced
-      // Reduced motion: plain text, no per-char spans to animate.
-      ? `<span class="word">${c}</span>`
-      : `<span class="word"><span class="char">${c}</span></span>`).join('');
 
-  // Staggered per-element fades - offset so they land in reading order.
-  // The name's container fade completes BEFORE the ink cascade finishes,
-  // so it never clips the char-level reveal.
-  const tl = [
-    ['#heroName', 'opacity:1', 0],
-    ['#heroTag', 'opacity:1', 2],
-    ['#heroRole', 'opacity:1', 0],
-    ['#heroCta', 'opacity:1', 0.4],
-    ['#heroScroll', 'opacity:1', 0.6],
-  ];
-  tl.forEach(([sel, style, d]) => setTimeout(() => { document.querySelector(sel).style.opacity = 1; }, reduced ? 0 : 200 + d * 600));
+  // The name is plain text (no inline markup), safe to set directly.
+  name.textContent = DATA.hero.name;
 
-  if (reduced) return; // no character-level ink animation
+  if (reduced) {
+    // No split, no overlay, no cascade - everything visible at first paint.
+    [tag, name, role, cta, scroll].forEach((el) => { if (el) el.style.opacity = '1'; });
+    return;
+  }
 
-  // Ink-cascade entrance ("written into place"): each character appears
-  // like a pen stroke landing - randomized delay (hand pauses between
-  // letters), slight rotation jitter (nib tilt), and a text-shadow that
-  // blooms from nothing to a hairline (ink spreading through the page
-  // fiber). Live-gates on motionPrefs: turning reduced motion on
-  // mid-reveal snaps every char to fully inked with no jitter.
-  const inkEls = [...document.querySelectorAll('.hero__name .char')];
-  const inkTimers = [];
-  const settleAll = () => {
-    inkTimers.forEach(clearTimeout);
-    inkTimers.length = 0;
-    inkEls.forEach((ch) => {
-      ch.style.transition = 'none';
-      ch.style.opacity = '1';
-      ch.style.transform = '';
-      ch.style.textShadow = '';
-    });
-  };
-  window.addEventListener('motionprefchange', () => { if (motionPrefs.reduced) settleAll(); });
+  // THE PEN DOES THE ENTRANCE. Containers go opaque immediately; the
+  // mask wipe inside handwrite keeps the glyphs un-inked until the pen
+  // front reaches them, so there is no whole-container fade anymore.
+  [tag, name, role].forEach((el) => { if (el) el.style.opacity = '1'; });
 
-  inkEls.forEach((ch, i) => {
-    // ~40-90ms hand pauses; a slightly longer beat after each word gap.
-    // Settles to fully upright with a shrinking, dimmer bloom so the
-    // cascade reads as a confident hand, not a flickering sparkle.
-    const jitter = () => (Math.random() * 2 - 1) * 0.8; // +/-0.8deg nib tilt
-    const d = 0.15 + i * 0.045 + Math.random() * 0.05;
-    const rot = jitter();
-    ch.style.transition = `opacity 0.25s ease, transform 0.55s var(--ease-out), text-shadow 0.6s ease`;
-    inkTimers.push(setTimeout(() => {
-      if (motionPrefs.reduced) return; // live gate inside timers too
-      ch.style.opacity = '1';
-      ch.style.transform = `rotate(${rot}deg)`;
-      // ink bloom: 0 -> hairline spread while the glyph lands
-      ch.style.textShadow = '0 0 0.4px rgba(230,221,208,0.65), 0 0 1px rgba(230,221,208,0.4)';
-      // then fade the bloom to a resting hairline - a fresh stroke settles
-      inkTimers.push(setTimeout(() => {
-        if (motionPrefs.reduced) return;
-        ch.style.textShadow = '0 0 1px rgba(230,221,208,0.16)';
-        ch.style.transform = `rotate(0deg)`;
-      }, 850));
-    }, d * 1000));
+  // Boot writing order: tag -> name -> role, all through the ONE
+  // page-wide FIFO. All three ENQUEUE up front - queue position is
+  // what orders them (chaining enqueue-on-completion would let body
+  // paragraphs intersecting during the tag's write cut in before the
+  // name). hwEnqueue's promise resolves when that element finishes
+  // writing (also on instant-settle paths, so the chain survives a
+  // live reduced-motion flip).
+  const write = (el, opts) => hwEnqueue(el, { ...HW_HERO_OPTS, ...opts });
+  write(tag, { id: 'heroTag' });
+  write(name, { id: 'heroName', glyphMs: 1000 / 55 });
+  write(role, { id: 'heroRole', glyphMs: 1000 / 140 }).then(() => {
+    // UI fades follow the finished writing, they don't replace it.
+    if (cta) {
+      cta.style.transition = 'opacity 0.6s ease';
+      cta.style.opacity = '1';
+    }
+    setTimeout(() => { if (scroll) scroll.style.opacity = '1'; }, 200);
   });
 }
 

@@ -1,0 +1,84 @@
+/* ============================================================
+   Handwrite - pen-sweep reveal styles.
+   Everything here is inert under prefers-reduced-motion: JS
+   never mounts these classes when reduced is on at boot, and
+   the media block at the bottom is a belt-and-braces kill for
+   anything left over from a live flip (the main.css global
+   0.01ms transition kill switch also covers leftovers).
+   ============================================================ */
+
+/* word unit: an inline-block carrying the wipe mask. Metrics
+   match unsplit text (pre + inline-block, spaces stay real
+   breakable text nodes between words, so wrapping is unchanged). */
+.hw-word {
+  display: inline-block;
+  white-space: pre;
+  vertical-align: baseline;
+}
+
+/* active sweep mask - one gradient per word, --hw driven 0->105%
+   by the shared rAF loop in handwrite.js. Soft front = 9% feather. */
+.hw-word.hw-wipe {
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 var(--hw, 0%), transparent calc(var(--hw, 0%) + 9%));
+  mask-image: linear-gradient(90deg, #000 0%, #000 var(--hw, 0%), transparent calc(var(--hw, 0%) + 9%));
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  will-change: mask-image;
+}
+
+/* char boxes sit under the sweep; bloom fires as the pen front
+   crosses each char's leading edge. Colors derive from the text's
+   own currentColor (never hardcoded ink). */
+.hw-char {
+  display: inline-block;
+  transform-origin: 50% 70%;
+}
+.hw-char.hw-bloom {
+  animation: hwBloom 0.45s ease-out both;
+}
+@keyframes hwBloom {
+  0%   { text-shadow: 0 0 0.4px color-mix(in srgb, currentColor 60%, transparent),
+                 0 0 1.5px color-mix(in srgb, currentColor 35%, transparent); }
+  100% { text-shadow: none; }
+}
+
+/* the nib: a small wet-ink dot riding the leading edge of the
+   active word, currentColor-derived, plus a faint bloom halo.
+   Fixed-position, transform-driven from JS; never interactive. */
+.hw-pen {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 4;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  background: currentColor;
+  box-shadow: 0 0 4px 1.5px color-mix(in srgb, currentColor 30%, transparent);
+  will-change: transform;
+}
+.hw-pen.hw-on { opacity: 1; }
+
+/* the element currently being written holds .hw-split (marker only,
+   no styles required beyond what words carry themselves). */
+
+@media (prefers-reduced-motion: reduce) {
+  .hw-word.hw-wipe {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .hw-char.hw-bloom {
+    animation: none;
+    text-shadow: none;
+  }
+  .hw-pen {
+    /* hide the nib, never display:none (it would remove the node and
+       could hide any leftover word spans) */
+    opacity: 0 !important;
+    transition: none;
+  }
+}
