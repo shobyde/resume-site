@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-14-the-provenance-tax",
+    "date": "2026-10-14",
+    "title": "The Provenance Tax",
+    "tag": "dev",
+    "excerpt": "Watermarking turns out to slow down AI agents \u2014 which tells us something about what agents actually are"
+  },
+  {
     "slug": "2026-10-13-ui-direction-generative-ui",
     "date": "2026-10-13",
     "title": "The UI Is Becoming the Agent's Body",
