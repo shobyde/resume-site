@@ -1,43 +1,32 @@
 /* ============================================================
-   Three.js background - parchment journal scene.
+   Three.js background - dark starfield scene.
 
-   Four deliberate period passes, tuned perceptible-but-subtle so
-   the warm-ink fg copy stays readable on the light ground. A
-   post-frame-1 luma self-check on a throwaway canvas warns if the
-   scene ever samples as flat/washed (see checkFirstFrameLuma).
+   Tuned to the live CSS tokens (--bg #0b0b0f, --fg #e8e8ee,
+   --accent #7c6cff, --accent2 #00d9b8). Additive blending is
+   correct here again - it was only forbidden on the parchment
+   ground, where it white-outs. The compass rose and the warm
+   light-shafts (sun rays) were removed by request.
 
-     1. DUST IN LIGHT-SHAFTS - motes clustered inside two wide
-        diagonal honey-wash planes; per-mote color is multiplied by
-        a gaussian falloff across the beam's short axis, so motes
-        fade at the edges and read strongest at the core. Motes are
-        darker-than-paper ink specks riding a faint warm light zone
-        (normal blending - additive would white-out a light scene).
-        A sparse ambient field keeps the frame from being empty.
-     2. FAINT INK-TRACED COMPASS ROSE - pale warm-ink hairlines
-        just darker than the parchment: three rim circles, 8 primary
-        + 8 secondary spokes, 32 rim ticks, tiny hub. A barely-there
-        paper ornament watermark behind the hero.
-     3. LAMP-STEAM DRIFT - 3 small soft noise-sprite wisps anchored
-        near the lower-right corner, drifting lazily; warm gray-brown
-        at low opacity so steam subtly darkens the paper.
-     4. LAMPLIGHT FLICKER - a pooled warm honey underfill behind the
-        fg copy whose opacity breathes slowly on summed
-        incommensurate sines with an occasional deep dip; shafts ride
-        the same signal at reduced amplitude. Reading-by-firelight.
-        NOT a screen-wide pulse.
-     5. INK-STAR STREAM - the old dark-theme fly-through field, rebuilt
-        for parchment: sparse ink-dark stars drifting toward the camera
-        (+z), size-attenuated so they widen as they pass, wrap to the
-        far plane on exit. Normal blending - additive white would
-        vanish (or white-out) on a light ground.
+   Four passes:
+     1. STAR FLY-THROUGH - the signature effect: star sprites
+        drifting toward the camera (+z), size-attenuated so they
+        widen as they pass, respawn at the far plane with fresh
+        x/y on exit. White core, violet/teal accents.
+     2. AMBIENT DUST - sparse faint specks, slow rise, so the
+        gaps between streams aren't dead space.
+     3. HAZE DRIFT - 3 large soft noise-sprite wisps, warm gray
+        at very low additive opacity; wrap in world units.
+     4. ACCENT GLOW FLICKER - a pooled violet underfill whose
+        opacity breathes on summed incommensurate sines with an
+        occasional deep dip; haze rides the same signal.
 
    All textures are baked at init into offscreen canvases - no
    image assets are added to the bundle.
 
    prefers-reduced-motion: the WebGL scene is skipped entirely.
-   A static CSS gradient stands in on the canvas (parchment ground
-   with subtle warm washes) and no renderer is created - zero
-   per-frame CPU/GPU cost.
+   A static CSS gradient stands in on the canvas (dark ground
+   with subtle violet/teal washes) and no renderer is created -
+   zero per-frame CPU/GPU cost.
    Toggling the OS setting live tears down / re-inits without a
    reload. A module-level generation token ensures a superseded
    instance stops its own animation loop and event listeners.
@@ -46,7 +35,7 @@
    guard), so re-entering initBackground after a live toggle
    never stacks duplicate listeners.
    ============================================================ */
- import * as THREE from 'three';
+import * as THREE from 'three';
 import { motionPrefs } from './motionPrefs.js';
 
 let canvasEl = null;
@@ -70,9 +59,9 @@ export function initBackground() {
   if (!canvasEl) return;
 
   GRADIENT =
-    'radial-gradient(ellipse at 50% 30%, rgba(176,118,60,0.10), transparent 60%),' +
-    'radial-gradient(ellipse at 80% 70%, rgba(138,106,52,0.07), transparent 55%),' +
-    '#f2ead8';
+    'radial-gradient(ellipse at 30% 25%, rgba(124,108,255,0.10), transparent 60%),' +
+    'radial-gradient(ellipse at 75% 70%, rgba(0,217,184,0.06), transparent 55%),' +
+    '#0b0b0f';
 
   // Single persistent live-toggle listener, regardless of how many
   // times initBackground / initAnimated re-enter.
@@ -102,8 +91,8 @@ export function initBackground() {
 
 /* ---------- texture bakers (all offscreen-canvas, no assets) ---------- */
 
-// Soft round sprite: white core -> transparent rim. Used for dust
-// points and the lamplight underfill glow.
+// Soft round sprite: white core -> transparent rim. Used for stars,
+// dust points and the accent glow.
 function softSpriteTexture(size) {
   const c = document.createElement('canvas');
   c.width = c.height = size;
@@ -117,7 +106,7 @@ function softSpriteTexture(size) {
   return new THREE.CanvasTexture(c);
 }
 
-// Billowy smoke puff: ~40 overlapping soft blobs, denser toward
+// Billowy haze puff: ~40 overlapping soft blobs, denser toward
 // the center, stretched slightly for an irregular silhouette.
 function smokeTexture(size) {
   const c = document.createElement('canvas');
@@ -171,7 +160,7 @@ function checkFirstFrameLuma(src) {
     const sd = Math.sqrt(Math.max(0, sumSq / n - mean * mean));
     if (sd < 0.004) {
       console.warn(
-        `[background] western-scene luma check: sd=${sd.toFixed(5)}, ` +
+        `[background] starfield luma check: sd=${sd.toFixed(5)}, ` +
         `mean=${mean.toFixed(4)} - canvas is flat; the scene is ` +
         `likely invisible again. (Diagnostics only.)`,
       );
@@ -189,7 +178,7 @@ function initAnimated() {
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
-    antialias: false, // hairlines + soft sprites gain nothing from MSAA
+    antialias: false, // soft sprites gain nothing from MSAA
     alpha: true,
     powerPreference: 'high-performance',
   });
@@ -198,268 +187,137 @@ function initAnimated() {
   renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.5 : 2));
 
   const scene = new THREE.Scene();
-  // NOTE: no fog. FogExp2 at these depths was attenuating the entire
-  // scene toward the near-black fog color (exp(-(d*z)^2) at z=400 is
-  // already deep), which is why the engraved linework read flat.
+  // Light depth haze: far stars fade toward the page ground color,
+  // so the fly-through reads with distance instead of a flat plane.
+  scene.fog = new THREE.FogExp2(0x0b0b0f, 0.0006);
 
   const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 3000);
   camera.position.set(0, 0, 1000);
 
-  /* --- 1. light-shafts + dust-in-beam ------------------------------ */
+  const starTex = softSpriteTexture(32);
+  const dustTex = softSpriteTexture(64);
+  const glowTex = softSpriteTexture(128);
+  let ambientDust = null; // filled by the ambient-field block below
 
-  const dustSprite = softSpriteTexture(64);
+  /* --- 1. star fly-through ---------------------------------------- */
 
-  // Two wide diagonal shafts: faint warm honey light zones lying ON the
-  // parchment (normal blending - additive would white-out a light page).
-  // Opacities sit slightly above the drafted 0.07-0.09 band: the
-  // luma-variance verify gate (sd >= 0.008) needs the broad washes to
-  // carry perceptible texture once the 64px probe averages away the
-  // sub-pixel motes.
-  const SHAFTS = [
-    { baseAngle: -0.5, x: -420, y: 180, z: -350, opacity: 0.19, swayPhase: 0 },
-    { baseAngle: -0.62, x: 430, y: 60, z: -480, opacity: 0.15, swayPhase: 2.6 },
-  ];
-  const beamCount = isMobile ? 500 : 1300;   // motes per shaft
-  const ambientCount = isMobile ? 300 : 700; // motes outside shafts
-  const shaftState = []; // { group, mat, motes:{geo, speeds, phase, tScale} }
-
-  const beamTexture = softSpriteTexture(128);
-  for (const cfg of SHAFTS) {
-    const group = new THREE.Group();
-    group.position.set(cfg.x, cfg.y, cfg.z);
-    group.rotation.z = cfg.baseAngle;
-
-    // Beam volume: elongated soft plane, warm honey wash over the paper.
-    const beamMat = new THREE.MeshBasicMaterial({
-      map: beamTexture,
-      color: 0xd8b070,
-      transparent: true,
-      opacity: cfg.opacity,
-      depthWrite: false,
-      blending: THREE.NormalBlending,
-      side: THREE.DoubleSide,
-    });
-    const beam = new THREE.Mesh(new THREE.PlaneGeometry(1500, 420), beamMat);
-    group.add(beam);
-
-    // Motes live in shaft-local space: gauss-distributed across the
-    // beam's short axis (denser = stronger = "inside the sunbeam"),
-    // their vertex color multiplied by the same falloff so the darker
-    // specks fade at the beam edges automatically.
-    const positions = new Float32Array(beamCount * 3);
-    const colors = new Float32Array(beamCount * 3);
-    const speeds = new Float32Array(beamCount);
-    const phases = new Float32Array(beamCount);
-    const cMote = new THREE.Color(0x6d5f45); // darker-than-paper speck ink
-    const cBrass = new THREE.Color(0x5a4322);
-    for (let i = 0; i < beamCount; i++) {
-      const u = Math.random() * 2 - 1;                       // along-beam
-      const v = Math.max(-0.42, Math.min(0.42, (Math.random() + Math.random() + Math.random() - 1.5) * 0.55)); // across-beam, clamped gaussian
-      positions[i * 3] = u * 700;
-      positions[i * 3 + 1] = v * 200;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 120;
-      const depth = Math.exp(-(v * v) * 14);                 // rich core, dim rim
-      const c = Math.random() < 0.2 ? cBrass : cMote;
-      const slight = Math.random() < 0.5 ? 1 : 0.6; // coarse ratio variance
-      colors[i * 3] = c.r * depth * slight;
-      colors[i * 3 + 1] = c.g * depth * slight;
-      colors[i * 3 + 2] = c.b * depth * slight;
-      // most motes rise slowly and lazily; ~1 in 4 is heavier and settles
-      speeds[i] = Math.random() < 0.25
-        ? -(0.04 + Math.random() * 0.14)
-        : (0.06 + Math.random() * 0.22);
-      phases[i] = Math.random() * Math.PI * 2;
-    }
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    const mat = new THREE.PointsMaterial({
-      size: 3.0,
-      map: dustSprite,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.22,
-      depthWrite: false,
-      blending: THREE.NormalBlending,
-      sizeAttenuation: true,
-    });
-    const motes = new THREE.Points(geo, mat);
-    group.add(motes);
-
-    scene.add(group);
-    shaftState.push({ cfg, group, beamMat, geo, speeds, phases, beamCount });
+  const STAR_COUNT = isMobile ? 900 : 2200;
+  const starPos = new Float32Array(STAR_COUNT * 3);
+  const starCol = new Float32Array(STAR_COUNT * 3);
+  const starSpeeds = new Float32Array(STAR_COUNT);
+  const cWhite = new THREE.Color(0xe8e8ee);  // --fg
+  const cAccent = new THREE.Color(0x7c6cff); // --accent
+  const cTeal = new THREE.Color(0x00d9b8);   // --accent2
+  for (let i = 0; i < STAR_COUNT; i++) {
+    starPos[i * 3] = (Math.random() - 0.5) * 2400;
+    starPos[i * 3 + 1] = (Math.random() - 0.5) * 1600;
+    starPos[i * 3 + 2] = (Math.random() - 0.5) * 2200; // straddle camera z=1000
+    const mix = Math.random();
+    const c = mix < 0.12 ? cAccent : mix < 0.22 ? cTeal : cWhite;
+    const dim = 0.25 + Math.random() * 0.75; // twinkle-by-brightness
+    starCol[i * 3] = c.r * dim;
+    starCol[i * 3 + 1] = c.g * dim;
+    starCol[i * 3 + 2] = c.b * dim;
+    starSpeeds[i] = 0.9 + Math.random() * 2.4; // world units toward +z
   }
+  const starGeo = new THREE.BufferGeometry();
+  starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+  starGeo.setAttribute('color', new THREE.BufferAttribute(starCol, 3));
+  const starMat = new THREE.PointsMaterial({
+    size: 3.0,
+    map: starTex,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.85,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending, // correct on a dark ground
+    sizeAttenuation: true,
+  });
+  scene.add(new THREE.Points(starGeo, starMat));
 
-  // Sparse ambient field so the gaps between shafts aren't dead.
+  /* --- 2. sparse ambient dust -------------------------------------- */
+
+  const ambientCount = isMobile ? 250 : 500;
   {
     const positions = new Float32Array(ambientCount * 3);
     const colors = new Float32Array(ambientCount * 3);
-    const cMote = new THREE.Color(0x6d5f45);
+    const drift = new Float32Array(ambientCount);
+    const cDust = new THREE.Color(0x8a8a95); // --fg-dim
     for (let i = 0; i < ambientCount; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 2600;
       positions[i * 3 + 1] = (Math.random() - 0.5) * 1700;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 700;
-      const dim = 0.12 + Math.random() * 0.14; // faint specks, not dead
-      colors[i * 3] = cMote.r * dim;
-      colors[i * 3 + 1] = cMote.g * dim;
-      colors[i * 3 + 2] = cMote.b * dim;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 700 - 400; // behind the stars
+      const dim = 0.3 + Math.random() * 0.5;
+      colors[i * 3] = cDust.r * dim;
+      colors[i * 3 + 1] = cDust.g * dim;
+      colors[i * 3 + 2] = cDust.b * dim;
+      drift[i] = 0.05 + Math.random() * 0.12;
     }
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     const mat = new THREE.PointsMaterial({
       size: 1.9,
-      map: dustSprite,
+      map: dustTex,
       vertexColors: true,
       transparent: true,
-      opacity: 0.55,
+      opacity: 0.5,
       depthWrite: false,
-      blending: THREE.NormalBlending,
+      blending: THREE.AdditiveBlending,
       sizeAttenuation: true,
     });
-    scene.add(new THREE.Points(geo, mat));
+    const points = new THREE.Points(geo, mat);
+    scene.add(points);
+    ambientDust = { geo, drift, count: ambientCount };
   }
 
-  /* --- 5. ink-star stream: fly-through toward the camera ----------- */
+  /* --- 3. haze drift ------------------------------------------------ */
 
-  // Round star sprite: crisp core + soft halo, baked once.
-  const starCanvas = document.createElement('canvas');
-  starCanvas.width = starCanvas.height = 32;
-  const sctx = starCanvas.getContext('2d');
-  const sgrad = sctx.createRadialGradient(16, 16, 0, 16, 16, 16);
-  sgrad.addColorStop(0, 'rgba(255,255,255,1)');
-  sgrad.addColorStop(0.4, 'rgba(255,255,255,0.6)');
-  sgrad.addColorStop(1, 'rgba(255,255,255,0)');
-  sctx.fillStyle = sgrad;
-  sctx.fillRect(0, 0, 32, 32);
-  const starTex = new THREE.CanvasTexture(starCanvas);
-
-  const STAR_COUNT = isMobile ? 700 : 1600;
-  const starPos = new Float32Array(STAR_COUNT * 3);
-  const starCol = new Float32Array(STAR_COUNT * 3);
-  const starSpeeds = new Float32Array(STAR_COUNT);
-  const cInk = new THREE.Color(0x6d5f45);    // warm ink, darker than paper
-  const cBrass = new THREE.Color(0x5a4322);  // a few deeper brass flecks
-  for (let i = 0; i < STAR_COUNT; i++) {
-    starPos[i * 3] = (Math.random() - 0.5) * 2400;
-    starPos[i * 3 + 1] = (Math.random() - 0.5) * 1600;
-    starPos[i * 3 + 2] = (Math.random() - 0.5) * 2000; // straddle camera z=1000
-    const c = Math.random() < 0.15 ? cBrass : cInk;
-    const dim = 0.25 + Math.random() * 0.65;           // twinkle-by-brightness
-    starCol[i * 3] = c.r * dim;
-    starCol[i * 3 + 1] = c.g * dim;
-    starCol[i * 3 + 2] = c.b * dim;
-    starSpeeds[i] = 0.9 + Math.random() * 2.2;         // world units toward +z
-  }
-  const starGeo = new THREE.BufferGeometry();
-  starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-  starGeo.setAttribute('color', new THREE.BufferAttribute(starCol, 3));
-  const starMat = new THREE.PointsMaterial({
-    size: 3.2,
-    map: starTex,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.5,
-    depthWrite: false,
-    blending: THREE.NormalBlending,
-    sizeAttenuation: true,
-  });
-  scene.add(new THREE.Points(starGeo, starMat));
-
-  /* --- 2. engraved compass rose ----------------------------------- */
-
-  const rose = new THREE.Group();
-  // pale warm ink tracings, just darker than the paper
-  const hairMat = (op) => new THREE.MeshBasicMaterial({
-    color: 0x8a6a3e,
-    transparent: true,
-    opacity: op,
-    side: THREE.DoubleSide,
-    depthWrite: false,
-    blending: THREE.NormalBlending,
-  });
-  // rim circles - stroke widths trimmed so the rose reads as a faint
-  // ink-tracing ornament, not engraved plate linework
-  for (let [r, w, op] of [[300, 0.006, 0.11], [244, 0.005, 0.08], [120, 0.004, 0.06], [18, 0.04, 0.09]]) {
-    const ring = new THREE.Mesh(new THREE.RingGeometry(r * (1 - w), r, 128), hairMat(op));
-    rose.add(ring);
-  }
-  // 8 primary spokes + 8 shorter secondary spokes - hairline-thin, faded
-  for (let i = 0; i < 8; i++) {
-    const a = (i / 8) * Math.PI * 2;
-    const long = new THREE.Mesh(new THREE.PlaneGeometry(5, 290), hairMat(0.09));
-    long.position.set(Math.sin(a) * 145, Math.cos(a) * 145, 0);
-    long.rotation.z = -a;
-    rose.add(long);
-    const a2 = a + Math.PI / 8;
-    const short = new THREE.Mesh(new THREE.PlaneGeometry(3.5, 148), hairMat(0.065));
-    short.position.set(Math.sin(a2) * 196, Math.cos(a2) * 196, 0);
-    short.rotation.z = -a2;
-    rose.add(short);
-  }
-  // 32 rim ticks
-  for (let i = 0; i < 32; i++) {
-    const a = (i / 32) * Math.PI * 2;
-    const tick = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 12), hairMat(0.08));
-    tick.position.set(Math.sin(a) * 312, Math.cos(a) * 312, 0);
-    tick.rotation.z = -a;
-    rose.add(tick);
-  }
-  // Anchor to the hero name: same slot the old rings occupied.
-  rose.position.set(-140, 120, -300);
-  scene.add(rose);
-
-  /* --- 3. lamp-steam drift (was gunsmoke) -------------------------- */
-
-  // Reads as gentle steam curling off a lamp: smaller, slower,
-  // softer, anchored to a corner column instead of crossing the frame.
-  // Warm gray-brown at LOW opacity - on parchment, steam darkens the
-  // paper slightly rather than glowing.
   const smokeTex = smokeTexture(256);
   const smokeSprites = [];
   for (let i = 0; i < 3; i++) {
     const mat = new THREE.SpriteMaterial({
       map: smokeTex,
-      color: 0x6d5f45,
+      color: 0x5a5a66, // --fg-mute: barely-there warm-gray haze glow
       transparent: true,
       opacity: 0.05 + i * 0.015,
       depthWrite: false,
-      blending: THREE.NormalBlending,
+      blending: THREE.AdditiveBlending,
+      fog: false,
     });
     const s = new THREE.Sprite(mat);
-    const sc = 300 + i * 120;        // smaller puffs
+    const sc = 500 + i * 160;
     s.scale.set(sc, sc * 0.78, 1);
-    // clustered near the lower-right corner, nested depths
-    s.position.set(520 + i * 90, -260 + i * 70, -420 - i * 60);
+    s.position.set(-900 + i * 500, -260 + i * 90, -420 - i * 60);
     s.userData = {
-      vx: 2.2 + i * 1.2,             // barely-there drift, ~1/3 the old speed
+      vx: 2.2 + i * 1.2,
       bobPhase: i * 2.1,
-      bobAmp: 8 + i * 4,
+      baseOpacity: 0.05 + i * 0.015,
     };
     smokeSprites.push(s);
     scene.add(s);
   }
 
-  /* --- 4. lamplight underfill -------------------------------------- */
+  /* --- 4. accent glow underfill ------------------------------------- */
 
-  // Pooled warm honey lying on the paper, not a light source: normal
-  // blending, gentle opacity; the flicker keeps it perceptible without
-  // washing the copy column.
-  const lampMat = new THREE.SpriteMaterial({
-    map: beamTexture,
-    color: 0xd8b070,
+  // Pooled violet glow lying behind the fg copy - not a light source,
+  // just depth. The flicker keeps it perceptible without blooming.
+  const glowMat = new THREE.SpriteMaterial({
+    map: glowTex,
+    color: 0x7c6cff,
     transparent: true,
-    opacity: 0.13,
+    opacity: 0.07,
     depthWrite: false,
-    blending: THREE.NormalBlending,
+    blending: THREE.AdditiveBlending,
+    fog: false,
   });
-  const lamp = new THREE.Sprite(lampMat);
-  lamp.scale.set(760, 540, 1);
-  lamp.position.set(-140, 60, -520); // behind the fg copy, not fullscreen
-  scene.add(lamp);
+  const glow = new THREE.Sprite(glowMat);
+  glow.scale.set(760, 540, 1);
+  glow.position.set(-140, 60, -520); // behind the fg copy, not fullscreen
+  scene.add(glow);
 
-  // Slow firelight breathing: longer-period summed sines, tighter
-  // amplitude, plus an occasional deep warm dip. Breathing ~ every 20s.
+  // Slow breathing: longer-period summed sines, tight amplitude,
+  // plus an occasional deep dip. Breathing ~ every 20s.
   function flick(t) {
     let v = 0.88
       + 0.08 * Math.sin(t * 0.31 + 1.7)
@@ -469,7 +327,7 @@ function initAnimated() {
     const s = Math.floor(t * 0.75); // dilated clock -> slower dip cadence
     let h = Math.sin(s * 12.9898) * 43758.5453;
     h -= Math.floor(h);
-    if (h > 0.935) v *= 0.72 + (h - 0.935) * 0.8; // deeper, warmer falloff
+    if (h > 0.935) v *= 0.72 + (h - 0.935) * 0.8;
     return Math.max(0.55, v);
   }
 
@@ -500,20 +358,14 @@ function initAnimated() {
     [window, 'resize', onResize],
   );
 
-  // --- per-frame mote updates (in place; no allocations) -----------
-  function updateShaftMotes(s, elapsed) {
-    const pos = s.geo.attributes.position.array;
-    for (let i = 0; i < s.beamCount; i++) {
-      // rise / settle along beam-local Y
-      pos[i * 3 + 1] += s.speeds[i];
-      if (pos[i * 3 + 1] > 200) pos[i * 3 + 1] = -200;
-      else if (pos[i * 3 + 1] < -200) pos[i * 3 + 1] = 200;
-      // gentle lateral swirl per mote
-      pos[i * 3] += Math.sin(elapsed * 0.35 + s.phases[i]) * 0.28;
-      if (pos[i * 3] > 700) pos[i * 3] = -700;
-      else if (pos[i * 3] < -700) pos[i * 3] = 700;
+  function updateDust() {
+    if (!ambientDust) return;
+    const pos = ambientDust.geo.attributes.position.array;
+    for (let i = 0; i < ambientDust.count; i++) {
+      pos[i * 3 + 1] += ambientDust.drift[i];
+      if (pos[i * 3 + 1] > 850) pos[i * 3 + 1] = -850;
     }
-    s.geo.attributes.position.needsUpdate = true;
+    ambientDust.geo.attributes.position.needsUpdate = true;
   }
 
   function teardown() {
@@ -528,10 +380,10 @@ function initAnimated() {
     removeEventListener('pointermove', onPointerMove);
     removeEventListener('resize', onResize);
     visibilityObserver.disconnect();
-    disposeTexture(dustSprite);
-    disposeTexture(beamTexture);
-    disposeTexture(smokeTex);
     disposeTexture(starTex);
+    disposeTexture(dustTex);
+    disposeTexture(glowTex);
+    disposeTexture(smokeTex);
   }
 
   function animate() {
@@ -546,12 +398,11 @@ function initAnimated() {
     window.__dbgFrames = (window.__dbgFrames || 0) + 1;
     if (window.__dbgEat === 1) return; // skip everything after render above
 
-
     mouse.x += (mouse.tx - mouse.x) * 0.04;
     mouse.y += (mouse.ty - mouse.y) * 0.04;
 
-    // 0. ink-stars drift toward the camera (fly-through); on exit they
-    // respawn at the far plane with fresh x/y so the wrap is unseeable
+    // 1. stars drift toward the camera; on exit they respawn at the
+    //    far plane with fresh x/y so the wrap is unseeable
     {
       const pos = starGeo.attributes.position.array;
       for (let i = 0; i < STAR_COUNT; i++) {
@@ -565,33 +416,22 @@ function initAnimated() {
       starGeo.attributes.position.needsUpdate = true;
     }
 
-    // 1. shafts breathe with the lamp; cradle a barely-there sway
-    for (const s of shaftState) {
-      s.beamMat.opacity = s.cfg.opacity * (0.6 + flickV * 0.5);
-      s.group.rotation.z = s.cfg.baseAngle
-        + Math.sin(elapsed * 0.17 + s.cfg.swayPhase) * 0.018;
-      updateShaftMotes(s, elapsed);
-    }
+    // 2. ambient dust rises slowly
+    updateDust();
 
-    // 2. rose turns imperceptibly, like a water wheel under a porch
-    rose.rotation.z += 0.00022;
-    rose.rotation.y = mouse.x * 0.04;
-    rose.rotation.x = -mouse.y * 0.03;
-
-    // 3. smoke drifts, wraps, breathes
+    // 3. haze drifts, bobs, breathes (world-unit wrap, not px)
     for (const s of smokeSprites) {
       s.position.x += s.userData.vx * 0.016;
-      if (s.position.x > innerWidth + s.scale.x + 300) s.position.x = -s.scale.x - 300;
+      const wrapAt = 1600 + s.scale.x;
+      if (s.position.x > wrapAt) s.position.x = -wrapAt;
       s.position.y += Math.sin(elapsed * 0.11 + s.userData.bobPhase) * 0.05;
-      // base opacities 0.05-0.08; multiplier retuned so the flicker
-      // modulates without pushing final visible opacity past ~0.08
-      s.material.opacity = (0.05 + smokeSprites.indexOf(s) * 0.015) * (0.55 + flickV * 0.35);
+      s.material.opacity = s.userData.baseOpacity * (0.55 + flickV * 0.35);
     }
 
-    // 4. lamplight breathes
-    lampMat.opacity = 0.095 * flickV;
+    // 4. accent glow breathes
+    glowMat.opacity = 0.05 * flickV;
 
-    // camera: settled parallax only - no rotating world
+    // camera: settled parallax only
     const sc = scrollY * 0.25;
     camera.position.y = -sc * 0.4 + mouse.y * 12;
     camera.position.x = mouse.x * 18;
