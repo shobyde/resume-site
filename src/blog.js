@@ -1,144 +1,142 @@
 /* ============================================================
-   Blog loader + hash router - reads content/posts/index.json.
-   The Daily Log is a simple ledger-style list (title, date,
-   one-liner); every entry opens on its own dedicated page at
-   #/post/<slug>, which is deep-linkable and share-friendly.
-   Cron pipeline writes new files.
+   Blog loader - reads content/posts/index.json, renders cards,
+   opens posts in a side modal. Cron pipeline writes new files.
    ============================================================ */
-import { motionPrefs } from './motionPrefs.js';
-
-const POST_HASH = /^#\/post\/(.+)$/;
-const SECTION_HASH = /^#(about|experience|skills|blog|contact)$/;
-
-let posts = [];
 
 export async function initBlog() {
   const grid = document.getElementById('blogGrid');
-  const postView = document.getElementById('postView');
-  if (!grid || !postView) return { posts: [] };
+  if (!grid) return { posts: [] };
 
-  window.addEventListener('hashchange', route);
-
+  let posts = [];
   try {
     const res = await fetch('/content/posts/index.json');
     if (res.ok) posts = await res.json();
   } catch (e) { /* offline or no file - show empty state below */ }
 
+  posts = posts.filter((p) => /kickoff|intro/i.test(p.slug + ' ' + (p.title||'')));
   if (!posts.length) {
-    grid.innerHTML = `<p class="blog-empty">No posts yet - the daily writer hasn't woken up. Check back tomorrow morning.</p>`;
-  } else {
-    renderList(grid);
+    grid.innerHTML = `<p style="color:var(--fg-mute);font-size:.9rem">No posts yet - the daily writer hasn't woken up. Check back tomorrow morning.</p>`;
+    return { posts: [] };
   }
 
-  // A deep link (#/post/<slug>) routes once the index attempt settles, so
-  // title/meta resolve from the index on cold loads. If the fetch hangs
-  // (boot caps initBlog at 3s), this failsafe routes anyway - posts stays
-  // empty and the post page falls back to the entry's own # heading.
-  route();
-  setTimeout(() => { if (!postOpened) route(); }, 3500);
-  return { posts };
-}
-
-let postOpened = false;
-
-/* ---------- ledger-style list ---------- */
-function renderList(grid) {
-  posts.forEach((post, i) => {
+  // show 6 latest
+  posts.slice(0, 1).forEach((post, i) => {
     const a = document.createElement('a');
-    a.className = 'post-row reveal';
-    a.href = `#/post/${post.slug}`;
+    a.className = 'post-card reveal';
+    a.href = `?post=${post.slug}`;
     a.dataset.slug = post.slug;
     a.style.transitionDelay = `${i * 60}ms`;
     a.innerHTML = `
-      <span class="post-row__meta mono">${post.date} · ${post.tag || 'log'}</span>
-      <span class="post-row__copy">
-        <span class="post-row__title">${esc(post.title)}</span>
-        <span class="post-row__excerpt">${esc(post.excerpt)}</span>
-      </span>
-      <span class="post-row__read hand" aria-hidden="true">read</span>
+      <span class="post-card__date">${post.date} · ${post.tag || 'log'}</span>
+      <span class="post-card__title">${esc(post.title)}</span>
+      <span class="post-card__excerpt">${esc(post.excerpt)}</span>
+      <span class="post-card__read">Read →</span>
     `;
+    a.addEventListener('pointermove', (e) => {
+      const r = a.getBoundingClientRect();
+      a.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      a.style.setProperty('--my', `${e.clientY - r.top}px`);
+    });
+    a.addEventListener('click', (e) => { e.preventDefault(); openArticle(post); });
     grid.appendChild(a);
   });
 
-  // observe reveals after rows land in the DOM
+  // observe reveals again
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) if (e.isIntersecting) { e.target.classList.add('is-inview'); io.unobserve(e.target); }
   }, { threshold: 0.1 });
   grid.querySelectorAll('.reveal').forEach((el) => io.observe(el));
-}
 
-/* ---------- small in-app router (home <-> post page) ---------- */
-function route() {
-  const m = location.hash.match(POST_HASH);
-  if (m) openPostPage(decodeURIComponent(m[1]));
-  else showHomeFromPost();
-}
-
-function showHomeFromPost() {
-  const postView = document.getElementById('postView');
-  if (!postView || postView.hidden) return; // home already showing - nothing to do
-  postView.hidden = true;
-  postView.querySelector('.postview__sheet')?.classList.remove('is-open');
-  const homeView = document.getElementById('homeView');
-  if (homeView) homeView.style.display = '';
-  document.title = BASE_TITLE;
-
-  // browser can't auto-jump: the section was display:none at hash change,
-  // so scroll manually to whatever nav section was requested.
-  const m = SECTION_HASH.exec(location.hash);
-  if (m) {
-    const el = document.getElementById(m[1]);
-    if (el) el.scrollIntoView({ behavior: motionPrefs.reduced ? 'auto' : 'smooth' });
+  wireModal();
+  // open article if URL requests one
+  const req = new URLSearchParams(location.search).get('post');
+  if (req) {
+    const p = posts.find((x) => x.slug === req);
+    if (p) openArticle(p);
   }
-}
-
-async function openPostPage(slug) {
-  postOpened = true; // set before any await - a slow md fetch still counts as opened
-  const homeView = document.getElementById('homeView');
-  const postView = document.getElementById('postView');
-  const flow = postView?.querySelector('.postview__sheet');
-  if (!postView || !flow) return;
-
-  const post = posts.find((p) => p.slug === slug) || null;
-
-  if (homeView) homeView.style.display = 'none';
-  postView.hidden = false;
-  window.scrollTo(0, 0); // Lenis resyncs via the native scroll event
-  void flow.offsetWidth;  // force a layout pass so the fade-in transition runs
-  flow.classList.add('is-open');
-
-  const meta = document.getElementById('postMeta');
-  const title = document.getElementById('postTitle');
-  const body = document.getElementById('postBody');
-  const heading = post ? post.title : 'Log entry';
-  title.textContent = heading;
-  meta.textContent = post ? `${post.date} · ${post.tag || 'log'}` : '';
-  body.innerHTML = '<p class="post-body__loading">Loading entry…</p>';
-  document.title = `${heading} · Sho Byde`;
-
-  try {
-    const res = await fetch(`/content/posts/${slug}.md`);
-    if (!res.ok) throw new Error(res.status);
-    const md = await res.text();
-    // no index entry (e.g. deep link raced the fetch): fall back to the
-    // entry's own # heading for the title; meta stays whatever we set above.
-    if (!post) {
-      const h1 = md.match(/^# (.+)$/m);
-      if (h1) title.textContent = h1[1];
-      meta.textContent = '';
+  addEventListener('popstate', () => {
+    const slug = new URLSearchParams(location.search).get('post');
+    if (slug) {
+      const p = posts.find((x) => x.slug === slug);
+      if (p) openArticle(p);
+    } else {
+      closeArticle();
+      document.title = 'Sho Byde - Software Engineer';
     }
-    body.innerHTML = mdToHtml(md);
-  } catch (e) {
-    body.innerHTML = `<p>Couldn't load this entry (${e.message}). It may not exist - try <a href="#blog">back to the log</a>.</p>`;
+  });
+  return { posts };
+}
+
+/* ---------- modal ---------- */
+function wireModal() {
+  const overlay = document.getElementById('modalOverlay');
+  const modal = document.getElementById('postModal');
+  overlay.addEventListener('click', closeModal);
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+  modal.parentElement.addEventListener('click', (e) => e.stopPropagation());
+}
+
+async function openArticle(post) {
+  try { history.pushState({post: post.slug}, '', `?post=${post.slug}`); } catch {}
+  document.title = `${post.title} - Sho Byde`;
+
+  const site = document.getElementById('app');
+  if (site) site.style.display = 'none';
+
+  let view = document.getElementById('articleView');
+  if (!view) {
+    view = document.createElement('div');
+    view.id = 'articleView';
+    view.style.cssText = 'position:fixed;inset:0;z-index:800;background:var(--bg,#0b0b0f);overflow:auto;padding:clamp(1rem,4vw,3rem);';
+    document.body.appendChild(view);
   }
+  view.style.display = 'block';
+  view.innerHTML = `
+    <div style="max-width:760px;margin:0 auto;">
+      <a href="/" id="articleBack" style="display:inline-block;margin-bottom:1.5rem;color:#fff;text-decoration:underline;font-weight:600;">← back to site</a>
+      <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);margin:.2rem 0 .6rem">${escapeHtml(post.title)}</h1>
+      <div style="color:var(--fg-mute,#888);font-size:.85rem;margin-bottom:2rem;">${post.date} · ${post.tag || 'log'} · by ${post.author || 'Sho Byde'}</div>
+      <div id="articleBody"><p style="color:var(--fg-mute)">Loading…</p></div>
+    </div>
+  `;
+  document.getElementById('articleBack').addEventListener('click', (e) => { e.preventDefault(); closeArticle(); });
+
+  const body = document.getElementById('articleBody');
+  try {
+    const res = await fetch(`/content/posts/${post.slug}.md`);
+    if (!res.ok) throw new Error(res.status);
+    body.innerHTML = mdToHtml(await res.text());
+  } catch (e) {
+    body.innerHTML = `<p>Couldn't load this post (${e.message}).</p>`;
+  }
+  view.scrollTop = 0;
+}
+
+function closeArticle() {
+  const view = document.getElementById('articleView');
+  if (view) view.style.display = 'none';
+  const site = document.getElementById('app');
+  if (site) site.style.display = '';
+  document.title = 'Sho Byde - Software Engineer';
+  try { history.pushState({}, '', window.location.pathname); } catch {}
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('is-open');
+  document.getElementById('postModal').classList.remove('is-open');
+  document.title = 'Sho Byde - Software Engineer';
+  try { history.pushState({}, '', window.location.pathname); } catch {}
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 /* ---------- tiny markdown renderer ---------- */
-const BASE_TITLE = typeof document !== 'undefined' ? document.title : 'Sho Byde - Software Engineer';
-
 function mdToHtml(md) {
-  // strip front-matter (before first ---)
-  md = md.replace(/^#[^\n]*\n(?:Tag:[^\n]*\n)?(?:Subtitle:[^\n]*\n)?\n*---\n?/, '');
+  // strip front-matter up to first horizontal rule
+  md = md.replace(/^[\s\S]*?^---\s*$/m, '');
   // fenced code
   md = md.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
     return `<pre><code class="lang-${lang}">${escapeCode(code.trim())}</code></pre>`;
@@ -152,6 +150,7 @@ function mdToHtml(md) {
     if (inList) html += `<li>${inline(line.slice(2))}</li>`;
     else if (line.startsWith('### ')) html += `<h2>${inline(line.slice(4))}</h2>`;
     else if (line.startsWith('## ')) html += `<h2>${inline(line.slice(3))}</h2>`;
+    else if (line.startsWith('# ')) html += `<h2>${inline(line.slice(2))}</h2>`;
     else if (line.trim() === '') { /* spacer */ }
     else html += `<p>${inline(line)}</p>`;
   }
@@ -162,6 +161,7 @@ function inline(s) {
   return s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
           .replace(/\*(.+?)\*/g, '<em>$1</em>')
           .replace(/`(.+?)`/g, '<code>$1</code>')
+          .replace(/!\[(.+?)\]\((.+?)\)/g, '<img src="$2" alt="$1" style="max-width:100%;border-radius:10px;margin:1rem 0;" loading="lazy" />')
           .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:var(--accent)">$1</a>');
 }
 function esc(s) {

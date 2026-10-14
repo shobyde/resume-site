@@ -3,6 +3,7 @@ import { resolve } from 'path';
 
 export default defineConfig({
   base: '/',
+  server: { watch: { usePolling: true, interval: 300 } },
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

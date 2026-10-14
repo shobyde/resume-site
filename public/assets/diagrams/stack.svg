@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="420" viewBox="0 0 720 420">
+  <rect width="720" height="420" fill="#0b0b0f"/>
+  <text x="360" y="36" fill="#e8e8f0" font-family="sans-serif" font-size="18" text-anchor="middle">Tech stack</text>
+  <g fill="#151520" stroke="#7c6cff" stroke-width="2">
+    <rect x="40" y="70" width="640" height="60" rx="10"/>
+    <rect x="40" y="150" width="310" height="60" rx="10"/>
+    <rect x="370" y="150" width="310" height="60" rx="10"/>
+    <rect x="40" y="230" width="640" height="60" rx="10"/>
+    <rect x="40" y="310" width="640" height="60" rx="10"/>
+  </g>
+  <g fill="#e8e8f0" font-family="sans-serif" font-size="14" text-anchor="middle">
+    <text x="360" y="105">Browser</text>
+    <text x="195" y="185">Vite (build)</text>
+    <text x="525" y="185">Three.js (starfield)</text>
+    <text x="360" y="265">Vanilla JS + CSS (no React/Tailwind)</text>
+    <text x="360" y="345">Cloudflare Pages (static hosting)</text>
+  </g>
+  <g fill="#8a8aa0" font-family="sans-serif" font-size="12" text-anchor="middle">
+    <text x="360" y="122">runtime fetches markdown posts</text>
+  </g>
+</svg>

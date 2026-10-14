@@ -23,9 +23,9 @@
   {
     "slug": "2026-10-13-site-kickoff",
     "date": "2026-10-13",
-    "title": "Site kickoff",
-    "tag": "dev",
-    "excerpt": "This site, this log, and the plan"
+    "title": "Introduction to the site",
+    "tag": "intro",
+    "excerpt": "What this site is and how it was built."
   },
   {
     "slug": "2026-10-13-approval-is-the-new-click",

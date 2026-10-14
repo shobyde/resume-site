@@ -5,11 +5,7 @@ import { DATA } from './data.js';
 import { initBackground } from './background.js';
 import { initCursor, initSmoothScroll, initReveals, initMagnetic } from './motion.js';
 import { initStreamText, initScrollStream } from './streamText.js';
-import { hwEnqueue, HW_HERO_OPTS } from './handwrite.js';
-import { initFeedback } from './feedback.js';
 import { initBlog } from './blog.js';
-import { motionPrefs } from './motionPrefs.js';
-import './stains.js';
 import './styles/main.css';
 import './styles/sections.css';
 
@@ -41,7 +37,6 @@ function buildPage() {
   `).join('');
 
   return `
-  <div id="homeView">
   <nav class="nav" id="nav">
     <a href="#about" class="nav__link">About</a>
     <a href="#experience" class="nav__link">Experience</a>
@@ -65,8 +60,15 @@ function buildPage() {
   </header>
 
   <main class="container">
+    <!-- BLOG -->
+    <section class="section" id="blog">
+      <div class="eyebrow">04 - Daily Log</div>
+      <h2 class="section-title reveal">Written by the machine, curated by me</h2>
+      <p class="section-sub">An AI-assisted daily log - news, notes, and build updates, published automatically every morning and curated by a human (me).</p>
+      <div class="blog__grid" id="blogGrid"></div>
+    </section>
     <!-- ABOUT -->
-    <section class="section section--tight" id="about">
+    <section class="section" id="about">
       <div class="eyebrow">01 - About</div>
       <h2 class="section-title reveal">Where code meets culture</h2>
       <div class="about__grid">
@@ -93,20 +95,12 @@ function buildPage() {
       <div class="skills__grid">${skills}</div>
     </section>
 
-    <!-- BLOG -->
-    <section class="section" id="blog">
-      <div class="eyebrow">04 - Daily Log</div>
-      <h2 class="section-title reveal">Written by the machine, curated by me</h2>
-      <p class="section-sub">An AI-assisted daily log - news, notes, and build updates, published automatically every morning and curated by a human (me).</p>
-      <div class="blog__list" id="blogGrid"></div>
-    </section>
 
     <!-- CONTACT -->
     <section class="section contact" id="contact">
       <div class="eyebrow" style="justify-content:center">05 - Contact</div>
       <h2 class="section-title reveal">Let's build something.</h2>
       <p class="section-sub reveal">Open to interesting problems, consulting work, or just a coffee chat about code.</p>
-      <p class="contact__sign reveal hand">~ Sho</p>
       <div class="contact__links reveal">
         <a href="mailto:${DATA.contact.email}" class="btn btn--primary">Email me</a>
         <a href="${DATA.contact.linkedin}" target="_blank" rel="noopener" class="btn">LinkedIn</a>
@@ -116,26 +110,20 @@ function buildPage() {
 
   <div class="container"><footer class="footer">
     <div>© ${new Date().getFullYear()} Sho Byde</div>
-    <div>Built with Three.js · Hosted on Cloudflare Pages</div>
   </footer></div>
-  </div><!-- /homeView -->
 
-  <!-- Dedicated post page (hash-routed at #/post/<slug>) -->
-  <div class="postview" id="postView" hidden>
-    <div class="postview__sheet">
-      <div class="postview__head">
-        <a href="#blog" class="postview__back hand">&larr; Back to the log</a>
-        <div class="postview__meta mono" id="postMeta"></div>
-      </div>
-      <h1 class="postview__title" id="postTitle"></h1>
-      <div class="postview__body" id="postBody"></div>
-    </div>
+  <!-- Post modal -->
+  <div class="modal-overlay" id="modalOverlay"></div>
+  <div class="modal" id="postModal">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <div class="modal__meta" id="modalMeta"></div>
+    <h2 class="modal__title" id="modalTitle"></h2>
+    <div class="modal__body" id="modalBody"></div>
   </div>
   `;
 }
 
 function initCounters() {
-  const reduced = motionPrefs.reduced;
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (!e.isIntersecting) continue;
@@ -143,7 +131,6 @@ function initCounters() {
       const el = e.target;
       const target = +el.dataset.count;
       const suffix = el.dataset.suffix || '';
-      if (reduced) { el.textContent = target + suffix; continue; } // final value, no count-up
       const dur = 1400;
       const start = performance.now();
       (function tick(now) {
@@ -162,7 +149,6 @@ async function boot() {
   const loader = document.getElementById('loader');
   const fill = document.getElementById('loaderFill');
   const pct = document.getElementById('loaderPct');
-  const reduced = motionPrefs.reduced;
 
   // fake-ish but tied to real progress
   let progress = 0;
@@ -187,7 +173,6 @@ async function boot() {
   initStreamText();
   initScrollStream();
   initMagnetic();
-  initFeedback();
   initCounters();
   await withTimeout(initBlog(), 3000);
   navSpy();
@@ -199,44 +184,25 @@ async function boot() {
 }
 
 function heroIntro() {
-  const tag = document.getElementById('heroTag');
   const name = document.getElementById('heroName');
-  const role = document.getElementById('heroRole');
-  const cta = document.getElementById('heroCta');
-  const scroll = document.getElementById('heroScroll');
-  const reduced = motionPrefs.reduced;
+  const chars = DATA.hero.name.split('');
+  name.innerHTML = chars.map((c) => c === ' '
+    ? '<span class="word">&nbsp;</span>'
+    : `<span class="word"><span class="char">${c}</span></span>`).join('');
 
-  // The name is plain text (no inline markup), safe to set directly.
-  name.textContent = DATA.hero.name;
+  const tl = [
+    ['#heroName', 'opacity:1', 0],
+    ['#heroTag', 'opacity:1', 2],
+    ['#heroRole', 'opacity:1', 0],
+    ['#heroCta', 'opacity:1', 0],
+    ['#heroScroll', 'opacity:1', 0],
+  ];
+  tl.forEach(([sel, style, d]) => setTimeout(() => { document.querySelector(sel).style.opacity = 1; }, 900 + d * 1000));
 
-  if (reduced) {
-    // No split, no overlay, no cascade - everything visible at first paint.
-    [tag, name, role, cta, scroll].forEach((el) => { if (el) el.style.opacity = '1'; });
-    return;
-  }
-
-  // THE PEN DOES THE ENTRANCE. Containers go opaque immediately; the
-  // mask wipe inside handwrite keeps the glyphs un-inked until the pen
-  // front reaches them, so there is no whole-container fade anymore.
-  [tag, name, role].forEach((el) => { if (el) el.style.opacity = '1'; });
-
-  // Boot writing order: tag -> name -> role, all through the ONE
-  // page-wide FIFO. All three ENQUEUE up front - queue position is
-  // what orders them (chaining enqueue-on-completion would let body
-  // paragraphs intersecting during the tag's write cut in before the
-  // name). hwEnqueue's promise resolves when that element finishes
-  // writing (also on instant-settle paths, so the chain survives a
-  // live reduced-motion flip).
-  const write = (el, opts) => hwEnqueue(el, { ...HW_HERO_OPTS, ...opts });
-  write(tag, { id: 'heroTag' });
-  write(name, { id: 'heroName', glyphMs: 1000 / 55 });
-  write(role, { id: 'heroRole', glyphMs: 1000 / 140 }).then(() => {
-    // UI fades follow the finished writing, they don't replace it.
-    if (cta) {
-      cta.style.transition = 'opacity 0.6s ease';
-      cta.style.opacity = '1';
-    }
-    setTimeout(() => { if (scroll) scroll.style.opacity = '1'; }, 200);
+  // stagger chars
+  document.querySelectorAll('.hero__name .char').forEach((ch, i) => {
+    ch.style.transition = `transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) ${0.15 + i * 0.045}s`;
+    requestAnimationFrame(() => requestAnimationFrame(() => { ch.style.transform = 'translateY(0)'; }));
   });
 }
 

@@ -3,9 +3,9 @@
    ============================================================ */
 export const DATA = {
   hero: {
-    tag: 'Software engineer · PNW',
+    tag: '// software engineer - PNW',
     name: 'Sho Byde',
-    role: 'Building <span class="accent">APIs, cloud systems & client-facing apps</span> for 12+ years – now teaching machines and mentoring humans.',
+    role: 'Building <span class="accent">APIs, cloud systems & client-facing apps</span> for 12+ years - now teaching machines and mentoring humans.',
   },
   about: {
     p1: `I've spent <strong>over 12 years</strong> in software and web development, working primarily in Agile environments across Node.js, Express, Next.js, Vite, and Yii - with deep fluency in JavaScript, PHP, Python, Terraform, C#, and MySQL.`,

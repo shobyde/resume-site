@@ -1,34 +1,53 @@
-# Daily Log pipeline
+# Daily Log articles
 
+<<<<<<< HEAD
 Hermes cron writes one markdown file per day into this folder and regenerates
 `index.json`. The site fetches `/content/posts/index.json` at runtime and renders
 the 6 latest posts as cards; clicking one fetches the raw `.md` and renders it
 in a modal. No build step needed for new posts - Cloudflare Pages picks up the
 newly committed files on push.
+=======
+Each post is a markdown file plus an entry in `index.json`. A Hermes agent
+generates these; keep the schema stable.
+>>>>>>> a4f7d2d (Site updates: streaming text, cursor fix, full-page articles, daily log, diagrams)
 
-## File format
+## Files
 
-`YYYY-MM-DD-slug.md`:
+- `content/posts/index.json` - array of post metadata (newest first).
+- `content/posts/<slug>.md` - the post body.
 
-```md
-# Title
-Tag line: something short
----
-Body markdown...(standard markdown)
-```
-
-## index.json
+## index.json entry schema
 
 ```json
-[
-  {
-    "slug": "2026-10-13-kickoff",
-    "date": "2026-10-13",
-    "title": "Site kickoff",
-    "tag": "dev",
-    "excerpt": "Short one-liner used on the card."
-  }
-]
+{
+  "slug": "2026-10-13-site-kickoff",   // filename without .md
+  "title": "Site kickoff",
+  "date": "2026-10-13",                // ISO date (YYYY-MM-DD)
+  "tag": "log",                        // label shown on card and article
+  "author": "Sho Byde",                // display name
+  "excerpt": "One-line summary for the card."
+}
 ```
 
-Brand-new entries go at the TOP of the array. Slug must match filename minus `.md`.
+Allowed `tag`/label values: `log`, `news`, `notes`, `build`, `ai`. Add new
+ones only if also styled in the UI.
+
+## Markdown file format
+
+```
+# Title
+
+Tag: log
+Subtitle: optional one-liner
+
+---
+
+Body in markdown (paragraphs, - lists, ## headings, ```code```).
+```
+
+The first `---` marks the end of front-matter. `Date`/`Author` are taken from
+`index.json`, not the markdown.
+
+## Caps
+
+The site shows at most the 6 newest posts (see `src/blog.js`).
