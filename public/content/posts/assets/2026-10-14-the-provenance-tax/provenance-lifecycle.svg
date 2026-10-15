@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 500" width="820" height="500" role="img">
+  <title>One lifecycle, two provenance payments</title>
+  <desc>The model lifecycle shown as one timeline: on the input side, training corpora move from shut-down startups to labs, who pay in dollars and legal exposure to establish provenance; the trained model emits text; downstream agent pipelines pay in throughput and quality to prove the text is watermarked and trustworthy.</desc>
+  <rect x="0" y="0" width="820" height="500" fill="#f2e9d8"/>
+  <rect x="10" y="10" width="800" height="480" fill="none" stroke="#c9bda4" stroke-width="1.5"/>
+
+  <!-- lifecycle spine -->
+  <line x1="60" y1="250" x2="740" y2="250" stroke="#3a3126" stroke-width="1.6"/>
+  <polygon points="752,250 740,244 740,256" fill="#3a3126"/>
+
+  <!-- input end, attached to spine -->
+  <line x1="160" y1="190" x2="160" y2="250" stroke="#3a3126" stroke-width="1.2"/>
+  <rect x="70" y="60" width="180" height="130" rx="6" fill="#e9dcc3" stroke="#3a3126" stroke-width="1.5"/>
+  <text x="160" y="88" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" font-weight="bold" fill="#3a3126">input end</text>
+  <line x1="82" y1="100" x2="238" y2="100" stroke="#c9bda4" stroke-width="1"/>
+  <text x="88" y="122" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#4a4136">dead-startup corpora</text>
+  <text x="88" y="142" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#4a4136">bought by labs</text>
+  <text x="88" y="170" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" font-style="italic" fill="#8a3d2a">paid: dollars, legal risk</text>
+
+  <!-- output end, attached to spine -->
+  <line x1="660" y1="190" x2="660" y2="250" stroke="#3a3126" stroke-width="1.2"/>
+  <rect x="570" y="60" width="180" height="130" rx="6" fill="#e9dcc3" stroke="#3a3126" stroke-width="1.5"/>
+  <text x="660" y="88" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" font-weight="bold" fill="#3a3126">output end</text>
+  <line x1="582" y1="100" x2="738" y2="100" stroke="#c9bda4" stroke-width="1"/>
+  <text x="588" y="122" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#4a4136">watermarked text</text>
+  <text x="588" y="142" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#4a4136">consumed by agents</text>
+  <text x="588" y="170" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" font-style="italic" fill="#8a3d2a">paid: throughput, quality</text>
+
+  <!-- model event on spine -->
+  <circle cx="400" cy="250" r="22" fill="#f2e9d8" stroke="#3a3126" stroke-width="1.5"/>
+  <text x="400" y="256" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#3a3126">model</text>
+  <text x="400" y="296" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#6f6553">one lifecycle, two ends, two different payments</text>
+
+  <!-- who pays table -->
+  <rect x="110" y="322" width="600" height="134" rx="6" fill="none" stroke="#3a3126" stroke-width="1.2"/>
+  <text x="132" y="346" font-family="Georgia, 'Times New Roman', serif" font-size="13.5" font-weight="bold" fill="#3a3126">who pays</text>
+  <line x1="126" y1="356" x2="694" y2="356" stroke="#c9bda4" stroke-width="1"/>
+  <text x="132" y="380" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" font-weight="bold" fill="#3a3126">who receives the benefit</text>
+  <text x="132" y="402" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#4a4136">the lab: attributable, defensible data and text</text>
+  <text x="132" y="428" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" font-weight="bold" fill="#3a3126">who absorbs the cost</text>
+  <text x="132" y="448" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#4a4136">the agent pipeline downstream: slower runs, degraded completions</text>
+
+  <text x="410" y="478" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="12" font-style="italic" fill="#6f6553">externality, my reading: benefit accrues upstream; cost lands downstream without opt-in</text>
+</svg>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 470" width="820" height="470" role="img">
+  <title>Agent UI stack: the state layer exists, the component layer does not</title>
+  <desc>Agent runtime events such as token deltas, tool calls, approval requests, traces, and cost counters flow through the agent state layer, which is already shipped in SDKs like useStream and the Vercel AI SDK, into a dashed component layer of approval flows, trace viewers, tool inspectors, and cost meters that no library ships today.</desc>
+  <rect x="0" y="0" width="820" height="470" fill="#f2e9d8"/>
+  <rect x="10" y="10" width="800" height="450" fill="none" stroke="#c9bda4" stroke-width="1.5"/>
+
+  <!-- left: agent runtime events -->
+  <rect x="40" y="140" width="190" height="200" rx="6" fill="none" stroke="#3a3126" stroke-width="1.5"/>
+  <text x="135" y="167" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" font-weight="bold" fill="#3a3126">agent runtime</text>
+  <line x1="52" y1="178" x2="218" y2="178" stroke="#c9bda4" stroke-width="1"/>
+  <text x="58" y="202" font-family="Georgia, 'Times New Roman', serif" font-size="13.5" fill="#4a4136">token deltas</text>
+  <text x="58" y="226" font-family="Georgia, 'Times New Roman', serif" font-size="13.5" fill="#4a4136">tool_call</text>
+  <text x="58" y="250" font-family="Georgia, 'Times New Roman', serif" font-size="13.5" fill="#4a4136">approval_request</text>
+  <text x="58" y="274" font-family="Georgia, 'Times New Roman', serif" font-size="13.5" fill="#4a4136">trace</text>
+  <text x="58" y="298" font-family="Georgia, 'Times New Roman', serif" font-size="13.5" fill="#4a4136">cost</text>
+
+  <!-- arrow 1 -->
+  <line x1="238" y1="240" x2="288" y2="240" stroke="#3a3126" stroke-width="1.8"/>
+  <polygon points="296,240 285,235 285,245" fill="#3a3126"/>
+
+  <!-- middle: state layer, shipped -->
+  <rect x="302" y="190" width="168" height="100" rx="6" fill="#e9dcc3" stroke="#3a3126" stroke-width="1.5"/>
+  <text x="386" y="220" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" font-weight="bold" fill="#3a3126">state layer</text>
+  <text x="386" y="242" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#6f6553">shipped: useStream(),</text>
+  <text x="386" y="260" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#6f6553">Vercel AI SDK</text>
+
+  <!-- arrow 2 -->
+  <line x1="478" y1="240" x2="520" y2="240" stroke="#3a3126" stroke-width="1.8"/>
+  <polygon points="528,240 517,235 517,245" fill="#3a3126"/>
+
+  <!-- right: dashed component layer, missing -->
+  <rect x="530" y="120" width="255" height="280" rx="6" fill="none" stroke="#8a3d2a" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="657" y="150" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" font-weight="bold" fill="#8a3d2a">component layer</text>
+  <text x="657" y="170" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="12" font-style="italic" fill="#8a3d2a">missing: no library ships these</text>
+
+  <rect x="548" y="195" width="105" height="48" rx="5" fill="none" stroke="#3a3126" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="600" y="224" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#3a3126">ApprovalFlow</text>
+  <rect x="668" y="195" width="102" height="48" rx="5" fill="none" stroke="#3a3126" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="719" y="224" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#3a3126">TraceViewer</text>
+  <rect x="548" y="262" width="105" height="48" rx="5" fill="none" stroke="#3a3126" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="600" y="291" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#3a3126">ToolInspector</text>
+  <rect x="668" y="262" width="102" height="48" rx="5" fill="none" stroke="#3a3126" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="719" y="291" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#3a3126">CostMeter</text>
+
+  <text x="657" y="340" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="12" font-style="italic" fill="#6f6553">hand-rolled per team, discarded on each redesign</text>
+
+  <!-- caption: the analogy mapping -->
+  <text x="410" y="422" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" font-style="italic" fill="#6f6553">dataviz 2011: D3 shipped raw generators; wrapper libraries came later.</text>
+  <text x="410" y="442" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" font-style="italic" fill="#6f6553">agent ui 2026: the state layer shipped first; reusable components have not followed.</text>
+</svg>
