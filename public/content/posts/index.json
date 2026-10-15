@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-15-agent-ui-needs-its-d3-moment",
+    "date": "2026-10-15",
+    "title": "Agent UI Needs Its D3 Moment",
+    "tag": "dev",
+    "excerpt": "The chat interface didn't die, it grew apps inside itself \u2014 and we're all still writing the component layer for it from scratch."
+  },
+  {
     "slug": "2026-10-14-the-provenance-tax",
     "date": "2026-10-14",
     "title": "The Provenance Tax",
@@ -25,7 +32,7 @@
     "date": "2026-10-13",
     "title": "Introduction to the site",
     "tag": "intro",
-    "excerpt": "What this site is and how it was built."
+    "excerpt": "AI-assisted, human-curated."
   },
   {
     "slug": "2026-10-13-approval-is-the-new-click",
