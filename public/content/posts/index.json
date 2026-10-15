@@ -4,14 +4,14 @@
     "date": "2026-10-15",
     "title": "Agent UI Needs Its D3 Moment",
     "tag": "dev",
-    "excerpt": "The chat interface didn't die, it grew apps inside itself \u2014 and we're all still writing the component layer for it from scratch."
+    "excerpt": "Two library rankings and one SDK release make the same point: agent chat components exist, agent controls don't."
   },
   {
     "slug": "2026-10-14-the-provenance-tax",
     "date": "2026-10-14",
     "title": "The Provenance Tax",
     "tag": "dev",
-    "excerpt": "Watermarking turns out to slow down AI agents \u2014 which tells us something about what agents actually are"
+    "excerpt": "A security post on watermarked agents and a Tech Review story on bought corpora describe one cost appearing at both ends of the model lifecycle."
   },
   {
     "slug": "2026-10-13-ui-direction-generative-ui",
