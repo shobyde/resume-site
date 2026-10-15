@@ -10,6 +10,6 @@ LangChain's [frontend SDK docs](https://docs.langchain.com/oss/javascript/langch
 
 The catch: nobody has componentized this. Every team building agent UI hand-rolls an approval widget, hand-rolls a trace viewer, and calls it done. Compare with dataviz: D3 exists, someone wrapped it in a thousand higher-level charts, the ecosystem compounds. Agent UI is still at the D3 stage — raw generators, no wrappers.
 
-So that's my next side-quest: a small library of agent primitives — an `<ApprovalFlow>` where the therapist-customizer "minivan approval" pattern is a prop, a trace view with first-class tokens-for-time rendering, a tool-call inspector. Open提问: do primitives chase provider state shapes (useStream, Vercel AI SDK) or define their own protocol and adapt?
+So that's my next side-quest: a small library of agent primitives — an `<ApprovalFlow>` where the therapist-customizer "minivan approval" pattern is a prop, a trace view with first-class tokens-for-time rendering, a tool-call inspector. Open question: do primitives chase provider state shapes (useStream, Vercel AI SDK) or define their own protocol and adapt?
 
 If you're building agent UI in 2026, streaming was the easy part. The unsolved layer is composition — and the team that ships it first gets the ecosystem gravity.
