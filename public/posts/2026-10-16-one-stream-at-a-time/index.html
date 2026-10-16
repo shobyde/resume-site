@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>One Stream at a Time - Sho Byde</title>
+<meta name="description" content="A megakernel benchmark reads like a 1.9× win; its own ablation shows the engine alone is 6% faster, and the rest of the gap is speculative drafting." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-16-one-stream-at-a-time/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="One Stream at a Time" />
+<meta property="og:description" content="A megakernel benchmark reads like a 1.9× win; its own ablation shows the engine alone is 6% faster, and the rest of the gap is speculative drafting." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-16-one-stream-at-a-time/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-16T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="One Stream at a Time" />
+<meta name="twitter:description" content="A megakernel benchmark reads like a 1.9× win; its own ablation shows the engine alone is 6% faster, and the rest of the gap is speculative drafting." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "One Stream at a Time",
+  "description": "A megakernel benchmark reads like a 1.9\u00d7 win; its own ablation shows the engine alone is 6% faster, and the rest of the gap is speculative drafting.",
+  "url": "https://shobyde.com/posts/2026-10-16-one-stream-at-a-time/",
+  "datePublished": "2026-10-16T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "dev"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>One Stream at a Time</h1>
+  <div class="meta">2026-10-16 &middot; dev &middot; by Sho Byde</div>
+  <p>The open-weights item in this morning's briefing that I actually clicked was a CUDA megakernel: <a href="https://github.com/L-Forster/open-jet/tree/master/megakernel">open-jet's engine</a> runs Qwen3.8-27B at 140 tokens per second on a single RTX 3090, close to 2× what llama.cpp does on the same card. The row underneath the benchmark tables is the part I keep thinking about.</p>
+<p>With speculative drafting off, the README's ablation reads: llama.cpp 40.4 tok/s, megakernel 42.9. Six percent. Both engines decode near the memory-bandwidth limit without drafts, and a persistent kernel doesn't change what the card can read per second. The headline speedup comes from MTP speculative verification, which verifies 4-5 drafted tokens per pass at almost no extra cost. A full cycle is roughly 340 kernel phases separated by a software grid barrier, and the host reads back only the tokens that survived verification. On that code prompt, drafting multiplies megakernel decode by about 3.3× and llama.cpp by about 1.8×. Divide one by the other and you get the headline: 1.8× more throughput from the same MTP trick, times the 6% kernel gain.</p>
+<p><img src="/content/posts/assets/2026-10-16-one-stream-at-a-time/speculation-ablation.svg" alt="Grouped bar chart comparing decode throughput of llama.cpp and the open-jet megakernel on an RTX 3090 with Qwen3.8-27B Q4_K_M. With speculative drafting off the engines are nearly even at 40.4 versus 42.9 tokens per second, about 6 percent apart. With drafting on, the megakernel reaches 78.0 versus 50.9 in reasoning mode and 139.7 versus 72.5 on a Python code prompt." loading="lazy" /></p>
+<p>The comparison is fairer than the headline suggests: the llama.cpp baseline runs with its own MTP speculation enabled, and the megakernel still leads by 1.5× in reasoning mode and 1.9× on greedy code generation. The gap comes from fusing the whole speculative cycle into one persistent launch, not from a trick the baseline lacks. The correctness section is the part I wish more inference projects would ship: KL divergence measured over 13,299 positions against llama.cpp's next-token distributions comes out at 0.0009 nats, the same range llama.cpp's different configurations produce against each other. Near-tie tokens can still flip, and the README quantifies that drift instead of hiding it.</p>
+<p>Limits get the same plain treatment: one sequence at a time, text only, tuned to Qwen3.8-27B shapes, no presence or repetition penalties. A specialty engine for a single-user coding agent, and the specialization is why it's fast. The ablation points at what to watch next: if decode without drafts is bandwidth-bound on both engines, kernel work has little headroom on this hardware, and the leverage moves to the draft side, where acceptance rate converts almost directly into tok/s. The next 2× on this card is a draft-model problem.</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

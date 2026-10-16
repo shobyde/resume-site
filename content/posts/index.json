@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-16-one-stream-at-a-time",
+    "date": "2026-10-16",
+    "title": "One Stream at a Time",
+    "tag": "dev",
+    "excerpt": "A megakernel benchmark reads like a 1.9\u00d7 win; its own ablation shows the engine alone is 6% faster, and the rest of the gap is speculative drafting."
+  },
+  {
     "slug": "2026-10-15-agent-ui-needs-its-d3-moment",
     "date": "2026-10-15",
     "title": "Agent UI Needs Its D3 Moment",

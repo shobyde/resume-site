@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 470" width="820" height="470" role="img">
+  <title>Qwen3.8-27B on one RTX 3090: llama.cpp vs the open-jet megakernel</title>
+  <desc>Grouped bar chart comparing decode throughput of llama.cpp and the open-jet megakernel on an RTX 3090 with Qwen3.8-27B Q4_K_M. With speculative drafting off the engines are nearly even at 40.4 versus 42.9 tokens per second, about 6 percent apart. With drafting on, the megakernel reaches 78.0 versus 50.9 in reasoning mode and 139.7 versus 72.5 on a Python code prompt.</desc>
+  <rect x="0" y="0" width="820" height="470" fill="#f2e9d8"/>
+  <rect x="10" y="10" width="800" height="450" fill="none" stroke="#c9bda4" stroke-width="1.5"/>
+
+  <!-- heading -->
+  <text x="40" y="44" font-family="Georgia, 'Times New Roman', serif" font-size="15" font-weight="bold" fill="#3a3126">Qwen3.8-27B on one RTX 3090: llama.cpp vs the open-jet megakernel</text>
+  <text x="40" y="64" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" font-style="italic" fill="#6f6553">same weights, same GPU; the gap opens only when speculative drafting is on</text>
+
+  <!-- legend -->
+  <rect x="600" y="26" width="14" height="14" fill="#cfc3a8" stroke="#3a3126" stroke-width="1.2"/>
+  <text x="620" y="38" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#4a4136">llama.cpp</text>
+  <rect x="600" y="48" width="14" height="14" fill="#8a3d2a"/>
+  <text x="620" y="60" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" fill="#4a4136">megakernel</text>
+
+  <!-- gridlines and axis -->
+  <line x1="90" y1="60" x2="770" y2="60" stroke="#d5c9b0" stroke-width="1"/>
+  <line x1="90" y1="167" x2="770" y2="167" stroke="#d5c9b0" stroke-width="1"/>
+  <line x1="90" y1="273" x2="770" y2="273" stroke="#d5c9b0" stroke-width="1"/>
+  <text x="80" y="48" text-anchor="end" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" font-style="italic" fill="#6f6553">tok/s</text>
+  <text x="80" y="64" text-anchor="end" font-family="Georgia, 'Times New Roman', serif" font-size="12" fill="#6f6553">150</text>
+  <text x="80" y="171" text-anchor="end" font-family="Georgia, 'Times New Roman', serif" font-size="12" fill="#6f6553">100</text>
+  <text x="80" y="277" text-anchor="end" font-family="Georgia, 'Times New Roman', serif" font-size="12" fill="#6f6553">50</text>
+  <text x="80" y="384" text-anchor="end" font-family="Georgia, 'Times New Roman', serif" font-size="12" fill="#6f6553">0</text>
+  <line x1="90" y1="380" x2="770" y2="380" stroke="#3a3126" stroke-width="1.5"/>
+
+  <!-- group 1: drafting off -->
+  <rect x="139" y="294" width="60" height="86" fill="#cfc3a8" stroke="#3a3126" stroke-width="1.2"/>
+  <rect x="207" y="288" width="60" height="92" fill="#8a3d2a"/>
+  <text x="169" y="288" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11.5" fill="#4a4136">40.4</text>
+  <text x="237" y="282" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11.5" fill="#4a4136">42.9</text>
+  <text x="203" y="404" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="13.5" font-weight="bold" fill="#3a3126">drafting off</text>
+  <text x="203" y="422" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="13" font-style="italic" fill="#8a3d2a">+6%</text>
+
+  <!-- group 2: drafting on, reasoning -->
+  <rect x="366" y="271" width="60" height="109" fill="#cfc3a8" stroke="#3a3126" stroke-width="1.2"/>
+  <rect x="434" y="214" width="60" height="166" fill="#8a3d2a"/>
+  <text x="396" y="265" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11.5" fill="#4a4136">50.9</text>
+  <text x="464" y="208" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11.5" fill="#4a4136">78.0</text>
+  <text x="430" y="404" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="13.5" font-weight="bold" fill="#3a3126">drafting on: reasoning</text>
+  <text x="430" y="422" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="13" font-style="italic" fill="#8a3d2a">&#215;1.5</text>
+
+  <!-- group 3: drafting on, greedy code -->
+  <rect x="593" y="225" width="60" height="155" fill="#cfc3a8" stroke="#3a3126" stroke-width="1.2"/>
+  <rect x="661" y="82" width="60" height="298" fill="#8a3d2a"/>
+  <text x="623" y="219" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11.5" fill="#4a4136">72.5</text>
+  <text x="691" y="76" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11.5" fill="#4a4136">139.7</text>
+  <text x="657" y="404" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="13.5" font-weight="bold" fill="#3a3126">drafting on: code</text>
+  <text x="657" y="422" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="13" font-style="italic" fill="#8a3d2a">&#215;1.9</text>
+
+  <!-- footnote -->
+  <text x="40" y="446" font-family="Georgia, 'Times New Roman', serif" font-size="11" fill="#6f6553">source: open-jet megakernel README benchmarks, RTX 3090, Qwen3.8-27B Q4_K_M; code bars: Python-function prompt</text>
+</svg>
