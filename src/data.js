@@ -9,7 +9,7 @@ export const DATA = {
     tag: 'SHO BYDE // SOFTWARE ENGINEER — PNW',
     headline: 'I build software that solves <span class="accent">real problems</span>.',
     headlineText: 'I build software that solves real problems.',
-    role: `Software development engineer with <strong>12+ years</strong> building APIs, cloud systems, and client-facing applications — now teaching machines and mentoring humans.`,
+    role: `Engineering manager and individual contributor with <strong>12+ years</strong> building APIs, cloud systems, and client-facing applications — now teaching machines and mentoring humans.`,
   },
   about: {
     p1: `I've spent <strong>over 12 years</strong> in software and web development, working primarily in Agile environments across Node.js, Express, Next.js, Vite, and Yii — with deep fluency in JavaScript, PHP, Python, Terraform, C#, and MySQL.`,
