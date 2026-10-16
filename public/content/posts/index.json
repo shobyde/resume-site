@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-16-this-week-in-agents-below-the-model-layer",
+    "date": "2026-10-16",
+    "title": "This Week in Agents: Below the Model Layer",
+    "tag": "news",
+    "excerpt": "Anthropic rebuilt source control around agent-written code, routing got its own model class, and Meta open-sourced an 816B MoE."
+  },
+  {
     "slug": "2026-10-16-one-stream-at-a-time",
     "date": "2026-10-16",
     "title": "One Stream at a Time",

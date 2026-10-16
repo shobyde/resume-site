@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>This Week in Agents: Below the Model Layer - Sho Byde</title>
+<meta name="description" content="Anthropic rebuilt source control around agent-written code, routing got its own model class, and Meta open-sourced an 816B MoE." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-16-this-week-in-agents-below-the-model-layer/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="This Week in Agents: Below the Model Layer" />
+<meta property="og:description" content="Anthropic rebuilt source control around agent-written code, routing got its own model class, and Meta open-sourced an 816B MoE." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-16-this-week-in-agents-below-the-model-layer/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-16T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="This Week in Agents: Below the Model Layer" />
+<meta name="twitter:description" content="Anthropic rebuilt source control around agent-written code, routing got its own model class, and Meta open-sourced an 816B MoE." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "This Week in Agents: Below the Model Layer",
+  "description": "Anthropic rebuilt source control around agent-written code, routing got its own model class, and Meta open-sourced an 816B MoE.",
+  "url": "https://shobyde.com/posts/2026-10-16-this-week-in-agents-below-the-model-layer/",
+  "datePublished": "2026-10-16T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "news"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>This Week in Agents: Below the Model Layer</h1>
+  <div class="meta">2026-10-16 &middot; news &middot; by Sho Byde</div>
+  <p>The release treadmill ran as usual: nineteen models shipped in the first half of October, by <a href="https://capitalandcompute.net/blog/new-ai-models-october-2026/">capitalandcompute's count</a>. The three items I kept are all below the model layer: the system agents write code into, the way agent stacks make cheap routing calls, and the terms under which frontier-scale weights get released.</p>
+<p><strong>Anthropic rebuilt source control because its agents write too much code.</strong> Merged changes went from about 2,500 a day in May to over 30,000 in September, and a seven-person team built <a href="https://www.anthropic.com/engineering/redesigning-source-control/">Scion</a> and migrated the whole monorepo off git in five months. The design flip I find most interesting is their first principle, agents and jobs are always online so the server holds the repo's truth and clients fetch on demand, and Anthropic are upfront that the result is "by no means a suitable replacement for git for general use," pointing the rest of us at ideas to backport into git instead. Simon Willison <a href="https://simonwillison.net/2026/Oct/13/redesigning-source-control-at-anthropic/">heard Subversion in the description</a>; the concrete idea is server-side query APIs for history and diffs, which a forge could ship without anyone changing their client.</p>
+<p><strong>Routing and classification got their own model class.</strong> On October 1, Cloudflare, AWS Strands Labs, and Perplexity each shipped an open-weight <a href="https://blog.cloudflare.com/clef-decision-models/">decision model</a> that answers a typed question with a probability and bills input only, and the week added <a href="https://reddit.com/r/LocalLLaMA/comments/1x3th4p/decision_30_open_multimodal_decision_models_from">d3</a>, Apache-2.0 sizes from 0.6B to 27B that generate no text at all. The category makes sense to me: agent stacks make thousands of yes-or-no and routing calls, and a calibrated probability with a threshold beats asking a chat model and parsing its prose. The pricing story is less tidy than the "free output" hook suggests, though: input dominates, and in capitalandcompute's cost model Clef comes out more expensive per 1,000 decisions than GPT-6 Luna answering with a short label.</p>
+<p><strong>Meta shipped an 816B-parameter open-weights MoE.</strong> <a href="https://research.meta.ai/blog/muse-spark-open">Muse Spark Open</a> has 42B active parameters per token, a 1M-token context, weights on Hugging Face, and the same $1.25/$4.25 per million tokens listed at every host serving it. The benchmark row tempers the headline: 39 on Artificial Analysis is the top US open-weight score, roughly level with DeepSeek V4.1 Flash at a third of the per-task cost, and nine points below Meta's own closed Muse Spark 1.3 at the same per-token price, per <a href="https://capitalandcompute.net/blog/muse-spark-open-pricing-benchmarks/">capitalandcompute's breakdown</a>. The local-serving story is real but chunky: the reported desk setups pair two Mac Studios, Q4 weights need more memory than one 512GB Mac Studio holds, and the license asks for visible credit plus a separate deal for model-API businesses above $20 million in revenue.</p>
+<p>One question to carry into next week: when does a git forge ship server-side history APIs, since that's the Scion idea the rest of us could adopt without abandoning git.</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>
