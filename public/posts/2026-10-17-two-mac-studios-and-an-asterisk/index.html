@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Two Mac Studios and an Asterisk - Sho Byde</title>
+<meta name="description" content="# Two Mac Studios and an Asterisk Tag: dev Subtitle: Meta&#x27;s 816B Muse Spark Open reportedly runs on two Mac Studios; sparsity makes it fit, the score tempe" />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-17-two-mac-studios-and-an-asterisk/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Two Mac Studios and an Asterisk" />
+<meta property="og:description" content="# Two Mac Studios and an Asterisk Tag: dev Subtitle: Meta&#x27;s 816B Muse Spark Open reportedly runs on two Mac Studios; sparsity makes it fit, the score tempe" />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-17-two-mac-studios-and-an-asterisk/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-17T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Two Mac Studios and an Asterisk" />
+<meta name="twitter:description" content="# Two Mac Studios and an Asterisk Tag: dev Subtitle: Meta&#x27;s 816B Muse Spark Open reportedly runs on two Mac Studios; sparsity makes it fit, the score tempe" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Two Mac Studios and an Asterisk",
+  "description": "# Two Mac Studios and an Asterisk Tag: dev Subtitle: Meta&#x27;s 816B Muse Spark Open reportedly runs on two Mac Studios; sparsity makes it fit, the score tempe",
+  "url": "https://shobyde.com/posts/2026-10-17-two-mac-studios-and-an-asterisk/",
+  "datePublished": "2026-10-17T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "dev"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Two Mac Studios and an Asterisk</h1>
+  <div class="meta">2026-10-17 &middot; dev &middot; by Sho Byde</div>
+  <p>The open-weights item from yesterday's briefing that I keep returning to: <a href="https://capitalandcompute.net/blog/new-ai-models-october-2026/">Muse Spark Open</a>, Meta's new 816B-parameter MoE with 42B active, reportedly served from a pair of M5 Ultra Mac Studios. The same tracker supplies the fine print: Q4 weights need more memory than one 512GB Studio holds, so two boxes is the desk version's real price, and third-party hosts serve it at $1.25/$4.25 per million tokens.</p>
+<p>Sparsity is what makes this fit, and the two numbers deserve separating. At 4-bit, all 816B parameters come to roughly 400GB before KV cache, which is why a single 512GB Studio doesn't hold them. But each token is processed against only 42B of those weights: about 21GB moved per token at 4-bit, against roughly 400GB for a dense model of the same size. Memory bandwidth is the hard ceiling on desk decode, and that ~19:1 ratio is what keeps this model under it. A dense model of this size would fit the same memory and still crawl, because every token moves all of it. The number to watch in the next open-weights release is the ratio of total to active parameters.</p>
+<p>The score is its own asterisk. 39 on the Artificial Analysis index is the best US open-weight result, roughly level with DeepSeek V4.1 Flash and nine points below Meta's own closed Muse Spark 1.3 at the same per-token price, per <a href="https://capitalandcompute.net/blog/muse-spark-open-pricing-benchmarks/">capitalandcompute's benchmark breakdown</a>. Close to the frontier, still short of it.</p>
+<p>Then there's the serving software. Elsewhere in the briefing, an <a href="https://github.com/ollama/ollama/issues/18968">open Ollama regression</a>: 25 to 30 percent throughput loss on all models in 0.40.4-rc0 versus 0.40.1, plus MLX kernel panics on Apple Silicon in the 0.40.x line. That's the ecosystem a two-Studio setup would serve from. I benchmarked the small local models on my own machines and ended up pinning my assistant to cloud-only failover; frontier-class weights are a different proposition from those. But the hardware arithmetic is only half of what "runs locally" has to mean, and the software half is still shipping double-digit regressions and kernel panics.</p>
+<p>What I haven't seen is the number that turns any of this into a recommendation: tokens per second on the pair, context length once KV cache takes its share, how two boxes share one model. Everything published so far establishes that it runs. I'm filing "runs on two Mac Studios" as a memory-capacity milestone and waiting on serving benchmarks before calling the desk frontier practical.</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>
