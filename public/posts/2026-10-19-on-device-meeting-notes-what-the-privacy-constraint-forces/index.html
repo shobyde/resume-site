@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>On-Device Meeting Notes: What the Privacy Constraint Forces - Sho Byde</title>
+<meta name="description" content="The interesting part of Hobnob is not that it transcribes meetings. It is the decision to run the whole pipeline on-device, and what that decision forces you to do everywhere else." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-19-on-device-meeting-notes-what-the-privacy-constraint-forces/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="On-Device Meeting Notes: What the Privacy Constraint Forces" />
+<meta property="og:description" content="The interesting part of Hobnob is not that it transcribes meetings. It is the decision to run the whole pipeline on-device, and what that decision forces you to do everywhere else." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-19-on-device-meeting-notes-what-the-privacy-constraint-forces/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-19T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="On-Device Meeting Notes: What the Privacy Constraint Forces" />
+<meta name="twitter:description" content="The interesting part of Hobnob is not that it transcribes meetings. It is the decision to run the whole pipeline on-device, and what that decision forces you to do everywhere else." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "On-Device Meeting Notes: What the Privacy Constraint Forces",
+  "description": "The interesting part of Hobnob is not that it transcribes meetings. It is the decision to run the whole pipeline on-device, and what that decision forces you to do everywhere else.",
+  "url": "https://shobyde.com/posts/2026-10-19-on-device-meeting-notes-what-the-privacy-constraint-forces/",
+  "datePublished": "2026-10-19T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "project"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>On-Device Meeting Notes: What the Privacy Constraint Forces</h1>
+  <div class="meta">2026-10-19 &middot; project &middot; by Sho Byde</div>
+  <p>I built Hobnob as an Electron app that records both sides of a call, transcribes with whisper.cpp, and summarizes with a bundled local LLM. The constraint I set: nothing leaves the machine. That single constraint drives the architecture more than any feature does.</p>
+<p>The pipeline has three models and two runtimes. Live captions run Whisper base.en (140 MB) per 10-second segment. After the meeting ends, a final pass runs Whisper large-v3-turbo (1.5 GB) over the full mic and system-audio recordings. Summaries come from a bundled Gemma 4 E4B model (5.3 GB) running under llama-server. The three never run at once: whisper-cli is serial by design, because two Metal-heavy processes on the same GPU contend instead of cooperating.</p>
+<p>Speaker labeling is deterministic rather than inferred. "Me" segments come from the mic channel and "Them" from the system-audio loopback. That sounds trivial, but without headphones the mic hears the call audio, so a "Me" segment can be an echo of a "Them" segment. The fix is a bleed guard: compute token overlap between the two segments in the same window; above 0.6 similarity, drop the "Me" caption. When a "Them" segment arrives later and matches, delete the stale "Me" entry and push an empty caption so the renderer removes it. No ML, just a threshold chosen to catch echoes without dropping real speech.</p>
+<p>The global trigger is the second pillar. A system-wide shortcut (Ctrl+Alt+R / Cmd+Alt+R) plus a tray icon start a recording from anywhere, with no window interaction. It only launches the flow: it signals the main window, which drives the normal renderer record path. Tray creation is guarded because some environments cannot create a native tray icon; in that case it degrades to hotkey-only instead of failing. The setting toggle updates the shortcut and menu live.</p>
+<p>Two trade-offs I would revisit. First, model memory: loading Gemma 4 at recording start means a 5.3 GB resident footprint for the whole meeting, even though summarization only happens at the end. Loading on demand would cut idle memory but cost startup latency on finalize. Second, the serial whisper queue means live captions lag if the final pass is queued behind them; I cap the drain at a timeout rather than waiting indefinitely, which can drop late captions. Both are acceptable given the privacy constraint, but neither is free.</p>
+<p>The open question I keep circling: whether on-device quality is good enough to be the default, or whether it should be an option behind a cloud path. I have not added the cloud path. The moment I do, the privacy claim stops being a constraint and becomes a preference, and I am not sure I want that.</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

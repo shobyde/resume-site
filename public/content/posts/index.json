@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-19-on-device-meeting-notes-what-the-privacy-constraint-forces",
+    "date": "2026-10-19",
+    "title": "On-Device Meeting Notes: What the Privacy Constraint Forces",
+    "tag": "project",
+    "excerpt": "The interesting part of Hobnob is not that it transcribes meetings. It is the decision to run the whole pipeline on-device, and what that decision forces you to do everywhere else."
+  },
+  {
     "slug": "2026-10-19-adaptive-batching-for-agent-uis",
     "date": "2026-10-19",
     "title": "Adaptive Batching for Agent UIs",
