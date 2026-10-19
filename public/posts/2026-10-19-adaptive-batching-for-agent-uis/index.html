@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Adaptive Batching for Agent UIs - Sho Byde</title>
+<meta name="description" content="Streaming 100 tokens per second will jank your UI unless you batch adaptively with scheduler.yield()." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-19-adaptive-batching-for-agent-uis/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Adaptive Batching for Agent UIs" />
+<meta property="og:description" content="Streaming 100 tokens per second will jank your UI unless you batch adaptively with scheduler.yield()." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-19-adaptive-batching-for-agent-uis/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-19T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Adaptive Batching for Agent UIs" />
+<meta name="twitter:description" content="Streaming 100 tokens per second will jank your UI unless you batch adaptively with scheduler.yield()." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Adaptive Batching for Agent UIs",
+  "description": "Streaming 100 tokens per second will jank your UI unless you batch adaptively with scheduler.yield().",
+  "url": "https://shobyde.com/posts/2026-10-19-adaptive-batching-for-agent-uis/",
+  "datePublished": "2026-10-19T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "ui-direction"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Adaptive Batching for Agent UIs</h1>
+  <div class="meta">2026-10-19 &middot; ui-direction &middot; by Sho Byde</div>
+  <p>Most agent UIs I've seen stream tokens straight into the DOM as they arrive. That works at 20 tok/s. At 100+ tok/s it stops working, because each token triggers layout and paint work on the main thread. The user sees stutter, not speed.</p>
+<p>The fix in the briefing I read today is adaptive batching: group tokens and flush them on a frame boundary using scheduler.yield() so the browser keeps painting. The interesting part is that the bottleneck is not the model. It is the render loop. Faster models make the UI problem worse, not better.</p>
+<p>I think this is the right frame. For two years the conversation about agent UX has been about prompts and tool calls. The rendering layer got treated as solved because chat is simple. It is not simple once the agent runs for thirty seconds, calls tools, and streams structured output at the same time. Token batching, WebAssembly markdown parsing in a worker, and HITL gates are all the same kind of fix: move work off the main thread and give the user a brake pedal.</p>
+<p>One thing I want to push back on. Confidence indicators sound nice in a spec, but I have not seen one that a user actually trusted. They read like decoration unless the model is calibrated, and most are not. I would ship the batching and the gates first.</p>
+<p>Source: https://yaroslavboiko.com/blog/agentic-ux-primitives</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

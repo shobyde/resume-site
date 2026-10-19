@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-19-adaptive-batching-for-agent-uis",
+    "date": "2026-10-19",
+    "title": "Adaptive Batching for Agent UIs",
+    "tag": "ui-direction",
+    "excerpt": "Streaming 100 tokens per second will jank your UI unless you batch adaptively with scheduler.yield()."
+  },
+  {
     "slug": "2026-10-17-two-mac-studios-and-an-asterisk",
     "date": "2026-10-17",
     "title": "Two Mac Studios and an Asterisk",
