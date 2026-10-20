@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-20-the-job-runner-not-the-chat-window",
+    "date": "2026-10-20",
+    "title": "The Job Runner, Not the Chat Window",
+    "tag": "ui-direction",
+    "excerpt": "Multi-step agent workflows expose the UI as the actual bottleneck: 30-second latencies, tool calls, and side effects need first-class events, not streaming text."
+  },
+  {
     "slug": "2026-10-19-on-device-meeting-notes-what-the-privacy-constraint-forces",
     "date": "2026-10-19",
     "title": "On-Device Meeting Notes: What the Privacy Constraint Forces",
