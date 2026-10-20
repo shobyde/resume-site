@@ -9,12 +9,12 @@ export const DATA = {
     tag: 'SHO BYDE // SOFTWARE ENGINEER — PNW',
     headline: 'I build software that solves <span class="accent">real problems</span>.',
     headlineText: 'I build software that solves real problems.',
-    role: `Engineering manager and individual contributor with <strong>12+ years</strong> building APIs, cloud systems, and client-facing applications — now teaching machines and mentoring humans.`,
+    role: `Engineering manager and individual contributor with <strong>12+ years</strong> building APIs, cloud systems, and client-facing applications. I now teach machines and mentor humans.`,
   },
   about: {
-    p1: `I've spent <strong>over 12 years</strong> in software and web development, working primarily in Agile environments across Node.js, Express, Next.js, Vite, and Yii — with deep fluency in JavaScript, PHP, Python, Terraform, C#, and MySQL.`,
+    p1: `I've spent <strong>over 12 years</strong> in software and web development, working primarily in Agile environments across Node.js, Express, Next.js, Vite, and Yii, with deep fluency in JavaScript, PHP, Python, Terraform, C#, and MySQL.`,
     p2: `My track record includes <strong>leading projects</strong>, shipping client-facing applications, implementing OAuth/RBAC authentication at scale, and building large-scale APIs. I care just as much about the people: fostering positive workplace culture, mentoring, and contributing to team life.`,
-    p3: `Outside of work I taught an intro computer science class at a local high school — before my regular workday, every day, for a full school year.`,
+    p3: `Outside of work I taught an intro computer science class at a local high school, before my regular workday, every day, for a full school year.`,
   },
   stats: [
     { num: 12, suffix: '+', label: 'Years in development' },
@@ -25,8 +25,8 @@ export const DATA = {
   projects: [
     {
       meta: ['PERSONAL PRODUCT', 'MACOS + LINUX · ALPHA'],
-      title: 'Hobnob — private meeting notes, no cloud required',
-      summary: `Meeting note-takers ship your conversations to someone else's server. I built <strong>Hobnob</strong> to prove you don't need that: a desktop app that records, transcribes, and summarizes meetings <strong>entirely on-device</strong> — no accounts, no cloud, no telemetry.`,
+      title: 'Hobnob: private meeting notes, no cloud',
+      summary: `Meeting note-takers ship your conversations to someone else's server. I built <strong>Hobnob</strong> to prove you don't need that: a desktop app that records, transcribes, and summarizes meetings <strong>entirely on-device</strong>, with no accounts, no cloud, and no telemetry.`,
       contribution: 'Product and engineering: on-device ML pipeline, app architecture, packaging across macOS and Linux, and the hobnob.info site.',
       stack: ['Whisper (large-v3-turbo)', 'Local GGUF LLMs', 'Live captions', 'macOS (Apple Silicon)', 'Linux (AppImage / .deb / .pacman)'],
       links: [
@@ -34,18 +34,18 @@ export const DATA = {
         { label: 'Source & releases', url: 'https://github.com/emberscribe/hobnob' },
       ],
       details: {
-        architecture: 'Microphone and system audio are captured locally and streamed through a Whisper pass for real-time captions with speaker labels; after the meeting a high-accuracy large-v3-turbo pass produces the final transcript, which a bundled, user-swappable GGUF LLM turns into structured notes (decisions, action items, open questions) and answers chat questions from — nothing leaves the machine at any step.',
+        architecture: 'Microphone and system audio are captured locally and streamed through a Whisper pass for real-time captions with speaker labels; after the meeting a high-accuracy large-v3-turbo pass produces the final transcript, which a bundled, user-swappable GGUF LLM turns into structured notes (decisions, action items, open questions) and answers chat questions from the transcript. Nothing leaves the machine at any step.',
         decisions: [
           'Privacy-first by construction: speaker labels are derived from mic-vs-system audio levels instead of any cloud diarization, and calendar integration (macOS + Google) only pulls titles locally.',
-          'BYOM — bring your own model: users swap Whisper models and pick their own GGUF LLM, trading accuracy against the ~8 GB RAM/disk budget on the spot.',
+          'BYOM (bring your own model): users swap Whisper models and pick their own GGUF LLM, trading accuracy against the ~8 GB RAM/disk budget on the spot.',
           'Shipped a 1.0 on macOS arm64 and Linux in the same week, then iterated 11 alpha releases (v1.0.1 → v1.6.1) from June to September 2026.',
         ],
       },
     },
     {
       meta: ['PERSONAL PROJECT', 'LIVE'],
-      title: 'shobyde.com — resume + daily engineering log',
-      summary: `A personal site that publishes like a newsroom: I wanted a résumé that stays alive instead of rotting, so I built an <strong>LLM-assisted publishing loop</strong> — automated agents draft daily entries and site updates, a human (me) reviews, curates, and merges every change.`,
+      title: 'shobyde.com: resume + daily engineering log',
+      summary: `A personal site that publishes like a newsroom: I wanted a résumé that stays alive instead of rotting, so I built an <strong>LLM-assisted publishing loop</strong>. Automated agents draft daily entries and site updates; I review, curate, and merge every change.`,
       contribution: 'Sole engineer: design, architecture, implementation, and deployment.',
       stack: ['Vite', 'Vanilla JS', 'Three.js (WebGL)', 'Lenis', 'Cloudflare Pages', 'LLM agent tooling'],
       links: [
@@ -53,9 +53,9 @@ export const DATA = {
         { label: 'Case study: how it was built', url: '/posts/2026-10-13-site-kickoff/' },
       ],
       details: {
-        architecture: 'Static Vite build deployed to Cloudflare Pages. The daily log is a content store (markdown + a generated index.json) that the client fetches at runtime — writing never requires a redeploy of logic. A WebGL starfield, scroll-reveals, and a streaming-text engine run the page; every animated subsystem is gated on prefers-reduced-motion and the page stays fully readable with JavaScript disabled.',
+        architecture: 'Static Vite build deployed to Cloudflare Pages. The daily log is a content store (markdown + a generated index.json) that the client fetches at runtime, so writing never requires a redeploy of logic. A WebGL starfield, scroll-reveals, and a streaming-text engine run the page; every animated subsystem is gated on prefers-reduced-motion and the page stays fully readable with JavaScript disabled.',
         decisions: [
-          'No framework, no animation library — Three.js is the only heavy dependency, justified by the background scene; everything else is CSS transitions + IntersectionObserver.',
+          'No framework, no animation library: Three.js is the only heavy dependency, justified by the background scene; everything else is CSS transitions + IntersectionObserver.',
           'Human-in-the-loop publishing: machine-drafted posts only go live after manual curation, so the log stays trustworthy.',
           'Boot is timeout-capped (fonts 2.5 s, content 3 s, loader failsafe 4 s) so a slow network can never strand the visitor on a loading screen.',
         ],
@@ -65,7 +65,7 @@ export const DATA = {
     {
       meta: ['COURSEWORK · DIGIPEN', '2012–2013'],
       title: 'C++ physics simulation engines',
-      summary: `Built physics-based game engines in C++ as part of the DigiPen game-development program — the ground floor of a year that ended with our cohort taking <strong>3 of the 4 game design awards</strong>.`,
+      summary: `Built physics-based game engines in C++ as part of the DigiPen game-development program: the ground floor of a year that ended with our cohort taking <strong>3 of the 4 game design awards</strong>.`,
       contribution: 'Engine implementation plus cross-team feedback loops with large groups of developers.',
       stack: ['C++', 'Physics simulation', 'Game design'],
       links: [],
@@ -73,7 +73,7 @@ export const DATA = {
         architecture: 'Custom simulation loop with collision response and constraint handling, written from scratch in C++.',
         decisions: [
           'Engines were built from first principles rather than middleware, to learn the math underneath.',
-          'Regular cross-team review sessions — giving and receiving product feedback at scale.',
+          'Regular cross-team review sessions, giving and receiving product feedback at scale.',
         ],
       },
     },
@@ -95,7 +95,7 @@ export const DATA = {
       ],
     },
     {
-      role: 'Volunteer Teacher — Intro to Computer Science',
+      role: 'Volunteer Teacher: Intro to Computer Science',
       org: 'Local high school',
       period: 'Sep 2022 – Jun 2023',
       bullets: [
@@ -103,8 +103,8 @@ export const DATA = {
         'Partnered with IT to install VS Code and configure firewall rules, giving students in a rural community real coding access.',
         'Instructed students with no prior experience in writing programs and planning projects.',
         'Promoted refactoring and upfront consideration of design patterns.',
-        'Built an inclusive environment by live-coding with my screen shared — demonstrating that mistakes are part of the process.',
-        'Used active-learning techniques — state-machine demos, bug hunts — to teach loop and flow reasoning.',
+        'Built an inclusive environment by live-coding with my screen shared, demonstrating that mistakes are part of the process.',
+        'Used active-learning techniques (state-machine demos, bug hunts) to teach loop and flow reasoning.',
       ],
     },
     {
@@ -113,7 +113,7 @@ export const DATA = {
       period: 'Aug 2014 – Jul 2021',
       bullets: [
         'Led a small group of junior developers: assigned work packages, ran QA procedures, and stepped in on projects when needed.',
-        'Supported multi-million-dollar client accounts — handling service requests and product alterations in live production systems.',
+        'Supported multi-million-dollar client accounts, handling service requests and product alterations in live production systems.',
         'Administered databases and performed routine maintenance in SQL and on Windows Server.',
         'Delivered both web applications and desktop solutions to keep clients served on whichever platform fit them.',
         'Migrated core technologies to cloud-based solutions, easing distribution and company growth.',

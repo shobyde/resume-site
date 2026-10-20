@@ -102,7 +102,6 @@ function buildPage() {
   <main class="container" id="main-content" tabindex="-1">
     <!-- ABOUT -->
     <section class="section" id="about">
-      <div class="eyebrow">01 — About</div>
       <h2 class="section-title reveal">Where code meets culture</h2>
       <div class="about__grid">
         <div class="about__text reveal">
@@ -116,7 +115,6 @@ function buildPage() {
 
     <!-- PROJECTS -->
     <section class="section" id="projects">
-      <div class="eyebrow">02 — Projects</div>
       <h2 class="section-title reveal">Proof, not adjectives</h2>
       <p class="section-sub">Selected work with the engineering decisions behind it. Expand a card for architecture and trade-offs.</p>
       <div class="projects__grid">${projects}</div>
@@ -124,36 +122,32 @@ function buildPage() {
 
     <!-- EXPERIENCE -->
     <section class="section" id="experience">
-      <div class="eyebrow">03 — Experience</div>
-      <h2 class="section-title reveal">Twelve years, one throughline: ship useful things</h2>
+      <h2 class="section-title reveal">Twelve years, one throughline: build and ship useful things</h2>
       <div class="timeline">${exp}</div>
     </section>
 
     <!-- SKILLS -->
     <section class="section" id="skills">
-      <div class="eyebrow">04 — Skills</div>
       <h2 class="section-title reveal">Tools of the trade</h2>
       <div class="skills__grid">${skills}</div>
     </section>
 
     <!-- BLOG -->
     <section class="section" id="blog">
-      <div class="eyebrow">05 — Daily Log</div>
       <h2 class="section-title reveal">Written by the machine, curated by me</h2>
-      <p class="section-sub">An AI-assisted daily log — news, notes, and build updates, drafted automatically every morning and curated by a human (me).</p>
+      <p class="section-sub">An AI-assisted daily log: news, notes, and build updates, drafted automatically every morning and curated by a human (me).</p>
       <div class="blog__grid" id="blogGrid"></div>
     </section>
 
     <!-- CONTACT -->
     <section class="section contact" id="contact">
-      <div class="eyebrow" style="justify-content:center">06 — Contact</div>
       <h2 class="section-title reveal">Let's build something.</h2>
       <p class="section-sub reveal">Open to interesting problems, consulting work, or just a coffee chat about code.</p>
       <div class="contact__links reveal">
         <a href="mailto:${DATA.contact.email}" class="btn btn--primary">Email me</a>
         <a href="${DATA.contact.linkedin}" target="_blank" rel="noopener" class="btn">LinkedIn</a>
       </div>
-      <p class="contact__note reveal">The printable version is generated right from this page — everything here is already public. If you need my phone number or a formal PDF résumé with references, just email me and I'll send it over.</p>
+      <p class="contact__note reveal">The printable version is generated right from this page, so everything here is already public. If you need my phone number or a formal PDF résumé with references, just email me and I'll send it over.</p>
     </section>
   </main>
 
