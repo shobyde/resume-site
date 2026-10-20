@@ -2,9 +2,9 @@
    Handwrite - pen-sweep reveal styles.
    Everything here is inert under prefers-reduced-motion: JS
    never mounts these classes when reduced is on at boot, and
-   the media block at the bottom is a belt-and-braces kill for
-   anything left over from a live flip (the main.css global
-   0.01ms transition kill switch also covers leftovers).
+   the media block at the bottom covers anything left over from
+   a live flip (main.css no longer carries a global transition
+   kill switch, so these overrides do the work directly).
    ============================================================ */
 
 /* word unit: an inline-block carrying the wipe mask. Metrics
@@ -68,11 +68,12 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hw-word.hw-wipe {
-    -webkit-mask-image: none;
-    mask-image: none;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+    will-change: auto;
   }
   .hw-char.hw-bloom {
-    animation: none;
+    animation: none !important;
     text-shadow: none;
   }
   .hw-pen {

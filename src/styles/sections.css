@@ -40,7 +40,7 @@
 }
 .hero__role strong { color: var(--fg); font-weight: 500; }
 
-/* Entrance sequence: eyebrow -> headline -> support -> CTAs.
+/* Entrance sequence: headline -> support -> CTAs.
    Total ~0.8s. Only armed when JS runs; each element ends at its
    natural state, so no-JS and reduced-motion both read fine. */
 .js .hero__anim {
@@ -107,7 +107,15 @@
   border-color: transparent;
   color: #fff;
 }
-.btn--primary:hover { box-shadow: var(--shadow-glow); }
+/* Depth from an overhead light source, not a zero-offset halo; the
+   accent fill is the emphasis, the shadow only seats the button.
+   The gradient is re-declared because `.btn:hover` (equal specificity,
+   earlier) replaces it with the translucent card tint, which would
+   turn the primary CTA into white text on nothing. */
+.btn--primary:hover {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
 .hero__cta { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; }
 
 /* ---------- About ---------- */
@@ -170,7 +178,8 @@
   border-radius: 50%;
   background: var(--bg);
   border: 2px solid var(--accent);
-  box-shadow: 0 0 12px rgba(124, 108, 255, 0.5);
+  /* directional depth only: light from above, no zero-offset halo */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }
 .tl-item__period {
   font-family: var(--font-mono);
@@ -385,7 +394,16 @@
   font-size: 0.8rem;
   color: var(--fg-mute);
 }
-.footer a { color: var(--fg-dim); text-decoration: none; transition: color 0.2s; }
+.footer a {
+  color: var(--fg-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+  /* 15px of text cannot be a 44px target on its own; the vertical
+     padding grows the hit box while the footer centres the line, so
+     the text stays on the same optical baseline as the copyright. */
+  display: inline-block;
+  padding: 0.75rem 0;
+}
 .footer a:hover { color: var(--accent); }
 @media (max-width: 600px) { .footer { flex-direction: column; gap: 1rem; } }
 
@@ -450,6 +468,18 @@
   font-weight: 500;
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s;
+  position: relative;
+}
+/* >=44x44 hit area without padding (padding would push the underline
+   off the baseline) or a visible size change. */
+.project-card__link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 44px);
+  height: 44px;
+  transform: translate(-50%, -50%);
 }
 .project-card__link:hover { border-bottom-color: var(--accent2); }
 .project-card__toggle {
@@ -463,6 +493,17 @@
   padding: 0.4rem 0.9rem;
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
+  position: relative;
+}
+/* the pill stays 30px tall; the invisible hit area is 44px */
+.project-card__toggle::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 44px);
+  height: 44px;
+  transform: translate(-50%, -50%);
 }
 .project-card__toggle:hover { color: var(--fg); border-color: var(--accent); }
 .project-card__toggle[aria-expanded="true"] { color: var(--accent2); border-color: var(--accent2); }

@@ -20,8 +20,6 @@
   --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --shadow-glow: 0 0 60px rgba(124, 108, 255, 0.18);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,10 +51,23 @@ body {
   pointer-events: none;
 }
 
-::selection { background: var(--accent); color: #fff; }
+/* Near-black ink on the accent rather than white: white on #7c6cff
+   lands at 3.9:1 for 16px text, var(--bg) at 5.1:1. */
+::selection { background: var(--accent); color: var(--bg); }
 
 /* ---------- Typography ---------- */
 h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing: -0.02em; }
+
+/* Identity rule: Space Grotesk owns headings, nav, controls, and every
+   structural label. Inter is reserved for prose (body copy, leads,
+   summaries), so no label or chrome is left in the body face. */
+.nav__link,
+.btn,
+.skip-link,
+.stat__label,
+.post-card__read,
+.tag,
+.footer { font-family: var(--font-head); }
 
 .section-title {
   font-size: clamp(2rem, 5vw, 3.2rem);
@@ -68,24 +79,6 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
   font-size: 1.05rem;
   max-width: 55ch;
   margin-bottom: 3rem;
-}
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-  color: var(--accent);
-  margin-bottom: 1.2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-.eyebrow::before {
-  content: '';
-  display: block;
-  width: 32px;
-  height: 1px;
-  background: linear-gradient(90deg, var(--accent), transparent);
 }
 .mono { font-family: var(--font-mono); }
 
@@ -203,6 +196,18 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
   font-size: 0.85rem;
   transition: color 0.2s, background 0.2s;
   white-space: nowrap;
+  position: relative;
+}
+/* Vertical-only hit expansion so the 37.8px pill clears 44px without
+   getting taller. No horizontal growth: neighbouring pills sit flush. */
+.nav__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
 }
 .nav__link:hover { color: var(--fg); background: rgba(255, 255, 255, 0.06); }
 .nav__link.is-active { color: #fff; background: var(--accent-dim); }
@@ -218,20 +223,64 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
     scrollbar-width: none;
   }
   .nav::-webkit-scrollbar { display: none; }
-  /* Tap targets >= ~44px tall (0.9rem*2 padding + text), per WCAG/Apple minimums */
-  .nav__link { padding: 0.9rem 0.6rem; font-size: 0.72rem; }
+  /* Tap targets >= 44px in both axes (WCAG 2.5.5 / Apple HIG).
+     Vertical padding alone gets height to ~47px; short labels like
+     "Log" stay under 44px wide, so pin a min-width and centre the
+     text instead of widening the pill with more padding. */
+  .nav__link {
+    padding: 0.9rem 0.6rem;
+    font-size: 0.72rem;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 /* ---------- stream-text chars ---------- */
 .stream-ch { will-change: opacity; }
 
-/* ---------- Reduced motion: global kill switch ---------- */
+/* ---------- Reduced motion ----------
+   Targeted, not a blanket kill. Movement (entrance, reveals, the
+   handwriting sweep, per-char stream text, hover lifts, accordion
+   growth) resolves instantly; color, border, opacity, focus, and
+   selection feedback keep working so controls still acknowledge
+   state. The WebGL scene and the magnetic buttons bail out in JS
+   (background.js, motion.js) on the same media query. */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
   html { scroll-behavior: auto; }
+  html.lenis, .lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+  /* Entrance + scroll reveals: land at the final state, no movement.
+     Only the movement is cancelled; the elements keep whatever color
+     and border transitions their own rules declare, so hover/focus
+     feedback still resolves. */
+  .js .hero__anim,
+  .js .reveal,
+  .js .tl-item {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .js .hero__scroll { opacity: 1 !important; transition: none !important; }
+  .hero__scroll-line { animation: none !important; }
+
+  /* Stream text: JS splits chars and sets inline opacity/transition, so
+     force them visible here too. !important also covers a live flip to
+     reduced motion mid-stream, where no JS path would settle them. */
+  .stream-ch { opacity: 1 !important; transition: none !important; }
+  .hero__role { transform: none !important; }
+
+  /* Accordion growth and hover lifts are movement; the color cues stay. */
+  .project-card__details { transition: none !important; }
+  .stat:hover,
+  .skill-group:hover,
+  .tag:hover,
+  .post-card:hover,
+  .project-card:hover { transform: none !important; }
+
+  /* Opacity feedback is allowed, just shorter, including the two long
+     ones (loader fade, delayed nav reveal). */
+  .loader { transition-duration: 0.15s !important; }
+  .nav { transition-duration: 0.15s !important; transition-delay: 0s !important; }
 }
