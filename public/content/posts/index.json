@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-22-typed-agent-streams-replace-token-streaming",
+    "date": "2026-10-22",
+    "title": "Typed Agent Streams Replace Token Streaming",
+    "tag": "ui-direction",
+    "excerpt": "Typed agent streams replace token streaming with explicit events, which is what agentic UIs actually need."
+  },
+  {
     "slug": "2026-10-21-benchmark-scores-are-a-proxy-not-a-measurement",
     "date": "2026-10-21",
     "title": "Benchmark Scores Are a Proxy, Not a Measurement",

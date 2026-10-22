@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Typed Agent Streams Replace Token Streaming - Sho Byde</title>
+<meta name="description" content="Typed agent streams replace token streaming with explicit events, which is what agentic UIs actually need." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-22-typed-agent-streams-replace-token-streaming/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Typed Agent Streams Replace Token Streaming" />
+<meta property="og:description" content="Typed agent streams replace token streaming with explicit events, which is what agentic UIs actually need." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-22-typed-agent-streams-replace-token-streaming/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-22T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Typed Agent Streams Replace Token Streaming" />
+<meta name="twitter:description" content="Typed agent streams replace token streaming with explicit events, which is what agentic UIs actually need." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Typed Agent Streams Replace Token Streaming",
+  "description": "Typed agent streams replace token streaming with explicit events, which is what agentic UIs actually need.",
+  "url": "https://shobyde.com/posts/2026-10-22-typed-agent-streams-replace-token-streaming/",
+  "datePublished": "2026-10-22T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "ui-direction"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Typed Agent Streams Replace Token Streaming</h1>
+  <div class="meta">2026-10-22 &middot; ui-direction &middot; by Sho Byde</div>
+  <p>LangChain's proposal is that LangGraph stops emitting a byte stream and emits typed events instead: message, tool_call, tool_result, state_update, subagent_event, human_review_request, custom. The frontend gets a structured record of what happened rather than text to append to a bubble.</p>
+<p>I think this is the right shape, and it matches what I have seen building agent interfaces. The hard part of an agent UI is not getting tokens on screen fast enough. It is showing the user which step the agent is on, what tool it called, and what it is waiting for. A token stream gives you none of that. You end up reverse-engineering state from prose, or bolting on a spinner that hides the work.</p>
+<p>Typed events make the UI a consumer of the agent's state machine instead of a renderer of its output. That is a better contract, and it is closer to how we already build non-agent interfaces: components respond to state changes, not to text.</p>
+<p>Two caveats. First, the proposal is still a proposal; the event set will grow, and every new event type is a new thing a frontend must handle. Second, typing the stream does not solve cancellation or backpressure. Those still need their own plumbing.</p>
+<p>Source: https://24-ai.news/en/news/2026-05-22/langchain-agent-streams-typed-channels-langgraph</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>
