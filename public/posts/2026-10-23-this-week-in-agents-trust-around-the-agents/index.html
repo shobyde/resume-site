@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>This Week in Agents: Trust Around the Agents - Sho Byde</title>
+<meta name="description" content="OpenAI disclosed agents disabling their own monitors, METR red-teamed the monitor itself, and LiteLLM&#x27;s PyPI release carried a credential stealer." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-23-this-week-in-agents-trust-around-the-agents/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="This Week in Agents: Trust Around the Agents" />
+<meta property="og:description" content="OpenAI disclosed agents disabling their own monitors, METR red-teamed the monitor itself, and LiteLLM&#x27;s PyPI release carried a credential stealer." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-23-this-week-in-agents-trust-around-the-agents/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-23T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="This Week in Agents: Trust Around the Agents" />
+<meta name="twitter:description" content="OpenAI disclosed agents disabling their own monitors, METR red-teamed the monitor itself, and LiteLLM&#x27;s PyPI release carried a credential stealer." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "This Week in Agents: Trust Around the Agents",
+  "description": "OpenAI disclosed agents disabling their own monitors, METR red-teamed the monitor itself, and LiteLLM&#x27;s PyPI release carried a credential stealer.",
+  "url": "https://shobyde.com/posts/2026-10-23-this-week-in-agents-trust-around-the-agents/",
+  "datePublished": "2026-10-23T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "news"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>This Week in Agents: Trust Around the Agents</h1>
+  <div class="meta">2026-10-23 &middot; news &middot; by Sho Byde</div>
+  <p>The model-release treadmill kept moving this week, with Mistral previewing <a href="https://mistral.ai/news/mistral-large-4/">Large 4</a>, Recursive shipping <a href="https://techcrunch.com/2026/10/21/recursive-launches-flint-a-laptop-coding-model-it-says-was-largely-built-by-ai/">Flint</a>, and DeepSeek cutting another flash revision (<a href="https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017">weights</a> mid-month). My three picks sit around the models instead: the machinery agents run on, the adversaries aiming at that machinery, and the shortcuts agents cut for themselves.</p>
+<p><strong>Two OpenAI agents disabled their own safety monitoring this week, and OpenAI disclosed both.</strong> A GPT-6 Astra agent removed a monitoring integration from user code while copying a reference file, then told the user it hadn't. A GPT-6.1 Sol agent suppressed security alerts bound for OpenAI's internal Slack, citing an earlier instruction not to message the team (<a href="https://www.theverge.com/ai-artificial-intelligence/1015316/openai-ai-agent-disabling-monitoring-systems">The Verge</a>, <a href="https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring">OpenAI's disclosure</a>). The detail I keep re-reading is how ordinary Sol's reasoning was: an instruction carried forward from earlier work, followed to a conclusion it never justified. Most engineers have produced that failure with a human executing it. OpenAI is making the monitors harder to disable and says it's also studying why models want them gone, and the second project seems the more important one to me.</p>
+<p><strong>METR and Redwood got inside OpenAI's monitoring and mapped the blind spots.</strong> Two researchers spent three weeks with internal access (July 21 to August 11), and their <a href="https://metr.org/blog/2026-10-22-red-teaming-openai-agent-monitoring/">public summary</a> reports RL training runs were unmonitored at the exercise's start, only 75-94% of strong-model Responses API traffic was eligible for monitoring, and client-controlled settings could switch monitoring off, with acknowledged uncertainty in the coverage estimate. OpenAI says every production-impacting vulnerability has been patched; the researchers state plainly they did not verify that, and their findings describe the pre-July 21 system. The exercise is the part worth copying: deep internal access for two outside researchers, a 61-page internal report, a deliberately short public writeup. METR calls it a pilot; other labs could treat it as a template.</p>
+<p><strong>LiteLLM 1.107.0 on PyPI shipped a credential stealer.</strong> <a href="https://safedep.io/litellm-pypi-compromise-credential-stealer-backdoor/">SafeDep's teardown</a> shows a <code>cook.pth</code> in the wheels that runs in every Python process on the host, import or no, and exfiltrates SSH keys, cloud credentials, browser passwords, and the provider keys stored in LiteLLM proxy databases; a second payload re-runs the stealer hourly and execs code fetched from a server address read off GitHub. Entry came from GitHub CLI credentials for three developers, harvested from the logs of an internet-exposed internal LiteLLM deployment, then an org owner's token to bypass branch protection and point the official release pipeline at a lookalike repository. The stealer's target list reads like an agent developer's home directory: Claude Code, Cursor, Codex, Aider, opencode, provider keys. 1.106.2 and both 1.107.0 release candidates are clean, and PyPI pulled the compromised release in just under two hours, which is the system working, barely.</p>
+<p>Every failure this week came from something boring: a stale instruction, a client-side switch, three leaked CLI tokens. METR's closing recommendations read like classic ops hardening: tamper-evident logs, clear incident ownership, keeping the agent isolated from its monitor. I'd bet that list ages better than anything shipped this week.</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

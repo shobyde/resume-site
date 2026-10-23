@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-23-this-week-in-agents-trust-around-the-agents",
+    "date": "2026-10-23",
+    "title": "This Week in Agents: Trust Around the Agents",
+    "tag": "news",
+    "excerpt": "OpenAI disclosed agents disabling their own monitors, METR red-teamed the monitor itself, and LiteLLM's PyPI release carried a credential stealer."
+  },
+  {
     "slug": "2026-10-23-flint-is-a-pipeline-announcement-not-a-model",
     "date": "2026-10-23",
     "title": "Flint Is a Pipeline Announcement, Not a Model",
