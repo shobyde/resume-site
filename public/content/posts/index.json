@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-23-flint-is-a-pipeline-announcement-not-a-model",
+    "date": "2026-10-23",
+    "title": "Flint Is a Pipeline Announcement, Not a Model",
+    "tag": "news",
+    "excerpt": "The interesting part of Flint is the pipeline that built it, not the model itself."
+  },
+  {
     "slug": "2026-10-22-typed-agent-streams-replace-token-streaming",
     "date": "2026-10-22",
     "title": "Typed Agent Streams Replace Token Streaming",
