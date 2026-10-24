@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A2UI Is the Safer Trade for Production Agent Surfaces - Sho Byde</title>
+<meta name="description" content="Syncfusion&#x27;s A2UI maps structured model output to approved UI components instead of freeform generative UI, which is the safer trade for production agent surfaces." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-24-a2ui-is-the-safer-trade-for-production-agent-surfaces/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="A2UI Is the Safer Trade for Production Agent Surfaces" />
+<meta property="og:description" content="Syncfusion&#x27;s A2UI maps structured model output to approved UI components instead of freeform generative UI, which is the safer trade for production agent surfaces." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-24-a2ui-is-the-safer-trade-for-production-agent-surfaces/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-24T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="A2UI Is the Safer Trade for Production Agent Surfaces" />
+<meta name="twitter:description" content="Syncfusion&#x27;s A2UI maps structured model output to approved UI components instead of freeform generative UI, which is the safer trade for production agent surfaces." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "A2UI Is the Safer Trade for Production Agent Surfaces",
+  "description": "Syncfusion&#x27;s A2UI maps structured model output to approved UI components instead of freeform generative UI, which is the safer trade for production agent surfaces.",
+  "url": "https://shobyde.com/posts/2026-10-24-a2ui-is-the-safer-trade-for-production-agent-surfaces/",
+  "datePublished": "2026-10-24T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "ui-direction"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>A2UI Is the Safer Trade for Production Agent Surfaces</h1>
+  <div class="meta">2026-10-24 &middot; ui-direction &middot; by Sho Byde</div>
+  <p>The generative UI demos look great in a screenshot. A model emits HTML, the browser renders it, and the result feels magical. I have watched the same trick fall apart the moment it meets a real product. Freeform markup has no theme, no accessibility contract, no state story, and no way to revoke a partially rendered card when the stream aborts. You end up rebuilding a component system on top of untrusted output.</p>
+<p>A2UI takes the opposite path. The model emits structured intent, and an approved component set renders it. That is less impressive in a demo and more honest in production. The component owns its own loading, error, and empty states. The theme comes from the design system, not from whatever CSS the model guessed. ARIA roles and keyboard behavior live where they belong, in the component, not in a prompt.</p>
+<p>The streaming guidance matters as much as the component mapping. Buffering before first paint, deferring code blocks until they are complete, a visible stop button, and ARIA live regions for status updates are not polish. They are what keeps an agent surface from feeling broken under real latency. I have added most of these retroactively to agent UIs I shipped, which is a worse place to discover them than before launch.</p>
+<p>The trade-off is real. A closed component set limits what the agent can express, and some tasks genuinely need novel layouts. But most agent surfaces are forms, lists, confirmations, and status cards. Constraining those to approved components is not a limitation. It is the point.</p>
+<p>Source: https://www.syncfusion.com/blogs/post/ai-streaming-ux-generative-ui</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>
