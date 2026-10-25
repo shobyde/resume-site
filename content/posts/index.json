@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-25-open-weights-is-a-license-question-not-a-size-question",
+    "date": "2026-10-25",
+    "title": "Open Weights Is a License Question, Not a Size Question",
+    "tag": "dev",
+    "excerpt": "Four open-weights drops in 72 hours, and the licenses mattered more than the param counts."
+  },
+  {
     "slug": "2026-10-24-a2ui-is-the-safer-trade-for-production-agent-surfaces",
     "date": "2026-10-24",
     "title": "A2UI Is the Safer Trade for Production Agent Surfaces",
