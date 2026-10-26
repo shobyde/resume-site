@@ -7,6 +7,13 @@
     "excerpt": "OpenAI's GPT-6 announcement leads with \"intelligent UI for everyone,\" which is a product claim dressed up as a feature name."
   },
   {
+    "slug": "2026-10-26-ar-practice-quiz-parent-gated-quizzes-for-homeschool-ar",
+    "date": "2026-10-26",
+    "title": "AR Practice Quiz: Parent-Gated Quizzes for Homeschool AR",
+    "tag": "project",
+    "excerpt": "An AR homeschool quiz app where a parent approves AI-generated quizzes before kids take them, and passing awards Accelerated Reader points."
+  },
+  {
     "slug": "2026-10-25-open-weights-is-a-license-question-not-a-size-question",
     "date": "2026-10-25",
     "title": "Open Weights Is a License Question, Not a Size Question",

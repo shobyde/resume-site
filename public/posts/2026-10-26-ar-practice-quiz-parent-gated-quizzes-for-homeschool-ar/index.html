@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AR Practice Quiz: Parent-Gated Quizzes for Homeschool AR - Sho Byde</title>
+<meta name="description" content="An AR homeschool quiz app where a parent approves AI-generated quizzes before kids take them, and passing awards Accelerated Reader points." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-26-ar-practice-quiz-parent-gated-quizzes-for-homeschool-ar/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="AR Practice Quiz: Parent-Gated Quizzes for Homeschool AR" />
+<meta property="og:description" content="An AR homeschool quiz app where a parent approves AI-generated quizzes before kids take them, and passing awards Accelerated Reader points." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-26-ar-practice-quiz-parent-gated-quizzes-for-homeschool-ar/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-26T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="AR Practice Quiz: Parent-Gated Quizzes for Homeschool AR" />
+<meta name="twitter:description" content="An AR homeschool quiz app where a parent approves AI-generated quizzes before kids take them, and passing awards Accelerated Reader points." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AR Practice Quiz: Parent-Gated Quizzes for Homeschool AR",
+  "description": "An AR homeschool quiz app where a parent approves AI-generated quizzes before kids take them, and passing awards Accelerated Reader points.",
+  "url": "https://shobyde.com/posts/2026-10-26-ar-practice-quiz-parent-gated-quizzes-for-homeschool-ar/",
+  "datePublished": "2026-10-26T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "project"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>AR Practice Quiz: Parent-Gated Quizzes for Homeschool AR</h1>
+  <div class="meta">2026-10-26 &middot; project &middot; by Sho Byde</div>
+  <p>I built the AR Practice Quiz because my kids read books at home and I wanted the quiz-and-points loop that school AR programs provide without depending on the school's catalog. The constraint that drove most of the design was simple: a model should never be the thing that decides what a child sees.</p>
+<p>The core flow is parent-gated. A parent searches AR BookFind via arfetch.py, picks a book, and the app calls GLM (glm-5.3-flash through opencode-go, see OPENCODE_BASE) to generate five comprehension questions with a quiz_and_points pass threshold defaulting to 0.6. The quiz lands in arquiz.db as a draft row. Kids only ever see approved quizzes. The review_quiz route in app.py is where the parent edits or rejects questions before flipping the approved flag. That gate is the whole product. Without it the app is a quiz generator; with it the app is a homeschool tool.</p>
+<p>State lives in SQLite. readers, books, attempts, quizzes. No ORM, just sqlite3 with a teardown_appcontext close_db. For a household of a few kids this is correct. I considered Postgres and it would have been wrong: backup is copying one file, debugging is opening sqlite3, and the failure mode of a corrupted db is "restore yesterday's copy."</p>
+<p>The reward side is where I spent the most judgment. attempt_stars returns 0-3 stars based on score ratio. reward_level computes milestone progress against either a teacher-set goal or a default ladder [25, 50, 100, ...]. all_stickers collects every passed book as a sticker with a deterministic icon and color derived from book id. earned_badges tracks "First finish" and similar unlocks. None of this is necessary for learning. It is necessary for a seven-year-old to want to take the next quiz. The trade-off is that the points are arbitrary; I picked thresholds that feel rewarding, not ones backed by pedagogy research.</p>
+<p>What I would change: the model call has no retry or fallback if opencode-go is down, and OPENCODE_KEY is loaded from a dotfile at runtime via load_key. That works on my server but is fragile. I would also add a per-book duplicate check so the same title is not re-quiz'd. The app currently trusts the parent to notice.</p>
+<p>The honest unresolved question is whether generated quizzes measure reading comprehension or pattern-matching. I do not have a way to tell yet. I watch which questions kids get wrong and rewrite them by hand when the model misfires.</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>
