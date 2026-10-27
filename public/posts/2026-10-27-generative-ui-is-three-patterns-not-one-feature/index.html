@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Generative UI Is Three Patterns, Not One Feature - Sho Byde</title>
+<meta name="description" content="CopilotKit&#x27;s generative UI guide splits the space into three patterns, and the split matters more than any one implementation." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-27-generative-ui-is-three-patterns-not-one-feature/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Generative UI Is Three Patterns, Not One Feature" />
+<meta property="og:description" content="CopilotKit&#x27;s generative UI guide splits the space into three patterns, and the split matters more than any one implementation." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-27-generative-ui-is-three-patterns-not-one-feature/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-27T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Generative UI Is Three Patterns, Not One Feature" />
+<meta name="twitter:description" content="CopilotKit&#x27;s generative UI guide splits the space into three patterns, and the split matters more than any one implementation." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Generative UI Is Three Patterns, Not One Feature",
+  "description": "CopilotKit&#x27;s generative UI guide splits the space into three patterns, and the split matters more than any one implementation.",
+  "url": "https://shobyde.com/posts/2026-10-27-generative-ui-is-three-patterns-not-one-feature/",
+  "datePublished": "2026-10-27T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "ui-direction"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Generative UI Is Three Patterns, Not One Feature</h1>
+  <div class="meta">2026-10-27 &middot; ui-direction &middot; by Sho Byde</div>
+  <p>I've been building agent-facing UIs for a while and the thing that kept bothering me was treating generative UI as one feature. It isn't. CopilotKit's guide lays out three patterns: declarative (A2UI / Open-JSON-UI), plus MCP Apps for interactive UI rendered inside chat clients. The declarative side is the safe production trade, something I argued earlier with A2UI. The MCP Apps side is the interesting one: UI as a capability an agent can call, not a surface the frontend owns.</p>
+<p>The architectural decision that actually matters isn't which library, it's where the component boundary sits. If the agent emits a component tree, the frontend is a renderer and you've moved the trust boundary into the model's output. If the agent emits a tool call that renders an MCP App, the frontend stays in charge of layout and the agent only influences what appears. Those two models fail differently. A bad component tree is a rendering bug; a bad tool call is an authorization bug.</p>
+<p>I'd default to the tool-call shape for anything touching user data, and the declarative shape for read-only displays. The guide's code samples make both look easy. They aren't, but the framing is right.</p>
+<p>Source: https://www.copilotkit.ai/blog/the-developer-s-guide-to-generative-ui-in-2026</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-27-generative-ui-is-three-patterns-not-one-feature",
+    "date": "2026-10-27",
+    "title": "Generative UI Is Three Patterns, Not One Feature",
+    "tag": "ui-direction",
+    "excerpt": "CopilotKit's generative UI guide splits the space into three patterns, and the split matters more than any one implementation."
+  },
+  {
     "slug": "2026-10-26-gpt-6-s-intelligent-ui-is-a-product-claim-not-an-interface-s",
     "date": "2026-10-26",
     "title": "GPT-6's 'Intelligent UI' Is a Product Claim, Not an Interface Spec",
