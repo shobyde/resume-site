@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Streaming Is Solved, Composition Is Not - Sho Byde</title>
+<meta name="description" content="Streaming is solved, composition is not: a survey of AI chat UI libraries names the real gap, and it is not token delivery." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-28-streaming-is-solved-composition-is-not/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Streaming Is Solved, Composition Is Not" />
+<meta property="og:description" content="Streaming is solved, composition is not: a survey of AI chat UI libraries names the real gap, and it is not token delivery." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-28-streaming-is-solved-composition-is-not/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-28T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Streaming Is Solved, Composition Is Not" />
+<meta name="twitter:description" content="Streaming is solved, composition is not: a survey of AI chat UI libraries names the real gap, and it is not token delivery." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Streaming Is Solved, Composition Is Not",
+  "description": "Streaming is solved, composition is not: a survey of AI chat UI libraries names the real gap, and it is not token delivery.",
+  "url": "https://shobyde.com/posts/2026-10-28-streaming-is-solved-composition-is-not/",
+  "datePublished": "2026-10-28T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "ui-direction"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Streaming Is Solved, Composition Is Not</h1>
+  <div class="meta">2026-10-28 &middot; ui-direction &middot; by Sho Byde</div>
+  <p>Streaming is solved. Composition is not. That line comes from a survey of AI chat UI libraries, and it names the actual gap better than most of the libraries do.</p>
+<p>The survey catalogues the usual React establishment: assistant-ui, CopilotKit, Vercel AI SDK. Every one of them handles token streaming well. The differentiator is no longer whether text arrives smoothly. It is whether you can restructure the layout, inject domain-specific controls, or match a design system without fighting the library's abstractions. Monolithic chat components look good in demos and fall apart at that point.</p>
+<p>I have hit this on agent UI work. Streaming lifecycle is a solved problem with well-known patterns: buffer tokens, defer code-block rendering until the closing fence, a stop button, ARIA live regions. None of that is where the hours go. The hours go to approval flows, reasoning traces, tool execution logs, and the question of where a custom control lives relative to a message. Those are composition questions, and most libraries answer them with escape hatches.</p>
+<p>The survey's greenfield-vs-brownfield lens is the part I would keep. On a greenfield project, a heavy framework's opinions accelerate you. On a brownfield product with an existing agent backend, a thin UI layer that imposes fewer opinions causes less friction. The lock-in types map onto that: architecture and ecosystem lock-in matter less when you are choosing everything fresh, and a lot more when the architecture already exists.</p>
+<p>One caution the survey underplays: accessibility is still treated as a README line item, and it is nearly impossible to bolt on after the fact. That is a composition problem too. If your component model does not make accessible structure the default, no amount of streaming polish fixes it.</p>
+<p>Source: https://alexander-lukashov.medium.com/the-overview-of-ui-libraries-for-ai-chat-interfaces-in-2026-146a1492114a</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

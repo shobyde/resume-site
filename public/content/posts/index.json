@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-28-streaming-is-solved-composition-is-not",
+    "date": "2026-10-28",
+    "title": "Streaming Is Solved, Composition Is Not",
+    "tag": "ui-direction",
+    "excerpt": "Streaming is solved, composition is not: a survey of AI chat UI libraries names the real gap, and it is not token delivery."
+  },
+  {
     "slug": "2026-10-27-generative-ui-is-three-patterns-not-one-feature",
     "date": "2026-10-27",
     "title": "Generative UI Is Three Patterns, Not One Feature",
