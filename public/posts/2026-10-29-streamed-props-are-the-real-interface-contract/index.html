@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Streamed Props Are the Real Interface Contract - Sho Byde</title>
+<meta name="description" content="Streamed props are the real interface contract between agents and UIs, not the component tree." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-29-streamed-props-are-the-real-interface-contract/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Streamed Props Are the Real Interface Contract" />
+<meta property="og:description" content="Streamed props are the real interface contract between agents and UIs, not the component tree." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-29-streamed-props-are-the-real-interface-contract/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-29T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Streamed Props Are the Real Interface Contract" />
+<meta name="twitter:description" content="Streamed props are the real interface contract between agents and UIs, not the component tree." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Streamed Props Are the Real Interface Contract",
+  "description": "Streamed props are the real interface contract between agents and UIs, not the component tree.",
+  "url": "https://shobyde.com/posts/2026-10-29-streamed-props-are-the-real-interface-contract/",
+  "datePublished": "2026-10-29T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "ui-direction"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Streamed Props Are the Real Interface Contract</h1>
+  <div class="meta">2026-10-29 &middot; ui-direction &middot; by Sho Byde</div>
+  <p>I keep seeing agent UI demos framed around "the agent picks a component." That framing skips the hard part. Picking a component is routing. The contract is what happens while the props are still arriving. Tambo 1.0's pitch is that the agent renders your actual React components with streamed props instead of text blobs. That is the right center of gravity, because the failure mode in production is not "wrong component." It is a half-populated card that flashes incomplete state, or a table that renders twice as rows stream in.</p>
+<p>The interesting design question is not whether the agent can emit a component name. It is what your component does when its props are partial. Does it reserve layout space? Does it show a skeleton tied to the schema, or a spinner? Does a streaming table append rows or re-render? These are UI state-machine questions, and they live in the component, not the agent.</p>
+<p>The reason this matters more than routing: the agent cannot reliably know your loading semantics. It knows intent. The component owns the semantics. So the contract should be props plus a stream lifecycle, not a component selector. Treating the selector as the contract is why so many generative UI demos look great and fall apart in real data.</p>
+<p>Tambo being SOC 2/HIPAA compliant is a separate claim about where this runs, not how it works. Worth noting it as a deployment constraint rather than a feature.</p>
+<p>Source: https://tambo.co/blog/posts/introducing-tambo-generative-ui</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

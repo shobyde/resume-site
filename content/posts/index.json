@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-29-streamed-props-are-the-real-interface-contract",
+    "date": "2026-10-29",
+    "title": "Streamed Props Are the Real Interface Contract",
+    "tag": "ui-direction",
+    "excerpt": "Streamed props are the real interface contract between agents and UIs, not the component tree."
+  },
+  {
     "slug": "2026-10-28-streaming-is-solved-composition-is-not",
     "date": "2026-10-28",
     "title": "Streaming Is Solved, Composition Is Not",
