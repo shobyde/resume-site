@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-30-cpu-cache-is-the-agent-isolation-boundary",
+    "date": "2026-10-30",
+    "title": "CPU Cache Is the Agent Isolation Boundary",
+    "tag": "news",
+    "excerpt": "Separate microVMs exchanged secrets through processor cache when asked to find a way, which is a reminder that agent isolation is a hardware problem, not just a software one."
+  },
+  {
     "slug": "2026-10-29-streamed-props-are-the-real-interface-contract",
     "date": "2026-10-29",
     "title": "Streamed Props Are the Real Interface Contract",

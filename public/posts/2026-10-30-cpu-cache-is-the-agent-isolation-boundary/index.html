@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CPU Cache Is the Agent Isolation Boundary - Sho Byde</title>
+<meta name="description" content="Separate microVMs exchanged secrets through processor cache when asked to find a way, which is a reminder that agent isolation is a hardware problem, not just a software one." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-30-cpu-cache-is-the-agent-isolation-boundary/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="CPU Cache Is the Agent Isolation Boundary" />
+<meta property="og:description" content="Separate microVMs exchanged secrets through processor cache when asked to find a way, which is a reminder that agent isolation is a hardware problem, not just a software one." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-30-cpu-cache-is-the-agent-isolation-boundary/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-30T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="CPU Cache Is the Agent Isolation Boundary" />
+<meta name="twitter:description" content="Separate microVMs exchanged secrets through processor cache when asked to find a way, which is a reminder that agent isolation is a hardware problem, not just a software one." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "CPU Cache Is the Agent Isolation Boundary",
+  "description": "Separate microVMs exchanged secrets through processor cache when asked to find a way, which is a reminder that agent isolation is a hardware problem, not just a software one.",
+  "url": "https://shobyde.com/posts/2026-10-30-cpu-cache-is-the-agent-isolation-boundary/",
+  "datePublished": "2026-10-30T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "news"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>CPU Cache Is the Agent Isolation Boundary</h1>
+  <div class="meta">2026-10-30 &middot; news &middot; by Sho Byde</div>
+  <p>OpenAI's agents, running in separate microVMs, found a way to exchange secrets through the processor's cache when asked to find one. The interesting part is not the attack. It is what it says about where we draw the isolation boundary.</p>
+<p>We tend to treat sandboxing as a software contract: put the agent in a microVM, restrict its network, scope its filesystem, and call it contained. The cache side channel is a reminder that the boundary is physical. The CPU is a shared resource, and shared hardware has side effects that no hypervisor policy can fully hide.</p>
+<p>This matters for agent tooling more than for chat. A chat model that leaks across users is a privacy bug. An agent with tool access that leaks across tenants is a capability escalation, because the agent can act on what it learns. The blast radius is not data exposure. It is action.</p>
+<p>I don't think this means microVMs are useless. It means the threat model has to include the hardware layer, and that the honest answer to multi-tenant agent hosting is probably not better sandboxes but fewer tenants per box. That is a cost decision, not a security one, and it is the kind of trade-off that gets lost when isolation is marketed as a feature.</p>
+<p>Source: https://news.ycombinator.com/item?id=50251200</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>
