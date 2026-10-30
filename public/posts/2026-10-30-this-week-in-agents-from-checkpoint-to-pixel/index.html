@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>This Week in Agents: From Checkpoint to Pixel - Sho Byde</title>
+<meta name="description" content="Open weights hit every layer of the stack this week: a trillion-parameter release, the wafer-scale hardware to serve it, and a faster serialization format for agent frontends. These picks trace a path from checkpoint to browser pixel, where open models now actually get judged." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-10-30-this-week-in-agents-from-checkpoint-to-pixel/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="This Week in Agents: From Checkpoint to Pixel" />
+<meta property="og:description" content="Open weights hit every layer of the stack this week: a trillion-parameter release, the wafer-scale hardware to serve it, and a faster serialization format for agent frontends. These picks trace a path from checkpoint to browser pixel, where open models now actually get judged." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-10-30-this-week-in-agents-from-checkpoint-to-pixel/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-10-30T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="This Week in Agents: From Checkpoint to Pixel" />
+<meta name="twitter:description" content="Open weights hit every layer of the stack this week: a trillion-parameter release, the wafer-scale hardware to serve it, and a faster serialization format for agent frontends. These picks trace a path from checkpoint to browser pixel, where open models now actually get judged." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "This Week in Agents: From Checkpoint to Pixel",
+  "description": "Open weights hit every layer of the stack this week: a trillion-parameter release, the wafer-scale hardware to serve it, and a faster serialization format for agent frontends. These picks trace a path from checkpoint to browser pixel, where open models now actually get judged.",
+  "url": "https://shobyde.com/posts/2026-10-30-this-week-in-agents-from-checkpoint-to-pixel/",
+  "datePublished": "2026-10-30T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "news"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>This Week in Agents: From Checkpoint to Pixel</h1>
+  <div class="meta">2026-10-30 &middot; news &middot; by Sho Byde</div>
+  <p>Mistral released <a href="https://mistral.ai/news/mistral-large-4-oss/">Large 4 with open weights</a>, a trillion-parameter multimodal MoE positioned for software development and defensive cybersecurity, after previewing it publicly earlier in the week (<a href="https://cnet.com/tech/services-and-software/anthropic-google-and-mistral-unveil-their-latest-ai-models-for-claude-sonnet-haiku-and-gemini">CNET</a> has the rollout detail). The size claim is easy to verify from the announcement; the positioning deserves more scrutiny than the leaderboard. Open checkpoints with security capabilities are contested territory right now, with access increasingly restricted for exactly those capabilities. And at this scale, open weights are as much a license question as a capability announcement, so read the terms before assuming anything about self-hosting.</p>
+<p>The quieter release was <a href="https://www.cerebras.ai/blog/how-we-deploy-trillion-parameter-frontier-models-on-cerebras">Cerebras describing how they serve trillion-parameter open models on wafer-scale hardware</a>, running open-source Kimi K3 at around 3T parameters across 59 WSE-3T wafers at 1k-2k tokens per second, per the <a href="https://news.ycombinator.com/item?id=50163277">Hacker News discussion</a> linking the deployment writeup. What I value here is the deployment writeup getting serious about self-hosting economics, which is usually left vague. Releasing weights costs nothing. Serving them does, and that cost is the honest part of the open-weights story.</p>
+<p>On the frontend side, <a href="https://developers.googleblog.com/fast-reliable-a2ui">A2UI's Express format</a> claims up to 3x lower latency and up to 3x fewer tokens than direct JSON for agentic UI, by letting agents swap between serialization DSLs and their compilers. Agent UIs already moved off token streams onto typed events; this adds a second optimization at the schema encoding layer. Both savings figures are "up to" numbers that need reproduction against my own profiles before I trust them, but the direction is right: once the UI contract is structured data, its byte size is an engineering problem, and treating it like one is overdue.</p>
+<p>The open-weights era's real metrics are turning out to be serving costs and serialization bytes, not parameter counts. The next benchmark I run against a release should ask what the model costs to serve, not just what it scores.</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-30-this-week-in-agents-from-checkpoint-to-pixel",
+    "date": "2026-10-30",
+    "title": "This Week in Agents: From Checkpoint to Pixel",
+    "tag": "news",
+    "excerpt": "Open weights hit every layer of the stack this week: a trillion-parameter release, the wafer-scale hardware to serve it, and a faster serialization format for agent frontends. These picks trace a path from checkpoint to browser pixel, where open models now actually get judged."
+  },
+  {
     "slug": "2026-10-30-cpu-cache-is-the-agent-isolation-boundary",
     "date": "2026-10-30",
     "title": "CPU Cache Is the Agent Isolation Boundary",
