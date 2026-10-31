@@ -43,6 +43,26 @@ export const DATA = {
       },
     },
     {
+      meta: ['PERSONAL PROJECT', 'OPEN SOURCE · MIT'],
+      title: 'Readback: self-hosted reading tracker for families',
+      summary: `Reading-comprehension programs are closed systems: the school picks the quizzes, parents never see them, and the reading log lives on someone else's server. I built <strong>Readback</strong> as the opposite. A parent imports the book list, a model drafts five questions from the book's metadata, every question gets human review before a reader sees it, and points stay in a local SQLite file.`,
+      contribution: 'Sole engineer: specification, data model, Flask app and server-rendered UI, quiz generation and validation pipeline, Docker packaging, tests, and the design review pass.',
+      stack: ['Python 3.10+', 'Flask 3', 'Jinja (no JS)', 'SQLite', 'OpenAI-compatible LLMs', 'Docker', 'pytest'],
+      links: [
+        { label: 'Source on GitHub', url: 'https://github.com/shobyde/readback' },
+      ],
+      details: {
+        architecture: 'A Flask app with Jinja templates and no JavaScript at all. Books arrive by CSV, matched on ISBN first and then on title plus author, with Open Library enrichment only when a parent asks for it. Generating a quiz is one POST to an OpenAI-compatible /chat/completions endpoint asking for strict JSON; the response is structurally validated before it reaches the parent queue, and approval is what publishes a quiz to readers. Scoring writes to a points ledger that awards a book once per reader, and the family log exports as CSV. Everything lives in a single SQLite file through stdlib sqlite3, with no ORM.',
+        decisions: [
+          'Human review is a hard gate, not a hint: approval is refused when any question is structurally invalid, the reasons are shown on the page, and readers only ever see approved quizzes.',
+          'Runtime dependencies stay at Flask plus httpx, with sqlite3 from the standard library. No ORM and no migrations framework, so the whole install is a pip install and one database file.',
+          'Model-agnostic by configuration: Ollama, LM Studio, or any hosted endpoint that speaks /chat/completions, with one retry when a server rejects the response_format field.',
+          'Privacy as a design constraint: only book metadata and parent notes leave the process, never book text, reader names, or attempt history. The default bind is 127.0.0.1 and the README states the LAN exposure plainly instead of pretending it is safe.',
+          'Two surfaces for two audiences: a playful shelf for young readers and a calmer review queue for parents, both server-rendered so they work on a phone with no JavaScript.',
+        ],
+      },
+    },
+    {
       meta: ['PERSONAL PROJECT', 'LIVE'],
       title: 'shobyde.com: resume + daily engineering log',
       summary: `A personal site that publishes like a newsroom: I wanted a résumé that stays alive instead of rotting, so I built an <strong>LLM-assisted publishing loop</strong>. Automated agents draft daily entries and site updates; I review, curate, and merge every change.`,
