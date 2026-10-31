@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-10-31-chat-is-a-job-transcript-not-a-conversation",
+    "date": "2026-10-31",
+    "title": "Chat Is a Job Transcript, Not a Conversation",
+    "tag": "ui-direction",
+    "excerpt": "Chat breaks down once an agent starts taking real actions, and prettier components alone will not fix it."
+  },
+  {
     "slug": "2026-10-30-this-week-in-agents-from-checkpoint-to-pixel",
     "date": "2026-10-30",
     "title": "This Week in Agents: From Checkpoint to Pixel",
