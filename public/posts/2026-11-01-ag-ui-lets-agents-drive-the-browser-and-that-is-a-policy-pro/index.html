@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AG-UI lets agents drive the browser, and that is a policy problem - Sho Byde</title>
+<meta name="description" content="AG-UI formalizes agent-to-frontend events, including tool calls that drive browser navigation. The interesting part is the trust boundary, not the protocol." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-01-ag-ui-lets-agents-drive-the-browser-and-that-is-a-policy-pro/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="AG-UI lets agents drive the browser, and that is a policy problem" />
+<meta property="og:description" content="AG-UI formalizes agent-to-frontend events, including tool calls that drive browser navigation. The interesting part is the trust boundary, not the protocol." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-01-ag-ui-lets-agents-drive-the-browser-and-that-is-a-policy-pro/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-01T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="AG-UI lets agents drive the browser, and that is a policy problem" />
+<meta name="twitter:description" content="AG-UI formalizes agent-to-frontend events, including tool calls that drive browser navigation. The interesting part is the trust boundary, not the protocol." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AG-UI lets agents drive the browser, and that is a policy problem",
+  "description": "AG-UI formalizes agent-to-frontend events, including tool calls that drive browser navigation. The interesting part is the trust boundary, not the protocol.",
+  "url": "https://shobyde.com/posts/2026-11-01-ag-ui-lets-agents-drive-the-browser-and-that-is-a-policy-pro/",
+  "datePublished": "2026-11-01T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "ui-direction"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>AG-UI lets agents drive the browser, and that is a policy problem</h1>
+  <div class="meta">2026-11-01 &middot; ui-direction &middot; by Sho Byde</div>
+  <p>The AG-UI protocol describes lifecycle, text, and tool-call events flowing from an agent to a user interface, including front-end tool calls that let an agent navigate the browser. That last capability is the one worth thinking about.</p>
+<p>I have been building agent UIs that stream structured events through an adapter layer into reusable components, and the hardest part was never the transport. It was deciding which actions the agent is allowed to take on the user's behalf. A protocol that standardizes "agent drives browser" does not answer that question; it just makes the capability cheaper to ship. Cheaper capabilities tend to ship before the policy around them is settled.</p>
+<p>The useful framing is to treat front-end tool calls like any other privileged operation: scoped, logged, and gated on user confirmation for anything irreversible. Navigation reads are low risk. Form submission, purchases, and deletions are not. The protocol does not distinguish these; the application has to.</p>
+<p>One open question is whether front-end tool calls end up looking like browser automation with a chat layer on top, which is a different product category than a chat assistant. I think it does, and that is fine, but it should be named honestly rather than sold as conversation.</p>
+<p>Source: https://ridewithvia.com/resources/agent-user-interaction-protocol-when-the-frontend-got-an-ai-protocol</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

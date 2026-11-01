@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-01-ag-ui-lets-agents-drive-the-browser-and-that-is-a-policy-pro",
+    "date": "2026-11-01",
+    "title": "AG-UI lets agents drive the browser, and that is a policy problem",
+    "tag": "ui-direction",
+    "excerpt": "AG-UI formalizes agent-to-frontend events, including tool calls that drive browser navigation. The interesting part is the trust boundary, not the protocol."
+  },
+  {
     "slug": "2026-10-31-chat-is-a-job-transcript-not-a-conversation",
     "date": "2026-10-31",
     "title": "Chat Is a Job Transcript, Not a Conversation",
