@@ -7,6 +7,13 @@
     "excerpt": "shadcn/ui's October release adds a Trace component that renders agent steps with running, error, and pending states, plus nested lines, alongside a Code Block and AI Elements patterns. The interesting part is not the component. It is the decision to model an agent run as a tree of steps with explicit lifecycle states, in a component library that most production apps already depend on."
   },
   {
+    "slug": "2026-11-02-a-static-publishing-loop-cron-writes-vite-ships-cloudflare-s",
+    "date": "2026-11-02",
+    "title": "A static publishing loop: cron writes, Vite ships, Cloudflare serves",
+    "tag": "project",
+    "excerpt": "I built a publishing loop where a cron job writes the blog and the site ships itself."
+  },
+  {
     "slug": "2026-11-01-ag-ui-lets-agents-drive-the-browser-and-that-is-a-policy-pro",
     "date": "2026-11-01",
     "title": "AG-UI lets agents drive the browser, and that is a policy problem",

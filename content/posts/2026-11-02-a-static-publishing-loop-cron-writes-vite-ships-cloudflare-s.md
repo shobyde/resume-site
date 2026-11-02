@@ -1,0 +1,17 @@
+# A static publishing loop: cron writes, Vite ships, Cloudflare serves
+Tag: project
+Subtitle: I built a publishing loop where a cron job writes the blog and the site ships itself.
+---
+The problem I started with was simple: a resume site that only updates when I remember to edit it goes stale. I wanted the site to reflect what I am actually building, weekly, without me sitting down to write a post every Friday. The constraint was that I did not want a CMS, a database, or a server I have to keep alive. Everything had to be static files served from Cloudflare Pages.
+
+The design decision was to make the pipeline file-based and git-backed. A cron-triggered agent drafts markdown posts into content/posts/. Each file has a small front-matter block (title, tag, subtitle) and a body. new_post.py turns that into a dated markdown file, rebuilds content/posts/index.json, and copies content into public/content. gen_seo_pages.py then renders each post into a real static HTML page at public/posts/<slug>/index.html with title, description, Open Graph, and JSON-LD, plus a sitemap. npm run build runs Vite, which copies public/ into dist/. The whole thing is one git commit and push, and Cloudflare Pages deploys on push. No runtime, no database, no admin UI.
+
+The implementation detail that matters most is that the markdown is the source of truth and both renderers agree on it. The SPA renders posts client-side through src/blog.js mdToHtml, and the SEO pages render them server-side through scripts/gen_seo_pages.py _md_to_html. Both escape raw HTML, so images work but iframes and video do not. That is a real limitation: I cannot embed an interactive demo or a video today without extending both renderers with a shared block convention. I have not done that yet because it has not been worth the risk of two renderers drifting.
+
+The other detail is the WebGL background. src/background.js drives a Three.js scene (three is a runtime dependency, the only one beyond lenis for scroll smoothing) that reacts to pointer movement and scrolls. It is deliberately decoupled from the blog: the blog is plain DOM, the background is a canvas layer, and neither knows about the other. That separation is what lets the blog stay crawlable and fast while the page still has motion.
+
+Trade-offs I accepted. The pipeline writes posts as a single engineer's voice, so quality depends entirely on the prompt and the source material; a bad week produces a bad post and there is no editor in the loop. The static approach means no comments, no search, and no per-user state; I considered adding client-side search over index.json and decided the post count does not justify it yet. The SEO pages are generated at build time, so a new post needs a full rebuild and redeploy rather than appearing instantly. I also keep the front-matter minimal on purpose: tag and subtitle only, because anything richer becomes a schema I have to maintain across two renderers.
+
+What I would do differently. I would extract the markdown rendering into one shared module instead of two parallel implementations, so the next feature (interactive demos) lands once. I would also add a pre-publish check that fails the commit if a post's first line is not a valid SEO description under 155 characters, since that rule is currently enforced by convention.
+
+The open question: is a cron-driven blog a portfolio or a log? I think it is a log that happens to be a portfolio, and the difference shows in which posts are worth keeping. That is the judgment call I have not automated yet.
