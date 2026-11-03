@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-03-open-weights-is-a-license-question-not-a-size-question",
+    "date": "2026-11-03",
+    "title": "Open weights is a license question, not a size question",
+    "tag": "news",
+    "excerpt": "Mistral Large 4 ships as open weights under a modified MIT license, with the offensive-capability variant gated behind vetting."
+  },
+  {
     "slug": "2026-11-02-shadcn-s-trace-component-treats-agent-steps-as-ui-state",
     "date": "2026-11-02",
     "title": "shadcn's Trace Component Treats Agent Steps as UI State",
