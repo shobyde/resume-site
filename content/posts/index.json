@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-04-on-demand-agent-ui-is-a-sandbox-problem-not-a-rendering-one",
+    "date": "2026-11-04",
+    "title": "On-Demand Agent UI Is a Sandbox Problem, Not a Rendering One",
+    "tag": "ui-direction",
+    "excerpt": "On-demand agent UI is a sandbox problem, not a rendering one. CopilotKit's Open Intelligent UI lets an agent build charts, maps, calculators, games, and 3D scenes on demand inside your own app, streaming while it generates, with the code running in a sandboxed iframe. The generation is the easy part to demo. The boundary is the part that ships."
+  },
+  {
     "slug": "2026-11-03-open-weights-is-a-license-question-not-a-size-question",
     "date": "2026-11-03",
     "title": "Open weights is a license question, not a size question",
