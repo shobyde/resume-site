@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-05-a-thin-chat-frontend-is-a-sign-of-maturity-not-a-shortcut",
+    "date": "2026-11-05",
+    "title": "A thin chat frontend is a sign of maturity, not a shortcut",
+    "tag": "dev",
+    "excerpt": "TinyWebUI is a drop-in chat frontend for local models that ships as an npx command instead of a full Open WebUI stack. The interesting part is not that it exists. It is that the frontend stopped being the hard part."
+  },
+  {
     "slug": "2026-11-04-on-demand-agent-ui-is-a-sandbox-problem-not-a-rendering-one",
     "date": "2026-11-04",
     "title": "On-Demand Agent UI Is a Sandbox Problem, Not a Rendering One",
