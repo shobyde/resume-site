@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-06-this-week-in-agents-export-lists-and-typed-streams",
+    "date": "2026-11-06",
+    "title": "This Week in Agents: Export Lists and Typed Streams",
+    "tag": "news",
+    "excerpt": "The agent news this week was mostly infrastructure hardening: regulation reached for the weights themselves, and streaming settled into typed, queued, replayable protocols."
+  },
+  {
     "slug": "2026-11-06-the-proxy-is-not-the-boundary",
     "date": "2026-11-06",
     "title": "The proxy is not the boundary",

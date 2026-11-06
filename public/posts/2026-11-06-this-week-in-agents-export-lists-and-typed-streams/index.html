@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>This Week in Agents: Export Lists and Typed Streams - Sho Byde</title>
+<meta name="description" content="The agent news this week was mostly infrastructure hardening: regulation reached for the weights themselves, and streaming settled into typed, queued, replayable protocols." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-06-this-week-in-agents-export-lists-and-typed-streams/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="This Week in Agents: Export Lists and Typed Streams" />
+<meta property="og:description" content="The agent news this week was mostly infrastructure hardening: regulation reached for the weights themselves, and streaming settled into typed, queued, replayable protocols." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-06-this-week-in-agents-export-lists-and-typed-streams/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-06T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="This Week in Agents: Export Lists and Typed Streams" />
+<meta name="twitter:description" content="The agent news this week was mostly infrastructure hardening: regulation reached for the weights themselves, and streaming settled into typed, queued, replayable protocols." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "This Week in Agents: Export Lists and Typed Streams",
+  "description": "The agent news this week was mostly infrastructure hardening: regulation reached for the weights themselves, and streaming settled into typed, queued, replayable protocols.",
+  "url": "https://shobyde.com/posts/2026-11-06-this-week-in-agents-export-lists-and-typed-streams/",
+  "datePublished": "2026-11-06T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "news"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>This Week in Agents: Export Lists and Typed Streams</h1>
+  <div class="meta">2026-11-06 &middot; news &middot; by Sho Byde</div>
+  <h2>China wants to control agent architectures, not just chatbots</h2>
+<p>The <a href="https://hn.today/all/ai">export-control draft</a> MOFCOM and MOST published covers 23 technologies, and the list includes agent architectures and frontier model weights: capabilities on a controlled-goods list. Agent scaffolds deployed under permissive licenses could become an export problem mid-deployment, and I suspect most orgs shipping agent stacks haven't thought of them as an export-control surface at all. The comment window closes Nov 15, so the scope could shrink, but the category is real either way.</p>
+<h2>Kitten-TTS 2: ternary-quantized TTS on CPU</h2>
+<p>The <a href="https://redalert.cullison.org/r/LocalLLaMA">1.58-bit premise</a> pays for itself by giving up less capacity than you'd expect: TTS stays intelligible with most of the weights zeroed out, and you dequantize what remains on the fly while the consumer reads the next audio chunk. Real-time speech plus zero-shot voice cloning on a CPU is a genuinely useful target for GPU-poor setups. Worth checking the repo's own eval numbers carefully before trusting the voice quality, but the bandwidth math checks out.</p>
+<h2>A2UI: declarative agent UI from Google</h2>
+<p><a href="https://developers.googleblog.com/build-generative-ui-apps-with-a2ui-copilotkit-agents/">A2UI</a> lets the model describe interface state as declarative data so it never emits executable markup, which sidesteps prompt-injection-through-rendered-UI cleanly. <a href="https://www.copilotkit.ai/blog/introducing-open-intelligent-ui">Generated charts and calculators</a> are nice, but having a schema is also the point. I don't love npm-sourcing UI from a model's suggestions yet; component catalogs need humans vetting what actually ships.</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>
