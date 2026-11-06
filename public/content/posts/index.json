@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-06-the-proxy-is-not-the-boundary",
+    "date": "2026-11-06",
+    "title": "The proxy is not the boundary",
+    "tag": "dev",
+    "excerpt": "An HN thread on running your own LLM proxy makes a point most agent stacks skip: the harness between you and the model is the real data boundary."
+  },
+  {
     "slug": "2026-11-05-a-thin-chat-frontend-is-a-sign-of-maturity-not-a-shortcut",
     "date": "2026-11-05",
     "title": "A thin chat frontend is a sign of maturity, not a shortcut",
