@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-07-heretic-2-0-makes-model-modification-something-you-can-test",
+    "date": "2026-11-07",
+    "title": "Heretic 2.0 makes model modification something you can test",
+    "tag": "tools",
+    "excerpt": "Heretic 2.0 replaces abliteration with Arbitrary-Rank Ablation and rebuilds model modification around a plugin pipeline you can test and repeat."
+  },
+  {
     "slug": "2026-11-06-this-week-in-agents-export-lists-and-typed-streams",
     "date": "2026-11-06",
     "title": "This Week in Agents: Export Lists and Typed Streams",
