@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A2UI is a trust-boundary decision, not a styling preference - Sho Byde</title>
+<meta name="description" content="Google&#x27;s A2UI is a declarative message format for agent-driven UIs, and the interesting part is not that agents can generate interfaces. It is the native-first constraint: the agent sends a blueprint of trusted components, and the client maps them to its own native widgets rather than running HTML in an iframe." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-08-a2ui-is-a-trust-boundary-decision-not-a-styling-preference/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="A2UI is a trust-boundary decision, not a styling preference" />
+<meta property="og:description" content="Google&#x27;s A2UI is a declarative message format for agent-driven UIs, and the interesting part is not that agents can generate interfaces. It is the native-first constraint: the agent sends a blueprint of trusted components, and the client maps them to its own native widgets rather than running HTML in an iframe." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-08-a2ui-is-a-trust-boundary-decision-not-a-styling-preference/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-08T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="A2UI is a trust-boundary decision, not a styling preference" />
+<meta name="twitter:description" content="Google&#x27;s A2UI is a declarative message format for agent-driven UIs, and the interesting part is not that agents can generate interfaces. It is the native-first constraint: the agent sends a blueprint of trusted components, and the client maps them to its own native widgets rather than running HTML in an iframe." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "A2UI is a trust-boundary decision, not a styling preference",
+  "description": "Google&#x27;s A2UI is a declarative message format for agent-driven UIs, and the interesting part is not that agents can generate interfaces. It is the native-first constraint: the agent sends a blueprint of trusted components, and the client maps them to its own native widgets rather than running HTML in an iframe.",
+  "url": "https://shobyde.com/posts/2026-11-08-a2ui-is-a-trust-boundary-decision-not-a-styling-preference/",
+  "datePublished": "2026-11-08T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "ui-direction"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>A2UI is a trust-boundary decision, not a styling preference</h1>
+  <div class="meta">2026-11-08 &middot; ui-direction &middot; by Sho Byde</div>
+  <p>That sounds like a styling preference. It is not. It is a trust-boundary decision. Remote agents do not touch your DOM. They emit component descriptions that your app renders with its own styling and accessibility. The agent's output is data, not code, which is what makes multi-agent UI composition possible at all. An orchestrator can read a subagent's A2UI message and fold it into its own layout without executing anything.</p>
+<p>The trade-off is real though. The client owns the catalog of trusted components, so the agent can only ask for what the client already knows how to render. That keeps the surface safe but limits how bespoke the result can be. A form with a date picker and a submit button is easy. A novel interaction pattern the client did not anticipate is not.</p>
+<p>Compare that to MCP Apps, which treat UI as a resource fetched into a sandboxed iframe. That model is simpler for the server and gives the agent more freedom, but the result rarely matches the host app and the boundary stays heavy. A2UI makes the opposite bet: less agent freedom, more native fidelity.</p>
+<p>I think the native-first bet wins for anything inside a real product, because users do not experience the agent. They experience your app. The cost is that every new component shape needs a client-side implementation before an agent can use it.</p>
+<p>Source: https://developers.googleblog.com/introducing-a2ui-an-open-project-for-agent-driven-interfaces/</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

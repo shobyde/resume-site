@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-08-a2ui-is-a-trust-boundary-decision-not-a-styling-preference",
+    "date": "2026-11-08",
+    "title": "A2UI is a trust-boundary decision, not a styling preference",
+    "tag": "ui-direction",
+    "excerpt": "Google's A2UI is a declarative message format for agent-driven UIs, and the interesting part is not that agents can generate interfaces. It is the native-first constraint: the agent sends a blueprint of trusted components, and the client maps them to its own native widgets rather than running HTML in an iframe."
+  },
+  {
     "slug": "2026-11-07-heretic-2-0-makes-model-modification-something-you-can-test",
     "date": "2026-11-07",
     "title": "Heretic 2.0 makes model modification something you can test",
