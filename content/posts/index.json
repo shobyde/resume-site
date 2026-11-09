@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-09-copilotkit-s-vue-sdk-is-a-bet-on-the-protocol-layer",
+    "date": "2026-11-09",
+    "title": "CopilotKit's Vue SDK Is a Bet on the Protocol Layer",
+    "tag": "ui-direction",
+    "excerpt": "CopilotKit now ships a native Vue SDK over AG-UI, so one agent can drive React, Vue, React Native, or Angular frontends. The bet is on the protocol layer, not the components."
+  },
+  {
     "slug": "2026-11-08-a2ui-is-a-trust-boundary-decision-not-a-styling-preference",
     "date": "2026-11-08",
     "title": "A2UI is a trust-boundary decision, not a styling preference",
