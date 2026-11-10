@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-10-split-the-conversation-from-the-activity-stream",
+    "date": "2026-11-10",
+    "title": "Split the Conversation From the Activity Stream",
+    "tag": "ui-direction",
+    "excerpt": "The conversation stream and the activity stream are different things, and conflating them is why agent UIs feel broken."
+  },
+  {
     "slug": "2026-11-09-copilotkit-s-vue-sdk-is-a-bet-on-the-protocol-layer",
     "date": "2026-11-09",
     "title": "CopilotKit's Vue SDK Is a Bet on the Protocol Layer",
