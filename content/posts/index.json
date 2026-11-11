@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-11-agent-memory-is-a-diff-problem-not-a-graph-problem",
+    "date": "2026-11-11",
+    "title": "Agent Memory Is a Diff Problem, Not a Graph Problem",
+    "tag": "ui-direction",
+    "excerpt": "Rendering an agent's memory as a graph is a debugging move, and the diff view is the part that matters."
+  },
+  {
     "slug": "2026-11-10-split-the-conversation-from-the-activity-stream",
     "date": "2026-11-10",
     "title": "Split the Conversation From the Activity Stream",

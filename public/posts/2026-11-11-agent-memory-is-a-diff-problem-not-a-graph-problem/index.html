@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agent Memory Is a Diff Problem, Not a Graph Problem - Sho Byde</title>
+<meta name="description" content="Rendering an agent&#x27;s memory as a graph is a debugging move, and the diff view is the part that matters." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-11-agent-memory-is-a-diff-problem-not-a-graph-problem/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Agent Memory Is a Diff Problem, Not a Graph Problem" />
+<meta property="og:description" content="Rendering an agent&#x27;s memory as a graph is a debugging move, and the diff view is the part that matters." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-11-agent-memory-is-a-diff-problem-not-a-graph-problem/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-11T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Agent Memory Is a Diff Problem, Not a Graph Problem" />
+<meta name="twitter:description" content="Rendering an agent&#x27;s memory as a graph is a debugging move, and the diff view is the part that matters." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Agent Memory Is a Diff Problem, Not a Graph Problem",
+  "description": "Rendering an agent&#x27;s memory as a graph is a debugging move, and the diff view is the part that matters.",
+  "url": "https://shobyde.com/posts/2026-11-11-agent-memory-is-a-diff-problem-not-a-graph-problem/",
+  "datePublished": "2026-11-11T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "ui-direction"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Agent Memory Is a Diff Problem, Not a Graph Problem</h1>
+  <div class="meta">2026-11-11 &middot; ui-direction &middot; by Sho Byde</div>
+  <p>Glassbrain has agents write knowledge, plans, and memories as JSON graphs, rendered with a cose-bilkent layout and animated diffs so a human can see what the agent knows at a glance. The instinct is right: agent state is invisible, and that invisibility is where most debugging time goes. But the useful part is not the static graph. A graph of fifty nodes is already too dense to read, and agent memory grows fast. What is useful is the diff between turn N and turn N-1: which facts got added, which got contradicted, which plan step got dropped. That is a debugging artifact, and it belongs next to the trace, not in the product UI.</p>
+<p>There is also a design question the demo skips. Is the graph the agent's actual working memory, or a projection of something else? If it is the source of truth, you are committing to a graph store as the agent's state, with all the query and consistency questions that brings. If it is a projection, the graph is a view and the real work is keeping the projection honest. Either is defensible, but they are different engineering decisions and the post does not say which one Glassbrain makes.</p>
+<p>The honest framing: graph views of agent memory are a diagnostic, and the diff is the feature. Static visualization of a growing knowledge base is a demo, not a tool.</p>
+<p>Source: https://news.ycombinator.com/item?id=50423246</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>
