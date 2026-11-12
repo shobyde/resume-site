@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-12-kvark-sparkle-1-1-makes-refusal-a-ui-state",
+    "date": "2026-11-12",
+    "title": "KVARK Sparkle 1.1 Makes Refusal a UI State",
+    "tag": "ui-direction",
+    "excerpt": "KVARK Sparkle 1.1 is a 27B document Q&A model that declines 91.5% of unanswerable questions, released under Apache 2.0."
+  },
+  {
     "slug": "2026-11-11-agent-memory-is-a-diff-problem-not-a-graph-problem",
     "date": "2026-11-11",
     "title": "Agent Memory Is a Diff Problem, Not a Graph Problem",
