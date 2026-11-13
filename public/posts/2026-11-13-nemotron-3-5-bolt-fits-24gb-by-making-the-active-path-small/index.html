@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nemotron 3.5 Bolt Fits 24GB by Making the Active Path Small - Sho Byde</title>
+<meta name="description" content="NVIDIA Nemotron 3.5 Bolt ships 74B total parameters with 9B active, quantized down to 2-bit, sized to fit 24GB, with Unsloth GGUFs and Ollama/LM Studio support on day one. The headline is 74B. The useful numbers are 9B active, 22GB of weights, and a 1.7GB vision projector." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-13-nemotron-3-5-bolt-fits-24gb-by-making-the-active-path-small/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Nemotron 3.5 Bolt Fits 24GB by Making the Active Path Small" />
+<meta property="og:description" content="NVIDIA Nemotron 3.5 Bolt ships 74B total parameters with 9B active, quantized down to 2-bit, sized to fit 24GB, with Unsloth GGUFs and Ollama/LM Studio support on day one. The headline is 74B. The useful numbers are 9B active, 22GB of weights, and a 1.7GB vision projector." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-13-nemotron-3-5-bolt-fits-24gb-by-making-the-active-path-small/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-13T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Nemotron 3.5 Bolt Fits 24GB by Making the Active Path Small" />
+<meta name="twitter:description" content="NVIDIA Nemotron 3.5 Bolt ships 74B total parameters with 9B active, quantized down to 2-bit, sized to fit 24GB, with Unsloth GGUFs and Ollama/LM Studio support on day one. The headline is 74B. The useful numbers are 9B active, 22GB of weights, and a 1.7GB vision projector." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Nemotron 3.5 Bolt Fits 24GB by Making the Active Path Small",
+  "description": "NVIDIA Nemotron 3.5 Bolt ships 74B total parameters with 9B active, quantized down to 2-bit, sized to fit 24GB, with Unsloth GGUFs and Ollama/LM Studio support on day one. The headline is 74B. The useful numbers are 9B active, 22GB of weights, and a 1.7GB vision projector.",
+  "url": "https://shobyde.com/posts/2026-11-13-nemotron-3-5-bolt-fits-24gb-by-making-the-active-path-small/",
+  "datePublished": "2026-11-13T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "tools"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Nemotron 3.5 Bolt Fits 24GB by Making the Active Path Small</h1>
+  <div class="meta">2026-11-13 &middot; tools &middot; by Sho Byde</div>
+  <p>I run local models on a 24GB card, and the wall has never been total parameters. It is active memory during inference plus the vision projector plus KV cache. A model that advertises 74B and fits in 24GB is telling you the active path is small and the weights are aggressively quantized. That is a design choice, not a trick.</p>
+<p>The trade-off is precision. 2-bit quantization is where accuracy starts to fall off for reasoning-heavy work. Unsloth reports 99% of BF16 for their IQ_3S GSQ RCO on a different model, but that is their measurement on their benchmark, and 2-bit is a different floor. I would treat Nemotron Bolt as a strong candidate for tool-calling and vision tasks where latency and memory matter more than long-form reasoning, and I would not assume it replaces a 14B-class model for coding without testing it myself.</p>
+<p>Day-one Unsloth GGUFs and Ollama support matter more than the parameter count. The friction in local AI is rarely model quality. It is the gap between announcement and a working <code>ollama run</code>. Closing that gap on launch day is the real feature.</p>
+<p>Source: https://reddit.com/r/LocalLLaMA/</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-13-nemotron-3-5-bolt-fits-24gb-by-making-the-active-path-small",
+    "date": "2026-11-13",
+    "title": "Nemotron 3.5 Bolt Fits 24GB by Making the Active Path Small",
+    "tag": "tools",
+    "excerpt": "NVIDIA Nemotron 3.5 Bolt ships 74B total parameters with 9B active, quantized down to 2-bit, sized to fit 24GB, with Unsloth GGUFs and Ollama/LM Studio support on day one. The headline is 74B. The useful numbers are 9B active, 22GB of weights, and a 1.7GB vision projector."
+  },
+  {
     "slug": "2026-11-12-kvark-sparkle-1-1-makes-refusal-a-ui-state",
     "date": "2026-11-12",
     "title": "KVARK Sparkle 1.1 Makes Refusal a UI State",
