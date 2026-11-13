@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-13-this-week-in-agents-the-24gb-ceiling",
+    "date": "2026-11-13",
+    "title": "This Week in Agents: The 24GB Ceiling",
+    "tag": "news",
+    "excerpt": "Open weights cleared a desk-level constraint this week: a 74B model that fits 24GB, self-hostable decision models, and A2UI 1.0. The news I kept covers two responses to a VRAM ceiling, plus a frontend release that consolidates the agent-UI conventions the blog has been tracking for a month."
+  },
+  {
     "slug": "2026-11-13-nemotron-3-5-bolt-fits-24gb-by-making-the-active-path-small",
     "date": "2026-11-13",
     "title": "Nemotron 3.5 Bolt Fits 24GB by Making the Active Path Small",
