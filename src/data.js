@@ -63,6 +63,26 @@ export const DATA = {
       },
     },
     {
+      meta: ['PERSONAL PROJECT', 'OPEN SOURCE · MIT'],
+      title: 'Groundglass: conformance tests for agent-generated UI',
+      summary: `Agents now assemble interfaces at runtime. When a piece goes missing, the renderer skips it and the screen closes up around the gap, so nothing fails and nothing is logged. I built <strong>Groundglass</strong> to make that visible: it rebuilds the surface a stream describes, reports what a renderer would silently drop, then injects twelve faults to prove each class is caught.`,
+      contribution: 'Sole engineer: protocol research against the A2UI v1.0 specification, the checker and its diagnostic code contract, fault injectors, the HTML replay renderer, tests, and the reproducible media pipeline.',
+      stack: ['Python 3.10+', 'Standard library only', 'A2UI v1.0', 'pytest', 'GitHub Actions'],
+      links: [
+        { label: 'Source on GitHub', url: 'https://github.com/shobyde/groundglass' },
+        { label: 'Why this matters beyond the code', url: '/posts/2026-11-14-what-your-agent-showed-the-customer/' },
+      ],
+      details: {
+        architecture: 'A stream parser, a surface model that applies createSurface and updateComponents into an adjacency list, and a set of checks that run over the assembled result: UAX #31 component ids, dangling child references, cycles, components nothing reaches, @path bindings resolved against the data model, and accessibility rules over the resolved tree. Every finding carries a stable code so the output can gate CI. Replay renders the checked surface to a standalone page where missing pieces become loud placeholders instead of vanishing.',
+        decisions: [
+          'Check relationships, not shapes: a JSON schema already validates each message. The bugs live between three things that arrive separately, component ids, child references, and the data model, so that is where the checks sit.',
+          'The harness tests itself. Each fault injector declares the diagnostic codes it should provoke, and the faults command exits non-zero when one is not detected, which stops the checker from quietly losing coverage as it grows.',
+          'Zero runtime dependencies. The whole install is a pip install and a console script, so it drops into a CI job or a pre-commit hook without a toolchain.',
+          'Replay exists to make failure legible: unresolved bindings and missing children render as visible placeholders, because a production renderer hiding them is exactly the problem being measured.',
+        ],
+      },
+    },
+    {
       meta: ['PERSONAL PROJECT', 'LIVE'],
       title: 'shobyde.com: resume + daily engineering log',
       summary: `A personal site that publishes like a newsroom: I wanted a résumé that stays alive instead of rotting, so I built an <strong>LLM-assisted publishing loop</strong>. Automated agents draft daily entries and site updates; I review, curate, and merge every change.`,
