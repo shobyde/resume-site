@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>What your agent showed the customer - Sho Byde</title>
+<meta name="description" content="Generated interfaces fail by omission, and nothing in the stack notices." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-14-what-your-agent-showed-the-customer/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="What your agent showed the customer" />
+<meta property="og:description" content="Generated interfaces fail by omission, and nothing in the stack notices." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-14-what-your-agent-showed-the-customer/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-14T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="What your agent showed the customer" />
+<meta name="twitter:description" content="Generated interfaces fail by omission, and nothing in the stack notices." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "What your agent showed the customer",
+  "description": "Generated interfaces fail by omission, and nothing in the stack notices.",
+  "url": "https://shobyde.com/posts/2026-11-14-what-your-agent-showed-the-customer/",
+  "datePublished": "2026-11-14T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "project"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>What your agent showed the customer</h1>
+  <div class="meta">2026-11-14 &middot; project &middot; by Sho Byde</div>
+  <p>The failure I keep describing to people is a renewal summary: four facts on one card, seats, contract value, renewal date, planned uplift. It is a composite of screens I have seen rather than one incident, and that is part of the problem. Every team building these will recognise the shape.</p>
+<p>The assistant composes the card with all four numbers. The customer's screen shows three. The missing one is the contract value. There is no blank row and no placeholder, because the renderer was told to skip a piece it could not resolve. The card closes up around the gap and looks finished. The customer reads the remaining numbers, assumes the fourth is unchanged, and takes that assumption to their CFO. Nobody files a bug, because from the outside nothing failed.</p>
+<p><img src="/content/posts/assets/2026-11-14-what-your-agent-showed-the-customer/figure-silent-omission.svg" alt="Two panels. Left: the renewal card with four rows, seats, contracted ARR, renewal date, uplift. Right: the same card with the contract value gone, no gap in the layout, and a note that no error was raised" loading="lazy" /></p>
+<h2>The failure mode is new, the silence is not</h2>
+<p>Classic software fails loudly at the boundary between data and screen. A required field that never arrives throws, a null prints as a broken label, an empty result set gives the table a sentence to say. The screen is bound tightly enough to the data that a gap becomes visible to somebody.</p>
+<p>A generated interface is assembled at display time from parts the model chose. The runtime validates the envelope, then hands the renderer a list of pieces: a heading, a card, this field bound to that value. If a piece is missing, or points at data that is not in the payload, the renderer is expected to skip it and keep going.</p>
+<p>Skipping is the right behaviour. It is what lets a surface paint progressively while the model is still streaming, and it is why a slow tool call does not blank the screen. The same rule that makes progressive rendering work makes disappearance invisible.</p>
+<h2>What you already monitor will not catch it</h2>
+<p>Your tests exercise the API and pass, because the API returned a valid response.</p>
+<p>Your logs record the request the user made and the reply the model gave.</p>
+<p>Your dashboards count errors, and nothing errored.</p>
+<p>Your QA clicks the happy path, and the happy path renders four numbers because the fixture has four.</p>
+<p>Every one of those checks watches the data or the process. None of them watches the surface the customer actually looked at. The gap lives in the last inch, between the description of the screen and the pixels, and nothing in a normal stack is positioned there.</p>
+<p>That is why the only report you get is "it looked fine", and why support cannot reproduce it a week later.</p>
+<h2>The question that ends the argument</h2>
+<p>Sooner or later somebody asks whether the assistant told a customer something it should not have, or failed to tell them something it should. The useful version of that question is narrow and answerable: what exactly did the assistant put on this customer's screen on Tuesday?</p>
+<p>If the honest answer requires replaying a model session from memory, or asking the customer to describe what they saw, then you do not have a record of the thing that matters. You have a record of the request and the answer, which is not the same artefact.</p>
+<p>I do not think this is a compliance exercise yet. It becomes one the first time a number that never rendered shows up in a contract negotiation.</p>
+<h2>What a control looks like</h2>
+<p>The surface has a describable shape. An agent says: here is a heading, here is a card, this field is bound to this value, this button does this. That description is data, and data can be checked.</p>
+<p>I built <a href="https://github.com/shobyde/groundglass">groundglass</a> to check it. Point it at a captured stream and it rebuilds the screen the way a renderer would, then reports what a renderer would have swallowed: a child that points at a component nobody defined, a value bound to a path that is not in the payload, an input with no label, a button with nothing in it, a piece that nothing on screen ever references.</p>
+<p>The half I care about more is the fault injection. It takes a stream you believe is good, breaks it twelve ways, and fails if the break is not detected. A truncated message. A surface with no root. A container that includes itself. A producer still speaking last year's wire format. Each one declares the finding it should produce, so the harness tests itself instead of trusting its own claims.</p>
+<p>That is not a demo of agentic UI. It is the part of agentic UI that decides whether you can ship it.</p>
+<h2>What this does not do</h2>
+<p>It checks structure, not truth. If the model writes the wrong number into a well-formed field, every check passes and the customer reads the wrong number. That is a different problem with different tools, and pretending a conformance check covers it would be the exact overclaim this work exists to prevent.</p>
+<p>It checks one protocol. The shape differs across the ecosystem, and the reasoning does not.</p>
+<p>It says nothing about latency, which is the other half of whether a generated surface is usable.</p>
+<p>And it still needs a person to look at the screen. The point is to make that look cheap and repeatable, not to replace it.</p>
+<h2>One question for Monday</h2>
+<p>Ask your team what the assistant put in front of your last ten customers, and whether anyone can show you without opening a model trace.</p>
+<p>If the answer is a shrug, the surface is currently unaudited. That is worth knowing before a customer tells you what they saw.</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

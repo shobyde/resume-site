@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" role="img" aria-labelledby="t d">
+  <title id="t">The same renewal card, as the agent composed it and as the customer saw it</title>
+  <desc id="d">Left panel: a card with four rows, seats 240, contracted ARR 412,000 dollars, renewal 14 March, uplift 3.2 percent. Right panel: the same card with the contract value row missing, no gap in the layout, and a note that no error was raised.</desc>
+  <style>
+    .bg { fill: #0b0b0f; }
+    .panel { fill: #121218; stroke: #26262f; stroke-width: 1; }
+    .eyebrow { font: 600 10px/1 'JetBrains Mono', ui-monospace, monospace; letter-spacing: 1.6px; fill: #7c7c8c; }
+    .rowlabel { font: 400 12px/1 'Inter', system-ui, sans-serif; fill: #8b8b99; }
+    .rowvalue { font: 600 14px/1 'Inter', system-ui, sans-serif; fill: #ececf2; }
+    .title { font: 700 15px/1 'Space Grotesk', system-ui, sans-serif; fill: #f4f4f8; }
+    .missing { font: 400 12px/1 'Inter', system-ui, sans-serif; fill: #5a5a68; }
+    .note { font: 400 11px/1 'JetBrains Mono', ui-monospace, monospace; fill: #6f6f7e; }
+    .warn { fill: #d9a94a; }
+  </style>
+  <rect class="bg" width="960" height="400" rx="0"/>
+
+  <!-- left: what the agent composed -->
+  <rect class="panel" x="24" y="24" width="440" height="352" rx="14"/>
+  <text class="eyebrow" x="48" y="56">WHAT THE AGENT COMPOSED</text>
+  <text class="title" x="48" y="86">Renewal summary</text>
+  <line x1="48" y1="104" x2="440" y2="104" stroke="#26262f"/>
+  <g>
+    <text class="rowlabel" x="48" y="136">Seats</text>
+    <text class="rowvalue" x="440" y="136" text-anchor="end">240</text>
+    <text class="rowlabel" x="48" y="176">Contracted ARR</text>
+    <text class="rowvalue" x="440" y="176" text-anchor="end">$412,000</text>
+    <text class="rowlabel" x="48" y="216">Renewal date</text>
+    <text class="rowvalue" x="440" y="216" text-anchor="end">14 March</text>
+    <text class="rowlabel" x="48" y="256">Planned uplift</text>
+    <text class="rowvalue" x="440" y="256" text-anchor="end">3.2%</text>
+  </g>
+  <rect x="48" y="286" width="96" height="30" rx="7" fill="#1c1c24" stroke="#33333f"/>
+  <text class="rowvalue" x="96" y="306" text-anchor="middle" style="font-size:12px;fill:#c9c9d4">Approve</text>
+  <text class="note" x="160" y="306">4 of 4 fields present</text>
+
+  <!-- right: what the customer saw -->
+  <rect class="panel" x="496" y="24" width="440" height="352" rx="14"/>
+  <text class="eyebrow" x="520" y="56">WHAT THE CUSTOMER SAW</text>
+  <text class="title" x="520" y="86">Renewal summary</text>
+  <line x1="520" y1="104" x2="912" y2="104" stroke="#26262f"/>
+  <g>
+    <text class="rowlabel" x="520" y="136">Seats</text>
+    <text class="rowvalue" x="912" y="136" text-anchor="end">240</text>
+    <!-- the missing row leaves no gap -->
+    <text class="rowlabel" x="520" y="176">Renewal date</text>
+    <text class="rowvalue" x="912" y="176" text-anchor="end">14 March</text>
+    <text class="rowlabel" x="520" y="216">Planned uplift</text>
+    <text class="rowvalue" x="912" y="216" text-anchor="end">3.2%</text>
+  </g>
+  <rect x="520" y="248" width="392" height="1" fill="#26262f"/>
+  <circle cx="524" cy="272" r="3" class="warn"/>
+  <text class="missing" x="536" y="276">Contracted ARR was dropped by the renderer</text>
+  <text class="note" x="536" y="298">no blank row · no error · no log entry</text>
+  <rect x="520" y="316" width="96" height="30" rx="7" fill="#1c1c24" stroke="#33333f"/>
+  <text class="rowvalue" x="568" y="336" text-anchor="middle" style="font-size:12px;fill:#c9c9d4">Approve</text>
+  <text class="note" x="632" y="336">still looks complete</text>
+
+  <text class="note" x="24" y="392">Same card, same session. The only difference is one line of data that never arrived.</text>
+</svg>
