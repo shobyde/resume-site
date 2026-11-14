@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Split the Decision Out of the Agent - Sho Byde</title>
+<meta name="description" content="Perplexity released Decider v1.3 (26B) and Decider Flash (5B) as open-weight Apache 2.0 classification models built for agents." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-14-split-the-decision-out-of-the-agent/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Split the Decision Out of the Agent" />
+<meta property="og:description" content="Perplexity released Decider v1.3 (26B) and Decider Flash (5B) as open-weight Apache 2.0 classification models built for agents." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-14-split-the-decision-out-of-the-agent/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-14T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Split the Decision Out of the Agent" />
+<meta name="twitter:description" content="Perplexity released Decider v1.3 (26B) and Decider Flash (5B) as open-weight Apache 2.0 classification models built for agents." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Split the Decision Out of the Agent",
+  "description": "Perplexity released Decider v1.3 (26B) and Decider Flash (5B) as open-weight Apache 2.0 classification models built for agents.",
+  "url": "https://shobyde.com/posts/2026-11-14-split-the-decision-out-of-the-agent/",
+  "datePublished": "2026-11-14T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "tools"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Split the Decision Out of the Agent</h1>
+  <div class="meta">2026-11-14 &middot; tools &middot; by Sho Byde</div>
+  <p>Most agent stacks treat routing as an afterthought: a single large model plans, calls tools, and decides when to stop, all in one pass. Perplexity's Decider models split the decision step out into its own small model. The idea is that choosing what to do next is a different, cheaper problem than generating the answer, and it can run on a model a fraction of the size.</p>
+<p>I think the split is right, and it mirrors what I have seen building agent UIs. The expensive part of an agent run is rarely the first token of the final answer. It is the chain of micro-decisions about which tool to call, whether the result is good enough, and whether to keep going. Those decisions do not need 70B parameters of language fluency. They need a model that is cheap enough to call ten times per turn without blowing the latency budget.</p>
+<p>The trade-off is where the boundary sits. A separate decision model adds a second inference call and a handoff point where context can drift between the planner and the decider. If the decider's training distribution does not match the planner's tool set, you get confident wrong routing, which is worse than slow routing. Perplexity's claim is that these are trained specifically for agent decisions, not general chat. That is the part I would want to verify against my own tool schemas before trusting it.</p>
+<p>Source: https://www.reddit.com/r/LocalLLaMA/comments/1xv7fku/perplexity_releases_decider_v13_26b_and_decider/</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

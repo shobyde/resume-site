@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-14-split-the-decision-out-of-the-agent",
+    "date": "2026-11-14",
+    "title": "Split the Decision Out of the Agent",
+    "tag": "tools",
+    "excerpt": "Perplexity released Decider v1.3 (26B) and Decider Flash (5B) as open-weight Apache 2.0 classification models built for agents."
+  },
+  {
     "slug": "2026-11-13-this-week-in-agents-the-24gb-ceiling",
     "date": "2026-11-13",
     "title": "This Week in Agents: The 24GB Ceiling",
