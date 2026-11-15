@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-15-manus-side-chat-is-a-state-boundary-not-a-layout-choice",
+    "date": "2026-11-15",
+    "title": "Manus Side Chat Is a State Boundary, Not a Layout Choice",
+    "tag": "ui-direction",
+    "excerpt": "Manus Side chat lets you ask questions beside the main task without cluttering the thread, and the interesting part is the state boundary it implies."
+  },
+  {
     "slug": "2026-11-14-what-your-agent-showed-the-customer",
     "date": "2026-11-14",
     "title": "What your agent showed the customer",
