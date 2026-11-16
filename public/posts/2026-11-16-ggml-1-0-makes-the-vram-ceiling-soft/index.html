@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ggml 1.0 Makes the VRAM Ceiling Soft - Sho Byde</title>
+<meta name="description" content="MoE models that slightly exceed VRAM no longer fail to load, because ggml v1.0 can cache the less-used experts in host RAM." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-16-ggml-1-0-makes-the-vram-ceiling-soft/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="ggml 1.0 Makes the VRAM Ceiling Soft" />
+<meta property="og:description" content="MoE models that slightly exceed VRAM no longer fail to load, because ggml v1.0 can cache the less-used experts in host RAM." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-16-ggml-1-0-makes-the-vram-ceiling-soft/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-16T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="ggml 1.0 Makes the VRAM Ceiling Soft" />
+<meta name="twitter:description" content="MoE models that slightly exceed VRAM no longer fail to load, because ggml v1.0 can cache the less-used experts in host RAM." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "ggml 1.0 Makes the VRAM Ceiling Soft",
+  "description": "MoE models that slightly exceed VRAM no longer fail to load, because ggml v1.0 can cache the less-used experts in host RAM.",
+  "url": "https://shobyde.com/posts/2026-11-16-ggml-1-0-makes-the-vram-ceiling-soft/",
+  "datePublished": "2026-11-16T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "tools"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>ggml 1.0 Makes the VRAM Ceiling Soft</h1>
+  <div class="meta">2026-11-16 &middot; tools &middot; by Sho Byde</div>
+  <p>ggml hitting 1.0 is a milestone worth marking, but the feature that matters to me is MoE expert caching in host RAM. The headline numbers in the release are FP8 support, YaRN truncation controls, and FlashAttention across CUDA, Metal, Vulkan, OpenCL, SYCL, and WebGPU. Those are real, but they are the kind of feature list that gets announced. The expert-caching change is different: it removes a hard failure mode. Before this, a model whose expert weights slightly exceeded VRAM either failed to load or forced a swap that destroyed throughput. Now the slow experts move to host RAM and the hot ones stay on the device. That is a graceful degradation path, and it changes how I size local models. I used to treat VRAM as a hard ceiling and shop for smaller quantizations. Now the ceiling is soft, and the question becomes which experts are actually hot for my workload, which is a measurement I do not currently have. The honest caveat: caching less-used experts in host RAM only helps if the routing is skewed enough that most tokens hit a small subset. For a model with uniform routing the cache thrashes and you are worse off than just picking a smaller model. I have not measured this, and the release does not give numbers. So my takeaway is conditional. If the routing is skewed, this is the most practical local-inference change in a while. If it is not, it is a feature that looks good in a changelog. Worth a benchmark before I trust it.</p>
+<p>Source: <a href="https://github.com/ggml-org/ggml/releases/tag/v1.0.0">ggml v1.0 release</a></p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

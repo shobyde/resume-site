@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-16-ggml-1-0-makes-the-vram-ceiling-soft",
+    "date": "2026-11-16",
+    "title": "ggml 1.0 Makes the VRAM Ceiling Soft",
+    "tag": "tools",
+    "excerpt": "MoE models that slightly exceed VRAM no longer fail to load, because ggml v1.0 can cache the less-used experts in host RAM."
+  },
+  {
     "slug": "2026-11-15-manus-side-chat-is-a-state-boundary-not-a-layout-choice",
     "date": "2026-11-15",
     "title": "Manus Side Chat Is a State Boundary, Not a Layout Choice",
