@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A Global Hotkey Is a State Boundary, Not a Shortcut - Sho Byde</title>
+<meta name="description" content="The most useful feature I shipped this year is a single shortcut: Ctrl+Alt+R (Cmd+Alt+R on macOS). Press it from anywhere on the desktop and Hobnob starts recording a meeting. No window to find, no click target, no &quot;open the app first&quot; step. The hard part was never the shortcut. It was deciding where the trigger lives in the architecture, and what it is allowed to do." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-16-a-global-hotkey-is-a-state-boundary-not-a-shortcut/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="A Global Hotkey Is a State Boundary, Not a Shortcut" />
+<meta property="og:description" content="The most useful feature I shipped this year is a single shortcut: Ctrl+Alt+R (Cmd+Alt+R on macOS). Press it from anywhere on the desktop and Hobnob starts recording a meeting. No window to find, no click target, no &quot;open the app first&quot; step. The hard part was never the shortcut. It was deciding where the trigger lives in the architecture, and what it is allowed to do." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-16-a-global-hotkey-is-a-state-boundary-not-a-shortcut/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-16T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="A Global Hotkey Is a State Boundary, Not a Shortcut" />
+<meta name="twitter:description" content="The most useful feature I shipped this year is a single shortcut: Ctrl+Alt+R (Cmd+Alt+R on macOS). Press it from anywhere on the desktop and Hobnob starts recording a meeting. No window to find, no click target, no &quot;open the app first&quot; step. The hard part was never the shortcut. It was deciding where the trigger lives in the architecture, and what it is allowed to do." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "A Global Hotkey Is a State Boundary, Not a Shortcut",
+  "description": "The most useful feature I shipped this year is a single shortcut: Ctrl+Alt+R (Cmd+Alt+R on macOS). Press it from anywhere on the desktop and Hobnob starts recording a meeting. No window to find, no click target, no &quot;open the app first&quot; step. The hard part was never the shortcut. It was deciding where the trigger lives in the architecture, and what it is allowed to do.",
+  "url": "https://shobyde.com/posts/2026-11-16-a-global-hotkey-is-a-state-boundary-not-a-shortcut/",
+  "datePublished": "2026-11-16T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "project"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>A Global Hotkey Is a State Boundary, Not a Shortcut</h1>
+  <div class="meta">2026-11-16 &middot; project &middot; by Sho Byde</div>
+  <p>Hobnob is an Electron app. The recording pipeline is owned by the renderer: AudioContext captures the microphone, system audio comes in through a native tap, and IPC drives <code>recording:start</code>. A global shortcut, by contrast, is registered in the main process with <code>globalShortcut</code>, which has no access to the renderer's audio context. The naive design would be for the main process to start recording itself. That fails on the first boundary it hits, because the main process never holds the microphone stream. The renderer does, and the renderer may not even be mounted yet if the window is closed or hidden.</p>
+<p>So the trigger is split into two halves. <code>GlobalTriggerService</code> in <code>src/main/services/GlobalTriggerService.ts</code> owns the shortcut registration, the tray icon, and the menu item "Record now". All it does when fired is call <code>trigger()</code>, which focuses the main window and sends an activation event over IPC. The renderer receives that event and runs the normal <code>recording:start</code> path it already owns. The trigger is a doorbell, not a recording engine. That separation is the whole design decision, and it is why the feature took a week instead of an afternoon: getting the main process to do nothing except wake the renderer meant re-examining every assumption about who owns the microphone.</p>
+<p>The tray icon is the second half, and it is optional by design. <code>resolveIconPath</code> looks for <code>tray/trayIcon.png</code> in resources or the repo root; if it is missing, the tray is disabled and the shortcut still works. The constructor is wrapped so a headless environment, like CI, degrades to hotkey-only instead of throwing. That guard exists because the first test run on a Windows runner crashed the Tray constructor and masked a real regression in <code>GlobalTriggerService.test.ts</code>. The fix was to make the tray a capability the service probes for rather than a dependency it assumes. The test file now asserts both states: shortcut registered with tray visible, and shortcut registered with tray absent.</p>
+<p>The settings side matters too. The shortcut is not always on. <code>applySettings</code> re-registers or unregisters the shortcut live when <code>globalTriggerEnabled</code> changes, and rebuilds the tray menu so "Record now" appears or disappears. No restart required. That constraint came from the first-run wizard flow: a user who disables the trigger during setup should see it stop immediately, and a user who re-enables it later should not have to relaunch the app. Live application costs more code than a restart prompt, but a restart prompt in a meeting tool is a missed recording.</p>
+<p>What I would do differently: the shortcut is hardcoded to <code>Control+Alt+R</code>. There is no conflict resolution if another app already holds it; <code>globalShortcut.register</code> returns false and Hobnob logs a warning and stays silent. For a tool whose whole point is "press this from anywhere", a silently failing hotkey is a bad failure mode. The next version needs a settings field for the shortcut and a visible indicator when registration fails. That is the open question I am sitting with: should a failed registration surface as a notification, or should the app fall back to a different default and tell the user what changed?</p>
+<p>The broader lesson: a global trigger sounds like a small feature. In an app where the recording engine lives in the renderer and the shortcut lives in the main process, it is a state-boundary problem dressed up as a hotkey. The fix was to keep the trigger dumb on purpose.</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>

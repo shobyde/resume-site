@@ -7,6 +7,13 @@
     "excerpt": "MoE models that slightly exceed VRAM no longer fail to load, because ggml v1.0 can cache the less-used experts in host RAM."
   },
   {
+    "slug": "2026-11-16-a-global-hotkey-is-a-state-boundary-not-a-shortcut",
+    "date": "2026-11-16",
+    "title": "A Global Hotkey Is a State Boundary, Not a Shortcut",
+    "tag": "project",
+    "excerpt": "The most useful feature I shipped this year is a single shortcut: Ctrl+Alt+R (Cmd+Alt+R on macOS). Press it from anywhere on the desktop and Hobnob starts recording a meeting. No window to find, no click target, no \"open the app first\" step. The hard part was never the shortcut. It was deciding where the trigger lives in the architecture, and what it is allowed to do."
+  },
+  {
     "slug": "2026-11-15-manus-side-chat-is-a-state-boundary-not-a-layout-choice",
     "date": "2026-11-15",
     "title": "Manus Side Chat Is a State Boundary, Not a Layout Choice",
