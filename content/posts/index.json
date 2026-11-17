@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-17-submit-guards-move-browser-safety-out-of-the-model",
+    "date": "2026-11-17",
+    "title": "Submit Guards Move Browser Safety Out of the Model",
+    "tag": "ui-direction",
+    "excerpt": "Turbo-Browser-MCP now blocks form submissions until an explicit guard clears, which moves the safety check from the model's judgment into the interface layer."
+  },
+  {
     "slug": "2026-11-16-ggml-1-0-makes-the-vram-ceiling-soft",
     "date": "2026-11-16",
     "title": "ggml 1.0 Makes the VRAM Ceiling Soft",
