@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-18-assistant-ui-ships-primitives-not-a-chat-widget",
+    "date": "2026-11-18",
+    "title": "assistant-ui Ships Primitives, Not a Chat Widget",
+    "tag": "ui-direction",
+    "excerpt": "assistant-ui ships Radix-style primitives for AI chat instead of a finished widget, and that choice says more about where agent UI is heading than the feature list does."
+  },
+  {
     "slug": "2026-11-17-submit-guards-move-browser-safety-out-of-the-model",
     "date": "2026-11-17",
     "title": "Submit Guards Move Browser Safety Out of the Model",
