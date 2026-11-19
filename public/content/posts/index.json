@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-19-three-store-state-split-is-the-part-of-gemini-chat-s-rebuild",
+    "date": "2026-11-19",
+    "title": "Three-Store State Split Is the Part of Gemini Chat's Rebuild Worth Copying",
+    "tag": "ui-direction",
+    "excerpt": "Three-store state split is the part of Gemini Chat's 100M-user frontend rebuild worth copying into your own agent UI."
+  },
+  {
     "slug": "2026-11-18-assistant-ui-ships-primitives-not-a-chat-widget",
     "date": "2026-11-18",
     "title": "assistant-ui Ships Primitives, Not a Chat Widget",
