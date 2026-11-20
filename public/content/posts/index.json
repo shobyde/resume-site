@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-20-this-week-in-agents-restraint-ships",
+    "date": "2026-11-20",
+    "title": "This Week in Agents: Restraint Ships",
+    "tag": "news",
+    "excerpt": "The week's recurring shape was restraint: a protocol hitting 1.0 with renderers across six frameworks, a desktop coding app built around reviewing what agents write, and a quantization community pruning a 26B MoE down to a file a laptop holds."
+  },
+  {
     "slug": "2026-11-20-a2ui-s-healing-parser-is-the-part-worth-copying",
     "date": "2026-11-20",
     "title": "A2UI's Healing Parser Is the Part Worth Copying",
