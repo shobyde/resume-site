@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-20-a2ui-s-healing-parser-is-the-part-worth-copying",
+    "date": "2026-11-20",
+    "title": "A2UI's Healing Parser Is the Part Worth Copying",
+    "tag": "ui-direction",
+    "excerpt": "A2UI v0.9 streams generative UI by healing partial LLM output, and the parser is the part I'd copy before the protocol."
+  },
+  {
     "slug": "2026-11-19-three-store-state-split-is-the-part-of-gemini-chat-s-rebuild",
     "date": "2026-11-19",
     "title": "Three-Store State Split Is the Part of Gemini Chat's Rebuild Worth Copying",

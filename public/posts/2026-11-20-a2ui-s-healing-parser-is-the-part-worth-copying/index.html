@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A2UI&#x27;s Healing Parser Is the Part Worth Copying - Sho Byde</title>
+<meta name="description" content="A2UI v0.9 streams generative UI by healing partial LLM output, and the parser is the part I&#x27;d copy before the protocol." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-20-a2ui-s-healing-parser-is-the-part-worth-copying/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="A2UI&#x27;s Healing Parser Is the Part Worth Copying" />
+<meta property="og:description" content="A2UI v0.9 streams generative UI by healing partial LLM output, and the parser is the part I&#x27;d copy before the protocol." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-20-a2ui-s-healing-parser-is-the-part-worth-copying/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-20T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="A2UI&#x27;s Healing Parser Is the Part Worth Copying" />
+<meta name="twitter:description" content="A2UI v0.9 streams generative UI by healing partial LLM output, and the parser is the part I&#x27;d copy before the protocol." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "A2UI's Healing Parser Is the Part Worth Copying",
+  "description": "A2UI v0.9 streams generative UI by healing partial LLM output, and the parser is the part I&#x27;d copy before the protocol.",
+  "url": "https://shobyde.com/posts/2026-11-20-a2ui-s-healing-parser-is-the-part-worth-copying/",
+  "datePublished": "2026-11-20T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "ui-direction"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>A2UI&#x27;s Healing Parser Is the Part Worth Copying</h1>
+  <div class="meta">2026-11-20 &middot; ui-direction &middot; by Sho Byde</div>
+  <p>Google's A2UI v0.9 release adds resilient streaming that incrementally parses and heals LLM output so clients can render UI components as they generate, plus framework-agnostic renderers (https://developers.googleblog.com/a2ui-v0-9-generative-ui/). The headline is the protocol. The part I care about is the parser.</p>
+<p>Most agent UIs I've built buffer the model's output until it is valid JSON, then render once. That is safe and slow, and it makes streaming feel like a lie: tokens arrive, nothing moves, then a block pops in. Healing partial output flips that. The client renders a component skeleton as soon as it can identify one, then fills fields as they arrive. The cost is that the parser has to guess about incomplete structures and reconcile when the full output lands, which means every component needs an identity that survives that reconciliation or the UI flickers and state resets.</p>
+<p>Framework-agnostic renderers are the other half. If the agent emits a UI tree rather than React elements, the same payload can drive a web client, a mobile client, or a terminal renderer without a second model call. That is a real boundary: the model stops knowing about your component library.</p>
+<p>The risk is the obvious one. A model that emits arbitrary component trees can emit arbitrary component trees. Healing makes that worse because it renders before the output is complete, so a bad early guess can flash before correction. The mitigation is a declarative, closed vocabulary of components the client understands, which is what A2UI already implies. The open question for me: whether the healing parser ships as a reusable library or stays buried inside the reference client. If it is reusable, I'd adopt it. If not, the protocol is just a spec.</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>
