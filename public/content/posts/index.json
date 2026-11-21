@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-21-vibe-puts-the-review-surface-inside-the-agent",
+    "date": "2026-11-21",
+    "title": "Vibe Puts the Review Surface Inside the Agent",
+    "tag": "tools",
+    "excerpt": "Mistral Vibe merges Le Chat and a coding agent into a desktop app with parallel local and remote agents, diff review, and 100+ MCP tools, paired with the 1T-parameter open-weight Mistral Large 4."
+  },
+  {
     "slug": "2026-11-20-this-week-in-agents-restraint-ships",
     "date": "2026-11-20",
     "title": "This Week in Agents: Restraint Ships",

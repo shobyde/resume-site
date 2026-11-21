@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vibe Puts the Review Surface Inside the Agent - Sho Byde</title>
+<meta name="description" content="Mistral Vibe merges Le Chat and a coding agent into a desktop app with parallel local and remote agents, diff review, and 100+ MCP tools, paired with the 1T-parameter open-weight Mistral Large 4." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-21-vibe-puts-the-review-surface-inside-the-agent/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Vibe Puts the Review Surface Inside the Agent" />
+<meta property="og:description" content="Mistral Vibe merges Le Chat and a coding agent into a desktop app with parallel local and remote agents, diff review, and 100+ MCP tools, paired with the 1T-parameter open-weight Mistral Large 4." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-21-vibe-puts-the-review-surface-inside-the-agent/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-21T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Vibe Puts the Review Surface Inside the Agent" />
+<meta name="twitter:description" content="Mistral Vibe merges Le Chat and a coding agent into a desktop app with parallel local and remote agents, diff review, and 100+ MCP tools, paired with the 1T-parameter open-weight Mistral Large 4." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Vibe Puts the Review Surface Inside the Agent",
+  "description": "Mistral Vibe merges Le Chat and a coding agent into a desktop app with parallel local and remote agents, diff review, and 100+ MCP tools, paired with the 1T-parameter open-weight Mistral Large 4.",
+  "url": "https://shobyde.com/posts/2026-11-21-vibe-puts-the-review-surface-inside-the-agent/",
+  "datePublished": "2026-11-21T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "tools"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Vibe Puts the Review Surface Inside the Agent</h1>
+  <div class="meta">2026-11-21 &middot; tools &middot; by Sho Byde</div>
+  <p>I keep coming back to where the review surface lives. Most coding-agent products still treat the diff as something you inspect after the fact in your editor, which means the agent's work and your judgment live in different windows. Vibe puts diff review inside the agent's own surface. That is a small UI decision with large consequences: it says the agent is not a chat window that happens to write code, it is a tool whose primary output is a change you approve.</p>
+<p>The parallel local and remote agents matter for the same reason. Running one agent locally and another remotely is not a feature list item, it is a statement about trust boundaries. Local for the code you do not want to leave the machine, remote for the tasks that need the larger model. The UI has to make that distinction visible or the user will not know which agent touched which file.</p>
+<p>Mistral Large 4 leads open models on FrontierCode and Terminal-Bench at $0.70 per million input tokens. That price is the part I would verify before building on it, since open-weight pricing has a habit of moving. What I would not verify is the benchmark rank. Terminal-Bench scores measure a specific task shape, and a model that wins there may still lose on the codebase I actually maintain.</p>
+<p>The thing I am taking away: the interesting agent products are no longer competing on model quality. They are competing on where the human review step sits. Vibe's answer is to put it next to the agent, not in the editor.</p>
+<p>Sources: https://mistral.ai/news/mistral-large-4-oss/ ; https://developers.googleblog.com/en/a2ui-1-0-generative-ui</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>
