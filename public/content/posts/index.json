@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-22-a2ui-1-0-keeps-the-agent-out-of-the-dom",
+    "date": "2026-11-22",
+    "title": "A2UI 1.0 Keeps the Agent Out of the DOM",
+    "tag": "ui-direction",
+    "excerpt": "A2UI 1.0 has agents emit interactive screens, forms and charts, rendered by your own native components, with bidirectional function calls and streaming."
+  },
+  {
     "slug": "2026-11-21-vibe-puts-the-review-surface-inside-the-agent",
     "date": "2026-11-21",
     "title": "Vibe Puts the Review Surface Inside the Agent",

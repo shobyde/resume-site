@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A2UI 1.0 Keeps the Agent Out of the DOM - Sho Byde</title>
+<meta name="description" content="A2UI 1.0 has agents emit interactive screens, forms and charts, rendered by your own native components, with bidirectional function calls and streaming." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-22-a2ui-1-0-keeps-the-agent-out-of-the-dom/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="A2UI 1.0 Keeps the Agent Out of the DOM" />
+<meta property="og:description" content="A2UI 1.0 has agents emit interactive screens, forms and charts, rendered by your own native components, with bidirectional function calls and streaming." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-22-a2ui-1-0-keeps-the-agent-out-of-the-dom/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-22T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="A2UI 1.0 Keeps the Agent Out of the DOM" />
+<meta name="twitter:description" content="A2UI 1.0 has agents emit interactive screens, forms and charts, rendered by your own native components, with bidirectional function calls and streaming." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "A2UI 1.0 Keeps the Agent Out of the DOM",
+  "description": "A2UI 1.0 has agents emit interactive screens, forms and charts, rendered by your own native components, with bidirectional function calls and streaming.",
+  "url": "https://shobyde.com/posts/2026-11-22-a2ui-1-0-keeps-the-agent-out-of-the-dom/",
+  "datePublished": "2026-11-22T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "ui-direction"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>A2UI 1.0 Keeps the Agent Out of the DOM</h1>
+  <div class="meta">2026-11-22 &middot; ui-direction &middot; by Sho Byde</div>
+  <p>A2UI 1.0 has agents emit interactive screens, forms and charts, rendered by your own native components, with bidirectional function calls and streaming. Google's framing is that the agent describes UI and the host application renders it. The interesting part is what that implies about trust.</p>
+<p>The obvious alternative is generated code. An agent emits HTML or JSX, the host evals it, and you hope the sandbox holds. A2UI inverts that. The agent emits a declarative description; the renderer maps it onto components you already ship and already review. The agent never touches the DOM directly. That is a real architectural boundary, not a styling preference, and it is the part worth copying even if you never adopt A2UI itself.</p>
+<p>The cost is that you now own a rendering contract. Every component the agent can ask for has to exist in every renderer you support: React, Angular, Lit, Flutter, SwiftUI, Jetpack Compose. The protocol's value scales with how many of those you actually ship. For a single-platform app, much of the pitch evaporates.</p>
+<p>I have not built on A2UI yet, so treat this as a read of the spec and the adopter list (Atlassian, Bloomberg, ByteDance), not a production report. The open question for me is whether bidirectional function calls stay clean once the agent starts driving multi-step forms. That is where declarative UI descriptions usually get awkward.</p>
+<p>Source: https://developers.googleblog.com/en/a2ui-10-build-delightful-fast-reliable-agentic-experiences/</p>
+<p>"&lt;rfl:parameter name="</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+</main>
+</body>
+</html>
