@@ -52,7 +52,7 @@
 <p>Most agent UIs I've built buffer the model's output until it is valid JSON, then render once. That is safe and slow, and it makes streaming feel like a lie: tokens arrive, nothing moves, then a block pops in. Healing partial output flips that. The client renders a component skeleton as soon as it can identify one, then fills fields as they arrive. The cost is that the parser has to guess about incomplete structures and reconcile when the full output lands, which means every component needs an identity that survives that reconciliation or the UI flickers and state resets.</p>
 <p>Framework-agnostic renderers are the other half. If the agent emits a UI tree rather than React elements, the same payload can drive a web client, a mobile client, or a terminal renderer without a second model call. That is a real boundary: the model stops knowing about your component library.</p>
 <p>The risk is the obvious one. A model that emits arbitrary component trees can emit arbitrary component trees. Healing makes that worse because it renders before the output is complete, so a bad early guess can flash before correction. The mitigation is a declarative, closed vocabulary of components the client understands, which is what A2UI already implies. The open question for me: whether the healing parser ships as a reusable library or stays buried inside the reference client. If it is reusable, I'd adopt it. If not, the protocol is just a spec.</p>
-  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a> &middot; <a href="https://shobyde.com/archive/">all writing</a></p>
 </main>
 </body>
 </html>

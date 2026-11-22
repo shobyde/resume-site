@@ -4,391 +4,503 @@
     "date": "2026-11-22",
     "title": "Readback 0.2.0: rewards, and a catalog that fills the shelf",
     "tag": "project",
-    "excerpt": "Readback 0.2.0 adds the Accelerated Reader catalog, stars, goals, badges, stickers, and a log that accepts books with no quiz."
+    "excerpt": "Readback 0.2.0 adds the Accelerated Reader catalog, stars, goals, badges, stickers, and a log that accepts books with no quiz.",
+    "words": 800,
+    "minutes": 4
   },
   {
     "slug": "2026-11-22-a2ui-1-0-keeps-the-agent-out-of-the-dom",
     "date": "2026-11-22",
     "title": "A2UI 1.0 Keeps the Agent Out of the DOM",
     "tag": "ui-direction",
-    "excerpt": "A2UI 1.0 has agents emit interactive screens, forms and charts, rendered by your own native components, with bidirectional function calls and streaming."
+    "excerpt": "A2UI 1.0 has agents emit interactive screens, forms and charts, rendered by your own native components, with bidirectional function calls and streaming.",
+    "words": 235,
+    "minutes": 1
   },
   {
     "slug": "2026-11-21-vibe-puts-the-review-surface-inside-the-agent",
     "date": "2026-11-21",
     "title": "Vibe Puts the Review Surface Inside the Agent",
     "tag": "tools",
-    "excerpt": "Mistral Vibe merges Le Chat and a coding agent into a desktop app with parallel local and remote agents, diff review, and 100+ MCP tools, paired with the 1T-parameter open-weight Mistral Large 4."
+    "excerpt": "Mistral Vibe merges Le Chat and a coding agent into a desktop app with parallel local and remote agents, diff review, and 100+ MCP tools, paired with the 1T-parameter open-weight Mistral Large 4.",
+    "words": 270,
+    "minutes": 1
   },
   {
     "slug": "2026-11-20-this-week-in-agents-restraint-ships",
     "date": "2026-11-20",
     "title": "This Week in Agents: Restraint Ships",
     "tag": "news",
-    "excerpt": "The week's recurring shape was restraint: a protocol hitting 1.0 with renderers across six frameworks, a desktop coding app built around reviewing what agents write, and a quantization community pruning a 26B MoE down to a file a laptop holds."
+    "excerpt": "The week's recurring shape was restraint: a protocol hitting 1.0 with renderers across six frameworks, a desktop coding app built around reviewing what agents write, and a quantization community pruning a 26B MoE down to a file a laptop holds.",
+    "words": 402,
+    "minutes": 2
   },
   {
     "slug": "2026-11-20-a2ui-s-healing-parser-is-the-part-worth-copying",
     "date": "2026-11-20",
     "title": "A2UI's Healing Parser Is the Part Worth Copying",
     "tag": "ui-direction",
-    "excerpt": "A2UI v0.9 streams generative UI by healing partial LLM output, and the parser is the part I'd copy before the protocol."
+    "excerpt": "A2UI v0.9 streams generative UI by healing partial LLM output, and the parser is the part I'd copy before the protocol.",
+    "words": 285,
+    "minutes": 1
   },
   {
     "slug": "2026-11-19-three-store-state-split-is-the-part-of-gemini-chat-s-rebuild",
     "date": "2026-11-19",
     "title": "Three-Store State Split Is the Part of Gemini Chat's Rebuild Worth Copying",
     "tag": "ui-direction",
-    "excerpt": "Three-store state split is the part of Gemini Chat's 100M-user frontend rebuild worth copying into your own agent UI."
+    "excerpt": "Three-store state split is the part of Gemini Chat's 100M-user frontend rebuild worth copying into your own agent UI.",
+    "words": 283,
+    "minutes": 1
   },
   {
     "slug": "2026-11-18-assistant-ui-ships-primitives-not-a-chat-widget",
     "date": "2026-11-18",
     "title": "assistant-ui Ships Primitives, Not a Chat Widget",
     "tag": "ui-direction",
-    "excerpt": "assistant-ui ships Radix-style primitives for AI chat instead of a finished widget, and that choice says more about where agent UI is heading than the feature list does."
+    "excerpt": "assistant-ui ships Radix-style primitives for AI chat instead of a finished widget, and that choice says more about where agent UI is heading than the feature list does.",
+    "words": 288,
+    "minutes": 1
   },
   {
     "slug": "2026-11-17-submit-guards-move-browser-safety-out-of-the-model",
     "date": "2026-11-17",
     "title": "Submit Guards Move Browser Safety Out of the Model",
     "tag": "ui-direction",
-    "excerpt": "Turbo-Browser-MCP now blocks form submissions until an explicit guard clears, which moves the safety check from the model's judgment into the interface layer."
+    "excerpt": "Turbo-Browser-MCP now blocks form submissions until an explicit guard clears, which moves the safety check from the model's judgment into the interface layer.",
+    "words": 333,
+    "minutes": 2
   },
   {
     "slug": "2026-11-16-ggml-1-0-makes-the-vram-ceiling-soft",
     "date": "2026-11-16",
     "title": "ggml 1.0 Makes the VRAM Ceiling Soft",
     "tag": "tools",
-    "excerpt": "MoE models that slightly exceed VRAM no longer fail to load, because ggml v1.0 can cache the less-used experts in host RAM."
+    "excerpt": "MoE models that slightly exceed VRAM no longer fail to load, because ggml v1.0 can cache the less-used experts in host RAM.",
+    "words": 261,
+    "minutes": 1
   },
   {
     "slug": "2026-11-16-a-global-hotkey-is-a-state-boundary-not-a-shortcut",
     "date": "2026-11-16",
     "title": "A Global Hotkey Is a State Boundary, Not a Shortcut",
     "tag": "project",
-    "excerpt": "The most useful feature I shipped this year is a single shortcut: Ctrl+Alt+R (Cmd+Alt+R on macOS). Press it from anywhere on the desktop and Hobnob starts recording a meeting. No window to find, no click target, no \"open the app first\" step. The hard part was never the shortcut. It was deciding where the trigger lives in the architecture, and what it is allowed to do."
+    "excerpt": "The most useful feature I shipped this year is a single shortcut: Ctrl+Alt+R (Cmd+Alt+R on macOS). Press it from anywhere on the desktop and Hobnob starts recording a meeting. No window to find, no click target, no \"open the app first\" step. The hard part was never the shortcut. It was deciding where the trigger lives in the architecture, and what it is allowed to do.",
+    "words": 571,
+    "minutes": 3
   },
   {
     "slug": "2026-11-15-manus-side-chat-is-a-state-boundary-not-a-layout-choice",
     "date": "2026-11-15",
     "title": "Manus Side Chat Is a State Boundary, Not a Layout Choice",
     "tag": "ui-direction",
-    "excerpt": "Manus Side chat lets you ask questions beside the main task without cluttering the thread, and the interesting part is the state boundary it implies."
+    "excerpt": "Manus Side chat lets you ask questions beside the main task without cluttering the thread, and the interesting part is the state boundary it implies.",
+    "words": 200,
+    "minutes": 1
   },
   {
     "slug": "2026-11-14-what-your-agent-showed-the-customer",
     "date": "2026-11-14",
     "title": "What your agent showed the customer",
     "tag": "project",
-    "excerpt": "Generated interfaces fail by omission, and nothing in the stack notices."
+    "excerpt": "Generated interfaces fail by omission, and nothing in the stack notices.",
+    "words": 920,
+    "minutes": 5
   },
   {
     "slug": "2026-11-14-split-the-decision-out-of-the-agent",
     "date": "2026-11-14",
     "title": "Split the Decision Out of the Agent",
     "tag": "tools",
-    "excerpt": "Perplexity released Decider v1.3 (26B) and Decider Flash (5B) as open-weight Apache 2.0 classification models built for agents."
+    "excerpt": "Perplexity released Decider v1.3 (26B) and Decider Flash (5B) as open-weight Apache 2.0 classification models built for agents.",
+    "words": 248,
+    "minutes": 1
   },
   {
     "slug": "2026-11-13-this-week-in-agents-the-24gb-ceiling",
     "date": "2026-11-13",
     "title": "This Week in Agents: The 24GB Ceiling",
     "tag": "news",
-    "excerpt": "Open weights cleared a desk-level constraint this week: a 74B model that fits 24GB, self-hostable decision models, and A2UI 1.0. The news I kept covers two responses to a VRAM ceiling, plus a frontend release that consolidates the agent-UI conventions the blog has been tracking for a month."
+    "excerpt": "Open weights cleared a desk-level constraint this week: a 74B model that fits 24GB, self-hostable decision models, and A2UI 1.0. The news I kept covers two responses to a VRAM ceiling, plus a frontend release that consolidates the agent-UI conventions the blog has been tracking for a month.",
+    "words": 389,
+    "minutes": 2
   },
   {
     "slug": "2026-11-13-nemotron-3-5-bolt-fits-24gb-by-making-the-active-path-small",
     "date": "2026-11-13",
     "title": "Nemotron 3.5 Bolt Fits 24GB by Making the Active Path Small",
     "tag": "tools",
-    "excerpt": "NVIDIA Nemotron 3.5 Bolt ships 74B total parameters with 9B active, quantized down to 2-bit, sized to fit 24GB, with Unsloth GGUFs and Ollama/LM Studio support on day one. The headline is 74B. The useful numbers are 9B active, 22GB of weights, and a 1.7GB vision projector."
+    "excerpt": "NVIDIA Nemotron 3.5 Bolt ships 74B total parameters with 9B active, quantized down to 2-bit, sized to fit 24GB, with Unsloth GGUFs and Ollama/LM Studio support on day one. The headline is 74B. The useful numbers are 9B active, 22GB of weights, and a 1.7GB vision projector.",
+    "words": 190,
+    "minutes": 1
   },
   {
     "slug": "2026-11-12-kvark-sparkle-1-1-makes-refusal-a-ui-state",
     "date": "2026-11-12",
     "title": "KVARK Sparkle 1.1 Makes Refusal a UI State",
     "tag": "ui-direction",
-    "excerpt": "KVARK Sparkle 1.1 is a 27B document Q&A model that declines 91.5% of unanswerable questions, released under Apache 2.0."
+    "excerpt": "KVARK Sparkle 1.1 is a 27B document Q&A model that declines 91.5% of unanswerable questions, released under Apache 2.0.",
+    "words": 183,
+    "minutes": 1
   },
   {
     "slug": "2026-11-11-agent-memory-is-a-diff-problem-not-a-graph-problem",
     "date": "2026-11-11",
     "title": "Agent Memory Is a Diff Problem, Not a Graph Problem",
     "tag": "ui-direction",
-    "excerpt": "Rendering an agent's memory as a graph is a debugging move, and the diff view is the part that matters."
+    "excerpt": "Rendering an agent's memory as a graph is a debugging move, and the diff view is the part that matters.",
+    "words": 238,
+    "minutes": 1
   },
   {
     "slug": "2026-11-10-split-the-conversation-from-the-activity-stream",
     "date": "2026-11-10",
     "title": "Split the Conversation From the Activity Stream",
     "tag": "ui-direction",
-    "excerpt": "The conversation stream and the activity stream are different things, and conflating them is why agent UIs feel broken."
+    "excerpt": "The conversation stream and the activity stream are different things, and conflating them is why agent UIs feel broken.",
+    "words": 237,
+    "minutes": 1
   },
   {
     "slug": "2026-11-09-copilotkit-s-vue-sdk-is-a-bet-on-the-protocol-layer",
     "date": "2026-11-09",
     "title": "CopilotKit's Vue SDK Is a Bet on the Protocol Layer",
     "tag": "ui-direction",
-    "excerpt": "CopilotKit now ships a native Vue SDK over AG-UI, so one agent can drive React, Vue, React Native, or Angular frontends. The bet is on the protocol layer, not the components."
+    "excerpt": "CopilotKit now ships a native Vue SDK over AG-UI, so one agent can drive React, Vue, React Native, or Angular frontends. The bet is on the protocol layer, not the components.",
+    "words": 255,
+    "minutes": 1
   },
   {
     "slug": "2026-11-09-building-a-physics-engine-from-first-principles-at-digipen",
     "date": "2026-11-09",
     "title": "Building a Physics Engine From First Principles at DigiPen",
     "tag": "project",
-    "excerpt": "I built physics-based game engines from scratch in C++ at DigiPen, and the cohort took 3 of the 4 game design awards that year. That is the fact I can verify. What I want to talk about is why building the engine first was the right call for a student program, and what I would do differently now."
+    "excerpt": "I built physics-based game engines from scratch in C++ at DigiPen, and the cohort took 3 of the 4 game design awards that year. That is the fact I can verify. What I want to talk about is why building the engine first was the right call for a student program, and what I would do differently now.",
+    "words": 472,
+    "minutes": 2
   },
   {
     "slug": "2026-11-08-a2ui-is-a-trust-boundary-decision-not-a-styling-preference",
     "date": "2026-11-08",
     "title": "A2UI is a trust-boundary decision, not a styling preference",
     "tag": "ui-direction",
-    "excerpt": "Google's A2UI is a declarative message format for agent-driven UIs, and the interesting part is not that agents can generate interfaces. It is the native-first constraint: the agent sends a blueprint of trusted components, and the client maps them to its own native widgets rather than running HTML in an iframe."
+    "excerpt": "Google's A2UI is a declarative message format for agent-driven UIs, and the interesting part is not that agents can generate interfaces. It is the native-first constraint: the agent sends a blueprint of trusted components, and the client maps them to its own native widgets rather than running HTML in an iframe.",
+    "words": 232,
+    "minutes": 1
   },
   {
     "slug": "2026-11-07-heretic-2-0-makes-model-modification-something-you-can-test",
     "date": "2026-11-07",
     "title": "Heretic 2.0 makes model modification something you can test",
     "tag": "tools",
-    "excerpt": "Heretic 2.0 replaces abliteration with Arbitrary-Rank Ablation and rebuilds model modification around a plugin pipeline you can test and repeat."
+    "excerpt": "Heretic 2.0 replaces abliteration with Arbitrary-Rank Ablation and rebuilds model modification around a plugin pipeline you can test and repeat.",
+    "words": 257,
+    "minutes": 1
   },
   {
     "slug": "2026-11-06-this-week-in-agents-export-lists-and-typed-streams",
     "date": "2026-11-06",
     "title": "This Week in Agents: Export Lists and Typed Streams",
     "tag": "news",
-    "excerpt": "The agent news this week was mostly infrastructure hardening: regulation reached for the weights themselves, and streaming settled into typed, queued, replayable protocols."
+    "excerpt": "The agent news this week was mostly infrastructure hardening: regulation reached for the weights themselves, and streaming settled into typed, queued, replayable protocols.",
+    "words": 222,
+    "minutes": 1
   },
   {
     "slug": "2026-11-06-the-proxy-is-not-the-boundary",
     "date": "2026-11-06",
     "title": "The proxy is not the boundary",
     "tag": "dev",
-    "excerpt": "An HN thread on running your own LLM proxy makes a point most agent stacks skip: the harness between you and the model is the real data boundary."
+    "excerpt": "An HN thread on running your own LLM proxy makes a point most agent stacks skip: the harness between you and the model is the real data boundary.",
+    "words": 273,
+    "minutes": 1
   },
   {
     "slug": "2026-11-05-a-thin-chat-frontend-is-a-sign-of-maturity-not-a-shortcut",
     "date": "2026-11-05",
     "title": "A thin chat frontend is a sign of maturity, not a shortcut",
     "tag": "dev",
-    "excerpt": "TinyWebUI is a drop-in chat frontend for local models that ships as an npx command instead of a full Open WebUI stack. The interesting part is not that it exists. It is that the frontend stopped being the hard part."
+    "excerpt": "TinyWebUI is a drop-in chat frontend for local models that ships as an npx command instead of a full Open WebUI stack. The interesting part is not that it exists. It is that the frontend stopped being the hard part.",
+    "words": 209,
+    "minutes": 1
   },
   {
     "slug": "2026-11-04-on-demand-agent-ui-is-a-sandbox-problem-not-a-rendering-one",
     "date": "2026-11-04",
     "title": "On-Demand Agent UI Is a Sandbox Problem, Not a Rendering One",
     "tag": "ui-direction",
-    "excerpt": "On-demand agent UI is a sandbox problem, not a rendering one. CopilotKit's Open Intelligent UI lets an agent build charts, maps, calculators, games, and 3D scenes on demand inside your own app, streaming while it generates, with the code running in a sandboxed iframe. The generation is the easy part to demo. The boundary is the part that ships."
+    "excerpt": "On-demand agent UI is a sandbox problem, not a rendering one. CopilotKit's Open Intelligent UI lets an agent build charts, maps, calculators, games, and 3D scenes on demand inside your own app, streaming while it generates, with the code running in a sandboxed iframe. The generation is the easy part to demo. The boundary is the part that ships.",
+    "words": 167,
+    "minutes": 1
   },
   {
     "slug": "2026-11-03-open-weights-is-a-license-question-not-a-size-question",
     "date": "2026-11-03",
     "title": "Open weights is a license question, not a size question",
     "tag": "news",
-    "excerpt": "Mistral Large 4 ships as open weights under a modified MIT license, with the offensive-capability variant gated behind vetting."
+    "excerpt": "Mistral Large 4 ships as open weights under a modified MIT license, with the offensive-capability variant gated behind vetting.",
+    "words": 255,
+    "minutes": 1
   },
   {
     "slug": "2026-11-02-shadcn-s-trace-component-treats-agent-steps-as-ui-state",
     "date": "2026-11-02",
     "title": "shadcn's Trace Component Treats Agent Steps as UI State",
     "tag": "ui-direction",
-    "excerpt": "shadcn/ui's October release adds a Trace component that renders agent steps with running, error, and pending states, plus nested lines, alongside a Code Block and AI Elements patterns. The interesting part is not the component. It is the decision to model an agent run as a tree of steps with explicit lifecycle states, in a component library that most production apps already depend on."
+    "excerpt": "shadcn/ui's October release adds a Trace component that renders agent steps with running, error, and pending states, plus nested lines, alongside a Code Block and AI Elements patterns. The interesting part is not the component. It is the decision to model an agent run as a tree of steps with explicit lifecycle states, in a component library that most production apps already depend on.",
+    "words": 117,
+    "minutes": 1
   },
   {
     "slug": "2026-11-02-a-static-publishing-loop-cron-writes-vite-ships-cloudflare-s",
     "date": "2026-11-02",
     "title": "A static publishing loop: cron writes, Vite ships, Cloudflare serves",
     "tag": "project",
-    "excerpt": "I built a publishing loop where a cron job writes the blog and the site ships itself."
+    "excerpt": "I built a publishing loop where a cron job writes the blog and the site ships itself.",
+    "words": 576,
+    "minutes": 3
   },
   {
     "slug": "2026-11-01-ag-ui-lets-agents-drive-the-browser-and-that-is-a-policy-pro",
     "date": "2026-11-01",
     "title": "AG-UI lets agents drive the browser, and that is a policy problem",
     "tag": "ui-direction",
-    "excerpt": "AG-UI formalizes agent-to-frontend events, including tool calls that drive browser navigation. The interesting part is the trust boundary, not the protocol."
+    "excerpt": "AG-UI formalizes agent-to-frontend events, including tool calls that drive browser navigation. The interesting part is the trust boundary, not the protocol.",
+    "words": 208,
+    "minutes": 1
   },
   {
     "slug": "2026-10-31-chat-is-a-job-transcript-not-a-conversation",
     "date": "2026-10-31",
     "title": "Chat Is a Job Transcript, Not a Conversation",
     "tag": "ui-direction",
-    "excerpt": "Chat breaks down once an agent starts taking real actions, and prettier components alone will not fix it."
+    "excerpt": "Chat breaks down once an agent starts taking real actions, and prettier components alone will not fix it.",
+    "words": 253,
+    "minutes": 1
   },
   {
     "slug": "2026-10-30-this-week-in-agents-from-checkpoint-to-pixel",
     "date": "2026-10-30",
     "title": "This Week in Agents: From Checkpoint to Pixel",
     "tag": "news",
-    "excerpt": "Open weights hit every layer of the stack this week: a trillion-parameter release, the wafer-scale hardware to serve it, and a faster serialization format for agent frontends. These picks trace a path from checkpoint to browser pixel, where open models now actually get judged."
+    "excerpt": "Open weights hit every layer of the stack this week: a trillion-parameter release, the wafer-scale hardware to serve it, and a faster serialization format for agent frontends. These picks trace a path from checkpoint to browser pixel, where open models now actually get judged.",
+    "words": 307,
+    "minutes": 2
   },
   {
     "slug": "2026-10-30-cpu-cache-is-the-agent-isolation-boundary",
     "date": "2026-10-30",
     "title": "CPU Cache Is the Agent Isolation Boundary",
     "tag": "news",
-    "excerpt": "Separate microVMs exchanged secrets through processor cache when asked to find a way, which is a reminder that agent isolation is a hardware problem, not just a software one."
+    "excerpt": "Separate microVMs exchanged secrets through processor cache when asked to find a way, which is a reminder that agent isolation is a hardware problem, not just a software one.",
+    "words": 218,
+    "minutes": 1
   },
   {
     "slug": "2026-10-29-streamed-props-are-the-real-interface-contract",
     "date": "2026-10-29",
     "title": "Streamed Props Are the Real Interface Contract",
     "tag": "ui-direction",
-    "excerpt": "Streamed props are the real interface contract between agents and UIs, not the component tree."
+    "excerpt": "Streamed props are the real interface contract between agents and UIs, not the component tree.",
+    "words": 246,
+    "minutes": 1
   },
   {
     "slug": "2026-10-28-streaming-is-solved-composition-is-not",
     "date": "2026-10-28",
     "title": "Streaming Is Solved, Composition Is Not",
     "tag": "ui-direction",
-    "excerpt": "Streaming is solved, composition is not: a survey of AI chat UI libraries names the real gap, and it is not token delivery."
+    "excerpt": "Streaming is solved, composition is not: a survey of AI chat UI libraries names the real gap, and it is not token delivery.",
+    "words": 289,
+    "minutes": 1
   },
   {
     "slug": "2026-10-27-generative-ui-is-three-patterns-not-one-feature",
     "date": "2026-10-27",
     "title": "Generative UI Is Three Patterns, Not One Feature",
     "tag": "ui-direction",
-    "excerpt": "CopilotKit's generative UI guide splits the space into three patterns, and the split matters more than any one implementation."
+    "excerpt": "CopilotKit's generative UI guide splits the space into three patterns, and the split matters more than any one implementation.",
+    "words": 201,
+    "minutes": 1
   },
   {
     "slug": "2026-10-26-gpt-6-s-intelligent-ui-is-a-product-claim-not-an-interface-s",
     "date": "2026-10-26",
     "title": "GPT-6's 'Intelligent UI' Is a Product Claim, Not an Interface Spec",
     "tag": "ui-direction",
-    "excerpt": "OpenAI's GPT-6 announcement leads with \"intelligent UI for everyone,\" which is a product claim dressed up as a feature name."
+    "excerpt": "OpenAI's GPT-6 announcement leads with \"intelligent UI for everyone,\" which is a product claim dressed up as a feature name.",
+    "words": 222,
+    "minutes": 1
   },
   {
     "slug": "2026-10-26-ar-practice-quiz-parent-gated-quizzes-for-homeschool-ar",
     "date": "2026-10-26",
     "title": "AR Practice Quiz: Parent-Gated Quizzes for Homeschool AR",
     "tag": "project",
-    "excerpt": "An AR homeschool quiz app where a parent approves AI-generated quizzes before kids take them, and passing awards Accelerated Reader points."
+    "excerpt": "An AR homeschool quiz app where a parent approves AI-generated quizzes before kids take them, and passing awards Accelerated Reader points.",
+    "words": 408,
+    "minutes": 2
   },
   {
     "slug": "2026-10-25-open-weights-is-a-license-question-not-a-size-question",
     "date": "2026-10-25",
     "title": "Open Weights Is a License Question, Not a Size Question",
     "tag": "dev",
-    "excerpt": "Four open-weights drops in 72 hours, and the licenses mattered more than the param counts."
+    "excerpt": "Four open-weights drops in 72 hours, and the licenses mattered more than the param counts.",
+    "words": 251,
+    "minutes": 1
   },
   {
     "slug": "2026-10-24-a2ui-is-the-safer-trade-for-production-agent-surfaces",
     "date": "2026-10-24",
     "title": "A2UI Is the Safer Trade for Production Agent Surfaces",
     "tag": "ui-direction",
-    "excerpt": "Syncfusion's A2UI maps structured model output to approved UI components instead of freeform generative UI, which is the safer trade for production agent surfaces."
+    "excerpt": "Syncfusion's A2UI maps structured model output to approved UI components instead of freeform generative UI, which is the safer trade for production agent surfaces.",
+    "words": 263,
+    "minutes": 1
   },
   {
     "slug": "2026-10-23-this-week-in-agents-trust-around-the-agents",
     "date": "2026-10-23",
     "title": "This Week in Agents: Trust Around the Agents",
     "tag": "news",
-    "excerpt": "OpenAI disclosed agents disabling their own monitors, METR red-teamed the monitor itself, and LiteLLM's PyPI release carried a credential stealer."
+    "excerpt": "OpenAI disclosed agents disabling their own monitors, METR red-teamed the monitor itself, and LiteLLM's PyPI release carried a credential stealer.",
+    "words": 493,
+    "minutes": 2
   },
   {
     "slug": "2026-10-23-flint-is-a-pipeline-announcement-not-a-model",
     "date": "2026-10-23",
     "title": "Flint Is a Pipeline Announcement, Not a Model",
     "tag": "news",
-    "excerpt": "The interesting part of Flint is the pipeline that built it, not the model itself."
+    "excerpt": "The interesting part of Flint is the pipeline that built it, not the model itself.",
+    "words": 220,
+    "minutes": 1
   },
   {
     "slug": "2026-10-22-typed-agent-streams-replace-token-streaming",
     "date": "2026-10-22",
     "title": "Typed Agent Streams Replace Token Streaming",
     "tag": "ui-direction",
-    "excerpt": "Typed agent streams replace token streaming with explicit events, which is what agentic UIs actually need."
+    "excerpt": "Typed agent streams replace token streaming with explicit events, which is what agentic UIs actually need.",
+    "words": 215,
+    "minutes": 1
   },
   {
     "slug": "2026-10-21-benchmark-scores-are-a-proxy-not-a-measurement",
     "date": "2026-10-21",
     "title": "Benchmark Scores Are a Proxy, Not a Measurement",
     "tag": "tools",
-    "excerpt": "Benchmark scores are a proxy for the thing you actually want to know, and the gap between them is where bad model decisions get made."
+    "excerpt": "Benchmark scores are a proxy for the thing you actually want to know, and the gap between them is where bad model decisions get made.",
+    "words": 274,
+    "minutes": 1
   },
   {
     "slug": "2026-10-20-the-job-runner-not-the-chat-window",
     "date": "2026-10-20",
     "title": "The Job Runner, Not the Chat Window",
     "tag": "ui-direction",
-    "excerpt": "Multi-step agent workflows expose the UI as the actual bottleneck: 30-second latencies, tool calls, and side effects need first-class events, not streaming text."
+    "excerpt": "Multi-step agent workflows expose the UI as the actual bottleneck: 30-second latencies, tool calls, and side effects need first-class events, not streaming text.",
+    "words": 295,
+    "minutes": 1
   },
   {
     "slug": "2026-10-19-on-device-meeting-notes-what-the-privacy-constraint-forces",
     "date": "2026-10-19",
     "title": "On-Device Meeting Notes: What the Privacy Constraint Forces",
     "tag": "project",
-    "excerpt": "The interesting part of Hobnob is not that it transcribes meetings. It is the decision to run the whole pipeline on-device, and what that decision forces you to do everywhere else."
+    "excerpt": "The interesting part of Hobnob is not that it transcribes meetings. It is the decision to run the whole pipeline on-device, and what that decision forces you to do everywhere else.",
+    "words": 444,
+    "minutes": 2
   },
   {
     "slug": "2026-10-19-adaptive-batching-for-agent-uis",
     "date": "2026-10-19",
     "title": "Adaptive Batching for Agent UIs",
     "tag": "ui-direction",
-    "excerpt": "Streaming 100 tokens per second will jank your UI unless you batch adaptively with scheduler.yield()."
+    "excerpt": "Streaming 100 tokens per second will jank your UI unless you batch adaptively with scheduler.yield().",
+    "words": 235,
+    "minutes": 1
   },
   {
     "slug": "2026-10-17-two-mac-studios-and-an-asterisk",
     "date": "2026-10-17",
     "title": "Two Mac Studios and an Asterisk",
     "tag": "dev",
-    "excerpt": "wo Mac Studios and an Asterisk Tag: dev Subtitle: Meta's 816B Muse Spark Open reportedly runs on two Mac Studios; sparsity makes it fit, the score tem"
+    "excerpt": "wo Mac Studios and an Asterisk Tag: dev Subtitle: Meta's 816B Muse Spark Open reportedly runs on two Mac Studios; sparsity makes it fit, the score tem",
+    "words": 438,
+    "minutes": 2
   },
   {
     "slug": "2026-10-16-this-week-in-agents-below-the-model-layer",
     "date": "2026-10-16",
     "title": "This Week in Agents: Below the Model Layer",
     "tag": "news",
-    "excerpt": "Anthropic rebuilt source control around agent-written code, routing got its own model class, and Meta open-sourced an 816B MoE."
+    "excerpt": "Anthropic rebuilt source control around agent-written code, routing got its own model class, and Meta open-sourced an 816B MoE.",
+    "words": 461,
+    "minutes": 2
   },
   {
     "slug": "2026-10-16-one-stream-at-a-time",
     "date": "2026-10-16",
     "title": "One Stream at a Time",
     "tag": "dev",
-    "excerpt": "A megakernel benchmark reads like a 1.9\u00d7 win; its own ablation shows the engine alone is 6% faster, and the rest of the gap is speculative drafting."
+    "excerpt": "A megakernel benchmark reads like a 1.9\u00d7 win; its own ablation shows the engine alone is 6% faster, and the rest of the gap is speculative drafting.",
+    "words": 370,
+    "minutes": 2
   },
   {
     "slug": "2026-10-15-agent-ui-needs-its-d3-moment",
     "date": "2026-10-15",
     "title": "Agent UI Needs Its D3 Moment",
     "tag": "dev",
-    "excerpt": "Two library rankings and one SDK release make the same point: agent chat components exist, agent controls don't."
+    "excerpt": "Two library rankings and one SDK release make the same point: agent chat components exist, agent controls don't.",
+    "words": 499,
+    "minutes": 2
   },
   {
     "slug": "2026-10-14-the-provenance-tax",
     "date": "2026-10-14",
     "title": "The Provenance Tax",
     "tag": "dev",
-    "excerpt": "A security post on watermarked agents and a Tech Review story on bought corpora describe one cost appearing at both ends of the model lifecycle."
+    "excerpt": "A security post on watermarked agents and a Tech Review story on bought corpora describe one cost appearing at both ends of the model lifecycle.",
+    "words": 384,
+    "minutes": 2
   },
   {
     "slug": "2026-10-13-ui-direction-generative-ui",
     "date": "2026-10-13",
     "title": "The UI Is Becoming the Agent's Body",
     "tag": "ui-direction",
-    "excerpt": "Generative UI, A2UI, and why token streaming is already yesterday's problem"
+    "excerpt": "Generative UI, A2UI, and why token streaming is already yesterday's problem",
+    "words": 303,
+    "minutes": 2
   },
   {
     "slug": "2026-10-13-teaching-cs",
     "date": "2026-10-13",
     "title": "Teaching CS at 7:30 AM",
     "tag": "teaching",
-    "excerpt": "One year, one classroom, no prior coders"
+    "excerpt": "One year, one classroom, no prior coders",
+    "words": 161,
+    "minutes": 1
   },
   {
     "slug": "2026-10-13-site-kickoff",
     "date": "2026-10-13",
     "title": "Introduction to the site",
     "tag": "intro",
-    "excerpt": "AI-assisted, human-curated."
+    "excerpt": "AI-assisted, human-curated.",
+    "words": 132,
+    "minutes": 1
   },
   {
     "slug": "2026-10-13-approval-is-the-new-click",
     "date": "2026-10-13",
     "title": "Approval Is the New Click",
     "tag": "ui-direction",
-    "excerpt": "Why the next decade of UI design is really about delegation, trust, and giving the machine a brake pedal"
+    "excerpt": "Why the next decade of UI design is really about delegation, trust, and giving the machine a brake pedal",
+    "words": 284,
+    "minutes": 1
   }
 ]

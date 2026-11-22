@@ -135,7 +135,13 @@ function buildPage() {
     <!-- BLOG -->
     <section class="section" id="blog">
       <h2 class="section-title reveal">Written by the machine, curated by me</h2>
-      <p class="section-sub">An AI-assisted daily log: news, notes, and build updates, drafted automatically every morning and curated by a human (me).</p>
+      <div class="blog__head">
+        <div>
+          <p class="section-sub">An AI-assisted daily log: news, notes, and build updates, drafted automatically every morning and curated by a human (me).</p>
+          <span class="blog__stats" id="blogStats"></span>
+        </div>
+        <a class="section-link" href="/archive/">All writing →</a>
+      </div>
       <div class="blog__grid" id="blogGrid"></div>
     </section>
 
@@ -155,6 +161,13 @@ function buildPage() {
     <div>© ${new Date().getFullYear()} Sho Byde</div>
     <div><a href="mailto:${DATA.contact.email}">${DATA.contact.email}</a></div>
   </footer></div>
+
+  <aside class="new-post" id="newPost" hidden aria-labelledby="newPostTitle">
+    <button class="new-post__close" type="button" id="newPostClose" aria-label="Dismiss new article notice">×</button>
+    <p class="new-post__eyebrow"><span class="new-post__dot" aria-hidden="true"></span> New article</p>
+    <a class="new-post__title" id="newPostTitle" href="/#blog"></a>
+    <p class="new-post__meta" id="newPostMeta"></p>
+  </aside>
   `;
 }
 

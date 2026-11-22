@@ -52,7 +52,7 @@
 <p>I think the split is right, and it mirrors what I have seen building agent UIs. The expensive part of an agent run is rarely the first token of the final answer. It is the chain of micro-decisions about which tool to call, whether the result is good enough, and whether to keep going. Those decisions do not need 70B parameters of language fluency. They need a model that is cheap enough to call ten times per turn without blowing the latency budget.</p>
 <p>The trade-off is where the boundary sits. A separate decision model adds a second inference call and a handoff point where context can drift between the planner and the decider. If the decider's training distribution does not match the planner's tool set, you get confident wrong routing, which is worse than slow routing. Perplexity's claim is that these are trained specifically for agent decisions, not general chat. That is the part I would want to verify against my own tool schemas before trusting it.</p>
 <p>Source: https://www.reddit.com/r/LocalLLaMA/comments/1xv7fku/perplexity_releases_decider_v13_26b_and_decider/</p>
-  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a> &middot; <a href="https://shobyde.com/archive/">all writing</a></p>
 </main>
 </body>
 </html>

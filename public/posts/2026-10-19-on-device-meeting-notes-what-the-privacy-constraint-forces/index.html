@@ -54,7 +54,7 @@
 <p>The global trigger is the second pillar. A system-wide shortcut (Ctrl+Alt+R / Cmd+Alt+R) plus a tray icon start a recording from anywhere, with no window interaction. It only launches the flow: it signals the main window, which drives the normal renderer record path. Tray creation is guarded because some environments cannot create a native tray icon; in that case it degrades to hotkey-only instead of failing. The setting toggle updates the shortcut and menu live.</p>
 <p>Two trade-offs I would revisit. First, model memory: loading Gemma 4 at recording start means a 5.3 GB resident footprint for the whole meeting, even though summarization only happens at the end. Loading on demand would cut idle memory but cost startup latency on finalize. Second, the serial whisper queue means live captions lag if the final pass is queued behind them; I cap the drain at a timeout rather than waiting indefinitely, which can drop late captions. Both are acceptable given the privacy constraint, but neither is free.</p>
 <p>The open question I keep circling: whether on-device quality is good enough to be the default, or whether it should be an option behind a cloud path. I have not added the cloud path. The moment I do, the privacy claim stops being a constraint and becomes a preference, and I am not sure I want that.</p>
-  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a> &middot; <a href="https://shobyde.com/archive/">all writing</a></p>
 </main>
 </body>
 </html>

@@ -152,7 +152,7 @@ def build_page(slug: str, meta: dict, body_html: str) -> str:
   <h1>{title}</h1>
   <div class="meta">{date} &middot; {esc(meta["tag"])} &middot; by {author}</div>
   {body_html}
-  <p><a href="{SITE}/">&larr; back to shobyde.com</a></p>
+  <p><a href="{SITE}/">&larr; back to shobyde.com</a> &middot; <a href="{SITE}/archive/">all writing</a></p>
 </main>
 </body>
 </html>
@@ -185,13 +185,15 @@ def main() -> None:
                 d.rmdir()
 
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    sitemap.append(f"<url><loc>{SITE}/</loc><lastmod>{urls[0][1] if urls else fmt_dt(datetime.now(timezone.utc).strftime('%Y-%m-%d'))}</lastmod></url>")
+    latest = urls[0][1] if urls else fmt_dt(datetime.now(timezone.utc).strftime('%Y-%m-%d'))
+    sitemap.append(f"<url><loc>{SITE}/</loc><lastmod>{latest}</lastmod></url>")
+    sitemap.append(f"<url><loc>{SITE}/archive/</loc><lastmod>{latest}</lastmod></url>")
     for slug, dt in urls:
         sitemap.append(f"<url><loc>{SITE}/posts/{slug}/</loc><lastmod>{dt}</lastmod></url>")
     sitemap.append("</urlset>")
     (OUT / "sitemap.xml").write_text("\n".join(sitemap) + "\n", encoding="utf-8")
 
-    print(json.dumps({"static_pages": built, "sitemap_urls": len(urls) + 1}))
+    print(json.dumps({"static_pages": built, "sitemap_urls": len(urls) + 2}))
 
 
 if __name__ == "__main__":

@@ -9,5 +9,6 @@ public/*
 !public/assets
 !public/posts
 !public/sitemap.xml
+!public/archive
 scripts/__pycache__/
 .worktrees/

@@ -54,7 +54,7 @@
 <p>The settings side matters too. The shortcut is not always on. <code>applySettings</code> re-registers or unregisters the shortcut live when <code>globalTriggerEnabled</code> changes, and rebuilds the tray menu so "Record now" appears or disappears. No restart required. That constraint came from the first-run wizard flow: a user who disables the trigger during setup should see it stop immediately, and a user who re-enables it later should not have to relaunch the app. Live application costs more code than a restart prompt, but a restart prompt in a meeting tool is a missed recording.</p>
 <p>What I would do differently: the shortcut is hardcoded to <code>Control+Alt+R</code>. There is no conflict resolution if another app already holds it; <code>globalShortcut.register</code> returns false and Hobnob logs a warning and stays silent. For a tool whose whole point is "press this from anywhere", a silently failing hotkey is a bad failure mode. The next version needs a settings field for the shortcut and a visible indicator when registration fails. That is the open question I am sitting with: should a failed registration surface as a notification, or should the app fall back to a different default and tell the user what changed?</p>
 <p>The broader lesson: a global trigger sounds like a small feature. In an app where the recording engine lives in the renderer and the shortcut lives in the main process, it is a state-boundary problem dressed up as a hotkey. The fix was to keep the trigger dumb on purpose.</p>
-  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a> &middot; <a href="https://shobyde.com/archive/">all writing</a></p>
 </main>
 </body>
 </html>

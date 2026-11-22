@@ -3,6 +3,64 @@
    opens posts in a side modal. Cron pipeline writes new files.
    ============================================================ */
 
+import { motionPrefs } from './motionPrefs.js';
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const SEEN_KEY = 'sbyde:seen-post';
+
+function shortDate(iso) {
+  const [y, m, d] = String(iso).split('-').map(Number);
+  if (!y || !m || !d) return String(iso);
+  return `${MONTHS[m - 1]} ${d}, ${y}`;
+}
+
+function newestFirst(posts) {
+  return [...posts].sort((a, b) => `${b.date}-${b.slug}`.localeCompare(`${a.date}-${a.slug}`));
+}
+
+/* A quiet notification for the newest post, shown once per article.
+   The seen slug lives in localStorage, so publishing a new post brings the
+   notice back without nagging a reader who already dismissed this one. */
+function showNewPostNotice(posts) {
+  const box = document.getElementById('newPost');
+  if (!box || !posts.length) return;
+
+  const newest = newestFirst(posts)[0];
+  let seen = null;
+  try { seen = localStorage.getItem(SEEN_KEY); } catch (e) { /* storage blocked */ }
+  if (seen === newest.slug) return;
+
+  const title = document.getElementById('newPostTitle');
+  const meta = document.getElementById('newPostMeta');
+  const close = document.getElementById('newPostClose');
+  if (!title || !meta || !close) return;
+
+  title.textContent = newest.title;
+  title.href = `/posts/${newest.slug}/`;
+  const bits = [shortDate(newest.date), newest.tag || 'log'];
+  if (newest.minutes) bits.push(`${newest.minutes} min read`);
+  meta.textContent = bits.join(' · ');
+
+  const markSeen = () => { try { localStorage.setItem(SEEN_KEY, newest.slug); } catch (e) { /* ignore */ } };
+  close.addEventListener('click', () => {
+    markSeen();
+    box.classList.remove('is-visible');
+    box.hidden = true;
+  });
+  title.addEventListener('click', markSeen);
+
+  box.hidden = false;
+  if (motionPrefs.reduced) box.classList.add('is-visible');
+  else requestAnimationFrame(() => box.classList.add('is-visible'));
+}
+
+function renderBlogStats(posts) {
+  const el = document.getElementById('blogStats');
+  if (!el || !posts.length) return;
+  const newest = newestFirst(posts)[0];
+  el.textContent = `${posts.length} posts · updated ${shortDate(newest.date)}`;
+}
+
 export async function initBlog() {
   const grid = document.getElementById('blogGrid');
   if (!grid) return { posts: [] };
@@ -12,6 +70,8 @@ export async function initBlog() {
     const res = await fetch('/content/posts/index.json');
     if (res.ok) posts = await res.json();
   } catch (e) { /* offline or no file - show empty state below */ }
+
+  renderBlogStats(posts);
 
   const visible = posts.slice(0, 3); // card grid shows 3 latest; deep links resolve against all posts
   if (!posts.length) {
@@ -46,6 +106,8 @@ export async function initBlog() {
     for (const e of entries) if (e.isIntersecting) { e.target.classList.add('is-inview'); io.unobserve(e.target); }
   }, { threshold: 0.1 });
   grid.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+  showNewPostNotice(posts);
 
   // legacy ?post= deep links redirect to the static page (SEO canonical)
   const req = new URLSearchParams(location.search).get('post');

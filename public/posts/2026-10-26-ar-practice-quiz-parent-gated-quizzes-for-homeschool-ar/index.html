@@ -54,7 +54,7 @@
 <p>The reward side is where I spent the most judgment. attempt_stars returns 0-3 stars based on score ratio. reward_level computes milestone progress against either a teacher-set goal or a default ladder [25, 50, 100, ...]. all_stickers collects every passed book as a sticker with a deterministic icon and color derived from book id. earned_badges tracks "First finish" and similar unlocks. None of this is necessary for learning. It is necessary for a seven-year-old to want to take the next quiz. The trade-off is that the points are arbitrary; I picked thresholds that feel rewarding, not ones backed by pedagogy research.</p>
 <p>What I would change: the model call has no retry or fallback if opencode-go is down, and OPENCODE_KEY is loaded from a dotfile at runtime via load_key. That works on my server but is fragile. I would also add a per-book duplicate check so the same title is not re-quiz'd. The app currently trusts the parent to notice.</p>
 <p>The honest unresolved question is whether generated quizzes measure reading comprehension or pattern-matching. I do not have a way to tell yet. I watch which questions kids get wrong and rewrite them by hand when the model misfires.</p>
-  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a> &middot; <a href="https://shobyde.com/archive/">all writing</a></p>
 </main>
 </body>
 </html>

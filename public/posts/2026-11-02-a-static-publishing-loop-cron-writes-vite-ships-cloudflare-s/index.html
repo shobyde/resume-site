@@ -55,7 +55,7 @@
 <p>Trade-offs I accepted. The pipeline writes posts as a single engineer's voice, so quality depends entirely on the prompt and the source material; a bad week produces a bad post and there is no editor in the loop. The static approach means no comments, no search, and no per-user state; I considered adding client-side search over index.json and decided the post count does not justify it yet. The SEO pages are generated at build time, so a new post needs a full rebuild and redeploy rather than appearing instantly. I also keep the front-matter minimal on purpose: tag and subtitle only, because anything richer becomes a schema I have to maintain across two renderers.</p>
 <p>What I would do differently. I would extract the markdown rendering into one shared module instead of two parallel implementations, so the next feature (interactive demos) lands once. I would also add a pre-publish check that fails the commit if a post's first line is not a valid SEO description under 155 characters, since that rule is currently enforced by convention.</p>
 <p>The open question: is a cron-driven blog a portfolio or a log? I think it is a log that happens to be a portfolio, and the difference shows in which posts are worth keeping. That is the judgment call I have not automated yet.</p>
-  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a></p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a> &middot; <a href="https://shobyde.com/archive/">all writing</a></p>
 </main>
 </body>
 </html>
