@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 380" width="880" height="380" role="img" aria-labelledby="rbTitle rbDesc">
+  <title id="rbTitle">One reading event, several derived views</title>
+  <desc id="rbDesc">A quiz attempt and a manual log both write one points-ledger row per reader and book. Stars, goal progress, badges and the weekly report all read from that ledger; only the ledger is stored.</desc>
+  <style>
+    .card { fill: #14141d; stroke: #3a3a52; stroke-width: 1.5; }
+    .card-accent { fill: #141425; stroke: #4b3fae; stroke-width: 1.5; }
+    .label { fill: #a9a9b8; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; }
+    .title { fill: #e8e8ee; font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; }
+    .body { fill: #d4d4df; font-family: 'Inter', sans-serif; font-size: 12.5px; }
+    .mono { fill: #00d9b8; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; }
+    .arrow { stroke: #9a8cff; stroke-width: 2; fill: none; marker-end: url(#head); }
+    .note { fill: #a9a9b8; font-family: 'Inter', sans-serif; font-size: 11.5px; }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c6cff"/>
+    </marker>
+  </defs>
+
+  <text class="label" x="24" y="30">EVENT</text>
+  <text class="label" x="336" y="30">STORED</text>
+  <text class="label" x="628" y="30">COMPUTED ON RENDER</text>
+
+  <!-- events -->
+  <rect class="card" x="24" y="48" width="230" height="82" rx="12"/>
+  <text class="title" x="42" y="76">Quiz attempt</text>
+  <text class="body" x="42" y="98">five questions, a score,</text>
+  <text class="body" x="42" y="116">an approved quiz id</text>
+
+  <rect class="card" x="24" y="152" width="230" height="82" rx="12"/>
+  <text class="title" x="42" y="180">Manual log</text>
+  <text class="body" x="42" y="202">a finished book with</text>
+  <text class="body" x="42" y="220">no quiz at all</text>
+
+  <!-- arrows to ledger -->
+  <path class="arrow" d="M 258 89 C 290 89, 296 150, 326 165"/>
+  <path class="arrow" d="M 258 193 C 290 193, 296 180, 326 178"/>
+
+  <!-- ledger -->
+  <rect class="card-accent" x="330" y="120" width="252" height="128" rx="14"/>
+  <text class="title" x="348" y="150">points_ledger</text>
+  <text class="mono" x="348" y="176">reader_id, book_id</text>
+  <text class="mono" x="348" y="196">points, created_at</text>
+  <text class="note" x="348" y="222">UNIQUE(reader_id, book_id)</text>
+  <text class="note" x="348" y="238">one award per book</text>
+
+  <!-- arrows to views -->
+  <path class="arrow" d="M 586 150 C 606 150, 610 76, 626 74"/>
+  <path class="arrow" d="M 586 166 C 606 166, 610 128, 626 128"/>
+  <path class="arrow" d="M 586 190 C 606 190, 610 206, 626 206"/>
+  <path class="arrow" d="M 586 212 C 606 212, 610 264, 626 264"/>
+
+  <!-- computed views -->
+  <rect class="card" x="630" y="48" width="226" height="52" rx="10"/>
+  <text class="title" x="646" y="72" font-size="13.5">Stars</text>
+  <text class="body" x="646" y="90">0 to 3, from the attempt score</text>
+
+  <rect class="card" x="630" y="108" width="226" height="52" rx="10"/>
+  <text class="title" x="646" y="132" font-size="13.5">Goal progress</text>
+  <text class="body" x="646" y="150">sum of points, 25-point ladder</text>
+
+  <rect class="card" x="630" y="180" width="226" height="52" rx="10"/>
+  <text class="title" x="646" y="204" font-size="13.5">Badges</text>
+  <text class="body" x="646" y="222">seven rules over the history</text>
+
+  <rect class="card" x="630" y="240" width="226" height="52" rx="10"/>
+  <text class="title" x="646" y="264" font-size="13.5">Weekly report</text>
+  <text class="body" x="646" y="282">five seven-day buckets</text>
+
+  <text class="note" x="24" y="330">Badges and reports are never written to a table. Change a rule and the next render is correct,</text>
+  <text class="note" x="24" y="350">with no backfill and no reader holding a badge they did not earn.</text>
+</svg>

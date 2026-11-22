@@ -136,9 +136,12 @@ def build_page(slug: str, meta: dict, body_html: str) -> str:
 <style>
   body {{ font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }}
   main {{ max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }}
-  h1 {{ font-size: 2rem; margin: .2rem 0 .6rem; }}
+  h1 {{ font-size: 2rem; margin: .2rem 0 .6rem; text-wrap: balance; }}
   h2 {{ margin-top: 1.8rem; }}
   a {{ color: #9ecbff; }}
+  /* Post figures are wider than the column: a 880px SVG must scale to the
+     measure instead of pushing the page sideways on a phone. */
+  img, svg {{ max-width: 100%; height: auto; }}
   pre {{ background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }}
   code {{ font-family: ui-monospace, 'JetBrains Mono', monospace; }}
   .meta {{ color: #888; font-size: .85rem; margin-bottom: 2rem; }}

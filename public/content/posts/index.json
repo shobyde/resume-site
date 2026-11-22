@@ -1,5 +1,12 @@
 [
   {
+    "slug": "2026-11-22-readback-0-2-0-rewards-and-a-catalog-that-fills-the-shelf",
+    "date": "2026-11-22",
+    "title": "Readback 0.2.0: rewards, and a catalog that fills the shelf",
+    "tag": "project",
+    "excerpt": "Readback 0.2.0 adds the Accelerated Reader catalog, stars, goals, badges, stickers, and a log that accepts books with no quiz."
+  },
+  {
     "slug": "2026-11-22-a2ui-1-0-keeps-the-agent-out-of-the-dom",
     "date": "2026-11-22",
     "title": "A2UI 1.0 Keeps the Agent Out of the DOM",

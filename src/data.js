@@ -44,19 +44,23 @@ export const DATA = {
     },
     {
       meta: ['PERSONAL PROJECT', 'OPEN SOURCE · MIT'],
-      title: 'Readback: self-hosted reading tracker for families',
-      summary: `Reading-comprehension programs are closed systems: the school picks the quizzes, parents never see them, and the reading log lives on someone else's server. I built <strong>Readback</strong> as the opposite. A parent imports the book list, a model drafts five questions from the book's metadata, every question gets human review before a reader sees it, and points stay in a local SQLite file.`,
-      contribution: 'Sole engineer: specification, data model, Flask app and server-rendered UI, quiz generation and validation pipeline, Docker packaging, tests, and the design review pass.',
-      stack: ['Python 3.10+', 'Flask 3', 'Jinja (no JS)', 'SQLite', 'OpenAI-compatible LLMs', 'Docker', 'pytest'],
+      title: 'Readback: self-hosted reading for families',
+      summary: `Reading-comprehension programs are closed systems: the school picks the quizzes, parents never see them, and the reading log lives on someone else's server. I built <strong>Readback</strong> as the opposite. A parent imports a book list or pulls a title from the Accelerated Reader catalog, a model drafts five questions from the book's metadata, every question gets human review before a reader sees it, and points stay in a local SQLite file. Version 0.2.0 adds the loop that keeps a kid reading: stars, point goals, badges, book stickers, and a five-week report.`,
+      contribution: 'Sole engineer: specification, data model, Flask app and server-rendered UI, quiz generation and validation pipeline, optional Accelerated Reader catalog client, rewards and reporting layer, in-place schema migration, Docker packaging, tests, and the design review pass.',
+      stack: ['Python 3.10+', 'Flask 3', 'Jinja (no JS)', 'SQLite', 'OpenAI-compatible LLMs', 'httpx', 'Docker', 'pytest'],
       links: [
         { label: 'Source on GitHub', url: 'https://github.com/shobyde/readback' },
+        { label: 'Release notes for 0.2.0', url: 'https://github.com/shobyde/readback/releases/tag/v0.2.0' },
       ],
       details: {
-        architecture: 'A Flask app with Jinja templates and no JavaScript at all. Books arrive by CSV, matched on ISBN first and then on title plus author, with Open Library enrichment only when a parent asks for it. Generating a quiz is one POST to an OpenAI-compatible /chat/completions endpoint asking for strict JSON; the response is structurally validated before it reaches the parent queue, and approval is what publishes a quiz to readers. Scoring writes to a points ledger that awards a book once per reader, and the family log exports as CSV. Everything lives in a single SQLite file through stdlib sqlite3, with no ORM.',
+        architecture: 'A Flask app with Jinja templates and no JavaScript at all. Books arrive by CSV, matched on ISBN first and then on title plus author, or from an optional Accelerated Reader BookFind lookup that copies the quiz number, ATOS level, interest level and point value while never touching AR quiz content. Generating a quiz is one POST to an OpenAI-compatible /chat/completions endpoint asking for strict JSON; the response is structurally validated before it reaches the parent queue, and approval is what publishes a quiz to readers. Scoring writes to a points ledger that awards a book once per reader, and a reading event can exist without a quiz, so books with no AR test still count. Stars, goals, badges and weekly reports read from that same ledger and are computed on render, never stored. Everything lives in a single SQLite file through stdlib sqlite3, with no ORM.',
         decisions: [
           'Human review is a hard gate, not a hint: approval is refused when any question is structurally invalid, the reasons are shown on the page, and readers only ever see approved quizzes.',
           'Runtime dependencies stay at Flask plus httpx, with sqlite3 from the standard library. No ORM and no migrations framework, so the whole install is a pip install and one database file.',
           'Model-agnostic by configuration: Ollama, LM Studio, or any hosted endpoint that speaks /chat/completions, with one retry when a server rejects the response_format field.',
+          'The AR lookup stores catalog metadata only, and it fails loudly when BookFind changes its markup. An empty result list would look like "no such book" and send a parent retrying a title that exists.',
+          'Badges are derived from history on every render instead of stored as rows, so correcting a rule cannot leave a reader holding a badge they did not earn and there is no backfill to write.',
+          'A finished book with no quiz is a first-class reading event: attempts carry a nullable quiz_id, which keeps the ledger, CSV export and reports on one model instead of a parallel manual log.',
           'Privacy as a design constraint: only book metadata and parent notes leave the process, never book text, reader names, or attempt history. The default bind is 127.0.0.1 and the README states the LAN exposure plainly instead of pretending it is safe.',
           'Two surfaces for two audiences: a playful shelf for young readers and a calmer review queue for parents, both server-rendered so they work on a phone with no JavaScript.',
         ],
