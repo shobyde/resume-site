@@ -133,7 +133,7 @@ export function initAssistant({ posts = [] } = {}) {
     </button>
     <div class="agent__warming" id="agentWarming" aria-live="polite">
       <span class="agent__glyph" aria-hidden="true">&#9096;</span>
-      <span id="agentWarmingText">Warming up the model</span>
+      <span id="agentWarmingText">Setting up your agent</span>
       <span class="agent__warming-bar" aria-hidden="true"><i id="agentWarmingBar"></i></span>
     </div>
     <div class="agent__scrim" id="agentScrim" hidden></div>
@@ -142,7 +142,7 @@ export function initAssistant({ posts = [] } = {}) {
         <div>
           <p class="agent__eyebrow">Site assistant</p>
           <h2 class="agent__title">Ask about Sho</h2>
-          <p class="agent__meta"><span class="agent__dot" aria-hidden="true"></span><span id="agentEngine">Starting</span> <span class="agent__meta-sep">&middot;</span> <span class="agent__meta-count">${manifest.capabilities.length} capabilities</span></p>
+          <p class="agent__meta"><span class="agent__dot" aria-hidden="true"></span><span id="agentEngine">Starting your agent</span> <span class="agent__meta-sep">&middot;</span> <span class="agent__meta-count">${manifest.capabilities.length} capabilities</span></p>
         </div>
         <button class="agent__close" id="agentClose" type="button" aria-label="Close the assistant">&times;</button>
       </header>
@@ -160,7 +160,7 @@ export function initAssistant({ posts = [] } = {}) {
         <input class="agent__input" id="agentInput" type="text" placeholder="What does Sho work on?" />
         <button class="agent__send" type="submit">Send</button>
       </form>
-      <p class="agent__foot">Answers use only this page. Nothing is sent to a server.</p>
+      <p class="agent__foot">Answers use only this page. Nothing is sent to a server. Your agent installs once, then runs in this tab.</p>
     </section>
   `;
   document.body.appendChild(root);
@@ -188,6 +188,7 @@ export function initAssistant({ posts = [] } = {}) {
   let modelEngine = null;
   let modelState = 'probing'; // probing | loading | ready | keyword | error
   let gpuAvailable = true;
+  let lastProgressAt = 0;
 
   const syncSend = () => {
     sendBtn.disabled = busy || input.value.trim().length === 0;
@@ -355,23 +356,34 @@ export function initAssistant({ posts = [] } = {}) {
     if (typeof progress === 'number') {
       const pct = Math.max(4, Math.round(progress * 100));
       warmingBar.style.width = `${pct}%`;
-      warmingText.textContent = `${text} ${pct}%`;
+      warmingText.textContent = `${text} · ${pct}%`;
     }
   }
 
   function updateEngineUi() {
     const usingModel = activeEngine === modelEngine && modelState === 'ready';
     engineLabel.textContent = usingModel
-      ? 'On-device model'
+      ? 'Your agent, on this device'
       : modelState === 'probing' || modelState === 'loading'
-        ? 'Warming up'
-        : 'Keyword match';
+        ? 'Installing your agent'
+        : 'Keyword matching';
     modelBtn.hidden = modelState === 'probing' || !gpuAvailable;
     root.querySelector('.agent__dot').classList.toggle('is-fallback', !usingModel);
+    if (!usingModel && modelState !== 'loading') {
+      modelLabel.textContent = modelState === 'error' ? 'Retry the install' : 'Install the on-device agent';
+    }
     modelBtn.disabled = modelState === 'loading';
-    modelLabel.textContent = usingModel ? 'Back to keyword match' : 'Use the on-device model';
+    modelLabel.textContent = usingModel ? 'Switch to keyword matching' : 'Install the on-device agent';
     modelBtn.classList.toggle('is-on', usingModel);
     progressEl.hidden = modelState !== 'loading';
+  }
+
+  function progressLabel(progress, text) {
+    const pct = Math.round(progress * 100);
+    const megabytes = /(\d{2,5})\s*MB/i.exec(text || '')?.[1];
+    return megabytes
+      ? `Installing your agent · ${pct}% · ${megabytes} MB`
+      : `Installing your agent · ${pct}%`;
   }
 
   async function loadModel() {
@@ -379,15 +391,18 @@ export function initAssistant({ posts = [] } = {}) {
     updateEngineUi();
     progressBar.style.width = '0%';
     progressEl.hidden = false;
+    lastProgressAt = Date.now();
     if (!modelEngine) {
       const worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
       modelEngine = createWebLLMEngine({
         worker,
         tier: 'compact',
-        onProgress: ({ progress }) => {
+        onProgress: ({ progress, text }) => {
+          lastProgressAt = Date.now();
           const pct = Math.round(progress * 100);
           progressBar.style.width = `${pct}%`;
-          if (!warming.hidden) warmingText.textContent = `Downloading the on-device model ${pct}%`;
+          if (!warming.hidden) warmingText.textContent = progressLabel(progress, text);
+          engineLabel.textContent = `Installing ${pct}%`;
         },
       });
     }
@@ -395,6 +410,64 @@ export function initAssistant({ posts = [] } = {}) {
     modelState = 'ready';
     activeEngine = modelEngine;
     updateEngineUi();
+  }
+
+  /**
+   * One shard that never arrives looks exactly like a slow download. Watch for
+   * a minute of no movement, then let the caller retry: the shards already
+   * fetched are in Cache Storage, so a retry resumes instead of restarting.
+   */
+  function loadWithWatchdog() {
+    lastProgressAt = Date.now();
+    return new Promise((resolve, reject) => {
+      let settled = false;
+      const timer = setInterval(() => {
+        if (settled) return;
+        if (Date.now() - lastProgressAt > 30000) {
+          settled = true;
+          clearInterval(timer);
+          reject(new Error('download stalled'));
+        }
+      }, 5000);
+      loadModel().then(
+        () => {
+          if (settled) return;
+          settled = true;
+          clearInterval(timer);
+          resolve();
+        },
+        (error) => {
+          if (settled) return;
+          settled = true;
+          clearInterval(timer);
+          reject(error);
+        },
+      );
+    });
+  }
+
+  async function ensureModel() {
+    for (let attempt = 1; attempt <= 2; attempt += 1) {
+      try {
+        await loadWithWatchdog();
+        return true;
+      } catch (error) {
+        console.warn('[assistant] model load attempt failed:', error.message);
+        if (modelEngine) {
+          try {
+            modelEngine.dispose();
+          } catch {
+            /* terminating a dead worker is best effort */
+          }
+          modelEngine = null;
+        }
+        if (attempt === 1) {
+          setWarming('Install paused, picking up where it left off', 0.05);
+          engineNote.textContent = 'The install paused. Resuming from the part already saved on this device.';
+        }
+      }
+    }
+    return false;
   }
 
   async function bootEngine() {
@@ -407,35 +480,40 @@ export function initAssistant({ posts = [] } = {}) {
       return;
     }
 
-    setWarming('Checking for a GPU', 0.04);
+    setWarming('Looking for a GPU to run on', 0.04);
     const gpu = await detectWebGPU();
     if (gpu !== 'available') {
       gpuAvailable = false;
       modelState = 'keyword';
       engineNote.textContent =
         gpu === 'unsupported'
-          ? 'This browser cannot run the on-device model, so answers use keyword matching.'
+          ? 'This browser cannot run your agent on-device, so answers use keyword matching.'
           : 'This device has no usable GPU, so answers use keyword matching.';
       updateEngineUi();
       showLauncher();
       return;
     }
 
-    setWarming('Downloading the on-device model', 0.08);
-    engineNote.textContent = 'Fetching a small model in the background. It is cached after the first visit.';
+    setWarming('Setting up your agent', 0.06);
+    engineNote.textContent = 'Your agent is installing in the background. It only happens once.';
     try {
-      // Let the page finish painting first; the download is not urgent.
+      // Let the page finish painting first; the install is not urgent.
       await new Promise((resolve) => {
         const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 2000));
         idle(resolve, { timeout: 4000 });
       });
-      await loadModel();
-      engineNote.textContent = 'The model is warm. It reads this page and can call every capability below.';
+      const ready = await ensureModel();
+      if (ready) {
+        engineNote.textContent = 'Your agent is ready. It reads this page and can do everything listed below.';
+      } else {
+        modelState = 'error';
+        engineNote.textContent = 'The install did not finish. Keyword matching is answering until you retry.';
+      }
       showLauncher();
     } catch (error) {
       modelState = 'error';
-      engineNote.textContent = 'The model could not load, so answers use keyword matching.';
-      console.warn('[assistant] model preload failed:', error);
+      engineNote.textContent = 'The install did not finish. Keyword matching is answering until you retry.';
+      console.warn('[assistant] agent install failed:', error);
       updateEngineUi();
       showLauncher();
     }
@@ -444,18 +522,16 @@ export function initAssistant({ posts = [] } = {}) {
   async function toggleEngine() {
     if (activeEngine === modelEngine) {
       activeEngine = keywordEngine;
-      engineNote.textContent = 'Answers use keyword matching. The model stays cached and can be turned back on.';
+      engineNote.textContent = 'Keyword matching is answering, with no setup at all. Your agent stays installed.';
       updateEngineUi();
       return;
     }
-    try {
-      if (modelState !== 'ready') await loadModel();
-      else activeEngine = modelEngine;
-      engineNote.textContent = 'The model is warm. It reads this page and can call every capability below.';
-    } catch (error) {
-      engineNote.textContent = 'The model could not load, so answers use keyword matching.';
-      console.warn('[assistant] model load failed:', error);
-    }
+    engineNote.textContent = 'Setting up your agent on this device…';
+    const ready = await ensureModel();
+    engineNote.textContent = ready
+      ? 'Your agent is ready. It reads this page and can do everything listed below.'
+      : 'The install did not finish. Keyword matching is answering until you retry.';
+    if (!ready) modelState = 'error';
     updateEngineUi();
   }
 
