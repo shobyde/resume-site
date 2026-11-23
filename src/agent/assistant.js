@@ -432,6 +432,12 @@ export function initAssistant({ posts = [] } = {}) {
     return createWebLLMEngine({
       worker,
       ...(plan.model ? { model: plan.model } : { tier: 'compact' }),
+      // WebLLM's documented self-hosting hooks: when the weights are served
+      // from this origin, no request leaves for huggingface.co.
+      ...(import.meta.env?.VITE_MODEL_BASE ? { modelBase: import.meta.env.VITE_MODEL_BASE } : {}),
+      ...(import.meta.env?.VITE_MODEL_LIB_BASE
+        ? { modelLibBase: import.meta.env.VITE_MODEL_LIB_BASE }
+        : {}),
       onProgress: ({ progress, text }) => {
         lastProgressAt = Date.now();
         const pct = Math.round(progress * 100);
@@ -642,7 +648,12 @@ export function initAssistant({ posts = [] } = {}) {
     const model = 'mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC/resolve/main/mlc-chat-config.json';
     parts.push(`huggingface=${await probe(`https://huggingface.co/${model}`)}`);
     parts.push(`mirror=${await probe(`https://hf-mirror.com/${model}`)}`);
-    parts.push(`engine=${modelState}/${activeEngine === chromeEngine ? 'browser-model' : activeEngine === modelEngine ? 'downloaded-model' : 'keyword'}`);
+    parts.push(
+      `engine=${modelState}/${
+        activeEngine === chromeEngine ? 'browser-model' : activeEngine === modelEngine ? 'downloaded-model' : 'keyword'
+      }`,
+    );
+    parts.push(`weights=${import.meta.env?.VITE_MODEL_BASE || 'huggingface.co'}`);
     if (installError) parts.push(`error=${installError.slice(0, 120)}`);
     const connection = navigator.connection;
     if (connection) parts.push(`net=${connection.effectiveType || '?'}/${connection.downlink ?? '?'}Mbps`);
