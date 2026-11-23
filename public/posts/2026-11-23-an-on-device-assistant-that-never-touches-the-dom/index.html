@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>An On-Device Assistant That Never Touches the DOM - Sho Byde</title>
+<meta name="description" content="An on-device assistant that never touches the DOM, and the two engines it falls back through." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-23-an-on-device-assistant-that-never-touches-the-dom/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="An On-Device Assistant That Never Touches the DOM" />
+<meta property="og:description" content="An on-device assistant that never touches the DOM, and the two engines it falls back through." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-23-an-on-device-assistant-that-never-touches-the-dom/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-23T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="An On-Device Assistant That Never Touches the DOM" />
+<meta name="twitter:description" content="An on-device assistant that never touches the DOM, and the two engines it falls back through." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "An On-Device Assistant That Never Touches the DOM",
+  "description": "An on-device assistant that never touches the DOM, and the two engines it falls back through.",
+  "url": "https://shobyde.com/posts/2026-11-23-an-on-device-assistant-that-never-touches-the-dom/",
+  "datePublished": "2026-11-23T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "project"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; text-wrap: balance; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  /* Post figures are wider than the column: a 880px SVG must scale to the
+     measure instead of pushing the page sideways on a phone. */
+  img, svg { max-width: 100%; height: auto; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>An On-Device Assistant That Never Touches the DOM</h1>
+  <div class="meta">2026-11-23 &middot; project &middot; by Sho Byde</div>
+  <p>I shipped a site assistant for shobyde.com this month. It answers questions about me, opens cards, navigates the page, and renders structured surfaces through A2UI. The constraint I set for it: no request leaves the browser unless the visitor explicitly opts in. The model, if it installs at all, installs once into Cache Storage and then runs in the tab.</p>
+<p>The architecture starts with a decision most agent UIs get backwards: the agent never touches the DOM. In src/agent/assistant.js the runtime dispatches typed actions (navigate, surface, query, action) and a separate rendering layer in src/agent/a2ui.js turns those into components. The agent emits intent; the site renders. That separation is what makes the surfaces trustworthy, because the model cannot invent markup.</p>
+<p>The engine layer has three tiers. First, Chrome's built-in model via the Prompt API, detected in detectChromeAI. If it is already available, the assistant uses it with no download. If it is downloadable, the install needs a user gesture, and the code stops rather than falling through to a network host that is blocked here. Second, a self-hosted WebLLM model, fetched from this origin when VITE_MODEL_BASE is set, otherwise from HuggingFace. Third, a lexical keyword engine built from client-agent's capability manifest, which answers immediately and is always available. The visitor can switch back to keyword matching at any time.</p>
+<p>The interesting trade-off is the watchdog. A WebLLM shard that never arrives looks identical to a slow download, and I spent a day guessing at stalled installs from outside. The fix in loadWithWatchdog wraps the load in a twelve-second grace timer that rejects on stall. The retry resumes from Cache Storage, so a stalled install does not restart from zero. There is also a plan fallback: compact tier first, then the smallest model. If the host is blocked, both are skipped rather than burning eight minutes.</p>
+<p>The install is gated by shouldPreloadModel, which checks navigator.connection.saveData, effectiveType for 2g, and deviceMemory under 4 GB. On a metered link or a small device, the assistant starts in keyword mode and the launcher is available immediately. The warming UI shows progress with megabytes parsed from the download text, and a diagnostics panel collects browser-model, WebGPU, HuggingFace, and mirror probe results into one line a visitor can copy.</p>
+<p>What I would do differently: the capability registry and the lexical engine come from client-agent as a dependency, and the site's surfaces are hand-written against A2UI. That boundary works, but the mapping between agent intent and component is still bespoke. The next step is making that mapping declarative so a new surface does not require editing assistant.js.</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a> &middot; <a href="https://shobyde.com/archive/">all writing</a></p>
+</main>
+</body>
+</html>

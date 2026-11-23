@@ -9,6 +9,15 @@
     "minutes": 1
   },
   {
+    "slug": "2026-11-23-an-on-device-assistant-that-never-touches-the-dom",
+    "date": "2026-11-23",
+    "title": "An On-Device Assistant That Never Touches the DOM",
+    "tag": "project",
+    "excerpt": "An on-device assistant that never touches the DOM, and the two engines it falls back through.",
+    "words": 435,
+    "minutes": 2
+  },
+  {
     "slug": "2026-11-22-readback-0-2-0-rewards-and-a-catalog-that-fills-the-shelf",
     "date": "2026-11-22",
     "title": "Readback 0.2.0: rewards, and a catalog that fills the shelf",
