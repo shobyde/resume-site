@@ -499,6 +499,12 @@ export function initAssistant({ posts = [] } = {}) {
    */
   async function installChromeAgent() {
     if (chromeAI !== 'available' && chromeAI !== 'downloadable') return false;
+    const activated = navigator.userActivation ? navigator.userActivation.isActive : true;
+    if (chromeAI === 'downloadable' && !activated) {
+      installError = 'Chrome needs the button pressed to start its own model download. Press install again.';
+      log('built-in model needs a press');
+      return false;
+    }
     try {
       setWarming(
         chromeAI === 'available' ? "Waking your browser's model" : "Getting your browser's model ready",
@@ -516,14 +522,24 @@ export function initAssistant({ posts = [] } = {}) {
           if (!warming.hidden) warmingText.textContent = `Installing your agent · ${pct}%`;
         },
       });
-      // Chrome hands the request to its component updater, which can take
-      // tens of seconds before the first byte, so this grace is longer than
-      // the one used for a straight model fetch.
-      await watchdog(() => engine.prepare(), 45000);
+      // Chrome hands the request to its component updater, which reports
+      // nothing until it starts. A stall watchdog would abort a healthy
+      // install, so this waits, with a hard ceiling instead.
+      engineLabel.textContent = 'Chrome is preparing its model';
+      await Promise.race([
+        engine.prepare(),
+        new Promise((_, reject) => {
+          setTimeout(
+            () => reject(new Error("Chrome did not start its model within ten minutes")),
+            10 * 60 * 1000,
+          );
+        }),
+      ]);
       chromeEngine = engine;
       activeEngine = engine;
       modelState = 'ready';
       updateEngineUi();
+      showLauncher();
       log('built-in model ready');
       return true;
     } catch (error) {
@@ -538,6 +554,7 @@ export function initAssistant({ posts = [] } = {}) {
 
   async function ensureAgent() {
     if (await installChromeAgent()) return true;
+    if (installError.startsWith('Chrome needs')) return false;
 
     for (const [planIndex, plan] of INSTALL_PLANS.entries()) {
       for (let attempt = 1; attempt <= 2; attempt += 1) {
@@ -590,6 +607,20 @@ export function initAssistant({ posts = [] } = {}) {
         showLauncher();
         return;
       }
+    }
+
+    // Chrome has a model but will not fetch it without a real press. Starting
+    // that here fails ("requires a user gesture"), and falling through to the
+    // HuggingFace path is what leaves the page stuck: that host is unreachable
+    // on this network. Stop, and ask for the press.
+    if (chromeAI === 'downloadable') {
+      modelState = 'keyword';
+      gpuAvailable = false;
+      engineNote.textContent =
+        "This browser can install its own model, shared across all sites. Press install to set it up.";
+      updateEngineUi();
+      showLauncher();
+      return;
     }
 
     if (!shouldPreloadModel()) {
@@ -657,7 +688,9 @@ export function initAssistant({ posts = [] } = {}) {
     engineNote.textContent = 'Setting up your agent on this device…';
     const ready = await ensureAgent();
     engineNote.textContent = ready
-      ? 'Your agent is ready. It reads this page and can do everything listed below.'
+      ? activeEngine === chromeEngine
+        ? "Your browser's own model is ready. Nothing was downloaded by this site."
+        : 'Your agent is ready. It reads this page and can do everything listed below.'
       : installError.startsWith('cannot reach')
         ? 'The model host is blocked from this network, so answers use keyword matching.'
         : installError.startsWith('Chrome needs')
@@ -666,6 +699,7 @@ export function initAssistant({ posts = [] } = {}) {
     engineNote.title = ready ? '' : installError || 'no error detail reported';
     if (!ready) modelState = 'error';
     updateEngineUi();
+    if (ready) showLauncher();
   }
 
   input.addEventListener('input', syncSend);
