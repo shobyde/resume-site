@@ -646,3 +646,41 @@ small.a2ui-text {
   outline: 1px solid var(--accent);
   outline-offset: 0;
 }
+
+/* Diagnostics: one line that names the failing hop. */
+.agent__diag {
+  margin-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.55rem;
+}
+.agent__diag summary {
+  cursor: pointer;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+.agent__diag summary:hover { color: rgba(255, 255, 255, 0.75); }
+.agent__diag-line {
+  margin: 0.45rem 0 0.4rem;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 0.6rem;
+  line-height: 1.5;
+  word-break: break-word;
+  color: rgba(255, 255, 255, 0.6);
+}
+.agent__diag-copy {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+}
+.agent__diag-copy:hover { background: rgba(255, 255, 255, 0.12); }

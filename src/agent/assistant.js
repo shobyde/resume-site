@@ -162,6 +162,11 @@ export function initAssistant({ posts = [] } = {}) {
         <button class="agent__send" type="submit">Send</button>
       </form>
       <p class="agent__foot">Answers use only this page. Nothing is sent to a server. Your agent installs once, then runs in this tab.</p>
+      <details class="agent__diag" id="agentDiag">
+        <summary>Diagnostics</summary>
+        <p class="agent__diag-line" id="agentDiagOut">Press to check this browser.</p>
+        <button class="agent__diag-copy" id="agentDiagCopy" type="button">Copy the report</button>
+      </details>
     </section>
   `;
   document.body.appendChild(root);
@@ -180,6 +185,9 @@ export function initAssistant({ posts = [] } = {}) {
   const sendBtn = root.querySelector('.agent__send');
   const engineLabel = root.querySelector('#agentEngine');
   const engineNote = root.querySelector('#agentEngineNote');
+  const diag = root.querySelector('#agentDiag');
+  const diagOut = root.querySelector('#agentDiagOut');
+  const diagCopy = root.querySelector('#agentDiagCopy');
   const modelBtn = root.querySelector('#agentModelBtn');
   const modelLabel = root.querySelector('#agentModelLabel');
   const progressEl = root.querySelector('#agentProgress');
@@ -610,6 +618,56 @@ export function initAssistant({ posts = [] } = {}) {
     }
     return false;
   }
+
+  /**
+   * One line that names the failing hop. Guessing at a stalled install from the
+   * outside wasted a day; this turns it into a sentence the visitor can send.
+   */
+  async function collectDiagnostics() {
+    const parts = [];
+    parts.push(`browser-model=${chromeAI}`);
+    let gpu = 'none';
+    try {
+      const adapter = navigator.gpu ? await navigator.gpu.requestAdapter() : null;
+      gpu = adapter ? 'adapter' : navigator.gpu ? 'no-adapter' : 'no-webgpu';
+    } catch (error) {
+      gpu = `error(${String(error.message || error).slice(0, 40)})`;
+    }
+    parts.push(`webgpu=${gpu}`);
+    const probe = (url) =>
+      Promise.race([
+        fetch(url, { mode: 'no-cors', cache: 'no-store' }).then(() => 'ok'),
+        new Promise((resolve) => setTimeout(() => resolve('timeout'), 8000)),
+      ]).catch((error) => `fail(${String(error.message || error).slice(0, 30)})`);
+    const model = 'mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC/resolve/main/mlc-chat-config.json';
+    parts.push(`huggingface=${await probe(`https://huggingface.co/${model}`)}`);
+    parts.push(`mirror=${await probe(`https://hf-mirror.com/${model}`)}`);
+    parts.push(`engine=${modelState}/${activeEngine === chromeEngine ? 'browser-model' : activeEngine === modelEngine ? 'downloaded-model' : 'keyword'}`);
+    if (installError) parts.push(`error=${installError.slice(0, 120)}`);
+    const connection = navigator.connection;
+    if (connection) parts.push(`net=${connection.effectiveType || '?'}/${connection.downlink ?? '?'}Mbps`);
+    parts.push(`mem=${navigator.deviceMemory ?? '?'}GB`);
+    return parts.join(' ');
+  }
+
+  diag.addEventListener('toggle', async () => {
+    if (!diag.open) return;
+    diagOut.textContent = 'Checking this browser...';
+    diagOut.textContent = await collectDiagnostics();
+  });
+
+  diagCopy.addEventListener('click', async () => {
+    const text = diagOut.textContent || '';
+    try {
+      await navigator.clipboard.writeText(text);
+      diagCopy.textContent = 'Copied';
+    } catch {
+      diagCopy.textContent = 'Select the line above to copy';
+    }
+    setTimeout(() => {
+      diagCopy.textContent = 'Copy the report';
+    }, 2500);
+  });
 
   async function bootEngine() {
     chromeAI = await detectChromeAI();
