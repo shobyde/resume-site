@@ -105,6 +105,8 @@ strong { color: var(--fg); font-weight: 600; }
 .code { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin: 1.1rem 0 0; }
 .code__bar { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.85rem; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 0.68rem; color: var(--mute); }
 .code pre { margin: 0; padding: 0.95rem 1rem; overflow-x: auto; font-family: var(--mono); font-size: 0.78rem; line-height: 1.7; color: #d6d6e2; }
+/* The surface sample is data, not code: wrap it rather than clip the right edge. */
+.code--wrap pre { white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: hidden; font-size: 0.74rem; }
 .k { color: #b9a6ff; } /* keyword */
 .s { color: #8fe3c8; } /* string */
 .c { color: #6f6f80; } /* comment */
@@ -296,7 +298,7 @@ footer a:hover { color: var(--fg); }
     <p class="tight">A handler can return a declarative surface instead of prose: a stream of components, bindings and data. The agent never touches the DOM. The host renders the surface with its own buttons, its own type, its own spacing, so an answer that is a card looks like every other card on the site.</p>
 
     <div class="split">
-      <div class="code">
+      <div class="code code--wrap">
         <div class="code__bar"><span>surface stream</span><span>A2UI 1.0</span></div>
 <pre>{ <span class="s">"createSurface"</span>: { <span class="s">"surfaceId"</span>: <span class="s">"s1"</span> } }
 { <span class="s">"updateComponents"</span>: { <span class="s">"surfaceId"</span>: <span class="s">"s1"</span>, <span class="s">"components"</span>: [
