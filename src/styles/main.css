@@ -92,7 +92,7 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
   background: var(--bg);
   transition: opacity 0.8s var(--ease-out), visibility 0.8s;
 }
-.loader.is-done { opacity: 0; visibility: hidden; }
+.loader.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
 .loader__inner { text-align: center; width: min(400px, 80vw); }
 .loader__name {
   font-family: var(--font-head);

@@ -459,13 +459,13 @@ export function initAssistant({ posts = [] } = {}) {
    * a minute of no movement, then let the caller retry: the shards already
    * fetched are in Cache Storage, so a retry resumes instead of restarting.
    */
-  function watchdog(run) {
+  function watchdog(run, graceMs = 12000) {
     lastProgressAt = Date.now();
     return new Promise((resolve, reject) => {
       let settled = false;
       const timer = setInterval(() => {
         if (settled) return;
-        if (Date.now() - lastProgressAt > 12000) {
+        if (Date.now() - lastProgressAt > graceMs) {
           settled = true;
           clearInterval(timer);
           reject(new Error('install stalled'));
@@ -516,7 +516,10 @@ export function initAssistant({ posts = [] } = {}) {
           if (!warming.hidden) warmingText.textContent = `Installing your agent · ${pct}%`;
         },
       });
-      await watchdog(() => engine.prepare());
+      // Chrome hands the request to its component updater, which can take
+      // tens of seconds before the first byte, so this grace is longer than
+      // the one used for a straight model fetch.
+      await watchdog(() => engine.prepare(), 45000);
       chromeEngine = engine;
       activeEngine = engine;
       modelState = 'ready';
@@ -526,7 +529,9 @@ export function initAssistant({ posts = [] } = {}) {
     } catch (error) {
       console.warn('[assistant] built-in model unavailable:', error.message);
       log('built-in model failed', error.message);
-      installError = error.message;
+      installError = /user gesture/i.test(error.message)
+        ? 'Chrome needs the button pressed to start its own model download. Press install again.'
+        : error.message;
       return false;
     }
   }
@@ -627,7 +632,9 @@ export function initAssistant({ posts = [] } = {}) {
         modelState = 'error';
         engineNote.textContent = installError.startsWith('cannot reach')
           ? 'The model host is blocked from this network, so answers use keyword matching.'
-          : 'The install did not finish. Keyword matching is answering until you retry.';
+          : installError.startsWith('Chrome needs')
+            ? installError
+            : 'The install did not finish. Keyword matching is answering until you retry.';
         engineNote.title = installError || 'no error detail reported';
       }
       showLauncher();
@@ -653,7 +660,9 @@ export function initAssistant({ posts = [] } = {}) {
       ? 'Your agent is ready. It reads this page and can do everything listed below.'
       : installError.startsWith('cannot reach')
         ? 'The model host is blocked from this network, so answers use keyword matching.'
-        : 'The install did not finish. Keyword matching is answering until you retry.';
+        : installError.startsWith('Chrome needs')
+          ? installError
+          : 'The install did not finish. Keyword matching is answering until you retry.';
     engineNote.title = ready ? '' : installError || 'no error detail reported';
     if (!ready) modelState = 'error';
     updateEngineUi();
