@@ -423,7 +423,7 @@ export function initAssistant({ posts = [] } = {}) {
    * too much never reached the 360M fallback. Let the library choose, and
    * keep the lightest model as the last resort.
    */
-  const primaryTier = pickModelTier();
+  const primaryTier = 'compact';
   const INSTALL_PLANS = [
     { tier: primaryTier, copy: 'Installing your agent' },
     ...(primaryTier !== 'compact' ? [{ tier: 'compact', copy: 'Installing the lighter agent' }] : []),
@@ -443,6 +443,7 @@ export function initAssistant({ posts = [] } = {}) {
     return createWebLLMEngine({
       worker,
       ...(plan.model ? { model: plan.model } : { tier: plan.tier || 'compact' }),
+      cacheBackend: 'indexeddb',
       // WebLLM's documented self-hosting hooks: when the weights are served
       // from this origin, no request leaves for huggingface.co.
       ...(import.meta.env?.VITE_MODEL_BASE ? { modelBase: import.meta.env.VITE_MODEL_BASE } : {}),
@@ -751,6 +752,7 @@ export function initAssistant({ posts = [] } = {}) {
       return;
     }
 
+    if (navigator.storage && navigator.storage.persist) { try { await navigator.storage.persist(); } catch {} }
     setWarming('Setting up your agent', 0.06);
     engineNote.textContent = 'Your agent is installing in the background. It only happens once.';
     try {
