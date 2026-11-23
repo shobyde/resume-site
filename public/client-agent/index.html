@@ -79,7 +79,7 @@ h1 em { font-style: normal; color: var(--accent-soft); }
 .btn--primary:hover { background: var(--accent-soft); border-color: var(--accent-soft); color: #0b0b0f; }
 
 /* stat strip */
-.stats-label { margin: 2.2rem 0 0.7rem; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); }
+.stats-label { margin: 2.2rem 0 0.7rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
 .stats { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin: 2.4rem 0 0; }
 .stat { background: rgba(255,255,255,0.02); padding: 1.05rem 1.1rem; }
 .stat b { display: block; font-family: var(--head); font-size: 1.5rem; letter-spacing: -0.02em; }
@@ -87,7 +87,7 @@ h1 em { font-style: normal; color: var(--accent-soft); }
 
 /* sections */
 section { padding: 3.4rem 0 0.6rem; }
-.kicker { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin: 0 0 0.7rem; }
+.kicker { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin: 0 0 0.7rem; }
 h2 { font-family: var(--head); font-size: clamp(1.55rem, 3.4vw, 2.3rem); letter-spacing: -0.028em; line-height: 1.1; margin: 0 0 0.9rem; text-wrap: balance; }
 h3 { font-family: var(--head); font-size: 1.02rem; letter-spacing: -0.01em; margin: 0 0 0.35rem; }
 p { color: var(--dim); margin: 0 0 1rem; }
@@ -128,9 +128,10 @@ strong { color: var(--fg); font-weight: 600; }
 /* table */
 .table { width: 100%; border-collapse: collapse; margin-top: 1.2rem; font-size: 0.9rem; }
 .table th, .table td { text-align: left; padding: 0.7rem 0.6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
-.table th { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); font-weight: 500; }
+.table th { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); font-weight: 500; }
 .table td:first-child { color: var(--fg); }
 .table td { color: var(--dim); }
+.table td:nth-child(2) { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--fg); white-space: nowrap; }
 .table code { font-family: var(--mono); font-size: 0.78rem; color: var(--accent-soft); }
 
 /* callout */
@@ -367,7 +368,7 @@ Readback and Groundglass use it.</pre>
       </thead>
       <tbody>
         <tr><td>Install</td><td>0 bytes</td><td>No weights, no worker, no cache to warm.</td></tr>
-        <tr><td>Rank 22 capabilities</td><td>0.003 ms</td><td>BM25 over a 7.4 kB manifest already in memory.</td></tr>
+        <tr><td>Rank 22 capabilities</td><td>3 µs</td><td>BM25 over a 7.4 kB manifest already in memory.</td></tr>
         <tr><td>Join 32 facts</td><td>0.03 ms</td><td>A depth-capped unification over rows the app declared.</td></tr>
         <tr><td>First word</td><td>about 12 ms</td><td>Retrieval, inference, composition, and one animation frame.</td></tr>
         <tr><td>Step visibility</td><td>650 ms lead-in</td><td>Deliberate pacing: the trace is readable before the answer starts.</td></tr>
