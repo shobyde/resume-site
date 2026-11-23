@@ -4,9 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "node scripts/patch-client-agent.mjs && vite",
+    "build": "node scripts/patch-client-agent.mjs && vite build",
+    "preview": "vite preview",
+    "postinstall": "node scripts/patch-client-agent.mjs"
   },
   "devDependencies": {
     "vite": "^6.0.0"
