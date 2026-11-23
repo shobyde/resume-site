@@ -439,9 +439,11 @@ export function initAssistant({ posts = [] } = {}) {
   }
 
   function createModelEngine(plan) {
-    const worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
     return createWebLLMEngine({
-      worker,
+      // Let the library own the worker so its onmessage handler (progress,
+      // ready, error) is actually attached. Passing an external worker skipped
+      // that handler, so progress never fired and load() never resolved.
+      workerUrl: new URL('./worker.js', import.meta.url),
       ...(plan.model ? { model: plan.model } : { tier: plan.tier || 'compact' }),
       // WebLLM's documented self-hosting hooks: when the weights are served
       // from this origin, no request leaves for huggingface.co.
