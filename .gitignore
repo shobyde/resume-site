@@ -12,3 +12,5 @@ public/*
 !public/archive
 scripts/__pycache__/
 .worktrees/
+
+.client-agent/

@@ -6,6 +6,7 @@ import { initBackground } from './background.js';
 import { initSmoothScroll, initReveals, initMagnetic, initProgress } from './motion.js';
 import { initStreamText, initScrollStream } from './streamText.js';
 import { initBlog } from './blog.js';
+import { initAssistant } from './agent/assistant.js';
 import { motionPrefs } from './motionPrefs.js';
 import './styles/main.css';
 import './styles/sections.css';
@@ -242,8 +243,15 @@ async function boot() {
   initProgress();
   initProjectToggles();
   initResumePrint();
-  await withTimeout(initBlog(), 3000);
+  const blogState = await withTimeout(initBlog(), 3000);
   navSpy();
+
+  // The site assistant is additive: if it fails, the page is unaffected.
+  try {
+    initAssistant({ posts: blogState?.posts || [] });
+  } catch (error) {
+    console.warn('[assistant] unavailable:', error);
+  }
 
   // deep-link to a section: anchors can't resolve before the DOM was built
   if (location.hash) {
