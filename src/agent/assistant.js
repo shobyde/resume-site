@@ -492,16 +492,20 @@ export function initAssistant({ posts = [] } = {}) {
    * two minutes of no movement, then let the caller retry: the shards already
    * fetched are in Cache Storage, so a retry resumes instead of restarting.
    */
-  function watchdog(run, graceMs = 120000) {
+  function watchdog(run, graceMs = 30000) {
     lastProgressAt = Date.now();
     return new Promise((resolve, reject) => {
       let settled = false;
       const timer = setInterval(() => {
         if (settled) return;
         if (Date.now() - lastProgressAt > graceMs) {
-          settled = true;
-          clearInterval(timer);
-          reject(new Error('install stalled'));
+          // Do not abort: a single large shard can legitimately take longer
+          // than this on a slow link. Just reassure the visitor and keep
+          // waiting; aborting only reset the progress bar to 5% and made the
+          // install look stuck.
+          engineNote.textContent = 'Still downloading. Large models can take a few minutes on slower connections.';
+          if (!warming.hidden) warmingText.textContent = 'Still downloading your agent';
+          lastProgressAt = Date.now();
         }
       }, 4000);
       run().then(
