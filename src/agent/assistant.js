@@ -122,7 +122,30 @@ export function initAssistant({ posts = [] } = {}) {
     readContext: readPageContext,
     topK: 8,
     maxToolCalls: 3,
-    confirm: async (req) => window.confirm(`${req.title}\n\n${req.description}\n\nProceed?`),
+    confirm: async (req) => new Promise((resolve) => {
+      const bubble = document.createElement('div');
+      bubble.className = 'agent__bubble agent__bubble--assistant';
+      const body = document.createElement('p');
+      body.textContent = `${req.title}: ${req.description}. Proceed?`;
+      bubble.appendChild(body);
+      const btns = document.createElement('div');
+      btns.className = 'agent__confirm-btns';
+      const yes = document.createElement('button');
+      yes.type = 'button'; yes.className = 'agent__chip'; yes.textContent = 'Yes';
+      const no = document.createElement('button');
+      no.type = 'button'; no.className = 'agent__chip'; no.textContent = 'No';
+      btns.appendChild(yes); btns.appendChild(no);
+      bubble.appendChild(btns);
+      messagesEl.appendChild(bubble);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      const finish = (value) => {
+        yes.disabled = true; no.disabled = true;
+        bubble.classList.add('is-done');
+        resolve(value);
+      };
+      yes.addEventListener('click', () => finish(true));
+      no.addEventListener('click', () => finish(false));
+    }),
   });
 
   const root = document.createElement('div');
@@ -388,7 +411,8 @@ export function initAssistant({ posts = [] } = {}) {
           ? 'Installing your agent'
           : 'Keyword matching';
     const chromeCouldHelp = chromeAI === 'available' || chromePending();
-    modelBtn.hidden = modelState === 'probing' || (!gpuAvailable && !chromeCouldHelp);
+    modelBtn.hidden = true;
+    progressEl.hidden = true;
     root.querySelector('.agent__dot').classList.toggle('is-fallback', !usingModel);
     // A long browser install must stay cancellable, so the control stays live
     // while Chrome is preparing and reads as a cancel.
