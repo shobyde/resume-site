@@ -18,6 +18,7 @@ import manifest from 'client-agent:manifest';
 import { AgentRuntime, createLexicalEngine, registry } from 'client-agent/core';
 import { createDomContextReader } from 'client-agent/dom';
 import { TINY_MODEL, createWebLLMEngine, detectWebGPU } from 'client-agent/webllm';
+import { createChromeAIEngine, detectChromeAI } from 'client-agent/chrome-ai';
 import { siteCapabilities } from './capabilities.js';
 import { renderA2UI } from './a2ui.js';
 import { motionPrefs } from '../motionPrefs.js';
@@ -189,6 +190,8 @@ export function initAssistant({ posts = [] } = {}) {
   let modelState = 'probing'; // probing | loading | ready | keyword | error
   let gpuAvailable = true;
   let lastProgressAt = 0;
+  let chromeEngine = null;
+  let chromeAI = 'unsupported';
 
   const syncSend = () => {
     sendBtn.disabled = busy || input.value.trim().length === 0;
@@ -362,19 +365,29 @@ export function initAssistant({ posts = [] } = {}) {
 
   function updateEngineUi() {
     const usingModel = activeEngine === modelEngine && modelState === 'ready';
-    engineLabel.textContent = usingModel
-      ? 'Your agent, on this device'
-      : modelState === 'probing' || modelState === 'loading'
-        ? 'Installing your agent'
-        : 'Keyword matching';
-    modelBtn.hidden = modelState === 'probing' || !gpuAvailable;
+    const usingChrome = activeEngine === chromeEngine && chromeEngine !== null;
+    engineLabel.textContent = usingChrome
+      ? "Your browser's own model"
+      : usingModel
+        ? 'Your agent, on this device'
+        : modelState === 'probing' || modelState === 'loading'
+          ? 'Installing your agent'
+          : 'Keyword matching';
+    const chromeCouldHelp = chromeAI === 'available' || chromeAI === 'downloadable';
+    modelBtn.hidden = modelState === 'probing' || (!gpuAvailable && !chromeCouldHelp);
     root.querySelector('.agent__dot').classList.toggle('is-fallback', !usingModel);
-    if (!usingModel && modelState !== 'loading') {
-      modelLabel.textContent = modelState === 'error' ? 'Retry the install' : 'Install the on-device agent';
-    }
     modelBtn.disabled = modelState === 'loading';
-    modelLabel.textContent = usingModel ? 'Switch to keyword matching' : 'Install the on-device agent';
-    modelBtn.classList.toggle('is-on', usingModel);
+    if (usingModel || usingChrome) {
+      modelLabel.textContent = 'Switch to keyword matching';
+    } else if (modelState !== 'loading') {
+      modelLabel.textContent =
+        modelState === 'error'
+          ? 'Retry the install'
+          : chromeAI === 'downloadable'
+            ? "Install the browser's model"
+            : 'Install the on-device agent';
+    }
+    modelBtn.classList.toggle('is-on', usingModel || usingChrome);
     progressEl.hidden = modelState !== 'loading';
   }
 
@@ -446,19 +459,19 @@ export function initAssistant({ posts = [] } = {}) {
    * a minute of no movement, then let the caller retry: the shards already
    * fetched are in Cache Storage, so a retry resumes instead of restarting.
    */
-  function loadWithWatchdog(plan) {
+  function watchdog(run) {
     lastProgressAt = Date.now();
     return new Promise((resolve, reject) => {
       let settled = false;
       const timer = setInterval(() => {
         if (settled) return;
-        if (Date.now() - lastProgressAt > 30000) {
+        if (Date.now() - lastProgressAt > 12000) {
           settled = true;
           clearInterval(timer);
-          reject(new Error('download stalled'));
+          reject(new Error('install stalled'));
         }
-      }, 5000);
-      loadPlan(plan).then(
+      }, 4000);
+      run().then(
         () => {
           if (settled) return;
           settled = true;
@@ -475,7 +488,52 @@ export function initAssistant({ posts = [] } = {}) {
     });
   }
 
-  async function ensureModel() {
+  function loadWithWatchdog(plan) {
+    return watchdog(() => loadPlan(plan));
+  }
+
+  /**
+   * Chrome ships its own model. Using it means no request to huggingface.co at
+   * all, which is the difference between an install that finishes and one that
+   * never starts on a network where the model host is unreachable.
+   */
+  async function installChromeAgent() {
+    if (chromeAI !== 'available' && chromeAI !== 'downloadable') return false;
+    try {
+      setWarming(
+        chromeAI === 'available' ? "Waking your browser's model" : "Getting your browser's model ready",
+        0.15,
+      );
+      engineNote.textContent =
+        chromeAI === 'available'
+          ? "This browser already has a model installed, so there is nothing to fetch."
+          : "This browser can fetch its own model once and share it across sites.";
+      const engine = createChromeAIEngine({
+        onProgress: ({ progress }) => {
+          lastProgressAt = Date.now();
+          const pct = Math.max(5, Math.round(progress * 100));
+          progressBar.style.width = `${pct}%`;
+          if (!warming.hidden) warmingText.textContent = `Installing your agent · ${pct}%`;
+        },
+      });
+      await watchdog(() => engine.prepare());
+      chromeEngine = engine;
+      activeEngine = engine;
+      modelState = 'ready';
+      updateEngineUi();
+      log('built-in model ready');
+      return true;
+    } catch (error) {
+      console.warn('[assistant] built-in model unavailable:', error.message);
+      log('built-in model failed', error.message);
+      installError = error.message;
+      return false;
+    }
+  }
+
+  async function ensureAgent() {
+    if (await installChromeAgent()) return true;
+
     for (const [planIndex, plan] of INSTALL_PLANS.entries()) {
       for (let attempt = 1; attempt <= 2; attempt += 1) {
         try {
@@ -486,7 +544,8 @@ export function initAssistant({ posts = [] } = {}) {
           const reason = installError || error.message;
           console.warn('[assistant] install attempt failed:', reason);
           log('attempt failed', plan.copy, 'attempt', attempt, reason);
-          installError = '';
+          const hostBlocked = reason.startsWith('cannot reach');
+          if (!hostBlocked) installError = '';
           if (modelEngine) {
             try {
               modelEngine.dispose();
@@ -494,6 +553,11 @@ export function initAssistant({ posts = [] } = {}) {
               /* terminating a dead worker is best effort */
             }
             modelEngine = null;
+          }
+          if (hostBlocked) {
+            // Same host for every model, so retrying and trying the lighter
+            // agent would only waste another eight minutes.
+            return false;
           }
           if (attempt === 1) {
             setWarming('Install paused, picking up where it left off', 0.05);
@@ -509,6 +573,20 @@ export function initAssistant({ posts = [] } = {}) {
   }
 
   async function bootEngine() {
+    chromeAI = await detectChromeAI();
+    log('built-in model availability:', chromeAI);
+
+    // Best case: the browser already ships a model, so there is nothing to
+    // fetch and the agent is available immediately.
+    if (chromeAI === 'available') {
+      setWarming("Waking your browser's model", 0.15);
+      if (await installChromeAgent()) {
+        engineNote.textContent = "Your browser's own model is answering. Nothing was downloaded.";
+        showLauncher();
+        return;
+      }
+    }
+
     if (!shouldPreloadModel()) {
       gpuAvailable = false;
       modelState = 'keyword';
@@ -524,9 +602,11 @@ export function initAssistant({ posts = [] } = {}) {
       gpuAvailable = false;
       modelState = 'keyword';
       engineNote.textContent =
-        gpu === 'unsupported'
-          ? 'This browser cannot run your agent on-device, so answers use keyword matching.'
-          : 'This device has no usable GPU, so answers use keyword matching.';
+        chromeAI === 'downloadable'
+          ? "This browser can install its own model and share it across sites. Press install to set it up."
+          : gpu === 'unsupported'
+            ? 'This browser cannot run your agent on-device, so answers use keyword matching.'
+            : 'This device has no usable GPU, so answers use keyword matching.';
       updateEngineUi();
       showLauncher();
       return;
@@ -540,12 +620,14 @@ export function initAssistant({ posts = [] } = {}) {
         const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 2000));
         idle(resolve, { timeout: 4000 });
       });
-      const ready = await ensureModel();
+      const ready = await ensureAgent();
       if (ready) {
         engineNote.textContent = 'Your agent is ready. It reads this page and can do everything listed below.';
       } else {
         modelState = 'error';
-        engineNote.textContent = 'The install did not finish. Keyword matching is answering until you retry.';
+        engineNote.textContent = installError.startsWith('cannot reach')
+          ? 'The model host is blocked from this network, so answers use keyword matching.'
+          : 'The install did not finish. Keyword matching is answering until you retry.';
         engineNote.title = installError || 'no error detail reported';
       }
       showLauncher();
@@ -566,10 +648,12 @@ export function initAssistant({ posts = [] } = {}) {
       return;
     }
     engineNote.textContent = 'Setting up your agent on this device…';
-    const ready = await ensureModel();
+    const ready = await ensureAgent();
     engineNote.textContent = ready
       ? 'Your agent is ready. It reads this page and can do everything listed below.'
-      : 'The install did not finish. Keyword matching is answering until you retry.';
+      : installError.startsWith('cannot reach')
+        ? 'The model host is blocked from this network, so answers use keyword matching.'
+        : 'The install did not finish. Keyword matching is answering until you retry.';
     engineNote.title = ready ? '' : installError || 'no error detail reported';
     if (!ready) modelState = 'error';
     updateEngineUi();
