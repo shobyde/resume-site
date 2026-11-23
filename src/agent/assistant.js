@@ -703,88 +703,19 @@ export function initAssistant({ posts = [] } = {}) {
     chromeAI = await detectChromeAI();
     log('built-in model availability:', chromeAI);
 
-    // Best case: the browser already ships a model, so there is nothing to
-    // fetch and the agent is available immediately.
-    if (chromeAI === 'available') {
-      setWarming("Waking your browser's model", 0.15);
-      if (await installChromeAgent()) {
-        engineNote.textContent = "Your browser's own model is answering. Nothing was downloaded.";
-        showLauncher();
-        return;
-      }
-    }
-
-    // Chrome has a model but will not fetch it without a real press. Starting
-    // that here fails ("requires a user gesture"), and falling through to the
-    // HuggingFace path is what leaves the page stuck: that host is unreachable
-    // on this network. Stop, and ask for the press.
-    if (chromePending()) {
-      modelState = 'keyword';
-      gpuAvailable = false;
-      engineNote.textContent =
-        chromeAI === 'downloading'
-          ? "Your browser is installing its own model. Press to pick it up when it is ready."
-          : "This browser can install its own model, shared across all sites. Press install to set it up.";
-      updateEngineUi();
-      showLauncher();
-      return;
-    }
-
-    if (!shouldPreloadModel()) {
-      gpuAvailable = false;
-      modelState = 'keyword';
-      engineNote.textContent = 'Answers use keyword matching. The on-device model can be turned on when you want it.';
-      updateEngineUi();
-      showLauncher();
-      return;
-    }
-
-    setWarming('Looking for a GPU to run on', 0.04);
-    const gpu = await detectWebGPU();
-    if (gpu !== 'available') {
-      gpuAvailable = false;
-      modelState = 'keyword';
-      engineNote.textContent =
-        chromeAI === 'downloadable'
-          ? "This browser can install its own model and share it across sites. Press install to set it up."
-          : gpu === 'unsupported'
-            ? 'This browser cannot run your agent on-device, so answers use keyword matching.'
-            : 'This device has no usable GPU, so answers use keyword matching.';
-      updateEngineUi();
-      showLauncher();
-      return;
-    }
-
-    if (navigator.storage && navigator.storage.persist) { try { await navigator.storage.persist(); } catch {} }
-    setWarming('Setting up your agent', 0.06);
-    engineNote.textContent = 'Your agent is installing in the background. It only happens once.';
-    try {
-      // Let the page finish painting first; the install is not urgent.
-      await new Promise((resolve) => {
-        const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 2000));
-        idle(resolve, { timeout: 4000 });
-      });
-      const ready = await ensureAgent();
-      if (ready) {
-        engineNote.textContent = 'Your agent is ready. It reads this page and can do everything listed below.';
-      } else {
-        modelState = 'error';
-        engineNote.textContent = installError.startsWith('cannot reach')
-          ? 'The model host is blocked from this network, so answers use keyword matching.'
-          : installError.startsWith(NEEDS_PRESS)
-            ? installError
-            : 'The install did not finish. Keyword matching is answering until you retry.';
-        engineNote.title = installError || 'no error detail reported';
-      }
-      showLauncher();
-    } catch (error) {
-      modelState = 'error';
-      engineNote.textContent = 'The install did not finish. Keyword matching is answering until you retry.';
-      console.warn('[assistant] agent install failed:', error);
-      updateEngineUi();
-      showLauncher();
-    }
+    // Rely solely on the lexical engine: no model download, no GPU, no network.
+    // The on-device model remains available as an opt-in via the launcher button.
+    gpuAvailable = false;
+    modelState = 'keyword';
+    engineNote.textContent =
+      chromeAI === 'available' || chromeAI === 'downloadable'
+        ? "Answers use fast keyword matching. You can optionally install your browser's own model for richer replies."
+        : 'Answers use fast keyword matching. No model download required.';
+    updateEngineUi();
+    showLauncher();
+    return;
   }
+
 
   async function toggleEngine() {
     if (modelState === 'loading' && chromePending()) {

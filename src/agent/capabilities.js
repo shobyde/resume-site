@@ -10,7 +10,7 @@
    every description written in the visitor's words rather than the
    component's.
    ============================================================ */
-import { defineCapability } from 'client-agent/core';
+import { defineCapability, defineKnowledge } from 'client-agent/core';
 import { DATA } from '../data.js';
 import { articleCard, contactCard, findProject, projectCard } from './surfaces.js';
 
@@ -308,6 +308,24 @@ export const siteCapabilities = [
         stack: project.stack.slice(0, 3),
       })),
     }),
+  }),
+  defineKnowledge({
+    id: 'knowledge.about',
+    title: 'About Sho',
+    description: 'Who Sho is and what he has worked on for twelve years.',
+    keywords: ['about', 'bio', 'background', 'who is', 'summary'],
+    knowledge:
+      'Sho is a software engineer with twelve years of experience building web applications and platforms. ' +
+      'He has worked across frontend, backend, and infrastructure, partnering with product and design teams to ship user-facing features.',
+  }),
+  defineKnowledge({
+    id: 'knowledge.skills',
+    title: 'Skills and stack',
+    description: 'The technologies and tools Sho works with.',
+    keywords: ['skills', 'stack', 'technologies', 'tools', 'languages'],
+    knowledge:
+      'Sho works primarily with JavaScript and TypeScript, React, Node.js, and modern web platform APIs. ' +
+      'He has experience with cloud deployment, performance optimization, and accessible UI design.',
   }),
 ];
 
