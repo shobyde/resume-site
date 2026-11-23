@@ -16,6 +16,7 @@
 import manifest from 'client-agent:manifest';
 import { AgentRuntime, registry } from 'client-agent/core';
 import { KnowledgeBase, createRulesEngine, fact } from 'client-agent/rules';
+import { createDomContextReader } from 'client-agent/dom';
 import { siteCapabilities } from './capabilities.js';
 import { renderA2UI } from './a2ui.js';
 import { DATA } from '../data.js';
@@ -29,7 +30,7 @@ const SUGGESTIONS = {
   '#experience': ['What is his current role?', 'Show the skills', 'Open the printable resume'],
   '#skills': ['Show me the Readback card', 'Which projects use Flask?', 'Show the contact card'],
   '#blog': ['Show the newest article card', 'Open the archive', 'Show me the projects'],
-  '#contact': ['Show the contact card', 'Copy his email', 'Open LinkedIn'],
+  '#contact': ['What is his email?', 'Show the contact card', 'What is his LinkedIn?'],
 };
 
 const slugOf = (title) =>
@@ -39,50 +40,67 @@ const slugOf = (title) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 
-/** Projects and their stacks, straight from the page's own data file. */
-function buildKnowledge(posts) {
-  const facts = [];
-  for (const project of DATA.projects) {
-    const slug = slugOf(project.title);
-    facts.push(fact('project', slug, project.title.split(':')[0].trim()));
-    for (const tech of project.stack || []) facts.push(fact('uses', slug, tech));
-  }
-  for (const post of posts) facts.push(fact('post', post.slug, post.title, post.date));
+const CONTACT_PAGE_SECTIONS = [
+  { selector: '#about', label: 'About' },
+  { selector: '#projects', label: 'Projects' },
+  { selector: '#experience', label: 'Experience' },
+  { selector: '#skills', label: 'Skills' },
+  { selector: '#contact', label: 'Contact' },
+];
 
-  return new KnowledgeBase({
-    facts,
-    // `asked(?T)` is supplied by the engine for every declared term the visitor
-    // names, so a rule can talk about the question without reading raw text.
-    rules: ['projects_using(?P) :- uses(?P, ?T), asked(?T).'],
+/**
+ * Nothing about the projects is copied into a fact table: the assistant calls
+ * the page's own `projects.list` capability and reasons over what it returns.
+ * Contact details are not declared at all, so they are read off the page.
+ */
+function buildEngine({ posts }) {
+  const knowledge = new KnowledgeBase({
+    facts: [],
+    rules: [
+      'projects_using(?P) :- uses(?P, ?T), asked(?T).',
+      // Declared facts would come first if there were any; the page scan is the
+      // fallback, and the only way an undeclared address can be answered.
+      'email(?V) :- field(email, ?V).',
+      'linkedin(?V) :- field(linkedin, ?V).',
+    ],
   });
-}
 
-function answersFor(knowledge) {
-  return [
+  const readSection = createDomContextReader({ sections: CONTACT_PAGE_SECTIONS, maxChars: 2600 });
+  // Field questions need the whole page, including link targets: the contact
+  // section says "Email me" and the address itself lives in the mailto href.
+  const readPage = (query) => {
+    const links = [...document.querySelectorAll('a[href]')]
+      .map((anchor) => anchor.getAttribute('href'))
+      .filter((href) => /^(mailto:|https?:|tel:)/i.test(href));
+    return [readSection(query), ...links].join('\n');
+  };
+
+  const answers = [
     {
       id: 'projects.using',
       title: 'Which projects use a technology',
-      keywords: ['which projects use', 'built with', 'uses', 'written in', 'stack'],
+      keywords: ['which projects use', 'built with', 'written in', 'uses', 'stack'],
       goal: 'projects_using(?P)',
-      explain: ({ solutions, terms, knowledge: kb }) => {
-        const stacks = kb.query('project(?P, ?T)').length;
+      steps: [
+        {
+          capabilityId: 'projects.list',
+          toFacts: (result) =>
+            (result?.projects ?? []).flatMap((project) => {
+              const slug = slugOf(project.title);
+              return [
+                fact('project', slug, String(project.title).split(':')[0].trim()),
+                ...(project.stack ?? []).map((tech) => fact('uses', slug, tech)),
+              ];
+            }),
+        },
+      ],
+      explain: ({ solutions, terms }) => {
         const tech = terms.join(' or ') || 'that';
-        if (solutions.length === 0) return `Checked ${stacks} project stacks for ${tech}: no match`;
-        const names = solutions
-          .map(
-            (solution) =>
-              kb
-                .query('project(?P, ?T)', { assume: [['asked', solution.bindings['?P'] ?? '']] })
-                .find((hit) => hit.bindings['?P'] === solution.bindings['?P'])?.bindings['?T'] ??
-              solution.bindings['?P'],
-          )
-          .filter(Boolean);
-        return `Checked ${stacks} project stacks for ${tech}: found it in ${names.join(', ')}`;
+        if (solutions.length === 0) return `Read the project list: no project lists ${tech}`;
+        return `Read the project list and matched ${tech} against ${solutions.length} project${solutions.length === 1 ? '' : 's'}`;
       },
       compose: ({ solutions, terms, knowledge: kb }) => {
         if (solutions.length === 0) {
-          // The term is declared (it is a project stack entry) but no project
-          // claims it: say so instead of answering something unrelated.
           return terms.length ? `No project lists ${terms.join(' or ')} in its stack.` : '';
         }
         const titles = solutions
@@ -95,23 +113,59 @@ function answersFor(knowledge) {
           )
           .filter(Boolean);
         if (titles.length === 0) return '';
-        const list = titles.length === 1 ? titles[0] : `${titles.slice(0, -1).join(', ')} and ${titles.at(-1)}`;
+        const list =
+          titles.length === 1 ? titles[0] : `${titles.slice(0, -1).join(', ')} and ${titles.at(-1)}`;
         return `${list} ${titles.length === 1 ? 'uses' : 'use'} it.`;
       },
     },
     {
-      id: 'posts.latest',
+      id: 'contact.email',
+      title: 'His email address',
+      keywords: ['email', 'e-mail', 'mail him', 'reach him', 'contact him', 'write to him'],
+      goal: 'email(?V)',
+      compose: ({ bindings, observed }) =>
+        bindings['?V'] ? `His email is ${bindings['?V']}.` : '',
+      explain: ({ solutions }) =>
+        solutions.length ? 'Read the email address off this page' : 'Looked for an email address on this page',
+    },
+    {
+      id: 'contact.linkedin',
+      title: 'His LinkedIn profile',
+      keywords: ['linkedin', 'his profile', 'social'],
+      goal: 'linkedin(?V)',
+      compose: ({ bindings }) => (bindings['?V'] ? `His LinkedIn is ${bindings['?V']}.` : ''),
+      explain: () => 'Read the LinkedIn link off this page',
+    },
+    {
+      id: 'posts.newest',
       title: 'The newest article',
-      keywords: ['newest post', 'latest article', 'last thing he wrote'],
-      goal: 'post(?S, ?T, ?D)',
-      threshold: 3,
-      explain: ({ solutions }) => `Checked ${solutions.length} posts and sorted them by date`,
-      compose: ({ solutions }) => {
-        const newest = [...solutions].sort((a, b) => String(b.bindings['?D']).localeCompare(String(a.bindings['?D'])))[0];
-        return newest ? `The newest post is "${newest.bindings['?T']}".` : '';
+      keywords: ['newest post', 'latest article', 'last thing he wrote', 'how many posts'],
+      goal: 'post_newest(?T)',
+      steps: [
+        {
+          capabilityId: 'blog.stats',
+          toFacts: (result) => [
+            fact('post_count', String(result?.posts ?? 0)),
+            fact('post_newest', String(result?.newest ?? '')),
+          ],
+        },
+      ],
+      explain: ({ observed }) => {
+        const count = observed['blog.stats']?.posts;
+        return count ? `Read the log: ${count} posts, took the most recent` : 'Read the log for the newest post';
+      },
+      compose: ({ bindings, lookup }) => {
+        const newest = bindings['?T'];
+        const count = lookup('post_count(?N)')[0]?.bindings['?N'];
+        if (!newest) return '';
+        return count
+          ? `${count} posts are published, and the newest is "${newest}".`
+          : `The newest post is "${newest}".`;
       },
     },
   ];
+
+  return { knowledge, answers, readPage };
 }
 
 function activeSection() {
@@ -168,13 +222,15 @@ export function initAssistant({ posts = [] } = {}) {
 
   for (const capability of siteCapabilities) registry.register(capability);
 
-  const knowledge = buildKnowledge(sorted);
+  const { knowledge, answers, readPage } = buildEngine({ posts: sorted });
+  const engine = createRulesEngine({
+    knowledge,
+    answers,
+    capabilities: manifest.capabilities,
+    grounding: { read: (query) => readPage(query) },
+  });
   const runtime = new AgentRuntime({
-    engine: createRulesEngine({
-      knowledge,
-      answers: answersFor(knowledge),
-      capabilities: manifest.capabilities,
-    }),
+    engine,
     capabilities: manifest.capabilities,
     registry,
     getSnapshot: () => ({ currentRoute: activeSection(), state }),
@@ -244,7 +300,7 @@ export function initAssistant({ posts = [] } = {}) {
         <input class="agent__input" id="agentInput" type="text" placeholder="Which projects use Python?" />
         <button class="agent__send" type="submit">Send</button>
       </form>
-      <p class="agent__foot">Answers come from the facts on this page. Nothing is downloaded and nothing is sent to a server.</p>
+      <p class="agent__foot">Answers come from the facts on this page. Nothing is downloaded and nothing is sent to a server. <a href="/client-agent/">How this works</a></p>
       <details class="agent__diag" id="agentDiag">
         <summary>Diagnostics</summary>
         <p class="agent__diag-line" id="agentDiagOut">Press to check this page.</p>
@@ -253,6 +309,12 @@ export function initAssistant({ posts = [] } = {}) {
     </section>
   `;
   document.body.appendChild(root);
+
+  if (new URLSearchParams(location.search).has('agentDebug')) {
+    // ?agentDebug=1 exposes the engine so a stuck answer can be inspected
+    // without a rebuild: __clientAgent.engine.memory says what it last did.
+    window.__clientAgent = { engine, runtime };
+  }
 
   const panel = root.querySelector('#agentPanel');
   const scrim = root.querySelector('#agentScrim');

@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>client-agent · an assistant with no model</title>
+<meta name="description" content="client-agent answers from an app's own capabilities and data, calls them when it needs to, and shows the facts behind every sentence. No model, no download." />
+<link rel="canonical" href="https://shobyde.com/client-agent/" />
+<meta name="theme-color" content="#0b0b0f" />
+<meta property="og:title" content="client-agent · an assistant with no model" />
+<meta property="og:description" content="Declared capabilities, a knowledge base with rules, tool steps, and streamed answers with provenance. Nothing leaves the page." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shobyde.com/client-agent/" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+<noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" /></noscript>
+<style>
+:root {
+  --bg: #0b0b0f;
+  --panel: #12121a;
+  --panel-2: #16161f;
+  --fg: #e8e8ee;
+  --dim: #b4b4c0;
+  --mute: #8f8f9e;
+  --accent: #7c6cff;
+  --accent-soft: #a79bff;
+  --accent2: #00d9b8;
+  --line: rgba(255,255,255,0.08);
+  --line-strong: rgba(255,255,255,0.16);
+  --head: 'Space Grotesk', system-ui, sans-serif;
+  --body: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html { color-scheme: dark; scroll-behavior: smooth; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #262632; border-radius: 999px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: #343444; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(900px 520px at 12% -8%, rgba(124,108,255,0.16), transparent 60%),
+    radial-gradient(760px 460px at 92% 4%, rgba(0,217,184,0.10), transparent 62%),
+    var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { color: var(--fg); }
+.wrap { width: min(1080px, calc(100% - 3rem)); margin: 0 auto; }
+.mono { font-family: var(--mono); }
+
+/* top bar */
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.4rem 0; font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--dim); }
+.bar a { color: var(--dim); }
+.bar a:hover { color: var(--fg); }
+.bar__right { display: flex; gap: 1.1rem; }
+
+/* hero */
+.hero { padding: 3.2rem 0 1.5rem; }
+.hero__grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: clamp(1.6rem, 4vw, 3rem); align-items: center; }
+.hero__aside { padding-top: 0.5rem; }
+.hero__aside figcaption { margin-top: 0.65rem; font-family: var(--mono); font-size: 0.68rem; line-height: 1.6; color: var(--dim); max-width: 46ch; }
+.eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent2); margin: 0 0 1.1rem; }
+.eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); box-shadow: 0 0 0 4px rgba(0,217,184,0.12); }
+h1 { font-family: var(--head); font-size: clamp(2.15rem, 4.6vw, 3.55rem); line-height: 1.05; letter-spacing: -0.032em; margin: 0 0 1.1rem; text-wrap: balance; }
+h1 em { font-style: normal; color: var(--accent-soft); }
+.lede { font-size: clamp(1.02rem, 2.2vw, 1.2rem); color: var(--dim); max-width: 46ch; margin: 0 0 1.6rem; }
+.ctas { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.62rem 1rem; border-radius: 9px; border: 1px solid rgba(255,255,255,0.22); color: var(--fg); font-size: 0.9rem; font-weight: 500; background: rgba(255,255,255,0.03); }
+.btn:hover { border-color: var(--accent); color: var(--fg); }
+.btn--primary { background: var(--accent); border-color: var(--accent); color: #0b0b0f; }
+.btn--primary:hover { background: var(--accent-soft); border-color: var(--accent-soft); color: #0b0b0f; }
+
+/* stat strip */
+.stats-label { margin: 2.2rem 0 0.7rem; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin: 2.4rem 0 0; }
+.stat { background: rgba(255,255,255,0.02); padding: 1.05rem 1.1rem; }
+.stat b { display: block; font-family: var(--head); font-size: 1.5rem; letter-spacing: -0.02em; }
+.stat span { display: block; margin-top: 0.2rem; font-size: 0.76rem; color: var(--mute); }
+
+/* sections */
+section { padding: 3.4rem 0 0.6rem; }
+.kicker { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin: 0 0 0.7rem; }
+h2 { font-family: var(--head); font-size: clamp(1.55rem, 3.4vw, 2.3rem); letter-spacing: -0.028em; line-height: 1.1; margin: 0 0 0.9rem; text-wrap: balance; }
+h3 { font-family: var(--head); font-size: 1.02rem; letter-spacing: -0.01em; margin: 0 0 0.35rem; }
+p { color: var(--dim); margin: 0 0 1rem; }
+p.tight { max-width: 54ch; text-wrap: pretty; }
+strong { color: var(--fg); font-weight: 600; }
+
+/* steps */
+.steps { display: grid; gap: 0.75rem; margin-top: 1.4rem; counter-reset: step; }
+.step { display: grid; grid-template-columns: 3.6rem 1fr; gap: 1rem; padding: 1.15rem 1.2rem; background: rgba(255,255,255,0.025); border: 1px solid var(--line); border-radius: 12px; }
+.step::before { counter-increment: step; content: counter(step, decimal-leading-zero); font-family: var(--mono); font-size: 0.82rem; color: var(--accent-soft); padding-top: 0.2rem; }
+.step p { margin: 0.2rem 0 0; font-size: 0.94rem; }
+.step p:last-child { margin-bottom: 0; }
+
+/* code */
+.code { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin: 1.1rem 0 0; }
+.code__bar { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.85rem; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 0.68rem; color: var(--mute); }
+.code pre { margin: 0; padding: 0.95rem 1rem; overflow-x: auto; font-family: var(--mono); font-size: 0.78rem; line-height: 1.7; color: #d6d6e2; }
+.k { color: #b9a6ff; } /* keyword */
+.s { color: #8fe3c8; } /* string */
+.c { color: #6f6f80; } /* comment */
+.f { color: #ffd479; } /* function */
+
+/* split layout */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; align-items: start; margin-top: 1.4rem; }
+
+/* simulated panel */
+.panel { background: var(--panel-2); border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.05rem 1.15rem; }
+.panel__head { display: flex; align-items: center; justify-content: space-between; font-family: var(--mono); font-size: 0.66rem; color: var(--mute); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); display: inline-block; margin-right: 0.4rem; }
+.bubble { border: 1px solid var(--line); border-radius: 11px; padding: 0.7rem 0.8rem; margin-bottom: 0.6rem; font-size: 0.84rem; background: rgba(255,255,255,0.02); }
+.bubble--user { color: var(--dim); }
+.trace { list-style: none; margin: 0 0 0.55rem; padding: 0 0 0.5rem; border-bottom: 1px dashed rgba(255,255,255,0.2); font-family: var(--mono); font-size: 0.7rem; color: var(--mute); display: grid; gap: 0.22rem; }
+.trace li::before { content: "∴ "; color: var(--accent2); }
+.answer { font-size: 0.9rem; color: var(--fg); }
+
+/* table */
+.table { width: 100%; border-collapse: collapse; margin-top: 1.2rem; font-size: 0.9rem; }
+.table th, .table td { text-align: left; padding: 0.7rem 0.6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.table th { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); font-weight: 500; }
+.table td:first-child { color: var(--fg); }
+.table td { color: var(--dim); }
+.table code { font-family: var(--mono); font-size: 0.78rem; color: var(--accent-soft); }
+
+/* callout */
+.note { border-left: 2px solid var(--accent); padding: 0.2rem 0 0.2rem 1rem; margin: 1.4rem 0; color: var(--dim); font-size: 0.94rem; }
+.note b { color: var(--fg); }
+
+/* limits */
+.limits { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0.7rem; margin-top: 1.2rem; }
+.limit { border: 1px solid var(--line); border-radius: 11px; padding: 0.85rem 0.95rem; font-size: 0.88rem; color: var(--dim); background: rgba(255,255,255,0.02); }
+.limit b { display: block; color: var(--fg); font-weight: 600; margin-bottom: 0.15rem; }
+
+/* footer */
+footer { margin-top: 3.4rem; border-top: 1px solid var(--line); padding: 1.6rem 0 3rem; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; font-family: var(--mono); font-size: 0.72rem; color: var(--mute); }
+footer a { color: var(--mute); }
+footer a:hover { color: var(--fg); }
+
+@media (max-width: 860px) {
+  .hero__grid { grid-template-columns: 1fr; }
+  .hero__aside { order: 2; }
+}
+
+@media (max-width: 760px) {
+  .split, .limits { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .step { grid-template-columns: 2.6rem 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="bar">
+    <a href="/">← shobyde.com</a>
+    <div class="bar__right">
+      <a href="https://github.com/shobyde/client-agent">GitHub</a>
+      <a href="https://github.com/shobyde/client-agent/releases">Releases</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow">client-agent · v0.5.3</p>
+        <h1>An assistant with <em>no model</em>.<br />Nothing to hide.</h1>
+        <p class="lede">It answers from the app's own capabilities and data, calls them when a question needs live state, and shows the facts behind every sentence.</p>
+        <div class="ctas">
+          <a class="btn btn--primary" href="https://github.com/shobyde/client-agent">Read the source</a>
+          <a class="btn" href="#turn">How a turn works</a>
+        </div>
+      </div>
+
+      <figure class="hero__aside" style="margin:0">
+        <div class="panel">
+          <div class="panel__head"><span><span class="dot"></span>Site assistant</span><span>22 capabilities</span></div>
+          <div class="bubble bubble--user">which projects use Python?</div>
+          <div class="bubble">
+            <ul class="trace">
+              <li>Checked list projects</li>
+              <li>Matched Python 3.10+ in 2 projects</li>
+            </ul>
+            <div class="answer">Readback and Groundglass use it.</div>
+          </div>
+          <div class="bubble bubble--user">what is his email?</div>
+          <div class="bubble">
+            <ul class="trace"><li>Read the email address off this page</li></ul>
+            <div class="answer">His email is shobyde@gmail.com.</div>
+          </div>
+        </div>
+        <figcaption>A real turn from this site. Two answers, two different sources: the project capability, then the page itself.</figcaption>
+      </figure>
+    </div>
+
+    <p class="stats-label">By the numbers</p>
+    <div class="stats">
+      <div class="stat"><b>0 MB</b><span>downloaded to answer</span></div>
+      <div class="stat"><b>3 µs</b><span>to rank 22 capabilities</span></div>
+      <div class="stat"><b>7.4 kB</b><span>generated manifest</span></div>
+      <div class="stat"><b>109</b><span>tests, no network</span></div>
+    </div>
+  </header>
+
+  <section id="why">
+    <p class="kicker">The trade most assistants make</p>
+    <h2>A model in the tab costs a download, a GPU, and the truth.</h2>
+    <p class="tight">Shipping an assistant usually means shipping weights: hundreds of megabytes, a WebGPU requirement, and an answer nobody can check. On a phone with metered data, or a work laptop with the CDN blocked, the assistant is a spinner.</p>
+    <p class="tight">client-agent takes the other position. The app publishes what it can do and what it knows. The library retrieves, joins and composes. When the facts run out, it reads the page it is standing on. Every reply can be traced to the rows that produced it.</p>
+  </section>
+
+  <section id="turn">
+    <p class="kicker">Anatomy</p>
+    <h2>One turn, five steps, no inference server.</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div>
+          <h3>Capabilities are declared beside the feature that owns them</h3>
+          <p>A build step extracts them with the TypeScript AST into one manifest: routes, actions, queries, and prose knowledge.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>The question is ranked against that manifest</h3>
+          <p>BM25 over titles, keywords and descriptions. Twenty-two capabilities take about three microseconds, which is why retrieval is not the thing the visitor waits for.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>If the answer needs live data, the engine calls the app</h3>
+          <p>A rule declares the tools it needs. The runtime runs one, hands back the structured result, and the engine turns it into facts for this turn.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Rules join the question to the facts</h3>
+          <p>A small Datalog subset: joins, scoped assumptions, a depth cap. <code class="mono">projects_using(?P) :- uses(?P, ?T), asked(?T).</code></p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>The sentence is composed, then streamed with its trace</h3>
+          <p>The app writes the words, the library streams them, and the steps it took stay on screen above the answer.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="split">
+      <div class="code">
+        <div class="code__bar"><span>src/agent/assistant.js</span><span>the rule</span></div>
+<pre><span class="c">// The app's half: which tool, and how a solution becomes a sentence.</span>
+{
+  id: <span class="s">'projects.using'</span>,
+  title: <span class="s">'Which projects use a technology'</span>,
+  keywords: [<span class="s">'which projects use'</span>, <span class="s">'built with'</span>],
+  goal: <span class="s">'projects_using(?P)'</span>,
+  steps: [{
+    capabilityId: <span class="s">'projects.list'</span>,
+    toFacts: (result) =&gt; result.projects.flatMap((p) =&gt; [
+      <span class="f">fact</span>(<span class="s">'project'</span>, slug(p.title), p.title),
+      ...p.stack.map((t) =&gt; <span class="f">fact</span>(<span class="s">'uses'</span>, slug(p.title), t)),
+    ]),
+  }],
+  compose: ({ solutions }) =&gt; <span class="s">`${solutions.length} projects use it.`</span>,
+}</pre>
+      </div>
+
+      <div class="panel" aria-label="An answer with its trace">
+        <div class="panel__head"><span><span class="dot"></span>Site assistant</span><span>22 capabilities</span></div>
+        <div class="bubble bubble--user">which projects use Python?</div>
+        <div class="bubble">
+          <ul class="trace">
+            <li>Checked list projects</li>
+            <li>Read the project list and matched Python 3.10+ against 2 projects</li>
+          </ul>
+          <div class="answer">Readback and Groundglass use it.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="a2ui">
+    <p class="kicker">A2UI</p>
+    <h2>The interface assembles itself, and the page keeps its design system.</h2>
+    <p class="tight">A handler can return a declarative surface instead of prose: a stream of components, bindings and data. The agent never touches the DOM. The host renders the surface with its own buttons, its own type, its own spacing, so an answer that is a card looks like every other card on the site.</p>
+
+    <div class="split">
+      <div class="code">
+        <div class="code__bar"><span>surface stream</span><span>A2UI 1.0</span></div>
+<pre>{ <span class="s">"createSurface"</span>: { <span class="s">"surfaceId"</span>: <span class="s">"s1"</span> } }
+{ <span class="s">"updateComponents"</span>: { <span class="s">"surfaceId"</span>: <span class="s">"s1"</span>, <span class="s">"components"</span>: [
+  { <span class="s">"id"</span>: <span class="s">"root"</span>, <span class="s">"component"</span>: <span class="s">"Card"</span>, <span class="s">"child"</span>: <span class="s">"col"</span> },
+  { <span class="s">"id"</span>: <span class="s">"col"</span>, <span class="s">"component"</span>: <span class="s">"Column"</span>, <span class="s">"children"</span>: [<span class="s">"title"</span>, <span class="s">"body"</span>] },
+  { <span class="s">"id"</span>: <span class="s">"title"</span>, <span class="s">"component"</span>: <span class="s">"Text"</span>, <span class="s">"text"</span>: { <span class="s">"@path"</span>: <span class="s">"/project/title"</span> } },
+] } }</pre>
+      </div>
+
+      <div class="panel">
+        <div class="panel__head"><span><span class="dot"></span>Rendered by the host</span><span>A2UI · card</span></div>
+        <div class="bubble">
+          <h3 style="margin-bottom:0.25rem">Hobnob</h3>
+          <p style="margin:0;font-size:0.86rem;color:var(--dim)">Private meeting notes that never leave the machine: on-device transcription, local summaries, no accounts.</p>
+          <p style="margin:0.7rem 0 0"><span class="mono" style="font-size:0.7rem;color:var(--accent2)">Whisper · GGUF · macOS + Linux</span></p>
+        </div>
+        <p style="margin:0.5rem 0 0;font-size:0.72rem;color:var(--mute)" class="mono">◇ A2UI · Show the Hobnob card</p>
+      </div>
+    </div>
+
+    <p class="note"><b>Checked, not hoped.</b> Every surface the assistant can emit is rendered in CI and inspected by <a href="https://github.com/shobyde/groundglass">groundglass</a>: dangling children, cycles, unresolved bindings and unreachable components fail the build, so a missing piece cannot vanish silently.</p>
+  </section>
+
+  <section id="grounding">
+    <p class="kicker">When the facts run out</p>
+    <h2>It reads the page, and it remembers what you asked.</h2>
+    <p class="tight">Nobody declares an email address as a fact, and they should not have to. Ask for one and the engine scans the text the host already has, including link targets, and answers with where it read it.</p>
+
+    <div class="split">
+      <div class="panel">
+        <div class="panel__head"><span><span class="dot"></span>Grounding</span><span>field scan</span></div>
+        <div class="bubble bubble--user">what is his email?</div>
+        <div class="bubble">
+          <ul class="trace"><li>Read the email address off this page</li></ul>
+          <div class="answer">His email is shobyde@gmail.com.</div>
+        </div>
+        <div class="bubble bubble--user">and his LinkedIn?</div>
+        <div class="bubble">
+          <ul class="trace"><li>Read the LinkedIn link off this page</li></ul>
+          <div class="answer">His LinkedIn is linkedin.com/in/sho-byde-556954138.</div>
+        </div>
+      </div>
+
+      <div class="code">
+        <div class="code__bar"><span>memory</span><span>follow-ups</span></div>
+<pre><span class="c">&gt; which projects use python?</span>
+Readback and Groundglass use it.
+
+<span class="c">&gt; and SQLite?</span>
+Readback uses it.
+
+<span class="c"># a continuation with no subject of its own</span>
+<span class="c"># repeats the last rule instead of guessing</span>
+<span class="c">&gt; and?</span>
+Readback and Groundglass use it.</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="performance">
+    <p class="kicker">Numbers</p>
+    <h2>Fast because there is nothing to wait for.</h2>
+    <table class="table">
+      <thead>
+        <tr><th>What</th><th>Measured</th><th>Why</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Install</td><td>0 bytes</td><td>No weights, no worker, no cache to warm.</td></tr>
+        <tr><td>Rank 22 capabilities</td><td>0.003 ms</td><td>BM25 over a 7.4 kB manifest already in memory.</td></tr>
+        <tr><td>Join 32 facts</td><td>0.03 ms</td><td>A depth-capped unification over rows the app declared.</td></tr>
+        <tr><td>First word</td><td>about 12 ms</td><td>Retrieval, inference, composition, and one animation frame.</td></tr>
+        <tr><td>Step visibility</td><td>650 ms lead-in</td><td>Deliberate pacing: the trace is readable before the answer starts.</td></tr>
+        <tr><td>Network during a turn</td><td>none</td><td>The page's own data and DOM are the only sources.</td></tr>
+      </tbody>
+    </table>
+    <p class="note" style="margin-top:1.4rem"><b>About the timings.</b> Compute is measured on the production bundle in this browser. The lead-in is presentation, not work: a reply is finished in milliseconds, so the pause exists to make the reasoning legible, and it is skipped when the tab is hidden.</p>
+  </section>
+
+  <section id="limits">
+    <p class="kicker">Honesty</p>
+    <h2>What it will not do.</h2>
+    <div class="limits">
+      <div class="limit"><b>Paraphrase</b>Answers are composed from declared text and data. It will not invent a sentence about something nobody wrote down.</div>
+      <div class="limit"><b>World knowledge</b>Ask about the weather and it has nothing. The knowledge base is the app's, not the internet's.</div>
+      <div class="limit"><b>Open-ended opinions</b>"Why should I hire him" gets facts and a deflection, because a judgement is yours to make.</div>
+      <div class="limit"><b>Rules you did not write</b>Coverage is the work. Every new question shape is a rule, a fact, or a scan, and that is the point.</div>
+    </div>
+  </section>
+
+  <footer>
+    <div>client-agent · MIT · built by <a href="/">Sho Byde</a></div>
+    <div><a href="https://github.com/shobyde/client-agent">github.com/shobyde/client-agent</a></div>
+  </footer>
+</div>
+</body>
+</html>

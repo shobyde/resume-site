@@ -310,10 +310,12 @@ export const siteCapabilities = [
     description: 'Reads the titles and stacks of every project card on the page.',
     keywords: ['list projects', 'which projects', 'what has he built', 'project names'],
     paramsSchema: { type: 'object', properties: {}, additionalProperties: false },
+    // The full stack, not the three chips the card shows: the assistant joins on
+    // this data, and a truncated list turns "does he use SQLite" into "no".
     handler: async () => ({
       projects: DATA.projects.map((project) => ({
         title: project.title,
-        stack: project.stack.slice(0, 3),
+        stack: project.stack,
       })),
     }),
   }),

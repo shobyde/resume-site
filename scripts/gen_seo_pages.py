@@ -188,12 +188,13 @@ def main() -> None:
     latest = urls[0][1] if urls else fmt_dt(datetime.now(timezone.utc).strftime('%Y-%m-%d'))
     sitemap.append(f"<url><loc>{SITE}/</loc><lastmod>{latest}</lastmod></url>")
     sitemap.append(f"<url><loc>{SITE}/archive/</loc><lastmod>{latest}</lastmod></url>")
+    sitemap.append(f"<url><loc>{SITE}/client-agent/</loc><lastmod>{latest}</lastmod></url>")
     for slug, dt in urls:
         sitemap.append(f"<url><loc>{SITE}/posts/{slug}/</loc><lastmod>{dt}</lastmod></url>")
     sitemap.append("</urlset>")
     (OUT / "sitemap.xml").write_text("\n".join(sitemap) + "\n", encoding="utf-8")
 
-    print(json.dumps({"static_pages": built, "sitemap_urls": len(urls) + 2}))
+    print(json.dumps({"static_pages": built, "sitemap_urls": len(urls) + 3}))
 
 
 if __name__ == "__main__":

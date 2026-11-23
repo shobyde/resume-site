@@ -4,6 +4,7 @@ dist/
 *.log
 node_modules/
 public/*
+!public/client-agent
 !public/content
 !public/favicon.svg
 !public/assets

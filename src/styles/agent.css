@@ -588,3 +588,14 @@ small.a2ui-text {
   cursor: pointer;
 }
 .agent__diag-copy:hover { background: rgba(255, 255, 255, 0.12); }
+
+.agent__foot a {
+  color: var(--accent2);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.agent__foot a:hover,
+.agent__foot a:focus-visible {
+  border-bottom-color: currentColor;
+}
