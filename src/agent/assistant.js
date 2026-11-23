@@ -17,7 +17,7 @@
 import manifest from 'client-agent:manifest';
 import { AgentRuntime, createLexicalEngine, registry } from 'client-agent/core';
 import { createDomContextReader } from 'client-agent/dom';
-import { createWebLLMEngine, detectWebGPU } from 'client-agent/webllm';
+import { TINY_MODEL, createWebLLMEngine, detectWebGPU } from 'client-agent/webllm';
 import { siteCapabilities } from './capabilities.js';
 import { renderA2UI } from './a2ui.js';
 import { motionPrefs } from '../motionPrefs.js';
@@ -378,38 +378,67 @@ export function initAssistant({ posts = [] } = {}) {
     progressEl.hidden = modelState !== 'loading';
   }
 
-  function progressLabel(progress, text) {
+  // Add ?agent=debug to the URL to see every install event in the console.
+  const debug = new URLSearchParams(location.search).get('agent') === 'debug';
+  const log = (...args) => {
+    if (debug) console.info('[agent]', ...args);
+  };
+
+  /** Compact agent first; if it will not install, try the smallest one. */
+  const INSTALL_PLANS = [
+    { model: undefined, copy: 'Installing your agent' },
+    { model: TINY_MODEL, copy: 'Installing the lighter agent' },
+  ];
+  let installError = '';
+
+  function progressLabel(progress, text, copy) {
     const pct = Math.round(progress * 100);
     const megabytes = /(\d{2,5})\s*MB/i.exec(text || '')?.[1];
-    return megabytes
-      ? `Installing your agent · ${pct}% · ${megabytes} MB`
-      : `Installing your agent · ${pct}%`;
+    const label = copy || 'Installing your agent';
+    return megabytes ? `${label} · ${pct}% · ${megabytes} MB` : `${label} · ${pct}%`;
   }
 
-  async function loadModel() {
+  function createModelEngine(plan) {
+    const worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
+    return createWebLLMEngine({
+      worker,
+      ...(plan.model ? { model: plan.model } : { tier: 'compact' }),
+      onProgress: ({ progress, text }) => {
+        lastProgressAt = Date.now();
+        const pct = Math.round(progress * 100);
+        progressBar.style.width = `${pct}%`;
+        if (!warming.hidden) warmingText.textContent = progressLabel(progress, text, plan.copy);
+        engineLabel.textContent = `Installing ${pct}%`;
+        log('progress', pct, text);
+      },
+      onStateChange: (state, detail) => {
+        log('state', state, detail?.message || '');
+        if (state === 'error' && detail?.message) installError = detail.message;
+      },
+    });
+  }
+
+  async function loadPlan(plan) {
     modelState = 'loading';
     updateEngineUi();
     progressBar.style.width = '0%';
     progressEl.hidden = false;
     lastProgressAt = Date.now();
-    if (!modelEngine) {
-      const worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
-      modelEngine = createWebLLMEngine({
-        worker,
-        tier: 'compact',
-        onProgress: ({ progress, text }) => {
-          lastProgressAt = Date.now();
-          const pct = Math.round(progress * 100);
-          progressBar.style.width = `${pct}%`;
-          if (!warming.hidden) warmingText.textContent = progressLabel(progress, text);
-          engineLabel.textContent = `Installing ${pct}%`;
-        },
-      });
+    if (modelEngine) {
+      try {
+        modelEngine.dispose();
+      } catch {
+        /* terminating a dead worker is best effort */
+      }
+      modelEngine = null;
     }
+    modelEngine = createModelEngine(plan);
+    log('install start', plan.model || 'compact tier');
     await modelEngine.load();
     modelState = 'ready';
     activeEngine = modelEngine;
     updateEngineUi();
+    log('install ready');
   }
 
   /**
@@ -417,7 +446,7 @@ export function initAssistant({ posts = [] } = {}) {
    * a minute of no movement, then let the caller retry: the shards already
    * fetched are in Cache Storage, so a retry resumes instead of restarting.
    */
-  function loadWithWatchdog() {
+  function loadWithWatchdog(plan) {
     lastProgressAt = Date.now();
     return new Promise((resolve, reject) => {
       let settled = false;
@@ -429,7 +458,7 @@ export function initAssistant({ posts = [] } = {}) {
           reject(new Error('download stalled'));
         }
       }, 5000);
-      loadModel().then(
+      loadPlan(plan).then(
         () => {
           if (settled) return;
           settled = true;
@@ -447,23 +476,32 @@ export function initAssistant({ posts = [] } = {}) {
   }
 
   async function ensureModel() {
-    for (let attempt = 1; attempt <= 2; attempt += 1) {
-      try {
-        await loadWithWatchdog();
-        return true;
-      } catch (error) {
-        console.warn('[assistant] model load attempt failed:', error.message);
-        if (modelEngine) {
-          try {
-            modelEngine.dispose();
-          } catch {
-            /* terminating a dead worker is best effort */
+    for (const [planIndex, plan] of INSTALL_PLANS.entries()) {
+      for (let attempt = 1; attempt <= 2; attempt += 1) {
+        try {
+          setWarming(plan.copy, 0.05);
+          await loadWithWatchdog(plan);
+          return true;
+        } catch (error) {
+          const reason = installError || error.message;
+          console.warn('[assistant] install attempt failed:', reason);
+          log('attempt failed', plan.copy, 'attempt', attempt, reason);
+          installError = '';
+          if (modelEngine) {
+            try {
+              modelEngine.dispose();
+            } catch {
+              /* terminating a dead worker is best effort */
+            }
+            modelEngine = null;
           }
-          modelEngine = null;
-        }
-        if (attempt === 1) {
-          setWarming('Install paused, picking up where it left off', 0.05);
-          engineNote.textContent = 'The install paused. Resuming from the part already saved on this device.';
+          if (attempt === 1) {
+            setWarming('Install paused, picking up where it left off', 0.05);
+            engineNote.textContent = 'The install paused. Resuming from the part already saved on this device.';
+          } else if (planIndex === 0) {
+            setWarming('Trying the lighter agent', 0.04);
+            engineNote.textContent = 'The full agent would not install here, so the lighter one is being tried.';
+          }
         }
       }
     }
@@ -508,6 +546,7 @@ export function initAssistant({ posts = [] } = {}) {
       } else {
         modelState = 'error';
         engineNote.textContent = 'The install did not finish. Keyword matching is answering until you retry.';
+        engineNote.title = installError || 'no error detail reported';
       }
       showLauncher();
     } catch (error) {
@@ -531,6 +570,7 @@ export function initAssistant({ posts = [] } = {}) {
     engineNote.textContent = ready
       ? 'Your agent is ready. It reads this page and can do everything listed below.'
       : 'The install did not finish. Keyword matching is answering until you retry.';
+    engineNote.title = ready ? '' : installError || 'no error detail reported';
     if (!ready) modelState = 'error';
     updateEngineUi();
   }
