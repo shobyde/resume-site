@@ -192,6 +192,7 @@ export function initAssistant({ posts = [] } = {}) {
   let lastProgressAt = 0;
   let chromeEngine = null;
   let chromeAI = 'unsupported';
+  let installToken = 0;
 
   const syncSend = () => {
     sendBtn.disabled = busy || input.value.trim().length === 0;
@@ -376,8 +377,12 @@ export function initAssistant({ posts = [] } = {}) {
     const chromeCouldHelp = chromeAI === 'available' || chromeAI === 'downloadable';
     modelBtn.hidden = modelState === 'probing' || (!gpuAvailable && !chromeCouldHelp);
     root.querySelector('.agent__dot').classList.toggle('is-fallback', !usingModel);
-    modelBtn.disabled = modelState === 'loading';
-    if (usingModel || usingChrome) {
+    // A long browser install must stay cancellable, so the control stays live
+    // while Chrome is preparing and reads as a cancel.
+    modelBtn.disabled = false;
+    if (modelState === 'loading' && chromeAI === 'downloadable') {
+      modelLabel.textContent = 'Cancel the install';
+    } else if (usingModel || usingChrome) {
       modelLabel.textContent = 'Switch to keyword matching';
     } else if (modelState !== 'loading') {
       modelLabel.textContent =
@@ -526,6 +531,7 @@ export function initAssistant({ posts = [] } = {}) {
       // nothing until it starts. A stall watchdog would abort a healthy
       // install, so this waits, with a hard ceiling instead.
       engineLabel.textContent = 'Chrome is preparing its model';
+      const token = ++installToken;
       await Promise.race([
         engine.prepare(),
         new Promise((_, reject) => {
@@ -535,6 +541,10 @@ export function initAssistant({ posts = [] } = {}) {
           );
         }),
       ]);
+      if (token !== installToken) {
+        log('built-in install cancelled by the visitor');
+        return false;
+      }
       chromeEngine = engine;
       activeEngine = engine;
       modelState = 'ready';
@@ -679,6 +689,15 @@ export function initAssistant({ posts = [] } = {}) {
   }
 
   async function toggleEngine() {
+    if (modelState === 'loading' && chromeAI === 'downloadable') {
+      installToken += 1;
+      modelState = 'keyword';
+      activeEngine = keywordEngine;
+      engineNote.textContent = 'Install cancelled. Keyword matching is answering.';
+      showLauncher();
+      updateEngineUi();
+      return;
+    }
     if (activeEngine === modelEngine) {
       activeEngine = keywordEngine;
       engineNote.textContent = 'Keyword matching is answering, with no setup at all. Your agent stays installed.';
