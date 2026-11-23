@@ -220,18 +220,46 @@
   border-bottom-left-radius: 3px;
 }
 
+/* The trace sits above the answer: it is what ran, and it arrives first. */
 .agent__trace {
   list-style: none;
-  margin: 0.45rem 0 0;
-  padding: 0.4rem 0 0;
-  border-top: 1px dashed var(--border);
+  margin: 0 0 0.45rem;
+  padding: 0 0 0.4rem;
+  border-bottom: 1px dashed var(--border);
   font-family: var(--font-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.02em;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
   color: var(--fg-dim);
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.2rem;
+}
+
+.agent__trace:empty {
+  display: none;
+}
+
+/* Each line gets its own beat, so a fast answer still shows how it got there. */
+.agent__trace li {
+  animation: agent-trace-in 260ms ease-out both;
+}
+
+@keyframes agent-trace-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent__trace li {
+    animation: none;
+  }
 }
 
 .agent__chips {

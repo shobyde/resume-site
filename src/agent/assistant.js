@@ -64,6 +64,21 @@ function answersFor(knowledge) {
       title: 'Which projects use a technology',
       keywords: ['which projects use', 'built with', 'uses', 'written in', 'stack'],
       goal: 'projects_using(?P)',
+      explain: ({ solutions, terms, knowledge: kb }) => {
+        const stacks = kb.query('project(?P, ?T)').length;
+        const tech = terms.join(' or ') || 'that';
+        if (solutions.length === 0) return `Checked ${stacks} project stacks for ${tech}: no match`;
+        const names = solutions
+          .map(
+            (solution) =>
+              kb
+                .query('project(?P, ?T)', { assume: [['asked', solution.bindings['?P'] ?? '']] })
+                .find((hit) => hit.bindings['?P'] === solution.bindings['?P'])?.bindings['?T'] ??
+              solution.bindings['?P'],
+          )
+          .filter(Boolean);
+        return `Checked ${stacks} project stacks for ${tech}: found it in ${names.join(', ')}`;
+      },
       compose: ({ solutions, terms, knowledge: kb }) => {
         if (solutions.length === 0) {
           // The term is declared (it is a project stack entry) but no project
@@ -90,6 +105,7 @@ function answersFor(knowledge) {
       keywords: ['newest post', 'latest article', 'last thing he wrote'],
       goal: 'post(?S, ?T, ?D)',
       threshold: 3,
+      explain: ({ solutions }) => `Checked ${solutions.length} posts and sorted them by date`,
       compose: ({ solutions }) => {
         const newest = [...solutions].sort((a, b) => String(b.bindings['?D']).localeCompare(String(a.bindings['?D'])))[0];
         return newest ? `The newest post is "${newest.bindings['?T']}".` : '';
@@ -166,8 +182,9 @@ export function initAssistant({ posts = [] } = {}) {
     dispatch,
     topK: 8,
     maxToolCalls: 3,
-    streaming: motionPrefs.reduced ? false : { chunkChars: 14, paceMs: 16 },
+    streaming: motionPrefs.reduced ? false : { chunkChars: 14, paceMs: 16, leadInMs: 650 },
     onEvent: (event) => {
+      if (event.type === 'step') appendTrace(event.step);
       if (event.type === 'delta') appendDelta(String(event.text ?? ''));
     },
     confirm: async (req) =>
@@ -272,18 +289,26 @@ export function initAssistant({ posts = [] } = {}) {
   const titleOf = (id) => manifest.capabilities.find((capability) => capability.id === id)?.title || id;
   const sentence = (title) => title.charAt(0).toLowerCase() + title.slice(1);
 
+  /**
+   * Every line is a sentence a person would say. The rule text stays in the
+   * step for tooling; it is not what a visitor reads.
+   */
   function describeStep(step) {
     switch (step.type) {
-      case 'navigate':
-        return `\u2192 ${sentence(titleOf(step.capabilityId))}`;
-      case 'query':
-        return `\u25ce ${sentence(titleOf(step.capabilityId))}`;
       case 'inference':
-        return `\u2234 ${step.rule || step.goal}${step.terms?.length ? ` \u00b7 ${step.terms.join(', ')}` : ''}`;
+        return step.label || `Looked through the page for ${step.terms?.join(' or ') || 'that'}`;
+      case 'navigate':
+        return `Scrolled to ${sentence(titleOf(step.capabilityId))}`;
+      case 'query':
+        return `Checked ${sentence(titleOf(step.capabilityId))}`;
+      case 'action':
+        return `Did this: ${sentence(titleOf(step.capabilityId))}`;
       case 'surface':
-        return `\u25a6 ${sentence(titleOf(step.capabilityId))}`;
+        return `Showed ${sentence(titleOf(step.capabilityId))}`;
+      case 'confirmation':
+        return step.approved ? 'You confirmed, so I went ahead' : 'You cancelled, so nothing changed';
       case 'error':
-        return `could not finish: ${step.message}`;
+        return `That stopped: ${step.message}`;
       default:
         return null;
     }
@@ -358,19 +383,44 @@ export function initAssistant({ posts = [] } = {}) {
     return bubble;
   }
 
-  /** Opens the bubble on the first delta and appends each chunk to it. */
+  /**
+   * One bubble per answer: the steps it took on top, the words underneath. The
+   * bubble opens on the first step so the trace is on screen before the answer
+   * starts, and each step line fades in on its own beat.
+   */
+  function ensureLive() {
+    if (live) return live;
+    const bubble = document.createElement('div');
+    bubble.className = 'agent__bubble agent__bubble--assistant';
+    const trace = document.createElement('ul');
+    trace.className = 'agent__trace';
+    const body = document.createElement('p');
+    bubble.append(trace, body);
+    messagesEl.appendChild(bubble);
+    live = { bubble, body, trace, text: '', lines: 0 };
+    return live;
+  }
+
+  function appendTrace(step) {
+    const line = describeStep(step);
+    if (!line) return;
+    const bubble = ensureLive();
+    const item = document.createElement('li');
+    item.textContent = line;
+    // The plain sentence is the label; the rule stays available on hover for
+    // anyone who wants to see the machinery.
+    if (step.type === 'inference' && (step.rule || step.goal)) item.title = step.rule || step.goal;
+    item.style.animationDelay = `${Math.min(bubble.lines, 5) * 110}ms`;
+    bubble.trace.appendChild(item);
+    bubble.lines += 1;
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
   function appendDelta(text) {
     if (!text) return;
-    if (!live) {
-      const bubble = document.createElement('div');
-      bubble.className = 'agent__bubble agent__bubble--assistant';
-      const body = document.createElement('p');
-      bubble.appendChild(body);
-      messagesEl.appendChild(bubble);
-      live = { bubble, body, text: '' };
-    }
-    live.text += text;
-    live.body.textContent = live.text;
+    const bubble = ensureLive();
+    bubble.text += text;
+    bubble.body.textContent = bubble.text;
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
 
@@ -390,27 +440,19 @@ export function initAssistant({ posts = [] } = {}) {
     live = null;
     try {
       const result = await runtime.send(question);
-      let bubble = live ? live.bubble : null;
+      const streamed = live;
       if (result.text) {
-        if (live) {
+        if (streamed) {
           // The stream is pacing, not inference: trust the finished text.
-          live.text = result.text;
-          live.body.textContent = result.text;
+          streamed.text = result.text;
+          streamed.body.textContent = result.text;
         } else {
-          bubble = addBubble('assistant', result.text);
+          addBubble('assistant', result.text);
         }
       }
-      // Trace and surfaces go under the reply, never above it.
-      const lines = result.steps.map(describeStep).filter(Boolean);
-      if (bubble && lines.length) {
-        const trace = document.createElement('ul');
-        trace.className = 'agent__trace';
-        for (const line of lines) {
-          const item = document.createElement('li');
-          item.textContent = line;
-          trace.appendChild(item);
-        }
-        bubble.appendChild(trace);
+      // An engine that emits no step events still has steps worth showing.
+      if (streamed && streamed.lines === 0) {
+        for (const step of result.steps) appendTrace(step);
       }
       for (const step of result.steps) {
         if (step.type === 'surface') addSurface(step.capabilityId, step.messages);
