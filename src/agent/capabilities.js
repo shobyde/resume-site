@@ -24,6 +24,7 @@ export const siteCapabilities = [
     title: 'Top of the page',
     description: 'Scrolls back to the top, where the headline and the download and contact buttons are.',
     keywords: ['top', 'start', 'beginning', 'hero', 'headline'],
+    requiresConfirmation: true,
     route: '#hero',
   }),
   defineCapability({
@@ -33,6 +34,7 @@ export const siteCapabilities = [
     description:
       'Scrolls to the about section: what he has worked on for twelve years, how he works with teams, and the numbers behind it.',
     keywords: ['about', 'bio', 'background', 'who is', 'summary', 'stats'],
+    requiresConfirmation: true,
     route: '#about',
   }),
   defineCapability({
@@ -42,6 +44,7 @@ export const siteCapabilities = [
     description:
       'Scrolls to the project cards, where every piece of work has architecture notes and engineering decisions behind an expand button.',
     keywords: ['projects', 'work', 'portfolio', 'built', 'examples', 'show me'],
+    requiresConfirmation: true,
     route: '#projects',
   }),
   defineCapability({
@@ -50,6 +53,7 @@ export const siteCapabilities = [
     title: 'Work experience',
     description: 'Scrolls to the twelve year timeline of roles, employers, and what he did in each.',
     keywords: ['experience', 'jobs', 'career', 'history', 'timeline', 'employment'],
+    requiresConfirmation: true,
     route: '#experience',
   }),
   defineCapability({
@@ -58,6 +62,7 @@ export const siteCapabilities = [
     title: 'Skills',
     description: 'Scrolls to the skill groups: languages, frameworks, data, cloud, and the leadership row.',
     keywords: ['skills', 'stack', 'tech', 'tools', 'languages', 'frameworks'],
+    requiresConfirmation: true,
     route: '#skills',
   }),
   defineCapability({
@@ -67,6 +72,7 @@ export const siteCapabilities = [
     description:
       'Scrolls to the writing section, an AI-assisted daily log of news, notes, and build updates that he curates by hand.',
     keywords: ['blog', 'writing', 'log', 'posts', 'articles', 'reading'],
+    requiresConfirmation: true,
     route: '#blog',
   }),
   defineCapability({
@@ -75,6 +81,7 @@ export const siteCapabilities = [
     title: 'Contact',
     description: 'Scrolls to the contact section with his email and LinkedIn.',
     keywords: ['contact', 'email', 'reach', 'hire', 'talk', 'linkedin', 'get in touch'],
+    requiresConfirmation: true,
     route: '#contact',
   }),
 

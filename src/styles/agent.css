@@ -68,8 +68,8 @@
   z-index: 96;
   display: flex;
   flex-direction: column;
-  width: min(22rem, calc(100vw - 2.5rem));
-  max-height: min(34rem, calc(100vh - 2.5rem));
+  width: min(30rem, calc(100vw - 2.5rem));
+  max-height: min(46rem, calc(100vh - 2.5rem));
   background: rgba(14, 14, 20, 0.97);
   border: 1px solid #2c2c40;
   border-radius: var(--radius);
@@ -175,6 +175,8 @@
   min-height: 7rem;
   padding: 0.85rem 1rem 1rem;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
@@ -329,6 +331,13 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+@media (min-width: 900px) {
+  .agent__panel {
+    width: 34rem;
+    max-height: min(70vh, 52rem);
+  }
 }
 
 @media (max-width: 560px) {

@@ -122,6 +122,7 @@ export function initAssistant({ posts = [] } = {}) {
     readContext: readPageContext,
     topK: 8,
     maxToolCalls: 3,
+    confirm: async (req) => window.confirm(`${req.title}\n\n${req.description}\n\nProceed?`),
   });
 
   const root = document.createElement('div');
