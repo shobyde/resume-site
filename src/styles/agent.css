@@ -8,6 +8,11 @@
   z-index: 96;
 }
 
+/* The panel's own display rules would otherwise beat the hidden attribute. */
+.agent [hidden] {
+  display: none !important;
+}
+
 .agent__launcher {
   position: fixed;
   left: 1.25rem;
@@ -59,12 +64,12 @@
 .agent__panel {
   position: fixed;
   left: 1.25rem;
-  bottom: 1.25rem;
+  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
   z-index: 96;
   display: flex;
   flex-direction: column;
   width: min(22rem, calc(100vw - 2.5rem));
-  max-height: min(26rem, calc(100vh - 2.5rem));
+  max-height: min(34rem, calc(100vh - 2.5rem));
   background: rgba(14, 14, 20, 0.97);
   border: 1px solid #2c2c40;
   border-radius: var(--radius);
@@ -116,9 +121,7 @@
 }
 
 .agent__meta {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
+  display: block;
   margin: 0.35rem 0 0;
   font-family: var(--font-mono);
   font-size: 0.62rem;
@@ -126,9 +129,20 @@
   color: var(--fg-dim);
 }
 
+.agent__meta-sep {
+  color: var(--fg-mute);
+}
+
+.agent__meta-count {
+  white-space: nowrap;
+}
+
 .agent__dot {
+  display: inline-block;
   width: 5px;
   height: 5px;
+  margin-right: 0.4rem;
+  vertical-align: middle;
   border-radius: 50%;
   background: var(--accent2);
   box-shadow: 0 0 0 3px rgba(0, 217, 184, 0.14);
@@ -323,12 +337,41 @@
     right: 0.6rem;
     bottom: 0.6rem;
     width: auto;
-    max-height: min(70vh, 33rem);
+    max-height: min(78vh, 34rem);
   }
 
   .agent__launcher {
     left: 0.75rem;
     bottom: 0.75rem;
+  }
+
+  .agent__warming {
+    left: 0.75rem;
+    bottom: 0.75rem;
+  }
+
+  /* Comfortable touch targets on a phone. */
+  .agent__close {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .agent__toggle {
+    min-height: 40px;
+  }
+
+  .agent__send,
+  .agent__input {
+    min-height: 44px;
+  }
+
+  .a2ui-button {
+    min-height: 40px;
+    padding: 0.5rem 0.85rem;
+  }
+
+  .agent__chip {
+    min-height: 34px;
   }
 }
 
@@ -343,4 +386,263 @@
   .agent__send {
     transition: none;
   }
+}
+
+/* ---------- engine switch ---------- */
+
+.agent__engine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.agent__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.03em;
+  color: var(--fg-dim);
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 140ms, border-color 140ms, background 140ms;
+}
+
+.agent__toggle:hover:not(:disabled),
+.agent__toggle:focus-visible {
+  color: var(--fg);
+  border-color: var(--accent2);
+}
+
+.agent__toggle.is-on {
+  color: #0b0b0f;
+  background: var(--accent2);
+  border-color: var(--accent2);
+}
+
+.agent__toggle:disabled {
+  cursor: progress;
+}
+
+.agent__toggle-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.agent__hint {
+  flex: 1 1 8rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  line-height: 1.4;
+  color: var(--fg-dim);
+}
+
+.agent__progress {
+  flex: 1 1 100%;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.agent__progress span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accent2);
+  transition: width 200ms linear;
+}
+
+/* ---------- A2UI surfaces ---------- */
+
+.agent__surface {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0.1rem 0 0.15rem;
+}
+
+.agent__surface-note {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.02em;
+  color: var(--fg-dim);
+}
+
+.a2ui-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.a2ui-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.15rem;
+}
+
+.a2ui-card {
+  padding: 0.7rem 0.75rem;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+}
+
+.a2ui-text {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--fg);
+}
+
+h4.a2ui-text,
+h3.a2ui-text {
+  font-family: var(--font-head);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+small.a2ui-text {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.02em;
+  color: var(--fg-dim);
+}
+
+.a2ui-divider {
+  margin: 0.2rem 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+.a2ui-image {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.a2ui-button {
+  padding: 0.38rem 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.03em;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 140ms, border-color 140ms, background 140ms;
+}
+
+.a2ui-button:hover:not(:disabled),
+.a2ui-button:focus-visible {
+  color: #0b0b0f;
+  background: var(--accent2);
+  border-color: var(--accent2);
+}
+
+.a2ui-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent__toggle,
+  .a2ui-button {
+    transition: none;
+  }
+}
+
+/* ---------- launcher states and warming chip ---------- */
+
+.agent__launcher[hidden],
+.agent__warming[hidden] {
+  display: none;
+}
+
+.agent__warming {
+  position: fixed;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 96;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.85rem 0.65rem;
+  position: fixed;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  color: var(--fg-dim);
+  background: rgba(18, 18, 26, 0.92);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.agent__warming-bar {
+  position: absolute;
+  left: 0.7rem;
+  right: 0.7rem;
+  bottom: 0.32rem;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.agent__warming-bar i {
+  display: block;
+  height: 100%;
+  width: 4%;
+  background: var(--accent2);
+  transition: width 400ms linear;
+}
+
+.agent__hint {
+  flex: 1 1 100%;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  line-height: 1.5;
+  color: var(--fg-dim);
+}
+
+.agent__surface-note {
+  display: inline-block;
+  align-self: flex-start;
+  margin: 0;
+  padding: 0.18rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+  color: var(--fg-dim);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.agent__dot.is-fallback {
+  background: var(--fg-mute);
+  box-shadow: none;
+}
+
+.agent__input:focus-visible {
+  border-color: var(--accent);
+  outline: 1px solid var(--accent);
+  outline-offset: 0;
 }

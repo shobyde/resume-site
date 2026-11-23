@@ -12,6 +12,7 @@
    ============================================================ */
 import { defineCapability } from 'client-agent/core';
 import { DATA } from '../data.js';
+import { articleCard, contactCard, findProject, projectCard } from './surfaces.js';
 
 const plain = (html) => String(html).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 
@@ -169,6 +170,84 @@ export const siteCapabilities = [
       const toggle = card.querySelector('.project-card__toggle');
       if (toggle && toggle.getAttribute('aria-expanded') !== 'true') toggle.click();
       return { expanded: card.querySelector('.project-card__title')?.textContent?.trim() };
+    },
+  }),
+
+  defineCapability({
+    id: 'projects.card',
+    kind: 'action',
+    title: 'Show a project card',
+    description:
+      'Shows a card for one project with its summary, its stack, and buttons for the engineering detail and the live site. Use it when the visitor asks what a project is or wants to see it rather than read a list.',
+    keywords: ['show project', 'tell me about', 'card', 'preview', 'what is hobnob', 'what is readback'],
+    route: '#projects',
+    paramsSchema: {
+      type: 'object',
+      properties: {
+        project: { type: 'string', enum: ['hobnob', 'readback', 'groundglass', 'shobyde', 'digipen'] },
+      },
+      required: ['project'],
+      additionalProperties: false,
+    },
+    handler: async ({ project }, ctx) => {
+      if (ctx.currentRoute !== '#projects') await ctx.navigate('#projects');
+      const surface = projectCard(project);
+      if (!surface) throw new Error(`no project named "${project}"`);
+      return { surface, shown: project };
+    },
+  }),
+  defineCapability({
+    id: 'projects.open',
+    kind: 'action',
+    title: 'Open a project link',
+    description:
+      'Opens the live site or the public source for one project in a new tab. The link is chosen from a fixed list, never typed by the model.',
+    keywords: ['open project', 'visit site', 'source code', 'github', 'open link'],
+    paramsSchema: {
+      type: 'object',
+      properties: {
+        project: { type: 'string', enum: ['hobnob', 'readback', 'groundglass', 'shobyde', 'digipen'] },
+        link: { type: 'string', enum: ['site', 'source'] },
+      },
+      required: ['project', 'link'],
+      additionalProperties: false,
+    },
+    handler: async ({ project, link }, ctx) => {
+      const entry = findProject(project);
+      const chosen = link === 'source' ? entry?.links[1] : entry?.links[0];
+      if (!entry || !chosen) throw new Error(`no ${link} link for "${project}"`);
+      ctx.dispatch('site:open_url', { url: chosen.url });
+      return { opened: chosen.url };
+    },
+  }),
+  defineCapability({
+    id: 'contact.card',
+    kind: 'action',
+    title: 'Show the contact card',
+    description:
+      'Shows the email address and LinkedIn with buttons to copy the address or open the profile, for when the visitor wants to get in touch.',
+    keywords: ['contact card', 'how do I reach him', 'email', 'get in touch', 'hire'],
+    route: '#contact',
+    paramsSchema: { type: 'object', properties: {}, additionalProperties: false },
+    handler: async (_params, ctx) => {
+      if (ctx.currentRoute !== '#contact') await ctx.navigate('#contact');
+      return { surface: contactCard() };
+    },
+  }),
+  defineCapability({
+    id: 'blog.card',
+    kind: 'action',
+    title: 'Show the newest article card',
+    description:
+      'Shows a card for the newest post in the log with a button to read it and a button to browse everything.',
+    keywords: ['article card', 'show the post', 'newest post', 'latest writing'],
+    route: '#blog',
+    paramsSchema: { type: 'object', properties: {}, additionalProperties: false },
+    handler: async (_params, ctx) => {
+      const newest = ctx.read('newestPost');
+      if (!newest) throw new Error('the post index has not loaded');
+      if (ctx.currentRoute !== '#blog') await ctx.navigate('#blog');
+      return { surface: articleCard(newest) };
     },
   }),
 

@@ -1,31 +1,55 @@
 /* ============================================================
-   Site assistant: a small navigator for shobyde.com.
+   Site assistant: a navigator and explainer for shobyde.com.
 
-   It knows the sections and operations of this page because the
-   build crawler read src/agent/capabilities.js and emitted
-   agent-manifest.json. The model never sees the DOM, and it can only
-   call ids that appear in that manifest.
+   Engine policy:
+     1. On load, if the device looks capable, the compact model is
+        fetched in the background and the launcher appears once it is
+        warm. That is the "agentic bubble" this site wants to show.
+     2. If WebGPU, memory, or the download rule says no, the keyword
+        engine answers immediately and the launcher is available at
+        once. Nothing is ever silently broken.
+     3. The visitor can always switch back to keyword match.
 
-   The engine here is the keyword engine: it matches the visitor's
-   words against the declared capabilities and needs no download.
-   That is deliberate for a resume site. The WebLLM adapter ships in
-   the package when a page wants a real model in the tab.
+   The agent never touches the DOM. Replies are prose or an A2UI
+   surface (src/agent/surfaces.js), rendered against the site's own
+   components.
    ============================================================ */
 import manifest from 'client-agent:manifest';
 import { AgentRuntime, createLexicalEngine, registry } from 'client-agent/core';
+import { createDomContextReader } from 'client-agent/dom';
+import { createWebLLMEngine, detectWebGPU } from 'client-agent/webllm';
 import { siteCapabilities } from './capabilities.js';
+import { renderA2UI } from './a2ui.js';
 import { motionPrefs } from '../motionPrefs.js';
 import '../styles/agent.css';
 
 const SUGGESTIONS = {
-  '#hero': ['What does Sho work on?', 'Show me the projects', 'How many years has he been building?'],
+  '#hero': ['What does Sho work on?', 'Show me the Hobnob card', 'How many years has he been building?'],
   '#about': ['What does Sho work on?', 'Where is he based?', 'Show me the projects'],
-  '#projects': ['List the projects', 'Expand the Hobnob card', 'Read the newest article'],
+  '#projects': ['Tell me about Groundglass', 'Expand the Hobnob card', 'Read the newest article'],
   '#experience': ['What is his current role?', 'Show the skills', 'Open the printable resume'],
-  '#skills': ['List the projects', 'What is his current role?', 'Copy his email'],
-  '#blog': ['Read the newest article', 'Open the archive', 'Show me the projects'],
-  '#contact': ['Copy his email', 'Open LinkedIn', 'Open the printable resume'],
+  '#skills': ['Show me the Readback card', 'What is his current role?', 'Show the contact card'],
+  '#blog': ['Show the newest article card', 'Open the archive', 'Show me the projects'],
+  '#contact': ['Show the contact card', 'Copy his email', 'Open LinkedIn'],
 };
+
+const CONTEXT_SECTIONS = [
+  { selector: '#about', label: 'About' },
+  { selector: '#projects', label: 'Projects' },
+  { selector: '#experience', label: 'Experience' },
+  { selector: '#skills', label: 'Skills' },
+  { selector: '#blog', label: 'Writing' },
+  { selector: '#contact', label: 'Contact' },
+];
+
+/** Background preload is a courtesy, not a right: skip metered links and small devices. */
+function shouldPreloadModel() {
+  const connection = navigator.connection || {};
+  if (connection.saveData) return false;
+  if (connection.effectiveType && /(^|-)2g$/.test(connection.effectiveType)) return false;
+  const memory = navigator.deviceMemory || 8;
+  return memory >= 4;
+}
 
 function activeSection() {
   const active = document.querySelector('.nav__link.is-active');
@@ -55,69 +79,88 @@ export function initAssistant({ posts = [] } = {}) {
 
   const sorted = newestFirst(posts);
   const newestPost = sorted[0] || null;
+  const state = { postCount: posts.length, newestPost };
 
-  // Handlers live in the registry; the manifest supplies what the model may
-  // choose from. Registering eagerly is fine: every handler here only touches
-  // the page that already exists.
+  const dispatch = (event, payload) => {
+    switch (event) {
+      case 'resume:print':
+        window.print();
+        break;
+      case 'contact:linkedin':
+        window.open('https://www.linkedin.com/in/sho-byde-556954138/', '_blank', 'noopener');
+        break;
+      case 'site:open_url':
+        if (payload?.url) window.open(payload.url, '_blank', 'noopener');
+        break;
+      case 'blog:open':
+        if (payload?.slug) location.assign(`/posts/${payload.slug}/`);
+        break;
+      case 'blog:archive':
+        location.assign('/archive/');
+        break;
+      default:
+        break;
+    }
+  };
+
   for (const capability of siteCapabilities) registry.register(capability);
 
+  const readPageContext = createDomContextReader({ sections: CONTEXT_SECTIONS, maxChars: 2600 });
+
+  const keywordEngine = createLexicalEngine({ capabilities: manifest.capabilities });
+  let activeEngine = keywordEngine;
+  const switchboard = { id: 'switchboard', complete: (request) => activeEngine.complete(request) };
+
   const runtime = new AgentRuntime({
-    engine: createLexicalEngine({ capabilities: manifest.capabilities }),
+    engine: switchboard,
     capabilities: manifest.capabilities,
     registry,
-    getSnapshot: () => ({
-      currentRoute: activeSection(),
-      state: { postCount: posts.length, newestPost },
-    }),
+    getSnapshot: () => ({ currentRoute: activeSection(), state }),
     navigate: goTo,
-    dispatch: (event, payload) => {
-      switch (event) {
-        case 'resume:print':
-          window.print();
-          break;
-        case 'contact:linkedin':
-          window.open('https://www.linkedin.com/in/sho-byde-556954138/', '_blank', 'noopener');
-          break;
-        case 'blog:open':
-          if (payload?.slug) location.assign(`/posts/${payload.slug}/`);
-          break;
-        case 'blog:archive':
-          location.assign('/archive/');
-          break;
-        default:
-          break;
-      }
-    },
-    topK: 6,
-    maxToolCalls: 2,
+    dispatch,
+    readContext: readPageContext,
+    topK: 8,
+    maxToolCalls: 3,
   });
 
   const root = document.createElement('div');
   root.id = 'agentRoot';
   root.className = 'agent';
   root.innerHTML = `
-    <button class="agent__launcher" id="agentLauncher" type="button" aria-expanded="false" aria-controls="agentPanel">
+    <button class="agent__launcher" id="agentLauncher" type="button" aria-expanded="false" aria-controls="agentPanel" hidden>
       <span class="agent__glyph" aria-hidden="true">&#9096;</span>
       <span>Ask about Sho</span>
     </button>
+    <div class="agent__warming" id="agentWarming" aria-live="polite">
+      <span class="agent__glyph" aria-hidden="true">&#9096;</span>
+      <span id="agentWarmingText">Warming up the model</span>
+      <span class="agent__warming-bar" aria-hidden="true"><i id="agentWarmingBar"></i></span>
+    </div>
     <div class="agent__scrim" id="agentScrim" hidden></div>
     <section class="agent__panel" id="agentPanel" aria-label="Ask about Sho" hidden>
       <header class="agent__head">
         <div>
           <p class="agent__eyebrow">Site assistant</p>
           <h2 class="agent__title">Ask about Sho</h2>
-          <p class="agent__meta"><span class="agent__dot" aria-hidden="true"></span>Runs in this browser &middot; ${manifest.capabilities.length} things it can do</p>
+          <p class="agent__meta"><span class="agent__dot" aria-hidden="true"></span><span id="agentEngine">Starting</span> <span class="agent__meta-sep">&middot;</span> <span class="agent__meta-count">${manifest.capabilities.length} capabilities</span></p>
         </div>
         <button class="agent__close" id="agentClose" type="button" aria-label="Close the assistant">&times;</button>
       </header>
+      <div class="agent__engine" id="agentEngineRow">
+        <button class="agent__toggle" id="agentModelBtn" type="button" hidden>
+          <span class="agent__toggle-dot" aria-hidden="true"></span><span id="agentModelLabel">Use the on-device model</span>
+        </button>
+        <span class="agent__hint" id="agentEngineNote"></span>
+        <div class="agent__progress" id="agentProgress" hidden><span></span></div>
+      </div>
       <div class="agent__messages" id="agentMessages" role="log" aria-live="polite"></div>
       <div class="agent__chips" id="agentChips"></div>
       <form class="agent__composer" id="agentForm" autocomplete="off">
         <label class="sr-only" for="agentInput">Ask about Sho</label>
-        <input class="agent__input" id="agentInput" type="text" placeholder="Where is his experience?" />
+        <input class="agent__input" id="agentInput" type="text" placeholder="What does Sho work on?" />
         <button class="agent__send" type="submit">Send</button>
       </form>
-      <p class="agent__foot">Answers come from the declared sections of this page. Nothing is sent to a server and no model is downloaded.</p>
+      <p class="agent__foot">Answers use only this page. Nothing is sent to a server.</p>
     </section>
   `;
   document.body.appendChild(root);
@@ -125,13 +168,31 @@ export function initAssistant({ posts = [] } = {}) {
   const panel = root.querySelector('#agentPanel');
   const scrim = root.querySelector('#agentScrim');
   const launcher = root.querySelector('#agentLauncher');
+  const warming = root.querySelector('#agentWarming');
+  const warmingText = root.querySelector('#agentWarmingText');
+  const warmingBar = root.querySelector('#agentWarmingBar');
   const closeBtn = root.querySelector('#agentClose');
   const messagesEl = root.querySelector('#agentMessages');
   const chipsEl = root.querySelector('#agentChips');
   const form = root.querySelector('#agentForm');
   const input = root.querySelector('#agentInput');
+  const sendBtn = root.querySelector('.agent__send');
+  const engineLabel = root.querySelector('#agentEngine');
+  const engineNote = root.querySelector('#agentEngineNote');
+  const modelBtn = root.querySelector('#agentModelBtn');
+  const modelLabel = root.querySelector('#agentModelLabel');
+  const progressEl = root.querySelector('#agentProgress');
+  const progressBar = progressEl.querySelector('span');
 
   let busy = false;
+  let modelEngine = null;
+  let modelState = 'probing'; // probing | loading | ready | keyword | error
+  let gpuAvailable = true;
+
+  const syncSend = () => {
+    sendBtn.disabled = busy || input.value.trim().length === 0;
+    sendBtn.classList.toggle('is-busy', busy);
+  };
 
   const setOpen = (open) => {
     panel.hidden = !open;
@@ -144,12 +205,79 @@ export function initAssistant({ posts = [] } = {}) {
     }
   };
 
+  const titleOf = (id) => manifest.capabilities.find((c) => c.id === id)?.title || id;
+  const sentence = (title) => title.charAt(0).toLowerCase() + title.slice(1);
+
+  function describeStep(step) {
+    switch (step.type) {
+      case 'navigate':
+        return `\u2192 ${sentence(titleOf(step.capabilityId))}`;
+      case 'action':
+        return null;
+      case 'query':
+        return `\u25ce ${sentence(titleOf(step.capabilityId))}`;
+      case 'surface':
+        return `\u25a6 ${sentence(titleOf(step.capabilityId))}`;
+      case 'error':
+        return `could not finish: ${step.message}`;
+      default:
+        return null;
+    }
+  }
+
+  async function runCapabilityFromSurface(name, context) {
+    const live = registry.get(name);
+    if (!live || typeof live.handler !== 'function') {
+      addBubble('assistant', `I cannot run ${name} from here.`);
+      return;
+    }
+    try {
+      const result = await live.handler(context || {}, {
+        currentRoute: activeSection(),
+        navigate: goTo,
+        dispatch,
+        read: (key) => state[key],
+      });
+      const surface = result && Array.isArray(result.surface) ? result.surface : null;
+      if (surface) {
+        addSurface(name, surface);
+        return;
+      }
+      const summary = result && (result.opened || result.expanded || result.copied || result.appliedFilter);
+      addBubble('assistant', summary ? `${titleOf(name)}: ${summary}` : `${titleOf(name)}: done.`);
+    } catch (error) {
+      addBubble('assistant', `${titleOf(name)} failed: ${error.message}`);
+    }
+  }
+
+  const addSurface = (capabilityId, messages) => {
+    const holder = document.createElement('div');
+    holder.className = 'agent__surface';
+    messagesEl.appendChild(holder);
+    renderA2UI(messages, holder, {
+      onAction: (name, context) => {
+        void runCapabilityFromSurface(name, context);
+      },
+    });
+    const label = document.createElement('p');
+    label.className = 'agent__surface-note';
+    label.title = capabilityId;
+    label.textContent = `\u25c8 A2UI \u00b7 ${titleOf(capabilityId)}`;
+    holder.appendChild(label);
+    // A card can be taller than the panel; land on its top edge so the title is
+    // never scrolled out of view. scrollIntoView handles the nested scroll
+    // container correctly, while offsetTop is relative to a different parent.
+    holder.scrollIntoView({ block: 'nearest' });
+  };
+
   const addBubble = (role, text, steps = []) => {
     const bubble = document.createElement('div');
     bubble.className = `agent__bubble agent__bubble--${role}`;
-    const body = document.createElement('p');
-    body.textContent = text;
-    bubble.appendChild(body);
+    if (text) {
+      const body = document.createElement('p');
+      body.textContent = text;
+      bubble.appendChild(body);
+    }
     const lines = steps.map(describeStep).filter(Boolean);
     if (lines.length) {
       const trace = document.createElement('ul');
@@ -165,15 +293,8 @@ export function initAssistant({ posts = [] } = {}) {
     messagesEl.scrollTop = messagesEl.scrollHeight;
   };
 
-  const sendBtn = root.querySelector('.agent__send');
-
-  const syncSend = () => {
-    sendBtn.disabled = busy || input.value.trim().length === 0;
-  };
-
   const setBusy = (value) => {
     busy = value;
-    form.classList.toggle('is-busy', value);
     input.disabled = value;
     syncSend();
   };
@@ -187,11 +308,13 @@ export function initAssistant({ posts = [] } = {}) {
     setBusy(true);
     try {
       const result = await runtime.send(question);
-      addBubble('assistant', result.text, result.steps);
-      // A navigation or an action changed the page; get out of the way so the
-      // visitor can see it, unless they are already typing the next question.
-      const changedSomething = result.steps.some((step) => step.type === 'navigate' || step.type === 'action');
-      if (changedSomething) {
+      if (result.text) addBubble('assistant', result.text, result.steps);
+      for (const step of result.steps) {
+        if (step.type === 'surface') addSurface(step.capabilityId, step.messages);
+      }
+      const renderedSurface = result.steps.some((step) => step.type === 'surface');
+      const changedPage = result.steps.some((step) => step.type === 'navigate' || step.type === 'action');
+      if (changedPage && !renderedSurface) {
         setTimeout(() => {
           if (!input.value) setOpen(false);
         }, 900);
@@ -201,6 +324,7 @@ export function initAssistant({ posts = [] } = {}) {
     } finally {
       setBusy(false);
       input.value = '';
+      syncSend();
       input.focus();
     }
   }
@@ -219,17 +343,131 @@ export function initAssistant({ posts = [] } = {}) {
     }
   }
 
+  function showLauncher() {
+    warming.hidden = true;
+    launcher.hidden = false;
+  }
+
+  function setWarming(text, progress) {
+    warming.hidden = false;
+    launcher.hidden = true;
+    warmingText.textContent = text;
+    if (typeof progress === 'number') {
+      warmingBar.style.width = `${Math.max(4, Math.round(progress * 100))}%`;
+    }
+  }
+
+  function updateEngineUi() {
+    const usingModel = activeEngine === modelEngine && modelState === 'ready';
+    engineLabel.textContent = usingModel
+      ? 'On-device model'
+      : modelState === 'probing' || modelState === 'loading'
+        ? 'Warming up'
+        : 'Keyword match';
+    modelBtn.hidden = modelState === 'probing' || !gpuAvailable;
+    root.querySelector('.agent__dot').classList.toggle('is-fallback', !usingModel);
+    modelBtn.disabled = modelState === 'loading';
+    modelLabel.textContent = usingModel ? 'Back to keyword match' : 'Use the on-device model';
+    modelBtn.classList.toggle('is-on', usingModel);
+    progressEl.hidden = modelState !== 'loading';
+  }
+
+  async function loadModel() {
+    modelState = 'loading';
+    updateEngineUi();
+    progressBar.style.width = '0%';
+    progressEl.hidden = false;
+    if (!modelEngine) {
+      const worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
+      modelEngine = createWebLLMEngine({
+        worker,
+        tier: 'compact',
+        onProgress: ({ progress }) => {
+          progressBar.style.width = `${Math.round(progress * 100)}%`;
+        },
+      });
+    }
+    await modelEngine.load();
+    modelState = 'ready';
+    activeEngine = modelEngine;
+    updateEngineUi();
+  }
+
+  async function bootEngine() {
+    if (!shouldPreloadModel()) {
+      gpuAvailable = false;
+      modelState = 'keyword';
+      engineNote.textContent = 'Answers use keyword matching. The on-device model can be turned on when you want it.';
+      updateEngineUi();
+      showLauncher();
+      return;
+    }
+
+    setWarming('Checking for a GPU', 0.04);
+    const gpu = await detectWebGPU();
+    if (gpu !== 'available') {
+      gpuAvailable = false;
+      modelState = 'keyword';
+      engineNote.textContent =
+        gpu === 'unsupported'
+          ? 'This browser cannot run the on-device model, so answers use keyword matching.'
+          : 'This device has no usable GPU, so answers use keyword matching.';
+      updateEngineUi();
+      showLauncher();
+      return;
+    }
+
+    setWarming('Downloading the on-device model', 0.08);
+    engineNote.textContent = 'Fetching a small model in the background. It is cached after the first visit.';
+    try {
+      // Let the page finish painting first; the download is not urgent.
+      await new Promise((resolve) => {
+        const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 2000));
+        idle(resolve, { timeout: 4000 });
+      });
+      await loadModel();
+      engineNote.textContent = 'The model is warm. It reads this page and can call every capability below.';
+      showLauncher();
+    } catch (error) {
+      modelState = 'error';
+      engineNote.textContent = 'The model could not load, so answers use keyword matching.';
+      console.warn('[assistant] model preload failed:', error);
+      updateEngineUi();
+      showLauncher();
+    }
+  }
+
+  async function toggleEngine() {
+    if (activeEngine === modelEngine) {
+      activeEngine = keywordEngine;
+      engineNote.textContent = 'Answers use keyword matching. The model stays cached and can be turned back on.';
+      updateEngineUi();
+      return;
+    }
+    try {
+      if (modelState !== 'ready') await loadModel();
+      else activeEngine = modelEngine;
+      engineNote.textContent = 'The model is warm. It reads this page and can call every capability below.';
+    } catch (error) {
+      engineNote.textContent = 'The model could not load, so answers use keyword matching.';
+      console.warn('[assistant] model load failed:', error);
+    }
+    updateEngineUi();
+  }
+
   input.addEventListener('input', syncSend);
   launcher.addEventListener('click', () => setOpen(true));
+  warming.addEventListener('click', () => setOpen(true));
+  closeBtn.addEventListener('click', () => setOpen(false));
   scrim.addEventListener('click', () => setOpen(false));
-  // The backdrop is inert: wheel and touch over it must not scroll the page
-  // behind the panel.
   scrim.addEventListener('wheel', (event) => event.preventDefault(), { passive: false });
   scrim.addEventListener('touchmove', (event) => event.preventDefault(), { passive: false });
-  closeBtn.addEventListener('click', () => setOpen(false));
+  modelBtn.addEventListener('click', () => {
+    void toggleEngine();
+  });
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    ask(input.value);
+    void ask(input.value);
   });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !panel.hidden) setOpen(false);
@@ -237,29 +475,7 @@ export function initAssistant({ posts = [] } = {}) {
 
   renderChips();
   syncSend();
+  updateEngineUi();
+  void bootEngine();
   return runtime;
-}
-
-const capabilityTitles = new Map(manifest.capabilities.map((c) => [c.id, c.title]));
-
-function titleFor(step) {
-  const title = capabilityTitles.get(step.capabilityId) || step.capabilityId;
-  return title.charAt(0).toLowerCase() + title.slice(1);
-}
-
-function describeStep(step) {
-  switch (step.type) {
-    case 'navigate':
-      return `\u2192 ${titleFor(step)}`;
-    case 'action':
-      // The reply already names the action ("Done: Copy the email address."),
-      // so a second identical line is noise.
-      return null;
-    case 'query':
-      return `\u25ce ${titleFor(step)}`;
-    case 'error':
-      return `could not finish: ${step.message}`;
-    default:
-      return null;
-  }
 }

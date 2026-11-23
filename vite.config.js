@@ -5,6 +5,8 @@ import { clientAgent } from 'client-agent/vite';
 export default defineConfig({
   base: '/',
   server: { watch: { usePolling: true, interval: 300 } },
+  // WebLLM splits its own chunks, so the worker has to be an ES module.
+  worker: { format: 'es' },
   plugins: [
     // Reads defineCapability() declarations with the TypeScript AST and emits
     // agent-manifest.json, served here as the client-agent:manifest module.

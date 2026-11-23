@@ -12,7 +12,8 @@
     "vite": "^6.0.0"
   },
   "dependencies": {
-    "client-agent": "https://github.com/shobyde/client-agent/releases/download/v0.1.5/client-agent-0.1.5.tgz",
+    "@mlc-ai/web-llm": "^0.2.89",
+    "client-agent": "https://github.com/shobyde/client-agent/releases/download/v0.2.2/client-agent-0.2.2.tgz",
     "lenis": "^1.3.26",
     "three": "^0.170.0"
   }

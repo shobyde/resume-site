@@ -1,0 +1,44 @@
+name: surfaces
+
+# The assistant can emit seven A2UI surfaces. This job regenerates them from
+# their builders and runs groundglass over the result, so a component that
+# references a missing child, an unlabelled button, or a dead binding fails the
+# build instead of disappearing quietly in the browser.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install groundglass
+        run: pip install git+https://github.com/shobyde/groundglass.git
+
+      - name: Regenerate the surface fixtures
+        run: node scripts/build_surface_fixtures.mjs
+
+      - name: Fixtures on disk must match their builders
+        run: git diff --exit-code surfaces/
+
+      - name: Check every surface
+        run: |
+          status=0
+          for file in surfaces/*.jsonl; do
+            echo "::group::$file"
+            groundglass check "$file" || status=1
+            echo "::endgroup::"
+          done
+          exit $status
