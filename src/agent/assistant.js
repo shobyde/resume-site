@@ -202,6 +202,9 @@ export function initAssistant({ posts = [] } = {}) {
   let chromeAI = 'unsupported';
   const chromePending = () => chromeAI === 'downloadable' || chromeAI === 'downloading';
   let installToken = 0;
+  // Chrome, Edge and others expose the same Prompt API but each browser owns
+  // its own model, so the copy never names one of them.
+  const NEEDS_PRESS = 'Your browser needs the button pressed';
 
   const syncSend = () => {
     sendBtn.disabled = busy || input.value.trim().length === 0;
@@ -523,7 +526,7 @@ export function initAssistant({ posts = [] } = {}) {
     if (chromeAI !== 'available' && !chromePending()) return false;
     const activated = navigator.userActivation ? navigator.userActivation.isActive : true;
     if (chromeAI !== 'available' && !activated) {
-      installError = 'Chrome needs the button pressed to start its own model download. Press install again.';
+      installError = `${NEEDS_PRESS} to start its own model download. Press install again.`;
       log('built-in model needs a press');
       return false;
     }
@@ -551,13 +554,13 @@ export function initAssistant({ posts = [] } = {}) {
       // Chrome hands the request to its component updater, which reports
       // nothing until it starts. A stall watchdog would abort a healthy
       // install, so this waits, with a hard ceiling instead.
-      engineLabel.textContent = 'Chrome is preparing its model';
+      engineLabel.textContent = 'Your browser is preparing its model';
       const token = ++installToken;
       await Promise.race([
         engine.prepare(),
         new Promise((_, reject) => {
           setTimeout(
-            () => reject(new Error("Chrome did not start its model within ten minutes")),
+            () => reject(new Error('Your browser did not start its model within ten minutes')),
             10 * 60 * 1000,
           );
         }),
@@ -577,7 +580,7 @@ export function initAssistant({ posts = [] } = {}) {
       console.warn('[assistant] built-in model unavailable:', error.message);
       log('built-in model failed', error.message);
       installError = /user gesture/i.test(error.message)
-        ? 'Chrome needs the button pressed to start its own model download. Press install again.'
+        ? `${NEEDS_PRESS} to start its own model download. Press install again.`
         : error.message;
       return false;
     }
@@ -585,7 +588,7 @@ export function initAssistant({ posts = [] } = {}) {
 
   async function ensureAgent() {
     if (await installChromeAgent()) return true;
-    if (installError.startsWith('Chrome needs')) return false;
+    if (installError.startsWith(NEEDS_PRESS)) return false;
 
     for (const [planIndex, plan] of INSTALL_PLANS.entries()) {
       for (let attempt = 1; attempt <= 2; attempt += 1) {
@@ -751,7 +754,7 @@ export function initAssistant({ posts = [] } = {}) {
         modelState = 'error';
         engineNote.textContent = installError.startsWith('cannot reach')
           ? 'The model host is blocked from this network, so answers use keyword matching.'
-          : installError.startsWith('Chrome needs')
+          : installError.startsWith(NEEDS_PRESS)
             ? installError
             : 'The install did not finish. Keyword matching is answering until you retry.';
         engineNote.title = installError || 'no error detail reported';
@@ -790,7 +793,7 @@ export function initAssistant({ posts = [] } = {}) {
         : 'Your agent is ready. It reads this page and can do everything listed below.'
       : installError.startsWith('cannot reach')
         ? 'The model host is blocked from this network, so answers use keyword matching.'
-        : installError.startsWith('Chrome needs')
+        : installError.startsWith(NEEDS_PRESS)
           ? installError
           : 'The install did not finish. Keyword matching is answering until you retry.';
     engineNote.title = ready ? '' : installError || 'no error detail reported';
