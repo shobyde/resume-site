@@ -489,10 +489,10 @@ export function initAssistant({ posts = [] } = {}) {
 
   /**
    * One shard that never arrives looks exactly like a slow download. Watch for
-   * a minute of no movement, then let the caller retry: the shards already
+   * two minutes of no movement, then let the caller retry: the shards already
    * fetched are in Cache Storage, so a retry resumes instead of restarting.
    */
-  function watchdog(run, graceMs = 12000) {
+  function watchdog(run, graceMs = 120000) {
     lastProgressAt = Date.now();
     return new Promise((resolve, reject) => {
       let settled = false;
