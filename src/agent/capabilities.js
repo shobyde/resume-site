@@ -290,10 +290,18 @@ export const siteCapabilities = [
     description: 'Reads how many posts are published and which one is the newest.',
     keywords: ['how many posts', 'post count', 'latest article', 'updated when'],
     paramsSchema: { type: 'object', properties: {}, additionalProperties: false },
-    handler: async (_params, ctx) => ({
-      posts: ctx.read('postCount') || 0,
-      newest: ctx.read('newestPost')?.title || null,
-    }),
+    handler: async (_params, ctx) => {
+      const posts = ctx.read('postCount') || 0;
+      const newest = ctx.read('newestPost');
+      return {
+        posts,
+        newest: newest?.title ?? null,
+        // phrase the reply here: a key/value dump reads like a database row
+        answer: newest
+          ? `${posts} posts are published, and the newest is "${newest.title}".`
+          : `${posts} posts are published.`,
+      };
+    },
   }),
   defineCapability({
     id: 'projects.list',

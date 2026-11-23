@@ -1,55 +1,101 @@
 /* ============================================================
-   Site assistant: a navigator and explainer for shobyde.com.
+   Site assistant: a navigator, explainer and answerer for shobyde.com.
 
    Engine policy:
-     1. On load, if the device looks capable, the compact model is
-        fetched in the background and the launcher appears once it is
-        warm. That is the "agentic bubble" this site wants to show.
-     2. If WebGPU, memory, or the download rule says no, the keyword
-        engine answers immediately and the launcher is available at
-        once. Nothing is ever silently broken.
-     3. The visitor can always switch back to keyword match.
+     1. Every answer comes from data on this page: the capability
+        manifest, the facts declared below, and the rules over them.
+     2. No model is downloaded, no GPU is required, nothing is sent
+        to a server, and no answer is invented.
+     3. Replies stream as deltas, and a rule answer carries the fact
+        set it came from, so the trace under a reply is real.
 
    The agent never touches the DOM. Replies are prose or an A2UI
    surface (src/agent/surfaces.js), rendered against the site's own
    components.
    ============================================================ */
 import manifest from 'client-agent:manifest';
-import { AgentRuntime, createLexicalEngine, registry } from 'client-agent/core';
-import { createDomContextReader } from 'client-agent/dom';
-import { TINY_MODEL, createWebLLMEngine, detectWebGPU, pickModelTier } from 'client-agent/webllm';
-import { createChromeAIEngine, detectChromeAI } from 'client-agent/chrome-ai';
+import { AgentRuntime, registry } from 'client-agent/core';
+import { KnowledgeBase, createRulesEngine, fact } from 'client-agent/rules';
 import { siteCapabilities } from './capabilities.js';
 import { renderA2UI } from './a2ui.js';
+import { DATA } from '../data.js';
 import { motionPrefs } from '../motionPrefs.js';
 import '../styles/agent.css';
 
 const SUGGESTIONS = {
-  '#hero': ['What does Sho work on?', 'Show me the Hobnob card', 'How many years has he been building?'],
+  '#hero': ['What does Sho work on?', 'Show me the Hobnob card', 'Which projects use TypeScript?'],
   '#about': ['What does Sho work on?', 'Where is he based?', 'Show me the projects'],
-  '#projects': ['Tell me about Groundglass', 'Expand the Hobnob card', 'Read the newest article'],
+  '#projects': ['Which projects use Python?', 'Expand the Hobnob card', 'Read the newest article'],
   '#experience': ['What is his current role?', 'Show the skills', 'Open the printable resume'],
-  '#skills': ['Show me the Readback card', 'What is his current role?', 'Show the contact card'],
+  '#skills': ['Show me the Readback card', 'Which projects use Flask?', 'Show the contact card'],
   '#blog': ['Show the newest article card', 'Open the archive', 'Show me the projects'],
   '#contact': ['Show the contact card', 'Copy his email', 'Open LinkedIn'],
 };
 
-const CONTEXT_SECTIONS = [
-  { selector: '#about', label: 'About' },
-  { selector: '#projects', label: 'Projects' },
-  { selector: '#experience', label: 'Experience' },
-  { selector: '#skills', label: 'Skills' },
-  { selector: '#blog', label: 'Writing' },
-  { selector: '#contact', label: 'Contact' },
-];
+const slugOf = (title) =>
+  String(title)
+    .split(':')[0]
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 
-/** Background preload is a courtesy, not a right: skip metered links and small devices. */
-function shouldPreloadModel() {
-  const connection = navigator.connection || {};
-  if (connection.saveData) return false;
-  if (connection.effectiveType && /(^|-)2g$/.test(connection.effectiveType)) return false;
-  const memory = navigator.deviceMemory || 8;
-  return memory >= 4;
+/** Projects and their stacks, straight from the page's own data file. */
+function buildKnowledge(posts) {
+  const facts = [];
+  for (const project of DATA.projects) {
+    const slug = slugOf(project.title);
+    facts.push(fact('project', slug, project.title.split(':')[0].trim()));
+    for (const tech of project.stack || []) facts.push(fact('uses', slug, tech));
+  }
+  for (const post of posts) facts.push(fact('post', post.slug, post.title, post.date));
+
+  return new KnowledgeBase({
+    facts,
+    // `asked(?T)` is supplied by the engine for every declared term the visitor
+    // names, so a rule can talk about the question without reading raw text.
+    rules: ['projects_using(?P) :- uses(?P, ?T), asked(?T).'],
+  });
+}
+
+function answersFor(knowledge) {
+  return [
+    {
+      id: 'projects.using',
+      title: 'Which projects use a technology',
+      keywords: ['which projects use', 'built with', 'uses', 'written in', 'stack'],
+      goal: 'projects_using(?P)',
+      compose: ({ solutions, terms, knowledge: kb }) => {
+        if (solutions.length === 0) {
+          // The term is declared (it is a project stack entry) but no project
+          // claims it: say so instead of answering something unrelated.
+          return terms.length ? `No project lists ${terms.join(' or ')} in its stack.` : '';
+        }
+        const titles = solutions
+          .map(
+            (solution) =>
+              kb
+                .query('project(?P, ?T)', { assume: [['asked', solution.bindings['?P'] ?? '']] })
+                .find((hit) => hit.bindings['?P'] === solution.bindings['?P'])?.bindings['?T'] ??
+              solution.bindings['?P'],
+          )
+          .filter(Boolean);
+        if (titles.length === 0) return '';
+        const list = titles.length === 1 ? titles[0] : `${titles.slice(0, -1).join(', ')} and ${titles.at(-1)}`;
+        return `${list} ${titles.length === 1 ? 'uses' : 'use'} it.`;
+      },
+    },
+    {
+      id: 'posts.latest',
+      title: 'The newest article',
+      keywords: ['newest post', 'latest article', 'last thing he wrote'],
+      goal: 'post(?S, ?T, ?D)',
+      threshold: 3,
+      compose: ({ solutions }) => {
+        const newest = [...solutions].sort((a, b) => String(b.bindings['?D']).localeCompare(String(a.bindings['?D'])))[0];
+        return newest ? `The newest post is "${newest.bindings['?T']}".` : '';
+      },
+    },
+  ];
 }
 
 function activeSection() {
@@ -71,8 +117,8 @@ function goTo(route) {
   target.scrollIntoView({ behavior: motionPrefs.reduced ? 'auto' : 'smooth', block: 'start' });
 }
 
-function newestFirst(posts) {
-  return [...posts].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+function newestFirst(items) {
+  return [...items].sort((a, b) => String(b.date).localeCompare(String(a.date)));
 }
 
 export function initAssistant({ posts = [] } = {}) {
@@ -106,89 +152,85 @@ export function initAssistant({ posts = [] } = {}) {
 
   for (const capability of siteCapabilities) registry.register(capability);
 
-  const readPageContext = createDomContextReader({ sections: CONTEXT_SECTIONS, maxChars: 2600 });
-
-  const keywordEngine = createLexicalEngine({ capabilities: manifest.capabilities });
-  let activeEngine = keywordEngine;
-  const switchboard = { id: 'switchboard', complete: (request) => activeEngine.complete(request) };
-
+  const knowledge = buildKnowledge(sorted);
   const runtime = new AgentRuntime({
-    engine: switchboard,
+    engine: createRulesEngine({
+      knowledge,
+      answers: answersFor(knowledge),
+      capabilities: manifest.capabilities,
+    }),
     capabilities: manifest.capabilities,
     registry,
     getSnapshot: () => ({ currentRoute: activeSection(), state }),
     navigate: goTo,
     dispatch,
-    readContext: readPageContext,
     topK: 8,
     maxToolCalls: 3,
-    confirm: async (req) => new Promise((resolve) => {
-      const bubble = document.createElement('div');
-      bubble.className = 'agent__bubble agent__bubble--assistant';
-      const body = document.createElement('p');
-      body.textContent = `${req.title}: ${req.description}. Proceed?`;
-      bubble.appendChild(body);
-      const btns = document.createElement('div');
-      btns.className = 'agent__confirm-btns';
-      const yes = document.createElement('button');
-      yes.type = 'button'; yes.className = 'agent__chip'; yes.textContent = 'Yes';
-      const no = document.createElement('button');
-      no.type = 'button'; no.className = 'agent__chip'; no.textContent = 'No';
-      btns.appendChild(yes); btns.appendChild(no);
-      bubble.appendChild(btns);
-      messagesEl.appendChild(bubble);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-      const finish = (value) => {
-        yes.disabled = true; no.disabled = true;
-        bubble.classList.add('is-done');
-        resolve(value);
-      };
-      yes.addEventListener('click', () => finish(true));
-      no.addEventListener('click', () => finish(false));
-    }),
+    streaming: motionPrefs.reduced ? false : { chunkChars: 14, paceMs: 16 },
+    onEvent: (event) => {
+      if (event.type === 'delta') appendDelta(String(event.text ?? ''));
+    },
+    confirm: async (req) =>
+      new Promise((resolve) => {
+        const bubble = document.createElement('div');
+        bubble.className = 'agent__bubble agent__bubble--assistant';
+        const body = document.createElement('p');
+        body.textContent = `${req.title}: ${String(req.description).replace(/\.$/, '')}. Proceed?`;
+        bubble.appendChild(body);
+        const buttons = document.createElement('div');
+        buttons.className = 'agent__confirm-btns';
+        const yes = document.createElement('button');
+        yes.type = 'button';
+        yes.className = 'agent__chip';
+        yes.textContent = 'Yes';
+        const no = document.createElement('button');
+        no.type = 'button';
+        no.className = 'agent__chip';
+        no.textContent = 'No';
+        buttons.append(yes, no);
+        bubble.appendChild(buttons);
+        messagesEl.appendChild(bubble);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+        const finish = (value) => {
+          yes.disabled = true;
+          no.disabled = true;
+          bubble.classList.add('is-done');
+          resolve(value);
+        };
+        yes.addEventListener('click', () => finish(true));
+        no.addEventListener('click', () => finish(false));
+      }),
   });
 
   const root = document.createElement('div');
   root.id = 'agentRoot';
   root.className = 'agent';
   root.innerHTML = `
-    <button class="agent__launcher" id="agentLauncher" type="button" aria-expanded="false" aria-controls="agentPanel" hidden>
+    <button class="agent__launcher" id="agentLauncher" type="button" aria-expanded="false" aria-controls="agentPanel">
       <span class="agent__glyph" aria-hidden="true">&#9096;</span>
       <span>Ask about Sho</span>
     </button>
-    <div class="agent__warming" id="agentWarming" aria-live="polite">
-      <span class="agent__glyph" aria-hidden="true">&#9096;</span>
-      <span id="agentWarmingText">Setting up your agent</span>
-      <span class="agent__warming-bar" aria-hidden="true"><i id="agentWarmingBar"></i></span>
-    </div>
     <div class="agent__scrim" id="agentScrim" hidden></div>
     <section class="agent__panel" id="agentPanel" aria-label="Ask about Sho" hidden>
       <header class="agent__head">
         <div>
           <p class="agent__eyebrow">Site assistant</p>
           <h2 class="agent__title">Ask about Sho</h2>
-          <p class="agent__meta"><span class="agent__dot" aria-hidden="true"></span><span id="agentEngine">Starting your agent</span> <span class="agent__meta-sep">&middot;</span> <span class="agent__meta-count">${manifest.capabilities.length} capabilities</span></p>
+          <p class="agent__meta"><span class="agent__dot" aria-hidden="true"></span><span id="agentEngine">Rules over this page</span> <span class="agent__meta-sep">&middot;</span> <span class="agent__meta-count">${manifest.capabilities.length} capabilities</span></p>
         </div>
         <button class="agent__close" id="agentClose" type="button" aria-label="Close the assistant">&times;</button>
       </header>
-      <div class="agent__engine" id="agentEngineRow">
-        <button class="agent__toggle" id="agentModelBtn" type="button" hidden>
-          <span class="agent__toggle-dot" aria-hidden="true"></span><span id="agentModelLabel">Use the on-device model</span>
-        </button>
-        <span class="agent__hint" id="agentEngineNote"></span>
-        <div class="agent__progress" id="agentProgress" hidden><span></span></div>
-      </div>
       <div class="agent__messages" id="agentMessages" role="log" aria-live="polite"></div>
       <div class="agent__chips" id="agentChips"></div>
       <form class="agent__composer" id="agentForm" autocomplete="off">
         <label class="sr-only" for="agentInput">Ask about Sho</label>
-        <input class="agent__input" id="agentInput" type="text" placeholder="What does Sho work on?" />
+        <input class="agent__input" id="agentInput" type="text" placeholder="Which projects use Python?" />
         <button class="agent__send" type="submit">Send</button>
       </form>
-      <p class="agent__foot">Answers use only this page. Nothing is sent to a server. Your agent installs once, then runs in this tab.</p>
+      <p class="agent__foot">Answers come from the facts on this page. Nothing is downloaded and nothing is sent to a server.</p>
       <details class="agent__diag" id="agentDiag">
         <summary>Diagnostics</summary>
-        <p class="agent__diag-line" id="agentDiagOut">Press to check this browser.</p>
+        <p class="agent__diag-line" id="agentDiagOut">Press to check this page.</p>
         <button class="agent__diag-copy" id="agentDiagCopy" type="button">Copy the report</button>
       </details>
     </section>
@@ -198,37 +240,18 @@ export function initAssistant({ posts = [] } = {}) {
   const panel = root.querySelector('#agentPanel');
   const scrim = root.querySelector('#agentScrim');
   const launcher = root.querySelector('#agentLauncher');
-  const warming = root.querySelector('#agentWarming');
-  const warmingText = root.querySelector('#agentWarmingText');
-  const warmingBar = root.querySelector('#agentWarmingBar');
   const closeBtn = root.querySelector('#agentClose');
   const messagesEl = root.querySelector('#agentMessages');
   const chipsEl = root.querySelector('#agentChips');
   const form = root.querySelector('#agentForm');
   const input = root.querySelector('#agentInput');
   const sendBtn = root.querySelector('.agent__send');
-  const engineLabel = root.querySelector('#agentEngine');
-  const engineNote = root.querySelector('#agentEngineNote');
   const diag = root.querySelector('#agentDiag');
   const diagOut = root.querySelector('#agentDiagOut');
   const diagCopy = root.querySelector('#agentDiagCopy');
-  const modelBtn = root.querySelector('#agentModelBtn');
-  const modelLabel = root.querySelector('#agentModelLabel');
-  const progressEl = root.querySelector('#agentProgress');
-  const progressBar = progressEl.querySelector('span');
 
   let busy = false;
-  let modelEngine = null;
-  let modelState = 'probing'; // probing | loading | ready | keyword | error
-  let gpuAvailable = true;
-  let lastProgressAt = 0;
-  let chromeEngine = null;
-  let chromeAI = 'unsupported';
-  const chromePending = () => chromeAI === 'downloadable' || chromeAI === 'downloading';
-  let installToken = 0;
-  // Chrome, Edge and others expose the same Prompt API but each browser owns
-  // its own model, so the copy never names one of them.
-  const NEEDS_PRESS = 'Your browser needs the button pressed';
+  let live = null; // streaming bubble: { body, text }
 
   const syncSend = () => {
     sendBtn.disabled = busy || input.value.trim().length === 0;
@@ -246,17 +269,17 @@ export function initAssistant({ posts = [] } = {}) {
     }
   };
 
-  const titleOf = (id) => manifest.capabilities.find((c) => c.id === id)?.title || id;
+  const titleOf = (id) => manifest.capabilities.find((capability) => capability.id === id)?.title || id;
   const sentence = (title) => title.charAt(0).toLowerCase() + title.slice(1);
 
   function describeStep(step) {
     switch (step.type) {
       case 'navigate':
         return `\u2192 ${sentence(titleOf(step.capabilityId))}`;
-      case 'action':
-        return null;
       case 'query':
         return `\u25ce ${sentence(titleOf(step.capabilityId))}`;
+      case 'inference':
+        return `\u2234 ${step.rule || step.goal}${step.terms?.length ? ` \u00b7 ${step.terms.join(', ')}` : ''}`;
       case 'surface':
         return `\u25a6 ${sentence(titleOf(step.capabilityId))}`;
       case 'error':
@@ -267,13 +290,13 @@ export function initAssistant({ posts = [] } = {}) {
   }
 
   async function runCapabilityFromSurface(name, context) {
-    const live = registry.get(name);
-    if (!live || typeof live.handler !== 'function') {
+    const liveCapability = registry.get(name);
+    if (!liveCapability || typeof liveCapability.handler !== 'function') {
       addBubble('assistant', `I cannot run ${name} from here.`);
       return;
     }
     try {
-      const result = await live.handler(context || {}, {
+      const result = await liveCapability.handler(context || {}, {
         currentRoute: activeSection(),
         navigate: goTo,
         dispatch,
@@ -311,7 +334,7 @@ export function initAssistant({ posts = [] } = {}) {
     holder.scrollIntoView({ block: 'nearest' });
   };
 
-  const addBubble = (role, text, steps = []) => {
+  function addBubble(role, text, steps = []) {
     const bubble = document.createElement('div');
     bubble.className = `agent__bubble agent__bubble--${role}`;
     if (text) {
@@ -332,7 +355,24 @@ export function initAssistant({ posts = [] } = {}) {
     }
     messagesEl.appendChild(bubble);
     messagesEl.scrollTop = messagesEl.scrollHeight;
-  };
+    return bubble;
+  }
+
+  /** Opens the bubble on the first delta and appends each chunk to it. */
+  function appendDelta(text) {
+    if (!text) return;
+    if (!live) {
+      const bubble = document.createElement('div');
+      bubble.className = 'agent__bubble agent__bubble--assistant';
+      const body = document.createElement('p');
+      bubble.appendChild(body);
+      messagesEl.appendChild(bubble);
+      live = { bubble, body, text: '' };
+    }
+    live.text += text;
+    live.body.textContent = live.text;
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
 
   const setBusy = (value) => {
     busy = value;
@@ -347,9 +387,31 @@ export function initAssistant({ posts = [] } = {}) {
     chipsEl.innerHTML = '';
     addBubble('user', question);
     setBusy(true);
+    live = null;
     try {
       const result = await runtime.send(question);
-      if (result.text) addBubble('assistant', result.text, result.steps);
+      let bubble = live ? live.bubble : null;
+      if (result.text) {
+        if (live) {
+          // The stream is pacing, not inference: trust the finished text.
+          live.text = result.text;
+          live.body.textContent = result.text;
+        } else {
+          bubble = addBubble('assistant', result.text);
+        }
+      }
+      // Trace and surfaces go under the reply, never above it.
+      const lines = result.steps.map(describeStep).filter(Boolean);
+      if (bubble && lines.length) {
+        const trace = document.createElement('ul');
+        trace.className = 'agent__trace';
+        for (const line of lines) {
+          const item = document.createElement('li');
+          item.textContent = line;
+          trace.appendChild(item);
+        }
+        bubble.appendChild(trace);
+      }
       for (const step of result.steps) {
         if (step.type === 'surface') addSurface(step.capabilityId, step.messages);
       }
@@ -363,6 +425,7 @@ export function initAssistant({ posts = [] } = {}) {
     } catch (error) {
       addBubble('assistant', `That did not work: ${error.message}`);
     } finally {
+      live = null;
       setBusy(false);
       input.value = '';
       syncSend();
@@ -384,330 +447,31 @@ export function initAssistant({ posts = [] } = {}) {
     }
   }
 
-  function showLauncher() {
-    warming.hidden = true;
-    launcher.hidden = false;
-  }
-
-  function setWarming(text, progress) {
-    warming.hidden = false;
-    launcher.hidden = true;
-    warmingText.textContent = text;
-    if (typeof progress === 'number') {
-      const pct = Math.max(4, Math.round(progress * 100));
-      warmingBar.style.width = `${pct}%`;
-      warmingText.textContent = `${text} · ${pct}%`;
-    }
-  }
-
-  function updateEngineUi() {
-    const usingModel = activeEngine === modelEngine && modelState === 'ready';
-    const usingChrome = activeEngine === chromeEngine && chromeEngine !== null;
-    engineLabel.textContent = usingChrome
-      ? "Your browser's own model"
-      : usingModel
-        ? 'Your agent, on this device'
-        : modelState === 'probing' || modelState === 'loading'
-          ? 'Installing your agent'
-          : 'Keyword matching';
-    const chromeCouldHelp = chromeAI === 'available' || chromePending();
-    modelBtn.hidden = true;
-    progressEl.hidden = true;
-    root.querySelector('.agent__dot').classList.toggle('is-fallback', !usingModel);
-    // A long browser install must stay cancellable, so the control stays live
-    // while Chrome is preparing and reads as a cancel.
-    modelBtn.disabled = false;
-    if (modelState === 'loading' && chromePending()) {
-      modelLabel.textContent = 'Cancel the install';
-    } else if (usingModel || usingChrome) {
-      modelLabel.textContent = 'Switch to keyword matching';
-    } else if (modelState !== 'loading') {
-      modelLabel.textContent =
-        modelState === 'error'
-          ? 'Retry the install'
-          : chromeAI === 'downloading'
-            ? "Check the browser's model"
-            : chromeAI === 'downloadable'
-              ? "Install the browser's model"
-              : 'Install the on-device agent';
-    }
-    modelBtn.classList.toggle('is-on', usingModel || usingChrome);
-    progressEl.hidden = modelState !== 'loading';
-  }
-
-  // Add ?agent=debug to the URL to see every install event in the console.
-  const debug = new URLSearchParams(location.search).get('agent') === 'debug';
-  const log = (...args) => {
-    if (debug) console.info('[agent]', ...args);
-  };
-
   /**
-   * Pick the tier client-agent thinks fits this device first, then step down.
-   * Hard-coding 'compact' (the old behaviour) meant a 16 GB laptop with a
-   * decent GPU still pulled the 1B model, and a device where even compact is
-   * too much never reached the 360M fallback. Let the library choose, and
-   * keep the lightest model as the last resort.
+   * One line that says what answered and what it had to work with. No model
+   * probes: there is no model.
    */
-  const primaryTier = 'compact';
-  // SmolLM2 (TINY_MODEL) needs the shader-f16 WebGPU extension, which is not
-  // available in many browsers, so it fails even when the host is reachable.
-  // Stick to the compact Llama 1B tier, which runs on the baseline WebGPU set.
-  const INSTALL_PLANS = [
-    { tier: primaryTier, copy: 'Installing your agent' },
-    ...(primaryTier !== 'compact' ? [{ tier: 'compact', copy: 'Installing the lighter agent' }] : []),
-  ];
-  let installError = '';
-
-  function progressLabel(progress, text, copy) {
-    const pct = Math.round(progress * 100);
-    const megabytes = /(\d{2,5})\s*MB/i.exec(text || '')?.[1];
-    const label = copy || 'Installing your agent';
-    return megabytes ? `${label} · ${pct}% · ${megabytes} MB` : `${label} · ${pct}%`;
-  }
-
-  function createModelEngine(plan) {
-    const worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
-    return createWebLLMEngine({
-      worker,
-      ...(plan.model ? { model: plan.model } : { tier: plan.tier || 'compact' }),
-      cacheBackend: 'indexeddb',
-      // WebLLM's documented self-hosting hooks: when the weights are served
-      // from this origin, no request leaves for huggingface.co.
-      ...(import.meta.env?.VITE_MODEL_BASE ? { modelBase: import.meta.env.VITE_MODEL_BASE } : {}),
-      ...(import.meta.env?.VITE_MODEL_LIB_BASE
-        ? { modelLibBase: import.meta.env.VITE_MODEL_LIB_BASE }
-        : {}),
-      onProgress: ({ progress, text }) => {
-        lastProgressAt = Date.now();
-        const pct = Math.round(progress * 100);
-        progressBar.style.width = `${pct}%`;
-        if (!warming.hidden) warmingText.textContent = progressLabel(progress, text, plan.copy);
-        engineLabel.textContent = `Installing ${pct}%`;
-        log('progress', pct, text);
-      },
-      onStateChange: (state, detail) => {
-        log('state', state, detail?.message || '');
-        if (state === 'error' && detail?.message) installError = detail.message;
-      },
-    });
-  }
-
-  async function loadPlan(plan) {
-    modelState = 'loading';
-    updateEngineUi();
-    progressBar.style.width = '0%';
-    progressEl.hidden = false;
-    lastProgressAt = Date.now();
-    if (modelEngine) {
-      try {
-        modelEngine.dispose();
-      } catch {
-        /* terminating a dead worker is best effort */
-      }
-      modelEngine = null;
-    }
-    modelEngine = createModelEngine(plan);
-    log('install start', plan.model || 'compact tier');
-    await modelEngine.load();
-    modelState = 'ready';
-    activeEngine = modelEngine;
-    updateEngineUi();
-    log('install ready');
-  }
-
-  /**
-   * One shard that never arrives looks exactly like a slow download. Watch for
-   * two minutes of no movement, then let the caller retry: the shards already
-   * fetched are in Cache Storage, so a retry resumes instead of restarting.
-   */
-  function watchdog(run, graceMs = 30000) {
-    lastProgressAt = Date.now();
-    return new Promise((resolve, reject) => {
-      let settled = false;
-      const timer = setInterval(() => {
-        if (settled) return;
-        if (Date.now() - lastProgressAt > graceMs) {
-          // Do not abort: a single large shard can legitimately take longer
-          // than this on a slow link. Just reassure the visitor and keep
-          // waiting; aborting only reset the progress bar to 5% and made the
-          // install look stuck.
-          engineNote.textContent = 'Still downloading. Large models can take a few minutes on slower connections.';
-          if (!warming.hidden) warmingText.textContent = 'Still downloading your agent';
-          lastProgressAt = Date.now();
-        }
-      }, 4000);
-      run().then(
-        () => {
-          if (settled) return;
-          settled = true;
-          clearInterval(timer);
-          resolve();
-        },
-        (error) => {
-          if (settled) return;
-          settled = true;
-          clearInterval(timer);
-          reject(error);
-        },
-      );
-    });
-  }
-
-  function loadWithWatchdog(plan) {
-    return watchdog(() => loadPlan(plan));
-  }
-
-  /**
-   * Chrome ships its own model. Using it means no request to huggingface.co at
-   * all, which is the difference between an install that finishes and one that
-   * never starts on a network where the model host is unreachable.
-   */
-  async function installChromeAgent() {
-    if (chromeAI !== 'available' && !chromePending()) return false;
-    const activated = navigator.userActivation ? navigator.userActivation.isActive : true;
-    if (chromeAI !== 'available' && !activated) {
-      installError = `${NEEDS_PRESS} to start its own model download. Press install again.`;
-      log('built-in model needs a press');
-      return false;
-    }
-    try {
-      setWarming(
-        chromeAI === 'available'
-          ? "Waking your browser's model"
-          : chromeAI === 'downloading'
-            ? "Checking your browser's model"
-            : "Getting your browser's model ready",
-        0.15,
-      );
-      engineNote.textContent =
-        chromeAI === 'available'
-          ? "This browser already has a model installed, so there is nothing to fetch."
-          : "This browser can fetch its own model once and share it across sites.";
-      const engine = createChromeAIEngine({
-        onProgress: ({ progress }) => {
-          lastProgressAt = Date.now();
-          const pct = Math.max(5, Math.round(progress * 100));
-          progressBar.style.width = `${pct}%`;
-          if (!warming.hidden) warmingText.textContent = `Installing your agent · ${pct}%`;
-        },
-      });
-      // Chrome hands the request to its component updater, which reports
-      // nothing until it starts. A stall watchdog would abort a healthy
-      // install, so this waits, with a hard ceiling instead.
-      engineLabel.textContent = 'Your browser is preparing its model';
-      const token = ++installToken;
-      await Promise.race([
-        engine.prepare(),
-        new Promise((_, reject) => {
-          setTimeout(
-            () => reject(new Error('Your browser did not start its model within ten minutes')),
-            10 * 60 * 1000,
-          );
-        }),
-      ]);
-      if (token !== installToken) {
-        log('built-in install cancelled by the visitor');
-        return false;
-      }
-      chromeEngine = engine;
-      activeEngine = engine;
-      modelState = 'ready';
-      updateEngineUi();
-      showLauncher();
-      log('built-in model ready');
-      return true;
-    } catch (error) {
-      console.warn('[assistant] built-in model unavailable:', error.message);
-      log('built-in model failed', error.message);
-      installError = /user gesture/i.test(error.message)
-        ? `${NEEDS_PRESS} to start its own model download. Press install again.`
-        : error.message;
-      return false;
-    }
-  }
-
-  async function ensureAgent() {
-    if (await installChromeAgent()) return true;
-    if (installError.startsWith(NEEDS_PRESS)) return false;
-
-    for (const [planIndex, plan] of INSTALL_PLANS.entries()) {
-      for (let attempt = 1; attempt <= 2; attempt += 1) {
-        try {
-          setWarming(plan.copy, 0.05);
-          await loadWithWatchdog(plan);
-          return true;
-        } catch (error) {
-          const reason = installError || error.message;
-          console.warn('[assistant] install attempt failed:', reason);
-          log('attempt failed', plan.copy, 'attempt', attempt, reason);
-          const hostBlocked = reason.startsWith('cannot reach');
-          if (!hostBlocked) installError = '';
-          if (modelEngine) {
-            try {
-              modelEngine.dispose();
-            } catch {
-              /* terminating a dead worker is best effort */
-            }
-            modelEngine = null;
-          }
-          if (hostBlocked) {
-            // Same host for every model, so retrying and trying the lighter
-            // agent would only waste another eight minutes.
-            return false;
-          }
-          if (attempt === 1) {
-            setWarming('Install paused, picking up where it left off', 0.05);
-            engineNote.textContent = 'The install paused. Resuming from the part already saved on this device.';
-          } else if (planIndex === 0) {
-            setWarming('Trying the lighter agent', 0.04);
-            engineNote.textContent = 'The full agent would not install here, so the lighter one is being tried.';
-          }
-        }
-      }
-    }
-    return false;
-  }
-
-  /**
-   * One line that names the failing hop. Guessing at a stalled install from the
-   * outside wasted a day; this turns it into a sentence the visitor can send.
-   */
-  async function collectDiagnostics() {
-    const parts = [];
-    parts.push(`browser-model=${chromeAI}`);
-    let gpu = 'none';
-    try {
-      const adapter = navigator.gpu ? await navigator.gpu.requestAdapter() : null;
-      gpu = adapter ? 'adapter' : navigator.gpu ? 'no-adapter' : 'no-webgpu';
-    } catch (error) {
-      gpu = `error(${String(error.message || error).slice(0, 40)})`;
-    }
-    parts.push(`webgpu=${gpu}`);
-    const probe = (url) =>
-      Promise.race([
-        fetch(url, { mode: 'no-cors', cache: 'no-store' }).then(() => 'ok'),
-        new Promise((resolve) => setTimeout(() => resolve('timeout'), 8000)),
-      ]).catch((error) => `fail(${String(error.message || error).slice(0, 30)})`);
-    const model = 'mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC/resolve/main/mlc-chat-config.json';
-    parts.push(`huggingface=${await probe(`https://huggingface.co/${model}`)}`);
-    parts.push(`mirror=${await probe(`https://hf-mirror.com/${model}`)}`);
-    parts.push(
-      `engine=${modelState}/${
-        activeEngine === chromeEngine ? 'browser-model' : activeEngine === modelEngine ? 'downloaded-model' : 'keyword'
-      }`,
-    );
-    parts.push(`weights=${import.meta.env?.VITE_MODEL_BASE || 'huggingface.co'}`);
-    if (installError) parts.push(`error=${installError.slice(0, 120)}`);
+  function collectDiagnostics() {
+    const started = performance.now();
+    const rules = knowledge.rules.length;
+    const facts = knowledge.query('project(?P, ?T)').length;
+    const parts = [
+      `engine=rules+keyword`,
+      `capabilities=${manifest.capabilities.length}`,
+      `rules=${rules}`,
+      `projects=${facts}`,
+      `posts=${posts.length}`,
+      `reduced-motion=${motionPrefs.reduced}`,
+      `query-ms=${(performance.now() - started).toFixed(2)}`,
+    ];
     const connection = navigator.connection;
-    if (connection) parts.push(`net=${connection.effectiveType || '?'}/${connection.downlink ?? '?'}Mbps`);
-    parts.push(`mem=${navigator.deviceMemory ?? '?'}GB`);
+    if (connection) parts.push(`net=${connection.effectiveType || '?'}`);
     return parts.join(' ');
   }
 
-  diag.addEventListener('toggle', async () => {
+  diag.addEventListener('toggle', () => {
     if (!diag.open) return;
-    diagOut.textContent = 'Checking this browser...';
-    diagOut.textContent = await collectDiagnostics();
+    diagOut.textContent = collectDiagnostics();
   });
 
   diagCopy.addEventListener('click', async () => {
@@ -723,78 +487,26 @@ export function initAssistant({ posts = [] } = {}) {
     }, 2500);
   });
 
-  async function bootEngine() {
-    chromeAI = await detectChromeAI();
-    log('built-in model availability:', chromeAI);
-
-    // Rely solely on the lexical engine: no model download, no GPU, no network.
-    // The on-device model remains available as an opt-in via the launcher button.
-    gpuAvailable = false;
-    modelState = 'keyword';
-    engineNote.textContent =
-      chromeAI === 'available' || chromeAI === 'downloadable'
-        ? "Answers use fast keyword matching. You can optionally install your browser's own model for richer replies."
-        : 'Answers use fast keyword matching. No model download required.';
-    updateEngineUi();
-    showLauncher();
-    return;
-  }
-
-
-  async function toggleEngine() {
-    if (modelState === 'loading' && chromePending()) {
-      installToken += 1;
-      modelState = 'keyword';
-      activeEngine = keywordEngine;
-      engineNote.textContent = 'Install cancelled. Keyword matching is answering.';
-      showLauncher();
-      updateEngineUi();
-      return;
-    }
-    if (activeEngine === modelEngine) {
-      activeEngine = keywordEngine;
-      engineNote.textContent = 'Keyword matching is answering, with no setup at all. Your agent stays installed.';
-      updateEngineUi();
-      return;
-    }
-    engineNote.textContent = 'Setting up your agent on this device…';
-    const ready = await ensureAgent();
-    engineNote.textContent = ready
-      ? activeEngine === chromeEngine
-        ? "Your browser's own model is ready. Nothing was downloaded by this site."
-        : 'Your agent is ready. It reads this page and can do everything listed below.'
-      : installError.startsWith('cannot reach')
-        ? 'The model host is blocked from this network, so answers use keyword matching.'
-        : installError.startsWith(NEEDS_PRESS)
-          ? installError
-          : 'The install did not finish. Keyword matching is answering until you retry.';
-    engineNote.title = ready ? '' : installError || 'no error detail reported';
-    if (!ready) modelState = 'error';
-    updateEngineUi();
-    if (ready) showLauncher();
-  }
-
   input.addEventListener('input', syncSend);
   launcher.addEventListener('click', () => setOpen(true));
-  warming.addEventListener('click', () => setOpen(true));
   closeBtn.addEventListener('click', () => setOpen(false));
   scrim.addEventListener('click', () => setOpen(false));
   scrim.addEventListener('wheel', (event) => event.preventDefault(), { passive: false });
   scrim.addEventListener('touchmove', (event) => event.preventDefault(), { passive: false });
-  modelBtn.addEventListener('click', () => {
-    void toggleEngine();
-  });
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    void ask(input.value);
+    const text = input.value.trim();
+    if (!text || busy) return;
+    input.value = '';
+    syncSend();
+    void ask(text);
   });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !panel.hidden) setOpen(false);
   });
 
+  if (newestPost) state.newestPost = newestPost;
   renderChips();
   syncSend();
-  updateEngineUi();
-  void bootEngine();
   return runtime;
 }

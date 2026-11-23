@@ -354,21 +354,14 @@
     bottom: 0.75rem;
   }
 
-  .agent__warming {
-    left: 0.75rem;
-    bottom: 0.75rem;
-  }
-
+  
   /* Comfortable touch targets on a phone. */
   .agent__close {
     width: 2.75rem;
     height: 2.75rem;
   }
 
-  .agent__toggle {
-    min-height: 40px;
-  }
-
+  
   .agent__send,
   .agent__input {
     min-height: 44px;
@@ -395,80 +388,6 @@
   .agent__send {
     transition: none;
   }
-}
-
-/* ---------- engine switch ---------- */
-
-.agent__engine {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.55rem 1rem;
-  border-bottom: 1px solid var(--border);
-}
-
-.agent__toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.3rem 0.6rem;
-  font-family: var(--font-mono);
-  font-size: 0.64rem;
-  letter-spacing: 0.03em;
-  color: var(--fg-dim);
-  background: transparent;
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  cursor: pointer;
-  transition: color 140ms, border-color 140ms, background 140ms;
-}
-
-.agent__toggle:hover:not(:disabled),
-.agent__toggle:focus-visible {
-  color: var(--fg);
-  border-color: var(--accent2);
-}
-
-.agent__toggle.is-on {
-  color: #0b0b0f;
-  background: var(--accent2);
-  border-color: var(--accent2);
-}
-
-.agent__toggle:disabled {
-  cursor: progress;
-}
-
-.agent__toggle-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: currentColor;
-}
-
-.agent__hint {
-  flex: 1 1 8rem;
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  line-height: 1.4;
-  color: var(--fg-dim);
-}
-
-.agent__progress {
-  flex: 1 1 100%;
-  height: 3px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-}
-
-.agent__progress span {
-  display: block;
-  height: 100%;
-  width: 0;
-  background: var(--accent2);
-  transition: width 200ms linear;
 }
 
 /* ---------- A2UI surfaces ---------- */
@@ -569,67 +488,15 @@ small.a2ui-text {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .agent__toggle,
-  .a2ui-button {
-    transition: none;
   }
-}
 
 /* ---------- launcher states and warming chip ---------- */
 
 .agent__launcher[hidden],
-.agent__warming[hidden] {
-  display: none;
-}
 
-.agent__warming {
-  position: fixed;
-  left: 1.25rem;
-  bottom: 1.25rem;
-  z-index: 96;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.7rem 1rem 0.85rem;
-  position: fixed;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  color: var(--fg);
-  background: rgba(18, 18, 26, 0.97);
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  overflow: hidden;
-}
 
-.agent__warming-bar {
-  position: absolute;
-  left: 0.7rem;
-  right: 0.7rem;
-  bottom: 0.42rem;
-  height: 3px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.12);
-  overflow: hidden;
-}
 
-.agent__warming-bar i {
-  display: block;
-  height: 100%;
-  width: 4%;
-  background: var(--accent2);
-  transition: width 400ms linear;
-}
 
-.agent__hint {
-  flex: 1 1 100%;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  line-height: 1.5;
-  color: var(--fg-dim);
-}
 
 .agent__surface-note {
   display: inline-block;

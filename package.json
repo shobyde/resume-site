@@ -4,17 +4,15 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node scripts/patch-client-agent.mjs && vite",
-    "build": "node scripts/patch-client-agent.mjs && vite build",
-    "preview": "vite preview",
-    "postinstall": "node scripts/patch-client-agent.mjs"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
     "vite": "^6.0.0"
   },
   "dependencies": {
-    "@mlc-ai/web-llm": "^0.2.89",
-    "client-agent": "https://github.com/shobyde/client-agent/releases/download/v0.3.6/client-agent-0.3.6.tgz",
+    "client-agent": "https://github.com/shobyde/client-agent/releases/download/v0.4.3/client-agent-0.4.3.tgz",
     "lenis": "^1.3.26",
     "three": "^0.170.0"
   }
