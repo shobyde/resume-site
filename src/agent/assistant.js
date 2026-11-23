@@ -192,6 +192,7 @@ export function initAssistant({ posts = [] } = {}) {
   let lastProgressAt = 0;
   let chromeEngine = null;
   let chromeAI = 'unsupported';
+  const chromePending = () => chromeAI === 'downloadable' || chromeAI === 'downloading';
   let installToken = 0;
 
   const syncSend = () => {
@@ -374,13 +375,13 @@ export function initAssistant({ posts = [] } = {}) {
         : modelState === 'probing' || modelState === 'loading'
           ? 'Installing your agent'
           : 'Keyword matching';
-    const chromeCouldHelp = chromeAI === 'available' || chromeAI === 'downloadable';
+    const chromeCouldHelp = chromeAI === 'available' || chromePending();
     modelBtn.hidden = modelState === 'probing' || (!gpuAvailable && !chromeCouldHelp);
     root.querySelector('.agent__dot').classList.toggle('is-fallback', !usingModel);
     // A long browser install must stay cancellable, so the control stays live
     // while Chrome is preparing and reads as a cancel.
     modelBtn.disabled = false;
-    if (modelState === 'loading' && chromeAI === 'downloadable') {
+    if (modelState === 'loading' && chromePending()) {
       modelLabel.textContent = 'Cancel the install';
     } else if (usingModel || usingChrome) {
       modelLabel.textContent = 'Switch to keyword matching';
@@ -388,9 +389,11 @@ export function initAssistant({ posts = [] } = {}) {
       modelLabel.textContent =
         modelState === 'error'
           ? 'Retry the install'
-          : chromeAI === 'downloadable'
-            ? "Install the browser's model"
-            : 'Install the on-device agent';
+          : chromeAI === 'downloading'
+            ? "Check the browser's model"
+            : chromeAI === 'downloadable'
+              ? "Install the browser's model"
+              : 'Install the on-device agent';
     }
     modelBtn.classList.toggle('is-on', usingModel || usingChrome);
     progressEl.hidden = modelState !== 'loading';
@@ -503,16 +506,20 @@ export function initAssistant({ posts = [] } = {}) {
    * never starts on a network where the model host is unreachable.
    */
   async function installChromeAgent() {
-    if (chromeAI !== 'available' && chromeAI !== 'downloadable') return false;
+    if (chromeAI !== 'available' && !chromePending()) return false;
     const activated = navigator.userActivation ? navigator.userActivation.isActive : true;
-    if (chromeAI === 'downloadable' && !activated) {
+    if (chromeAI !== 'available' && !activated) {
       installError = 'Chrome needs the button pressed to start its own model download. Press install again.';
       log('built-in model needs a press');
       return false;
     }
     try {
       setWarming(
-        chromeAI === 'available' ? "Waking your browser's model" : "Getting your browser's model ready",
+        chromeAI === 'available'
+          ? "Waking your browser's model"
+          : chromeAI === 'downloading'
+            ? "Checking your browser's model"
+            : "Getting your browser's model ready",
         0.15,
       );
       engineNote.textContent =
@@ -623,11 +630,13 @@ export function initAssistant({ posts = [] } = {}) {
     // that here fails ("requires a user gesture"), and falling through to the
     // HuggingFace path is what leaves the page stuck: that host is unreachable
     // on this network. Stop, and ask for the press.
-    if (chromeAI === 'downloadable') {
+    if (chromePending()) {
       modelState = 'keyword';
       gpuAvailable = false;
       engineNote.textContent =
-        "This browser can install its own model, shared across all sites. Press install to set it up.";
+        chromeAI === 'downloading'
+          ? "Your browser is installing its own model. Press to pick it up when it is ready."
+          : "This browser can install its own model, shared across all sites. Press install to set it up.";
       updateEngineUi();
       showLauncher();
       return;
@@ -689,7 +698,7 @@ export function initAssistant({ posts = [] } = {}) {
   }
 
   async function toggleEngine() {
-    if (modelState === 'loading' && chromeAI === 'downloadable') {
+    if (modelState === 'loading' && chromePending()) {
       installToken += 1;
       modelState = 'keyword';
       activeEngine = keywordEngine;
