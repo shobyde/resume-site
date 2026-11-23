@@ -42,14 +42,19 @@ export function createAssistantKnowledge({ posts }) {
       keywords: ['which projects use', 'built with', 'written in', 'uses', 'stack'],
       goal: 'projects_using(?P)',
       steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
-      explain: ({ solutions, terms }) => {
-        const tech = terms.join(' or ') || 'that';
-        if (solutions.length === 0) return `Read the project list: no project lists ${tech}`;
+      explain: ({ solutions, terms, mentions, observed }) => {
+        if (!observed['projects.list']) return 'Read the project list';
+        const tech = terms.join(' or ') || mentions[0] || 'that';
+        if (solutions.length === 0) return `Read the project list: no stack lists ${tech}`;
         return `Read the project list and matched ${tech} against ${solutions.length} project${solutions.length === 1 ? '' : 's'}`;
       },
-      compose: ({ solutions, terms, knowledge: kb }) => {
+      compose: ({ solutions, terms, mentions, observed, knowledge: kb }) => {
         if (solutions.length === 0) {
-          return terms.length ? `No project lists ${terms.join(' or ')} in its stack.` : '';
+          // The tool ran, so "no stack lists TypeScript" is a fact about the
+          // page, not a shrug. Without the tool result there is nothing to say.
+          if (!observed['projects.list']) return '';
+          const asked = terms.join(' or ') || mentions[0];
+          return asked ? `No project stack lists ${asked}.` : '';
         }
         const titles = solutions
           .map(
