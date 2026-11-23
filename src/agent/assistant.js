@@ -353,7 +353,9 @@ export function initAssistant({ posts = [] } = {}) {
     launcher.hidden = true;
     warmingText.textContent = text;
     if (typeof progress === 'number') {
-      warmingBar.style.width = `${Math.max(4, Math.round(progress * 100))}%`;
+      const pct = Math.max(4, Math.round(progress * 100));
+      warmingBar.style.width = `${pct}%`;
+      warmingText.textContent = `${text} ${pct}%`;
     }
   }
 
@@ -383,7 +385,9 @@ export function initAssistant({ posts = [] } = {}) {
         worker,
         tier: 'compact',
         onProgress: ({ progress }) => {
-          progressBar.style.width = `${Math.round(progress * 100)}%`;
+          const pct = Math.round(progress * 100);
+          progressBar.style.width = `${pct}%`;
+          if (!warming.hidden) warmingText.textContent = `Downloading the on-device model ${pct}%`;
         },
       });
     }
