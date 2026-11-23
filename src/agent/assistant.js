@@ -424,10 +424,12 @@ export function initAssistant({ posts = [] } = {}) {
    * keep the lightest model as the last resort.
    */
   const primaryTier = 'compact';
+  // SmolLM2 (TINY_MODEL) needs the shader-f16 WebGPU extension, which is not
+  // available in many browsers, so it fails even when the host is reachable.
+  // Stick to the compact Llama 1B tier, which runs on the baseline WebGPU set.
   const INSTALL_PLANS = [
     { tier: primaryTier, copy: 'Installing your agent' },
     ...(primaryTier !== 'compact' ? [{ tier: 'compact', copy: 'Installing the lighter agent' }] : []),
-    { model: TINY_MODEL, copy: 'Installing the lightest agent' },
   ];
   let installError = '';
 
