@@ -15,8 +15,10 @@
    ============================================================ */
 import manifest from 'client-agent:manifest';
 import { AgentRuntime, registry } from 'client-agent/core';
-import { KnowledgeBase, createRulesEngine, fact } from 'client-agent/rules';
+import { createRulesEngine } from 'client-agent/rules';
 import { createDomContextReader } from 'client-agent/dom';
+import { createAssistantKnowledge } from './knowledge.js';
+import { describeTrace } from './trace.js';
 import { siteCapabilities } from './capabilities.js';
 import { renderA2UI } from './a2ui.js';
 import { DATA } from '../data.js';
@@ -33,13 +35,6 @@ const SUGGESTIONS = {
   '#contact': ['What is his email?', 'Show the contact card', 'What is his LinkedIn?'],
 };
 
-const slugOf = (title) =>
-  String(title)
-    .split(':')[0]
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-
 const CONTACT_PAGE_SECTIONS = [
   { selector: '#about', label: 'About' },
   { selector: '#projects', label: 'Projects' },
@@ -47,126 +42,6 @@ const CONTACT_PAGE_SECTIONS = [
   { selector: '#skills', label: 'Skills' },
   { selector: '#contact', label: 'Contact' },
 ];
-
-/**
- * Nothing about the projects is copied into a fact table: the assistant calls
- * the page's own `projects.list` capability and reasons over what it returns.
- * Contact details are not declared at all, so they are read off the page.
- */
-function buildEngine({ posts }) {
-  const knowledge = new KnowledgeBase({
-    facts: [],
-    rules: [
-      'projects_using(?P) :- uses(?P, ?T), asked(?T).',
-      // Declared facts would come first if there were any; the page scan is the
-      // fallback, and the only way an undeclared address can be answered.
-      'email(?V) :- field(email, ?V).',
-      'linkedin(?V) :- field(linkedin, ?V).',
-    ],
-  });
-
-  const readSection = createDomContextReader({ sections: CONTACT_PAGE_SECTIONS, maxChars: 2600 });
-  // Field questions need the whole page, including link targets: the contact
-  // section says "Email me" and the address itself lives in the mailto href.
-  const readPage = (query) => {
-    const links = [...document.querySelectorAll('a[href]')]
-      .map((anchor) => anchor.getAttribute('href'))
-      .filter((href) => /^(mailto:|https?:|tel:)/i.test(href));
-    return [readSection(query), ...links].join('\n');
-  };
-
-  const answers = [
-    {
-      id: 'projects.using',
-      title: 'Which projects use a technology',
-      keywords: ['which projects use', 'built with', 'written in', 'uses', 'stack'],
-      goal: 'projects_using(?P)',
-      steps: [
-        {
-          capabilityId: 'projects.list',
-          toFacts: (result) =>
-            (result?.projects ?? []).flatMap((project) => {
-              const slug = slugOf(project.title);
-              return [
-                fact('project', slug, String(project.title).split(':')[0].trim()),
-                ...(project.stack ?? []).map((tech) => fact('uses', slug, tech)),
-              ];
-            }),
-        },
-      ],
-      explain: ({ solutions, terms }) => {
-        const tech = terms.join(' or ') || 'that';
-        if (solutions.length === 0) return `Read the project list: no project lists ${tech}`;
-        return `Read the project list and matched ${tech} against ${solutions.length} project${solutions.length === 1 ? '' : 's'}`;
-      },
-      compose: ({ solutions, terms, knowledge: kb }) => {
-        if (solutions.length === 0) {
-          return terms.length ? `No project lists ${terms.join(' or ')} in its stack.` : '';
-        }
-        const titles = solutions
-          .map(
-            (solution) =>
-              kb
-                .query('project(?P, ?T)', { assume: [['asked', solution.bindings['?P'] ?? '']] })
-                .find((hit) => hit.bindings['?P'] === solution.bindings['?P'])?.bindings['?T'] ??
-              solution.bindings['?P'],
-          )
-          .filter(Boolean);
-        if (titles.length === 0) return '';
-        const list =
-          titles.length === 1 ? titles[0] : `${titles.slice(0, -1).join(', ')} and ${titles.at(-1)}`;
-        return `${list} ${titles.length === 1 ? 'uses' : 'use'} it.`;
-      },
-    },
-    {
-      id: 'contact.email',
-      title: 'His email address',
-      keywords: ['email', 'e-mail', 'mail him', 'reach him', 'contact him', 'write to him'],
-      goal: 'email(?V)',
-      compose: ({ bindings, observed }) =>
-        bindings['?V'] ? `His email is ${bindings['?V']}.` : '',
-      explain: ({ solutions }) =>
-        solutions.length ? 'Read the email address off this page' : 'Looked for an email address on this page',
-    },
-    {
-      id: 'contact.linkedin',
-      title: 'His LinkedIn profile',
-      keywords: ['linkedin', 'his profile', 'social'],
-      goal: 'linkedin(?V)',
-      compose: ({ bindings }) => (bindings['?V'] ? `His LinkedIn is ${bindings['?V']}.` : ''),
-      explain: () => 'Read the LinkedIn link off this page',
-    },
-    {
-      id: 'posts.newest',
-      title: 'The newest article',
-      keywords: ['newest post', 'latest article', 'last thing he wrote', 'how many posts'],
-      goal: 'post_newest(?T)',
-      steps: [
-        {
-          capabilityId: 'blog.stats',
-          toFacts: (result) => [
-            fact('post_count', String(result?.posts ?? 0)),
-            fact('post_newest', String(result?.newest ?? '')),
-          ],
-        },
-      ],
-      explain: ({ observed }) => {
-        const count = observed['blog.stats']?.posts;
-        return count ? `Read the log: ${count} posts, took the most recent` : 'Read the log for the newest post';
-      },
-      compose: ({ bindings, lookup }) => {
-        const newest = bindings['?T'];
-        const count = lookup('post_count(?N)')[0]?.bindings['?N'];
-        if (!newest) return '';
-        return count
-          ? `${count} posts are published, and the newest is "${newest}".`
-          : `The newest post is "${newest}".`;
-      },
-    },
-  ];
-
-  return { knowledge, answers, readPage };
-}
 
 function activeSection() {
   const active = document.querySelector('.nav__link.is-active');
@@ -222,7 +97,16 @@ export function initAssistant({ posts = [] } = {}) {
 
   for (const capability of siteCapabilities) registry.register(capability);
 
-  const { knowledge, answers, readPage } = buildEngine({ posts: sorted });
+  const { knowledge, answers } = createAssistantKnowledge({ posts: sorted });
+  const readSection = createDomContextReader({ sections: CONTACT_PAGE_SECTIONS, maxChars: 2600 });
+  // Field questions need the whole page, including link targets: the contact
+  // section says "Email me" and the address itself lives in the mailto href.
+  const readPage = (query) => {
+    const links = [...document.querySelectorAll('a[href]')]
+      .map((anchor) => anchor.getAttribute('href'))
+      .filter((href) => /^(mailto:|https?:|tel:)/i.test(href));
+    return [readSection(query), ...links].join('\n');
+  };
   const engine = createRulesEngine({
     knowledge,
     answers,
@@ -351,30 +235,7 @@ export function initAssistant({ posts = [] } = {}) {
   const titleOf = (id) => manifest.capabilities.find((capability) => capability.id === id)?.title || id;
   const sentence = (title) => title.charAt(0).toLowerCase() + title.slice(1);
 
-  /**
-   * Every line is a sentence a person would say. The rule text stays in the
-   * step for tooling; it is not what a visitor reads.
-   */
-  function describeStep(step) {
-    switch (step.type) {
-      case 'inference':
-        return step.label || `Looked through the page for ${step.terms?.join(' or ') || 'that'}`;
-      case 'navigate':
-        return `Scrolled to ${sentence(titleOf(step.capabilityId))}`;
-      case 'query':
-        return `Checked ${sentence(titleOf(step.capabilityId))}`;
-      case 'action':
-        return `Did this: ${sentence(titleOf(step.capabilityId))}`;
-      case 'surface':
-        return `Showed ${sentence(titleOf(step.capabilityId))}`;
-      case 'confirmation':
-        return step.approved ? 'You confirmed, so I went ahead' : 'You cancelled, so nothing changed';
-      case 'error':
-        return `That stopped: ${step.message}`;
-      default:
-        return null;
-    }
-  }
+  const describeStep = (step) => describeTrace(step, titleOf);
 
   async function runCapabilityFromSurface(name, context) {
     const liveCapability = registry.get(name);
@@ -503,13 +364,17 @@ export function initAssistant({ posts = [] } = {}) {
     try {
       const result = await runtime.send(question);
       const streamed = live;
-      if (result.text) {
+      // A host bug must not put JSON on screen: the visitor asked a question.
+      const safeReply = /^\s*[[{]/.test(result.text)
+        ? 'That came back as data rather than a sentence. Try asking something narrower.'
+        : result.text;
+      if (safeReply) {
         if (streamed) {
           // The stream is pacing, not inference: trust the finished text.
-          streamed.text = result.text;
-          streamed.body.textContent = result.text;
+          streamed.text = safeReply;
+          streamed.body.textContent = safeReply;
         } else {
-          addBubble('assistant', result.text);
+          addBubble('assistant', safeReply);
         }
       }
       // An engine that emits no step events still has steps worth showing.

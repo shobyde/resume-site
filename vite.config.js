@@ -16,6 +16,9 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        // The client-agent page runs the engine live, so it is a Vite entry
+        // rather than a static file in public/.
+        clientAgent: resolve(__dirname, 'client-agent/index.html'),
       },
     },
   },

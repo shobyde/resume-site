@@ -143,6 +143,27 @@ strong { color: var(--fg); font-weight: 600; }
 .limit { border: 1px solid var(--line); border-radius: 11px; padding: 0.85rem 0.95rem; font-size: 0.88rem; color: var(--dim); background: rgba(255,255,255,0.02); }
 .limit b { display: block; color: var(--fg); font-weight: 600; margin-bottom: 0.15rem; }
 
+/* live console */
+.console { border: 1px solid var(--line); border-radius: 14px; background: var(--panel-2); padding: 1rem; margin-top: 1.2rem; }
+.console__log { display: grid; gap: 0.6rem; min-height: 7rem; max-height: 22rem; overflow-y: auto; padding-right: 0.3rem; }
+.console__empty { color: var(--mute); font-size: 0.9rem; }
+.console form { display: flex; gap: 0.5rem; margin-top: 0.85rem; }
+.console input {
+  flex: 1; min-width: 0; padding: 0.62rem 0.75rem; border-radius: 9px;
+  border: 1px solid var(--line-strong); background: rgba(0,0,0,0.25); color: var(--fg);
+  font-family: var(--body); font-size: 0.92rem;
+}
+.console input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.console button { padding: 0.62rem 1rem; border-radius: 9px; border: 1px solid var(--accent); background: var(--accent); color: #0b0b0f; font-weight: 600; font-size: 0.9rem; cursor: pointer; }
+.console button:disabled { opacity: 0.5; cursor: progress; }
+.console__chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+.console__chips button { background: rgba(255,255,255,0.04); border: 1px solid var(--line-strong); color: var(--dim); font-weight: 500; font-size: 0.78rem; padding: 0.34rem 0.6rem; }
+.console__chips button:hover { color: var(--fg); border-color: var(--accent); }
+.console__events { margin-top: 0.9rem; }
+.console__events summary { cursor: pointer; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); }
+.console__events pre { margin: 0.6rem 0 0; padding: 0.7rem 0.8rem; max-height: 12rem; overflow: auto; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: 9px; font-family: var(--mono); font-size: 0.68rem; line-height: 1.55; color: var(--dim); white-space: pre-wrap; }
+.bubble--demo { margin-bottom: 0; }
+
 /* footer */
 footer { margin-top: 3.4rem; border-top: 1px solid var(--line); padding: 1.6rem 0 3rem; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; font-family: var(--mono); font-size: 0.72rem; color: var(--mute); }
 footer a { color: var(--mute); }
@@ -176,7 +197,7 @@ footer a:hover { color: var(--fg); }
   <header class="hero">
     <div class="hero__grid">
       <div class="hero__copy">
-        <p class="eyebrow">client-agent · v0.5.3</p>
+        <p class="eyebrow">client-agent · v0.5.5</p>
         <h1>An assistant with <em>no model</em>.<br />Nothing to hide.</h1>
         <p class="lede">It answers from the app's own capabilities and data, calls them when a question needs live state, and shows the facts behind every sentence.</p>
         <div class="ctas">
@@ -211,9 +232,36 @@ footer a:hover { color: var(--fg); }
       <div class="stat"><b>0 MB</b><span>downloaded to answer</span></div>
       <div class="stat"><b>3 µs</b><span>to rank 22 capabilities</span></div>
       <div class="stat"><b>7.4 kB</b><span>generated manifest</span></div>
-      <div class="stat"><b>109</b><span>tests, no network</span></div>
+      <div class="stat"><b>112</b><span>tests, no network</span></div>
     </div>
   </header>
+
+  <section id="try">
+    <p class="kicker">Live</p>
+    <h2>Ask it something. This page is running the engine.</h2>
+    <p class="tight">The same rules and capabilities the site's assistant uses, wired to the text on this page. Nothing is sent anywhere, and every reply shows the steps that produced it.</p>
+
+    <div class="console" id="demoConsole">
+      <div class="console__log" id="demoLog">
+        <p class="console__empty">Try "which projects use Python?", "what is his email?", or "how many posts are there?".</p>
+      </div>
+      <form id="demoForm" autocomplete="off">
+        <label class="sr-only" for="demoInput" style="position:absolute;left:-9999px">Ask the assistant</label>
+        <input id="demoInput" type="text" placeholder="which projects use Python?" />
+        <button type="submit" id="demoSend">Send</button>
+      </form>
+      <div class="console__chips" id="demoChips">
+        <button type="button">which projects use Python?</button>
+        <button type="button">what is his email?</button>
+        <button type="button">how many posts are there?</button>
+        <button type="button">what has he built?</button>
+      </div>
+      <details class="console__events">
+        <summary>Watch the event stream</summary>
+        <pre id="demoEvents">Waiting for a question.</pre>
+      </details>
+    </div>
+  </section>
 
   <section id="why">
     <p class="kicker">The trade most assistants make</p>
@@ -394,5 +442,6 @@ Readback and Groundglass use it.</pre>
     <div><a href="https://github.com/shobyde/client-agent">github.com/shobyde/client-agent</a></div>
   </footer>
 </div>
+<script type="module" src="/src/demo/console.js"></script>
 </body>
 </html>
