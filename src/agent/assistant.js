@@ -17,7 +17,7 @@
 import manifest from 'client-agent:manifest';
 import { AgentRuntime, createLexicalEngine, registry } from 'client-agent/core';
 import { createDomContextReader } from 'client-agent/dom';
-import { TINY_MODEL, createWebLLMEngine, detectWebGPU } from 'client-agent/webllm';
+import { TINY_MODEL, createWebLLMEngine, detectWebGPU, pickModelTier } from 'client-agent/webllm';
 import { createChromeAIEngine, detectChromeAI } from 'client-agent/chrome-ai';
 import { siteCapabilities } from './capabilities.js';
 import { renderA2UI } from './a2ui.js';
@@ -416,10 +416,18 @@ export function initAssistant({ posts = [] } = {}) {
     if (debug) console.info('[agent]', ...args);
   };
 
-  /** Compact agent first; if it will not install, try the smallest one. */
+  /**
+   * Pick the tier client-agent thinks fits this device first, then step down.
+   * Hard-coding 'compact' (the old behaviour) meant a 16 GB laptop with a
+   * decent GPU still pulled the 1B model, and a device where even compact is
+   * too much never reached the 360M fallback. Let the library choose, and
+   * keep the lightest model as the last resort.
+   */
+  const primaryTier = pickModelTier();
   const INSTALL_PLANS = [
-    { model: undefined, copy: 'Installing your agent' },
-    { model: TINY_MODEL, copy: 'Installing the lighter agent' },
+    { tier: primaryTier, copy: 'Installing your agent' },
+    ...(primaryTier !== 'compact' ? [{ tier: 'compact', copy: 'Installing the lighter agent' }] : []),
+    { model: TINY_MODEL, copy: 'Installing the lightest agent' },
   ];
   let installError = '';
 
@@ -434,7 +442,7 @@ export function initAssistant({ posts = [] } = {}) {
     const worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
     return createWebLLMEngine({
       worker,
-      ...(plan.model ? { model: plan.model } : { tier: 'compact' }),
+      ...(plan.model ? { model: plan.model } : { tier: plan.tier || 'compact' }),
       // WebLLM's documented self-hosting hooks: when the weights are served
       // from this origin, no request leaves for huggingface.co.
       ...(import.meta.env?.VITE_MODEL_BASE ? { modelBase: import.meta.env.VITE_MODEL_BASE } : {}),
