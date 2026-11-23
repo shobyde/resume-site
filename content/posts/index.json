@@ -1,5 +1,14 @@
 [
   {
+    "slug": "2026-11-23-langchain-s-frontend-sdk-hands-you-state-not-a-chat-widget",
+    "date": "2026-11-23",
+    "title": "LangChain's Frontend SDK Hands You State, Not a Chat Widget",
+    "tag": "ui-direction",
+    "excerpt": "LangChain's new frontend SDK hands you durable thread state, tool-call lifecycle, interrupts, and checkpoint history instead of a chat widget, which is the right layer for agent UI to live at.",
+    "words": 255,
+    "minutes": 1
+  },
+  {
     "slug": "2026-11-22-readback-0-2-0-rewards-and-a-catalog-that-fills-the-shelf",
     "date": "2026-11-22",
     "title": "Readback 0.2.0: rewards, and a catalog that fills the shelf",

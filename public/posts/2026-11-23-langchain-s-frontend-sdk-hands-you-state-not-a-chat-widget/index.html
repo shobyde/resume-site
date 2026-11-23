@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LangChain&#x27;s Frontend SDK Hands You State, Not a Chat Widget - Sho Byde</title>
+<meta name="description" content="LangChain&#x27;s new frontend SDK hands you durable thread state, tool-call lifecycle, interrupts, and checkpoint history instead of a chat widget, which is the right layer for agent UI to live at." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-23-langchain-s-frontend-sdk-hands-you-state-not-a-chat-widget/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="LangChain&#x27;s Frontend SDK Hands You State, Not a Chat Widget" />
+<meta property="og:description" content="LangChain&#x27;s new frontend SDK hands you durable thread state, tool-call lifecycle, interrupts, and checkpoint history instead of a chat widget, which is the right layer for agent UI to live at." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-23-langchain-s-frontend-sdk-hands-you-state-not-a-chat-widget/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-23T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="LangChain&#x27;s Frontend SDK Hands You State, Not a Chat Widget" />
+<meta name="twitter:description" content="LangChain&#x27;s new frontend SDK hands you durable thread state, tool-call lifecycle, interrupts, and checkpoint history instead of a chat widget, which is the right layer for agent UI to live at." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "LangChain's Frontend SDK Hands You State, Not a Chat Widget",
+  "description": "LangChain&#x27;s new frontend SDK hands you durable thread state, tool-call lifecycle, interrupts, and checkpoint history instead of a chat widget, which is the right layer for agent UI to live at.",
+  "url": "https://shobyde.com/posts/2026-11-23-langchain-s-frontend-sdk-hands-you-state-not-a-chat-widget/",
+  "datePublished": "2026-11-23T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "ui-direction"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; text-wrap: balance; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  /* Post figures are wider than the column: a 880px SVG must scale to the
+     measure instead of pushing the page sideways on a phone. */
+  img, svg { max-width: 100%; height: auto; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>LangChain&#x27;s Frontend SDK Hands You State, Not a Chat Widget</h1>
+  <div class="meta">2026-11-23 &middot; ui-direction &middot; by Sho Byde</div>
+  <p>The LangChain frontend SDK v1 ships useStream: a hook exposing durable thread state, tool-call lifecycle, interrupts, checkpoint history, plus rejoinable streams, message queues, branching chat, and human-in-the-loop. No rendered chat component. You bring the UI; it brings the state machine.</p>
+<p>I think this is the more durable split than what A2UI or assistant-ui chose. A2UI ships a protocol for agents to emit whole screens; assistant-ui ships Radix-style chat primitives. Both are opinionated about surface. The LangChain bet is that the hard part of agent UI is not rendering, it is state continuity: a stream that drops mid-response, a tool call that needs approval, a user who closes the tab and comes back. By exposing checkpoint history and rejoinable streams, it makes those recoverable instead of reimplementing them per app.</p>
+<p>The risk is the same as every SDK that hands you state: it is only as good as the backend it assumes. Checkpoint history implies a LangGraph-style thread store behind it. If your agent runtime is not LangGraph, you are either adopting it or writing an adapter that pretends to be it. That is a real cost, and it is the question I would ask before picking this over a lighter primitive library.</p>
+<p>My take: for teams already on LangGraph, this is the obvious frontend layer. For everyone else, the value is in the vocabulary. Tool-call lifecycle, interrupts, checkpoint history. Those are the four things every agent UI eventually needs, and having names for them is half the work.</p>
+<p>Sources: https://docs.langchain.com/oss/python/langchain/frontend/overview</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a> &middot; <a href="https://shobyde.com/archive/">all writing</a></p>
+</main>
+</body>
+</html>
