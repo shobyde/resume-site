@@ -1,0 +1,78 @@
+{
+  "class": "plan",
+  "note": "One sentence, two requests. A task passes when the plan names every capability in the order the sentence asked for. A control passes when the engine still makes one call for one request and the planner does not invent a second step.",
+  "tasks": [
+    {
+      "kind": "plan",
+      "q": "open the archive and copy his email",
+      "steps": ["blog.open_archive", "contact.copy_email"]
+    },
+    {
+      "kind": "plan",
+      "q": "take me to the blog then read the newest post",
+      "steps": ["site.blog", "blog.open_newest"],
+      "needs": ["none", "route"]
+    },
+    {
+      "kind": "plan",
+      "q": "show me the projects and then expand hobnob",
+      "steps": ["site.projects", "projects.expand"],
+      "needs": ["none", "route"]
+    },
+    {
+      "kind": "plan",
+      "q": "open the archive, then show the newest article card",
+      "steps": ["blog.open_archive", "blog.card"]
+    },
+    {
+      "kind": "plan",
+      "q": "print the resume and copy his email",
+      "steps": ["resume.print", "contact.copy_email"]
+    },
+    {
+      "kind": "plan",
+      "q": "go to the contact page and open linkedin",
+      "steps": ["site.contact", "contact.open_linkedin"]
+    },
+    {
+      "kind": "plan",
+      "q": "show me the skills then open linkedin",
+      "steps": ["site.skills", "contact.open_linkedin"]
+    },
+    {
+      "kind": "plan",
+      "q": "read the newest post and then print the resume",
+      "steps": ["blog.open_newest", "resume.print"]
+    },
+    {
+      "kind": "single",
+      "q": "open the archive",
+      "steps": ["blog.open_archive"]
+    },
+    {
+      "kind": "single",
+      "q": "take me to the blog",
+      "steps": ["site.blog"]
+    },
+    {
+      "kind": "single",
+      "q": "copy his email",
+      "steps": ["contact.copy_email"]
+    },
+    {
+      "kind": "single",
+      "q": "show me the contact card",
+      "steps": ["contact.card"]
+    },
+    {
+      "kind": "single",
+      "q": "show me the projects and the blog",
+      "steps": ["site.projects"]
+    },
+    {
+      "kind": "ceiling",
+      "q": "open the archive and filter typescript",
+      "why": "filter is not a capability on this site; a planner must not invent one"
+    }
+  ]
+}

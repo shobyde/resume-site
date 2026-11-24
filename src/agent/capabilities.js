@@ -81,7 +81,7 @@ export const siteCapabilities = [
     kind: 'route',
     title: 'Contact',
     description: 'Scrolls to the contact section with his email and LinkedIn.',
-    keywords: ['contact', 'email', 'reach', 'hire', 'talk', 'linkedin', 'get in touch'],
+    keywords: ['contact', 'contact page', 'email', 'reach', 'hire', 'talk', 'linkedin', 'get in touch'],
     requiresConfirmation: true,
     route: '#contact',
   }),
