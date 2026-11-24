@@ -393,6 +393,17 @@ export function initAssistant({ posts = [] } = {}) {
             }
             return turn.text;
           },
+          // Recovery needs the capability named, not the words: the same sentence
+          // would route back to the call that just failed.
+          runAlternate: async (step) => {
+            live = null;
+            const turn = await runtime.runCapability(step.capabilityId, step.args ?? {});
+            for (const part of turn.steps) {
+              if (part.type === 'surface') addSurface(part.capabilityId, part.messages);
+            }
+            if (!turn.ok) throw new Error(turn.text);
+            return turn.result;
+          },
         });
         // A step that ran already said its own sentence. The executor's report
         // is only worth showing when it refused or failed something.

@@ -1,0 +1,154 @@
+{
+  "class": "recover",
+  "note": "A capability throws or comes back empty. The model-free system cannot invent a different intent, but the planner already ranked runner-ups for the same clause, so it can try the next-best action and say which one it tried. Each task names the faults the host injects and the effects (capability ids, in order) a recovering host must produce. Baseline is the site the panel shipped before this rung (execute, recover off): it makes the call, the handler throws, and the plan ends there. 'boundary' tasks are the failures that should stay failures: they are scored, not excluded, so the number does not improve by narrowing the suite.",
+  "tasks": [
+    {
+      "kind": "recover",
+      "q": "read the newest post and copy his email",
+      "faults": {
+        "blog.open_newest": "throw"
+      },
+      "effects": [
+        "blog.card",
+        "contact.copy_email"
+      ],
+      "tried": "blog.open_newest"
+    },
+    {
+      "kind": "recover",
+      "q": "read the newest post and copy his email",
+      "faults": {
+        "blog.open_newest": "empty"
+      },
+      "effects": [
+        "blog.card",
+        "contact.copy_email"
+      ],
+      "tried": "blog.open_newest"
+    },
+    {
+      "kind": "recover",
+      "q": "read the newest post and copy his email",
+      "faults": {
+        "blog.open_newest": "throw",
+        "blog.card": "empty-string"
+      },
+      "effects": [
+        "blog.stats",
+        "contact.copy_email"
+      ],
+      "tried": "blog.open_newest"
+    },
+    {
+      "kind": "recover",
+      "q": "show the newest article card and copy his email",
+      "faults": {
+        "blog.card": "throw"
+      },
+      "effects": [
+        "blog.open_newest",
+        "contact.copy_email"
+      ],
+      "tried": "blog.card"
+    },
+    {
+      "kind": "recover",
+      "q": "what is his email and print the resume",
+      "faults": {
+        "contact.copy_email": "throw"
+      },
+      "effects": [
+        "contact.card",
+        "resume.print"
+      ],
+      "tried": "contact.copy_email"
+    },
+    {
+      "kind": "recover",
+      "q": "read the newest post and print the resume",
+      "faults": {
+        "blog.open_newest": "empty"
+      },
+      "effects": [
+        "blog.card",
+        "resume.print"
+      ],
+      "tried": "blog.open_newest"
+    },
+    {
+      "kind": "control",
+      "q": "read the newest post and copy his email",
+      "faults": {},
+      "effects": [
+        "blog.open_newest",
+        "contact.copy_email"
+      ]
+    },
+    {
+      "kind": "control",
+      "q": "what is his email and print the resume",
+      "faults": {},
+      "effects": [
+        "contact.copy_email",
+        "resume.print"
+      ]
+    },
+    {
+      "kind": "control",
+      "q": "copy his email",
+      "faults": {},
+      "effects": [
+        "contact.copy_email"
+      ]
+    },
+    {
+      "kind": "unrecoverable",
+      "q": "read the newest post and copy his email",
+      "faults": {
+        "blog.open_newest": "throw",
+        "blog.card": "throw",
+        "blog.stats": "throw"
+      },
+      "effects": [],
+      "refused": "read the newest article"
+    },
+    {
+      "kind": "unrecoverable",
+      "q": "open the archive and copy his email",
+      "faults": {
+        "blog.open_archive": "throw"
+      },
+      "effects": [],
+      "refused": "open the full archive"
+    },
+    {
+      "kind": "unrecoverable",
+      "q": "copy his email and print the resume",
+      "faults": {
+        "contact.copy_email": "throw",
+        "contact.card": "throw"
+      },
+      "effects": [],
+      "refused": "copy the email address"
+    },
+    {
+      "kind": "boundary",
+      "q": "read the newest post and copy his email",
+      "faults": {
+        "blog.open_newest": "throw",
+        "blog.card": "throw"
+      },
+      "effects": [],
+      "note": "the only runner-up left answers how many posts, which is not the same act as opening one; a correct system refuses"
+    },
+    {
+      "kind": "boundary",
+      "q": "take me to the blog then copy his email",
+      "faults": {
+        "site.blog": "throw"
+      },
+      "effects": [],
+      "note": "a route step gets no runner-up, so a navigation failure has nothing to fall back to"
+    }
+  ]
+}
