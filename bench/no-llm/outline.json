@@ -1,0 +1,15 @@
+{
+  "class": "outline",
+  "note": "Rung 9: compile a spike ledger entry into a post outline (claims, evidence, open question). One task per published ledger entry, matched by its heading timestamp. The suite grows with the ledger: add a task when an entry is appended (and refresh outline-ledger.md). `questionMust` pins the phrase the open question has to carry, so a template change cannot quietly stop naming the boundary.",
+  "tasks": [
+    { "rung": 8, "at": "2026-11-24T07:42Z", "questionMust": "cue table" },
+    { "rung": 7, "at": "2026-11-24T08:25Z", "questionMust": "jellyfin" },
+    { "rung": 6, "at": "2026-11-24T06:30Z", "questionMust": "a2ui" },
+    { "rung": 5, "at": "2026-11-24T05:25Z", "questionMust": "ride on" },
+    { "rung": 4, "at": "2026-11-24T05:35Z", "questionMust": "docker" },
+    { "rung": 3, "at": "2026-11-24T04:05Z", "questionMust": "sqlite" },
+    { "rung": 2, "at": "2026-11-24T03:42Z", "questionMust": "hobnob" },
+    { "rung": 1, "at": "2026-11-24T03:05Z", "questionMust": "hobnob" },
+    { "rung": 1, "at": "2026-11-24T01:59Z", "questionMust": "unmeasured" }
+  ]
+}

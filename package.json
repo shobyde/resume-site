@@ -9,7 +9,8 @@
     "audit:routing": "node node_modules/boaz/dist/cli/index.js audit --probes bench/probes.json --module bench/agent-setup.mjs",
     "bench:composition": "node bench/composition/bench.mjs",
     "preview": "vite preview",
-    "bench:no-llm": "node bench/no-llm/run.mjs && node bench/no-llm/run.mjs --suite negation.json && node bench/no-llm/run.mjs --suite reference.json && node bench/no-llm/run.mjs --suite compound.json && node bench/no-llm/run.mjs --suite synonyms.json && node bench/no-llm/answers.mjs && node bench/no-llm/discourse.mjs && node bench/no-llm/register.mjs",
+    "bench:no-llm": "node bench/no-llm/run.mjs && node bench/no-llm/run.mjs --suite negation.json && node bench/no-llm/run.mjs --suite reference.json && node bench/no-llm/run.mjs --suite compound.json && node bench/no-llm/run.mjs --suite synonyms.json && node bench/no-llm/answers.mjs && node bench/no-llm/discourse.mjs && node bench/no-llm/register.mjs && node bench/no-llm/outline.mjs",
+    "bench:outline": "node bench/no-llm/outline.mjs",
     "bench:register": "node bench/no-llm/register.mjs",
     "bench:summarise": "node bench/no-llm/summarise.mjs"
   },
