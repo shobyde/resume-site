@@ -17,7 +17,7 @@
  * show the older numbers.
  */
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -135,7 +135,8 @@ const CLASSES = [
   },
   {
     id: 'actions', rung: 16, name: 'Actions on the accessibility tree', suite: 'actions.json',
-    cmd: ['bench/no-llm/actions.mjs', '--before'],
+    cmd: ['bench/no-llm/actions.mjs'],
+    beforeCmd: ['bench/no-llm/actions.mjs', '--before'],
     after: /^after: (?<p>\d+)\/(?<t>\d+)/m, before: /^before: (?<p>\d+)\/(?<t>\d+)/m,
     ceiling: 'SEND is aria-disabled until the input has text, so "ask the panel X" needs a plan, not one action',
   },
@@ -199,11 +200,22 @@ for (const entry of CLASSES) {
   try {
     report = run(entry.cmd);
   } catch (error) {
+    // Several harnesses exit 1 when a task misses; that is a score, not a
+    // failure of the run. Their numbers are parsed below, and a class whose
+    // number cannot be read is what fails this script.
     report = `${error.stdout ?? ''}\n${error.stderr ?? ''}`;
-    failures.push(`${entry.id}: harness exited ${error.status}`);
   }
   const after = grab(report, entry.after);
-  const beforeReport = entry.beforeCmd ? run(entry.beforeCmd) : report;
+  const beforeReport = entry.beforeCmd
+    ? (() => {
+        try {
+          return run(entry.beforeCmd);
+        } catch (error) {
+          return `${error.stdout ?? ''}\n${error.stderr ?? ''}`;
+        }
+      })()
+    : report;
+
   const before = grab(beforeReport, entry.before);
   const percentages = entry.pct ? pct(report, entry.pct) : null;
   if (!after && !percentages) failures.push(`${entry.id}: after-number did not match`);
@@ -242,6 +254,7 @@ const doc = {
   classes,
 };
 
+mkdirSync(path.dirname(out), { recursive: true });
 writeFileSync(out, `${JSON.stringify(doc, null, 2)}\n`);
 process.stdout.write(`scorecard: ${classes.length} classes -> ${path.relative(repo, out)}\n`);
 for (const entry of classes) {

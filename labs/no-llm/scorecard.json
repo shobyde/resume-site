@@ -1,0 +1,421 @@
+{
+  "generated": "2026-11-24T17:03:01.188Z",
+  "library": "boaz 0.7.14",
+  "note": "Every number here was parsed from the harness output in the same run that wrote this file. The five slot-filling classes are also graded live in the browser by /labs/no-llm/, through bench/no-llm/grade.mjs, which is the module the Node harness uses.",
+  "classes": [
+    {
+      "id": "taxonomy",
+      "rung": 1,
+      "name": "Question taxonomy and slot filling",
+      "suite": "tasks.json",
+      "tasks": 40,
+      "before": {
+        "passed": 19,
+        "total": 40
+      },
+      "after": {
+        "passed": 40,
+        "total": 40
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "taxonomy: 100% (40/40) after, 47.5% (19/40) before",
+        "taxonomy: 100% (40/40) after, 47.5% (19/40) before",
+        "taxonomy: 100% (40/40) after, 47.5% (19/40) before"
+      ],
+      "ceiling": "none found this run: all 40 utterances classify, and the type is the only thing the suite asserts for most of them",
+      "report": "taxonomy: 100% (40/40) after, 47.5% (19/40) before\n\nfixed by the library: 21"
+    },
+    {
+      "id": "negation",
+      "rung": 2,
+      "name": "Negation and exclusion",
+      "suite": "negation.json",
+      "tasks": 23,
+      "before": {
+        "passed": 6,
+        "total": 23
+      },
+      "after": {
+        "passed": 22,
+        "total": 23
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "negation: 95.7% (22/23) after, 26.1% (6/23) before",
+        "negation: 95.7% (22/23) after, 26.1% (6/23) before",
+        "negation: 95.7% (22/23) after, 26.1% (6/23) before"
+      ],
+      "ceiling": "\"nothing about hobnob, tell me about readback\" reads as a topic shift, not an exclusion, so Hobnob stays in the entity set",
+      "report": "negation: 95.7% (22/23) after, 26.1% (6/23) before\n\nmisses:\n  \"nothing about hobnob, tell me about readback\"  (exclude [] != [Hobnob])\n\nfixed by the library: 16"
+    },
+    {
+      "id": "reference",
+      "rung": 3,
+      "name": "Reference: ordinals, pronouns, partial names",
+      "suite": "reference.json",
+      "tasks": 27,
+      "before": {
+        "passed": 13,
+        "total": 27
+      },
+      "after": {
+        "passed": 27,
+        "total": 27
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "reference: 100% (27/27) after, 48.1% (13/27) before",
+        "reference: 100% (27/27) after, 48.1% (13/27) before",
+        "reference: 100% (27/27) after, 48.1% (13/27) before"
+      ],
+      "ceiling": "a description (\"the one that uses sqlite\") needs the fact join, not an antecedent",
+      "report": "reference: 100% (27/27) after, 48.1% (13/27) before\n\nfixed by the library: 14"
+    },
+    {
+      "id": "compound",
+      "rung": 4,
+      "name": "Compound asks: intersection and union",
+      "suite": "compound.json",
+      "tasks": 23,
+      "before": {
+        "passed": 5,
+        "total": 23
+      },
+      "after": {
+        "passed": 23,
+        "total": 23
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "compound: 100% (23/23) after, 21.7% (5/23) before",
+        "compound: 100% (23/23) after, 21.7% (5/23) before",
+        "compound: 100% (23/23) after, 21.7% (5/23) before"
+      ],
+      "ceiling": "three-name chains, \"neither ... nor\", and two asks joined by \"and\" are documented ceilings, not extraction errors",
+      "report": "compound: 100% (23/23) after, 21.7% (5/23) before\n\nfixed by the library: 18"
+    },
+    {
+      "id": "synonyms",
+      "rung": 5,
+      "name": "Synonyms from a bundled table",
+      "suite": "synonyms.json",
+      "tasks": 25,
+      "before": {
+        "passed": 2,
+        "total": 25
+      },
+      "after": {
+        "passed": 25,
+        "total": 25
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "synonyms: 100% (25/25) after, 8% (2/25) before",
+        "synonyms: 100% (25/25) after, 8% (2/25) before",
+        "synonyms: 100% (25/25) after, 8% (2/25) before"
+      ],
+      "ceiling": "a synonym outside the table fails silently, and an alias plus a connective loses combine",
+      "report": "synonyms: 100% (25/25) after, 8% (2/25) before\n\nfixed by the library: 23"
+    },
+    {
+      "id": "answers",
+      "rung": 4,
+      "name": "The real engine answers the joined set",
+      "suite": "compound.json",
+      "tasks": 23,
+      "before": null,
+      "after": {
+        "passed": 21,
+        "total": 21
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "answers: 100% (21/21) against the real engine"
+      ],
+      "ceiling": "scored on the first sentence of the answer, which is where the answered set lives",
+      "report": "answers: 100% (21/21) against the real engine"
+    },
+    {
+      "id": "discourse",
+      "rung": 6,
+      "name": "Discourse plans from the record set",
+      "suite": "discourse.json",
+      "tasks": 19,
+      "before": null,
+      "after": {
+        "passed": 16,
+        "total": 19
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "discourse: 84.2% (16/19)",
+        "  template compound: max paraphrase similarity 0.29 (want < 0.95)"
+      ],
+      "ceiling": "a declared constant is unreachable by its first word (\"a2ui\"), a punctuated subject never reaches a rule (\"c++\"), and an unknown second name drops combine",
+      "report": "discourse: 84.2% (16/19)\n  fidelity 17/19  sentences 17/19  grounded 19/19  clean 18/19  plain 19/19  stable 19/19\n  readability: flesch 75.7, words per sentence 9.5\n  template projects.using: max paraphrase similarity 1.00 (want < 0.95)\n  template projects.list: max paraphrase similarity 0.76 (want < 0.95)\n  template compound: max paraphrase similarity 0.29 (want < 0.95)\n  template profile: max paraphrase similarity 1.00 (want < 0.95)\n  FAIL \"which projects use a2ui\" (missing Boaz, Groundglass)\n    No project on this page lists a2ui. All 6 stacks are on the page.\n  FAIL \"which projects use c++\" (missing C++ physics simulation engines; 1 sentences; banned word or em dash)\n    I can do that — Show a project card needs project.\n  FAIL \"which projects use python and kubernetes\" (did not give the expected answer; 3 sentences)\n    Readback and Groundglass both list Python 3.10+. They share pytest as well. The closest without it is Boaz, on TypeScript and Vite."
+    },
+    {
+      "id": "summarise",
+      "rung": 7,
+      "name": "Extractive summarisation with citations",
+      "suite": "summarise.json",
+      "tasks": 20,
+      "before": null,
+      "after": null,
+      "beforePct": 77.8,
+      "afterPct": 77.8,
+      "headline": [
+        "  pass      77.8% -> 77.8%",
+        "  precision 0.83 after vs 0.76 before (share of quoted sentences carrying the subject)",
+        "  precision 0.83 after vs 0.76 before (share of quoted sentences carrying the subject)"
+      ],
+      "ceiling": "a subject in one post yields a one-sentence summary, and a subject in no post yields adjacent claims instead of \"I have not written about that\"",
+      "report": "summarise: 20 tasks, 18 scored, 2 unanswerable\n  corpus 944 sentences from 60 posts, 8 read per question\n  pass      77.8% -> 77.8%\n  precision 0.83 after vs 0.76 before (share of quoted sentences carrying the subject)\n  grounded  94.4% -> 94.4%\n  cited     100.0% -> 100.0%\n  spread    100.0% -> 100.0%\n  topical   83.3% -> 83.3%\n  no post covers: search, access/a11y\n\n  still failing after the change:\n    sum-topic-jellyfin (what does he write about jellyfin) sim=0 coverage=1\n      - [A Queued Chat Is a State Problem, Not a Buffer Problem] In most agent UIs the chat is treated as one stream: user message in, assistant message out.\n      - [A manifest already knows what to test] The first thing anyone did was hand write twenty questions, get a few wrong because they guessed at the phrasing, and stop.\n      - [Readback 0.2.0: rewards, and a catalog that fills the shelf] The other is Readback, the public version I published in October.\n    sum-topic-testing (what does he write about testing) sim=0 coverage=2\n      - [A Queued Chat Is a State Problem, Not a Buffer Problem] In most agent UIs the chat is treated as one stream: user message in, assistant message out.\n      - [A manifest already knows what to test] The first thing anyone did was hand write twenty questions, get a few wrong because they guessed at the phrasing, and stop.\n      - [Readback 0.2.0: rewards, and a catalog that fills the shelf] The other is Readback, the public version I published in October.\n    sum-topic-python (what does he write about python) sim=0.03 coverage=2\n      - [LangChain's Frontend SDK Hands You State, Not a Chat Widget] Sources: https://docs.langchain.com/oss/python/langchain/frontend/overview\n      - [This Week in Agents: Restraint Ships] A2UI 1.0 is the first stable release of the protocol that lets an agent describe interactive screens rendered with an app's own native components, with SDKs for web, Android, iOS and agent-side Python, TypeScript, and Dart.\n    sum-topic-probes (what does he write about probes) sim=0 coverage=2\n      - [A manifest already knows what to test] So client-agent probes --generate --manifest dist/agent-manifest.json emits probes.generated.json: one question per title and per keyword, each already expecting the id it came from, each grouped under that id as an intent so bench can score the copy once someone adds must facts."
+    },
+    {
+      "id": "register",
+      "rung": 8,
+      "name": "Register control: terse, normal, explanatory",
+      "suite": "register.json",
+      "tasks": 26,
+      "before": null,
+      "after": {
+        "passed": 26,
+        "total": 26
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "register: 100% (26/26) against the real engine"
+      ],
+      "ceiling": "the cue table misses \"shorten that\", \"too long\", \"be shorter\", \"less detail\", \"stop explaining\", and a leading cue is stripped blind",
+      "report": "register: 100% (26/26) against the real engine"
+    },
+    {
+      "id": "outline",
+      "rung": 9,
+      "name": "Long-form outline from ledger facts",
+      "suite": "outline.json",
+      "tasks": 9,
+      "before": null,
+      "after": null,
+      "beforePct": 0,
+      "afterPct": 100,
+      "headline": [
+        "  rung 8: before 1/5 (fails structure,headline,provenance,numbers) after 5/5",
+        "  rung 8: before 1/5 (fails structure,headline,provenance,numbers) after 5/5",
+        "outline: 0% -> 100% (9 entries, baseline 0/9, compiler 9/9)"
+      ],
+      "ceiling": "no connective prose and no series-level through-line: nine outlines, not one post",
+      "report": "outline: 0% -> 100% (9 entries, baseline 0/9, compiler 9/9)\n  rung 8: before 1/5 (fails structure,headline,provenance,numbers) after 5/5\n    q: What would it take for the cue table to handle \"stop explaining\"?\n  rung 7: before 1/5 (fails structure,headline,provenance,numbers) after 5/5\n    q: What should the system answer when a visitor asks \"what does he write about jellyfin\"?\n  rung 6: before 1/5 (fails structure,headline,provenance,numbers) after 5/5\n    q: What should the system answer when a visitor asks \"which projects use a2ui\"?\n  rung 5: before 1/5 (fails structure,headline,provenance,numbers) after 5/5\n    q: What should the system answer when a visitor asks \"which projects ride on python\"?\n  rung 4: before 1/5 (fails structure,headline,provenance,numbers) after 5/5\n    q: What should the system answer when a visitor asks \"which projects use python, sqlite or docker\"?\n  rung 3: before 1/5 (fails structure,headline,provenance,numbers) after 5/5\n    q: What should the system answer when a visitor asks \"the one that uses sqlite\"?\n  rung 2: before 1/5 (fails structure,headline,provenance,numbers) after 5/5\n    q: What should the system answer when a visitor asks \"nothing about hobnob, tell me about readback\"?\n  rung 1: before 1/5 (fails structure,headline,provenance,numbers) after 5/5\n    q: What should the system answer when a visitor asks \"does hobnob use sqlite\"?\n  rung 1: before 2/5 (fails structure,headline,provenance) after 5/5\n    q: What did this run leave unmeasured?\nverbatim: 100% of claim text is ledger text (3298 chars over 9 entries)\n  structure: baseline 0/9 compiler 9/9\n  headline: baseline 0/9 compiler 9/9\n  provenance: baseline 0/9 compiler 9/9\n  numbers: baseline 1/9 compiler 9/9\n  fidelity: baseline 9/9 compiler 9/9"
+    },
+    {
+      "id": "plan",
+      "rung": 10,
+      "name": "Two-step plans from one sentence",
+      "suite": "plan.json",
+      "tasks": 14,
+      "before": {
+        "passed": 0,
+        "total": 8
+      },
+      "after": {
+        "passed": 8,
+        "total": 8
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "score: engine 0/8 two-step, plan 8/8 two-step; controls engine 5/5, plan 5/5"
+      ],
+      "ceiling": "a verb the app never declared drops the whole plan (\"no-second-verb\"), and a verb-carrying capability still wins with needs: args unfilled",
+      "report": "plan suite: 14 tasks\n  two-step requests   engine 0/8 (0.0%)   plan 8/8 (100.0%)\n  first step only     engine 5/8 (62.5%)\n  one-step controls   engine 5/5 (100.0%)   plan declines 5/5 (100.0%)\n  unservable request  plan declines 1/1 (100.0%)\n    \"open the archive and filter typescript\" -> no-second-verb\n\nscore: engine 0/8 two-step, plan 8/8 two-step; controls engine 5/5, plan 5/5"
+    },
+    {
+      "id": "execute",
+      "rung": 11,
+      "name": "The planner executes and reports effects",
+      "suite": "execute.json",
+      "tasks": 13,
+      "before": {
+        "passed": 3,
+        "total": 13
+      },
+      "after": {
+        "passed": 13,
+        "total": 13
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "score: engine 3/13 (23.1%) -> plan+execute 13/13 (100.0%)"
+      ],
+      "ceiling": "a step that leaves the SPA ends the plan document, so step two never runs on a navigating sentence",
+      "report": "execute suite: 13 tasks\n  two-request effects  engine 0/9 (0.0%)   plan+execute 9/9 (100.0%)\n  first effect only    engine 6/9 (66.7%)\n  one-request controls engine 3/3 (100.0%)   plan+execute 3/3 (100.0%)\n  refusal by name      plan+execute 1/1 (100.0%)\n    \"open the archive and expand the card\" -> blog.open_archive | I did one thing: open the full archive. I did not run expand a project card, because the sentence never said which one.\n\nscore: engine 3/13 (23.1%) -> plan+execute 13/13 (100.0%)"
+    },
+    {
+      "id": "recover",
+      "rung": 12,
+      "name": "Failure recovery: runner-up or a named refusal",
+      "suite": "recover.json",
+      "tasks": 14,
+      "before": {
+        "passed": 8,
+        "total": 14
+      },
+      "after": {
+        "passed": 13,
+        "total": 14
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "score: shipped 8/14 (57.1%) -> recover 13/14 (92.9%)"
+      ],
+      "ceiling": "routes get no runner-up (a wrong page is worse than a refusal), and a lexical score cannot tell two acts on the same words apart",
+      "report": "recover suite: 14 tasks\n  fault, runner-up must run   shipped 0/6 (0.0%)   recover 6/6 (100.0%)\n  no-fault controls           shipped 3/3 (100.0%)   recover 3/3 (100.0%)\n  every candidate fails       shipped 3/3 (100.0%)   recover 3/3 (100.0%)\n  boundaries (stay failing)    shipped 2/2 (100.0%)   recover 1/2 (50.0%)\n  miss: \"read the newest post and copy his email\" {\"blog.open_newest\":\"throw\",\"blog.card\":\"throw\"} -> blog.stats -> contact.copy_email | I did 2 things: log statistics, then copy the email address. read the newest article failed, so I tried log statistics instead.\n\nscore: shipped 8/14 (57.1%) -> recover 13/14 (92.9%)\nplanner offers at least one runner-up on 13/14 tasks"
+    },
+    {
+      "id": "skills",
+      "rung": 13,
+      "name": "Declarative skill runner",
+      "suite": "skills.json",
+      "tasks": 16,
+      "before": {
+        "passed": 3,
+        "total": 16
+      },
+      "after": {
+        "passed": 15,
+        "total": 16
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "Skill suite: 16 tasks, skill class (rung 13)"
+      ],
+      "ceiling": "the trigger table is a closed vocabulary: \"main points of this page\" is not claimed",
+      "report": "Skill suite: 16 tasks, skill class (rung 13)\n\nid   page         expect                              shipped                     skill\nt1   long         {\"skill\":\"page.three_points\",\"delivered\":3,\"stopped\":null} none/-/-   via projects.listPASS  page.three_points/3/-\nt2   long         {\"skill\":\"page.three_points\",\"delivered\":3,\"stopped\":null} none/-/-   via projects.listPASS  page.three_points/3/-\nt3   long         {\"skill\":\"page.three_points\",\"delivered\":3,\"stopped\":null} none/-/-                    PASS  page.three_points/3/-\nt4   long         {\"skill\":\"page.three_points\",\"delivered\":3,\"stopped\":null} none/-/-                    PASS  page.three_points/3/-\nt5   long         {\"skill\":\"page.three_points\",\"delivered\":3,\"stopped\":null} none/-/-   via blog.topics  PASS  page.three_points/3/-\nt6   long         {\"skill\":\"page.three_points\",\"delivered\":3,\"stopped\":null} none/-/-   via blog.topics  PASS  page.three_points/3/-\nt7   short        {\"skill\":\"page.three_points\",\"delivered\":0,\"stopped\":\"enough\"} none/-/-   via projects.listPASS  page.three_points/0/enough\nt8   one-section  {\"skill\":\"page.three_points\",\"delivered\":0,\"stopped\":\"enough\"} none/-/-   via projects.listPASS  page.three_points/0/enough\nt9   medium       {\"skill\":\"page.three_points\",\"delivered\":0,\"stopped\":\"enough\"} none/-/-   via projects.listPASS  page.three_points/0/enough\nt10  duplicate    {\"skill\":\"page.three_points\",\"delivered\":1,\"stopped\":\"distinct\"} none/-/-   via projects.listPASS  page.three_points/1/distinct\nt11  empty        {\"skill\":\"page.three_points\",\"delivered\":0,\"stopped\":\"enough\"} none/-/-   via projects.listPASS  page.three_points/0/enough\nt12  long         {\"skill\":\"page.three_points\",\"delivered\":3,\"stopped\":null} none/-/-   via projects.listPASS  page.three_points/3/-\nt13  long         {\"skill\":\"page.three_points\",\"delivered\":3,\"stopped\":null} none/-/-                    FAIL  none/-/-  \nc1   long         {\"skill\":null}                      none/-/-   via blog.topics  PASS  none/-/-  \nc2   long         {\"skill\":null}                      none/-/-   via blog.topics  PASS  none/-/-  \nc3   long         {\"skill\":null}                      none/-/-                    PASS  none/-/-  \n\nshipped 3/16 = 18.8%\nskill   15/16 = 93.8%\nthree-point answers    7/8\nstop conditions        5/5\ncontrols (not claimed) 3/3\n\nmisses:\n  t13 \"what are the main points of this page\" on long: wanted {\"skill\":\"page.three_points\",\"delivered\":3,\"stopped\":null}, got {\"skill\":null,\"points\":null,\"stopped\":null}"
+    },
+    {
+      "id": "memory",
+      "rung": 14,
+      "name": "Working memory with salience and decay",
+      "suite": "memory.json",
+      "tasks": 16,
+      "before": {
+        "passed": 4,
+        "total": 16
+      },
+      "after": {
+        "passed": 16,
+        "total": 16
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "id  conv          kind            expect                                  before   after",
+        "id  conv          kind            expect                                  before   after",
+        "Memory suite: 16 tasks over 7 conversations (rung 14)"
+      ],
+      "ceiling": "a pointer follows the previous answer's subjects, so a multi-subject answer widens what \"that\" means",
+      "report": "Memory suite: 16 tasks over 7 conversations (rung 14)\n\nid  conv          kind            expect                                  before   after\ng1  gap           answer-names    {\"names\":\"Hobnob\"}                      fail   PASS\ng2  gap           rewritten       {\"rewritten\":true}                      fail   PASS\ng3  gap           subject         {\"subject\":\"Hobnob\"}                    fail   PASS\ng4  gap-two       rewritten-to    {\"rewrittenTo\":\"Boaz\"}                  fail   PASS\ng5  gap-two       rewritten       {\"rewritten\":true}                      fail   PASS\nd1  decay         salient         {\"excludes\":\"Hobnob\"}                   PASS   PASS\nd2  decay         salient         {\"includes\":\"Python 3.10+\"}             fail   PASS\nd3  decay         covered         {\"covered\":\"Hobnob\"}                    fail   PASS\nr1  recap         recap           {\"names\":[\"Hobnob\",\"Python 3.10+\"],\"empty\":false} fail   PASS\nr2  recap         recap           {\"notNames\":[\"Cobol\"]}                  PASS   PASS\nr3  recap         coverage-query  {\"coverageQuery\":true}                  fail   PASS\np1  repeat        salient-top     {\"salientTop\":\"Groundglass\"}            fail   PASS\nf1  fresh         recap           {\"empty\":true}                          fail   PASS\nf2  fresh         control         {\"names\":null}                          fail   PASS\nc1  control-question coverage-query  {\"coverageQuery\":false}                 PASS   PASS\nc2  control-question answer-names    {\"names\":\"shobyde@gmail.com\"}           PASS   PASS\n\nbefore 4/16 = 25.0%\nafter  16/16 = 100.0%\n  answer-names           before 1/2, after 2/2\n  rewritten              before 0/2, after 2/2\n  subject                before 0/1, after 1/1\n  rewritten-to           before 0/1, after 1/1\n  salient                before 1/2, after 2/2\n  covered                before 0/1, after 1/1\n  recap                  before 1/3, after 3/3\n  coverage-query         before 1/2, after 2/2\n  salient-top            before 0/1, after 1/1\n  control                before 0/1, after 1/1"
+    },
+    {
+      "id": "preferences",
+      "rung": 15,
+      "name": "Stated preferences stored as facts",
+      "suite": "preferences.json",
+      "tasks": 19,
+      "before": {
+        "passed": 7,
+        "total": 19
+      },
+      "after": {
+        "passed": 17,
+        "total": 19
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "preferences: before 36.8% (7/19), after 89.5% (17/19)",
+        "preferences: before 36.8% (7/19), after 89.5% (17/19)",
+        "preferences: before 36.8% (7/19), after 89.5% (17/19)"
+      ],
+      "ceiling": "two preferences in one sentence are not split, and explanatory adds nothing to a count answer",
+      "report": "preferences: before 36.8% (7/19), after 89.5% (17/19)\n  CEILING p13 \"how many posts has he written\"\n    2 sentences, wanted 3-9\n    said: 60 posts so far; the newest is \"A Queued Chat Is a State Problem, Not a Buffer Problem\". The archive lists all 60 by date.\n  CEILING p19 \"what did I ask for?\"\n    register normal not terse; answer lacks \"short answers\"; answer lacks \"cites\"\n    said: Nothing set: normal answers. Say \"keep it short\" or \"fuller answers\" and I will hold it for this session."
+    },
+    {
+      "id": "actions",
+      "rung": 16,
+      "name": "Actions on the accessibility tree",
+      "suite": "actions.json",
+      "tasks": 24,
+      "before": {
+        "passed": 10,
+        "total": 24
+      },
+      "after": {
+        "passed": 22,
+        "total": 24
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "after: 22/24 (91.7%)"
+      ],
+      "ceiling": "SEND is aria-disabled until the input has text, so \"ask the panel X\" needs a plan, not one action",
+      "report": "PASS a01 click the projects link\nPASS a02 click the contact link\nPASS a03 press the send button\nPASS a04 click the close button in the ask about sho dialog\nPASS a05 fill the ask about sho box with which projects use typescript\nPASS a06 type hello into the ask about sho field\nPASS a07 click the first engineering detail button\nPASS a08 click the third engineering detail button\nPASS a09 click visit hobnob.info\nPASS a10 click download résumé\nPASS a11 click the email me link\nPASS a12 click the second source on github link\nPASS a13 click read the product page\nPASS a14 click the linkedin link\nPASS a15 click the skip to content link\nPASS a16 scroll to tools of the trade\nPASS a17 click ask about sho\nPASS a18 click engineering detail\nPASS a19 click the source on github link\nPASS a20 click the missing button\nPASS a21 click the terms checkbox\nFAIL a22 scroll to experience  (resolved)\nPASS a23 which projects use typescript\nFAIL a24 fill the search box with typescript  (resolved)\n\nafter: 22/24 (91.7%)"
+    },
+    {
+      "id": "mcp",
+      "rung": 17,
+      "name": "MCP-shaped tool bridge",
+      "suite": "mcp.json",
+      "tasks": 29,
+      "before": {
+        "passed": 2,
+        "total": 29
+      },
+      "after": {
+        "passed": 29,
+        "total": 29
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "bridge 100%  (29/29)  init 1/1  list 2/2  schema 1/1  call 3/3  invalid 4/4  unknown-tool 1/1  unknown-method 1/1  notification 1/1  id 1/1  invalid-rpc 2/2  plan 8/8  plan-blocked 2/2  plan-declined 1/1  plan-route-blocked 1/1"
+      ],
+      "ceiling": "a step that acts on a page an earlier step opens has no completable tool-call form, and tools/list cannot carry requiresConfirmation",
+      "report": "naive  6.9%  (2/29)  init 0/1  list 1/2  schema 0/1  call 0/3  invalid 0/4  unknown-tool 0/1  unknown-method 0/1  notification 0/1  id 1/1  invalid-rpc 0/2  plan 0/8  plan-blocked 0/2  plan-declined 0/1  plan-route-blocked 0/1\nbridge 100%  (29/29)  init 1/1  list 2/2  schema 1/1  call 3/3  invalid 4/4  unknown-tool 1/1  unknown-method 1/1  notification 1/1  id 1/1  invalid-rpc 2/2  plan 8/8  plan-blocked 2/2  plan-declined 1/1  plan-route-blocked 1/1\nmisses 27: naive:p01-initialize naive:p03-tool-names naive:p04-schema-required naive:p05-call-query naive:p06-call-list naive:p07-call-action naive:p08-missing-arg naive:p09-extra-arg naive:p10-enum-value naive:p11-unknown-tool naive:p12-unknown-method naive:p13-notification naive:p15-arguments-type naive:p16-batch naive:p17-nested-arg naive:l01-question-count naive:l02-question-stack naive:l03-single-action naive:l04-route naive:l05-two-requests naive:l06-two-actions naive:l07-blocked-arg naive:l08-blocked-arg-2 naive:l09-declined naive:l10-newest-post naive:l11-possessive naive:l12-route-then-act"
+    },
+    {
+      "id": "browser",
+      "rung": 18,
+      "name": "Scripted browser agent (real Chromium)",
+      "suite": "browser.json",
+      "tasks": 11,
+      "before": {
+        "passed": 8,
+        "total": 11
+      },
+      "after": {
+        "passed": 10,
+        "total": 11
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [],
+      "ceiling": "\"open the boaz page\" cannot navigate because the manifest declares no route for /boaz/, and the site has no form to fill",
+      "report": "PASS  b1   read the newest post               -> blog.open_newest  [path /posts/2026-11-24-a-queued-chat-is-a-state-problem-not-a-buffer-problem/]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b2   open the archive                   -> blog.open_archive  [path /archive/]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b3   take me to the blog                -> site.blog  [hash #blog]\n         filled the panel, pressed SEND, handled any confirmation\nFAIL  b4   open the boaz page                 -> site.top  [path /]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b5   copy his email                     -> contact.copy_email  [clipboard shobyde@gmail.com]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b6   print his resume                   -> resume.print  [print calls 1]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b7   which projects use python          -> site.projects  [answer \"Checked list projectsRead the project list and matched Python 3.10+ against 2 pr\"]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b8   what is his email                  -> contact.copy_email  [answer \"Read the email address off this pageshobyde@gmail.com.\"]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b9   how many posts has he written      -> blog.open_archive  [answer \"Checked log statisticsRead the log: 60 posts, took the most recent60 posts so fa\"]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b10  show me the hobnob card            -> projects.card  [cards \"Hobnob: private meeting notes, no cloudPERSONAL PRODUCT · MA\"]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b11  fill the contact form              -> site.contact  [refused: name-mismatch]\n         No control is named \"contact\". The Contact link has that name.\n\nagent: 10/11 = 90.9%"
+    }
+  ]
+}
