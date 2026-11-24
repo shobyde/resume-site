@@ -14,13 +14,14 @@
    components.
    ============================================================ */
 import manifest from 'boaz:manifest';
-import { AgentRuntime, executePlan, planRequest, registry } from 'boaz/core';
+import { AgentRuntime, executePlan, planRequest, registry, runSkill, selectSkill } from 'boaz/core';
 import { createRulesEngine } from 'boaz/rules';
 import { createDomContextReader } from 'boaz/dom';
 import { createAssistantKnowledge } from './knowledge.js';
 import { readRegister, endTurn } from './register.js';
 import { describeTrace } from './trace.js';
 import { siteCapabilities } from './capabilities.js';
+import { siteSkills } from './skills.js';
 import { renderA2UI } from './a2ui.js';
 import { DATA } from '../data.js';
 import { motionPrefs } from '../motionPrefs.js';
@@ -72,7 +73,7 @@ export function initAssistant({ posts = [] } = {}) {
 
   const sorted = newestFirst(posts);
   const newestPost = sorted[0] || null;
-  const state = { postCount: posts.length, newestPost, postsIndex: sorted, query: '' };
+  const state = { postCount: posts.length, newestPost, postsIndex: sorted, pageSections: [], query: '' };
 
   const dispatch = (event, payload) => {
     switch (event) {
@@ -108,6 +109,21 @@ export function initAssistant({ posts = [] } = {}) {
       .filter((href) => /^(mailto:|https?:|tel:)/i.test(href));
     return [readSection(query), ...links].join('\n');
   };
+  // A skill reads the page as material. The host is the only layer that touches
+  // the DOM; `page.sections` gets this through the snapshot. Paragraphs only:
+  // a skill chip or a nav label is not a sentence, and quoting a grid of them as
+  // one of three points is worse than having fewer points to give.
+  const collectSections = () =>
+    CONTACT_PAGE_SECTIONS.map(({ selector, label }) => {
+      const element = document.querySelector(selector);
+      const text = element
+        ? [...element.querySelectorAll('p')]
+            .map((paragraph) => String(paragraph.innerText ?? paragraph.textContent ?? '').replace(/\s+/g, ' ').trim())
+            .filter(Boolean)
+            .join(' ')
+        : '';
+      return { label, text };
+    }).filter((section) => section.text.length > 0);
   const engine = createRulesEngine({
     knowledge,
     answers,
@@ -311,6 +327,32 @@ export function initAssistant({ posts = [] } = {}) {
   }
 
   /**
+   * A skill answer: the checks it ran on top, the words underneath. Same
+   * bubble shape as a rule answer, because a visitor should not be able to tell
+   * which machinery produced the sentence.
+   */
+  function addSkillAnswer(text, lines = []) {
+    const bubble = addBubble('assistant', '');
+    if (lines.length) {
+      const trace = document.createElement('ul');
+      trace.className = 'agent__trace';
+      for (const line of lines) {
+        const item = document.createElement('li');
+        item.textContent = line;
+        trace.appendChild(item);
+      }
+      bubble.insertBefore(trace, bubble.firstChild);
+    }
+    if (text) {
+      const body = document.createElement('p');
+      body.textContent = text;
+      bubble.appendChild(body);
+    }
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return bubble;
+  }
+
+  /**
    * One bubble per answer: the steps it took on top, the words underneath. The
    * bubble opens on the first step so the trace is on screen before the answer
    * starts, and each step line fades in on its own beat.
@@ -377,6 +419,24 @@ export function initAssistant({ posts = [] } = {}) {
         return;
       }
       state.query = register.cleaned || question;
+      // A skill is a shape the sentence names but does not spell out: it runs
+      // its own steps, and a check can stop it before it pads. It claims the
+      // sentence before planning, because its trigger is more specific than any
+      // single capability's keywords.
+      const skill = selectSkill(siteSkills, state.query);
+      if (skill) {
+        state.pageSections = collectSections();
+        const run = await runSkill(skill, {
+          call: async (capabilityId, args) => {
+            const turn = await runtime.runCapability(capabilityId, args);
+            if (!turn.ok) throw new Error(turn.text);
+            return turn.result;
+          },
+        });
+        const lines = [skill.explain?.(run), ...run.checks.filter((check) => !check.ok).map((check) => check.message)].filter(Boolean);
+        addSkillAnswer(skill.compose?.(run) ?? '', lines);
+        return;
+      }
       // One sentence can ask for two things. A plan naming more than one
       // capability runs both, in order, through the same capability path the
       // single-request case uses, so confirmation and navigation still apply.

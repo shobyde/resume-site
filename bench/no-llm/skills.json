@@ -1,0 +1,25 @@
+{
+  "class": "skill",
+  "rung": 13,
+  "about": "One skill, declared as data (trigger, steps, checks, stop). Each task names the page it runs on and what the run must report: which skill claimed it (null on the controls), whether a check stopped it, and how many points the composed answer actually delivers. A check that runs after a step cannot unrun it, so the delivered count is what makes padding visible.",
+  "tasks": [
+    { "id": "t1", "page": "long", "text": "summarise this page in three points", "expect": { "skill": "page.three_points", "delivered": 3, "stopped": null } },
+    { "id": "t2", "page": "long", "text": "give me three points from this page", "expect": { "skill": "page.three_points", "delivered": 3, "stopped": null } },
+    { "id": "t3", "page": "long", "text": "What are the key points from this page?", "expect": { "skill": "page.three_points", "delivered": 3, "stopped": null } },
+    { "id": "t4", "page": "long", "text": "tl;dr this page", "expect": { "skill": "page.three_points", "delivered": 3, "stopped": null } },
+    { "id": "t5", "page": "long", "text": "summarize this page", "expect": { "skill": "page.three_points", "delivered": 3, "stopped": null } },
+    { "id": "t6", "page": "long", "text": "summarize the page for me", "expect": { "skill": "page.three_points", "delivered": 3, "stopped": null } },
+
+    { "id": "t7", "page": "short", "text": "summarise this page in three points", "expect": { "skill": "page.three_points", "delivered": 0, "stopped": "enough" } },
+    { "id": "t8", "page": "one-section", "text": "three points from this page", "expect": { "skill": "page.three_points", "delivered": 0, "stopped": "enough" } },
+    { "id": "t9", "page": "medium", "text": "summarise this page in three points", "expect": { "skill": "page.three_points", "delivered": 0, "stopped": "enough" } },
+    { "id": "t10", "page": "duplicate", "text": "summarise this page in three points", "expect": { "skill": "page.three_points", "delivered": 1, "stopped": "distinct" } },
+    { "id": "t11", "page": "empty", "text": "summarise this page in three points", "expect": { "skill": "page.three_points", "delivered": 0, "stopped": "enough" } },
+    { "id": "t12", "page": "long", "text": "summarise this page in three bullet points", "expect": { "skill": "page.three_points", "delivered": 3, "stopped": null } },
+    { "id": "t13", "page": "long", "text": "what are the main points of this page", "expect": { "skill": "page.three_points", "delivered": 3, "stopped": null } },
+
+    { "id": "c1", "page": "long", "text": "summarise the blog", "expect": { "skill": null } },
+    { "id": "c2", "page": "long", "text": "what does he write about", "expect": { "skill": null } },
+    { "id": "c3", "page": "long", "text": "show me the archive", "expect": { "skill": null } }
+  ]
+}

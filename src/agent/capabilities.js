@@ -10,7 +10,7 @@
    every description written in the visitor's words rather than the
    component's.
    ============================================================ */
-import { defineCapability, defineKnowledge } from 'boaz/core';
+import { defineCapability, defineKnowledge, splitSentences, summarise } from 'boaz/core';
 import { DATA } from '../data.js';
 import { articleCard, contactCard, findProject, projectCard } from './surfaces.js';
 import { phraseSummary, rankPosts, summariseDocuments } from './summarise.js';
@@ -365,6 +365,72 @@ export const siteCapabilities = [
         details: Boolean(project.details),
       })),
     }),
+  }),
+  /* ---------- the page, read as material for a skill ---------- */
+  defineCapability({
+    id: 'page.sections',
+    kind: 'query',
+    title: 'Read the sections on this page',
+    description: 'Returns the sentences of the visible sections, each tagged with the section it came from.',
+    keywords: ['read this page', 'sentences on this page', 'the whole page'],
+    paramsSchema: { type: 'object', properties: {}, additionalProperties: false },
+    // The host fills pageSections from the DOM (assistant.js); the capability
+    // never touches the document itself, so it runs the same in a harness.
+    handler: async (_params, ctx) => {
+      const sections = ctx.read('pageSections') || [];
+      const sentences = sections.flatMap((section) =>
+        splitSentences(section.text)
+          .filter((text) => text.length >= 40)
+          .map((text) => ({ text, source: section.label })),
+      );
+      return {
+        sections: sections.map((section) => section.label),
+        sentences,
+        text: sentences.map((sentence) => sentence.text).join(' '),
+      };
+    },
+  }),
+  defineCapability({
+    id: 'page.points',
+    kind: 'query',
+    title: 'Pick points from these sentences',
+    description: 'Chooses up to three sentences that answer the question and do not repeat each other.',
+    keywords: ['pick points', 'choose sentences', 'three points'],
+    paramsSchema: {
+      type: 'object',
+      properties: {
+        sentences: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: { text: { type: 'string' }, source: { type: 'string' } },
+            required: ['text'],
+            additionalProperties: false,
+          },
+        },
+      },
+      required: ['sentences'],
+      additionalProperties: false,
+    },
+    handler: async ({ sentences }, ctx) => {
+      const result = summarise(sentences, { query: ctx.read('query') || '', k: 3 });
+      // A question with no topic ("summarise this page") gives every sentence the
+      // same relevance, so MMR's diversity term decides everything and picks the
+      // most unusual sentences on the page. With nothing to be relevant to, the
+      // honest summary is the leading sentence of each section, in page order.
+      const bySource = new Map();
+      for (const sentence of sentences) {
+        if (!bySource.has(sentence.source)) bySource.set(sentence.source, sentence);
+        if (bySource.size >= 3) break;
+      }
+      const picks = result.unguided ? [...bySource.values()] : result.picks.length < 3 ? [...bySource.values()] : result.picks;
+      return {
+        points: picks.map((pick) => ({ text: pick.text, source: pick.sourceTitle ?? pick.source })),
+        // Echo what it read: a grounded check needs the source in the same result.
+        text: sentences.map((sentence) => sentence.text).join(' '),
+        considered: result.considered,
+      };
+    },
   }),
   defineKnowledge({
     id: 'knowledge.about',
