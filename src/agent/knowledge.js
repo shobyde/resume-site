@@ -9,6 +9,7 @@ import {
   phraseNewestPost,
   phraseProjectList,
   phraseProjectsUsing,
+  phraseProjectsUsingAll,
   shortName,
 } from './phrasing.js';
 
@@ -23,6 +24,28 @@ const slugOf = (title) =>
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
+
+/**
+ * A project has a technology when its stack names it. Compared as words, not as
+ * strings, so "Python 3.10+" answers "python" and the digits do not have to be
+ * repeated. Used by the intersection form, where the union's `asked()` join
+ * would return a project that has only one of the two.
+ */
+const stackWords = (value) =>
+  String(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9+#]+/g, ' ')
+    .split(' ')
+    .filter((word) => word && !/^[0-9]+$/.test(word));
+
+const stackHas = (project, term) => {
+  const want = stackWords(term);
+  if (want.length === 0) return false;
+  return (project.stack ?? []).some((entry) => {
+    const have = stackWords(entry);
+    return want.every((word) => have.includes(word));
+  });
+};
 
 export function createAssistantKnowledge({ posts }) {
   const knowledge = new KnowledgeBase({
@@ -81,15 +104,35 @@ export function createAssistantKnowledge({ posts }) {
       keywords: ['which projects use', 'what uses', 'written in', 'uses', 'dependencies', 'powered by'],
       goal: 'projects_using(?P)',
       steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
-      explain: ({ solutions, terms, mentions, observed }) => {
+      explain: ({ solutions, terms, mentions, observed, combine }) => {
         if (!observed['projects.list']) return 'Read the project list';
+        if (combine?.op === 'all' && terms.length >= 2) {
+          return `Read the project list and kept the projects that list both ${terms.join(' and ')}`;
+        }
         const tech = terms.join(' or ') || mentions[0] || 'that';
         if (solutions.length === 0) return `Read the project list: no stack lists ${tech}`;
         return `Read the project list and matched ${tech} against ${solutions.length} project${solutions.length === 1 ? '' : 's'}`;
       },
-      compose: ({ query, solutions, terms, mentions, observed }) => {
+      compose: ({ query, solutions, terms, mentions, observed, combine, exclude }) => {
         const records = observed['projects.list']?.projects ?? [];
         const asked = terms[0] || mentions[0] || '';
+        // "not python" rules the technology out of the answer, not just out of
+        // the question: Readback lists Python, so it cannot answer "sqlite but
+        // not python".
+        const notWanted = (project) =>
+          (exclude ?? []).some(
+            (term) =>
+              stackHas(project, term) ||
+              shortName(project.title).toLowerCase() === String(term).toLowerCase() ||
+              slugOf(project.title) === slugOf(term),
+          );
+        // "python and sqlite" is a different question from "python or sqlite":
+        // the join over asked() is a union, so the intersection is computed
+        // against the tool result the rule already holds.
+        if (combine?.op === 'all' && terms.length >= 2 && records.length > 0) {
+          const both = records.filter((project) => terms.every((term) => stackHas(project, term)) && !notWanted(project));
+          return phraseProjectsUsingAll(query, both, terms);
+        }
         if (solutions.length === 0) {
           // The tool ran, so "no stack lists TypeScript" is a fact about the
           // page, not a shrug. Without the tool result there is nothing to say.
@@ -104,7 +147,7 @@ export function createAssistantKnowledge({ posts }) {
             );
             return record ?? { title: solution.bindings['?T'] ?? slug, stack: [] };
           })
-          .filter((project) => project?.title);
+          .filter((project) => project?.title && !notWanted(project));
         return phraseProjectsUsing(query, matched, asked);
       },
     },

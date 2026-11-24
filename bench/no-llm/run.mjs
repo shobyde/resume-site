@@ -31,6 +31,57 @@ export function baselineType(query) {
 
 const NEGATION_WORD = /\b(?:not|except|excluding|excludes?|besides|without|other than|apart from|anything but)\b/;
 
+/**
+ * The hand-written version of a compound check: one connective for the whole
+ * sentence, whichever appears first anywhere in it. It gets "python and
+ * sqlite" right and misreads "sqlite and not python", where the second name is
+ * excluded rather than joined.
+ */
+export function baselineCombine(query, entities) {
+  if (entities.length < 2) return null;
+  const text = query.toLowerCase();
+  const or = text.search(/\b(?:or|either)\b/);
+  const and = text.search(/\b(?:and|plus|with|both)\b/);
+  if (or < 0 && and < 0) return null;
+  return or >= 0 && (and < 0 || or < and) ? 'any' : 'all';
+}
+
+/**
+ * The hand-written entity scan: every declared subject whose words appear in
+ * the query, in order of appearance, no stemming and no negation awareness.
+ * Used for the compound class so its baseline is a real attempt rather than a
+ * straw man that finds no names at all.
+ */
+export function baselineSubjects(query, subjects) {
+  const words = query
+    .toLowerCase()
+    .replace(/[^a-z0-9' ]+/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
+  const found = [];
+  for (const subject of subjects) {
+    const needle = subject
+      .toLowerCase()
+      .replace(/[^a-z0-9' ]+/g, ' ')
+      .split(/\s+/)
+      .filter((word) => word && !/^[0-9]+$/.test(word));
+    if (needle.length === 0) continue;
+    for (let start = 0; start < words.length; start += 1) {
+      let at = 0;
+      for (let i = start; i < words.length && at < needle.length; i += 1) {
+        if (/^[0-9]+$/.test(words[i])) continue;
+        if (words[i] !== needle[at]) break;
+        at += 1;
+      }
+      if (at === needle.length) {
+        found.push({ subject, at: start });
+        break;
+      }
+    }
+  }
+  return found.sort((a, b) => a.at - b.at).map((entry) => entry.subject);
+}
+
 /** The subject's own first word, which is what a hand-written scan would look for. */
 function anchor(subject) {
   const words = subject
@@ -61,16 +112,20 @@ export function baselineAnalysis(query, subjects = [], context = {}) {
   const saysPronoun = /\b(?:he|him|his|she|her|it|its|that|this|those|these|they|them)\b/.test(
     query.toLowerCase(),
   );
+  // `context.naive` turns on the substring entity scan (compound suite); the
+  // earlier suites keep their recorded baselines, which extracted no entities.
+  const naive = context.naive ? baselineSubjects(query, subjects) : [];
   return {
     type: baselineType(query),
     slots: {
-      entities: [],
+      entities: naive,
       attribute: null,
-      subject: null,
+      subject: naive[0] ?? null,
       newest: null,
       referenced: saysPronoun,
       reference: saysPronoun && context.subject ? { kind: 'pronoun', value: context.subject, cue: 'pronoun' } : null,
       exclude: baselineExclusions(query, subjects),
+      combine: context.naive ? baselineCombine(query, naive) : null,
       mentions: [],
     },
   };
@@ -99,6 +154,10 @@ export function scoreTask(task, analysis) {
     const resolved = analysis.slots.reference?.value ?? null;
     if (resolved !== want.reference) problems.push(`reference ${resolved} != ${want.reference}`);
   }
+  if ('combine' in want) {
+    const op = analysis.slots.combine?.op ?? null;
+    if (op !== want.combine) problems.push(`combine ${op} != ${want.combine}`);
+  }
   return { ok: problems.length === 0, problems };
 }
 
@@ -119,9 +178,9 @@ async function main() {
   const subjects = suite.subjects ?? [];
 
   const rows = suite.tasks.map((task) => {
-    const context = task.context ?? {};
+    const context = { ...(task.context ?? {}), ...(suite.baseline === 'naive' ? { naive: true } : {}) };
     const before = baselineAnalysis(task.q, subjects, context);
-    const after = analyzeQuestion(task.q, { subjects, context });
+    const after = analyzeQuestion(task.q, { subjects, context: task.context ?? {} });
     const b = scoreTask(task, before);
     const a = scoreTask(task, after);
     return { q: task.q, want: task.expect, before, after, b, a };
@@ -142,6 +201,7 @@ async function main() {
         beforeExclude: r.before.slots.exclude,
         afterExclude: r.after.slots.exclude,
         afterEntities: r.after.slots.entities,
+        afterCombine: r.after.slots.combine?.op ?? null,
         afterReference: r.after.slots.reference,
         beforePass: r.b.ok,
         afterPass: r.a.ok,

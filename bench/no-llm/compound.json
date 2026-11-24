@@ -1,0 +1,139 @@
+{
+  "class": "compound",
+  "baseline": "naive",
+  "note": "Rung 4: a visitor asks about two things at once. Pass needs every asserted entity present, the combine operator right (all = the projects with both, any = either), and nothing wrong in the exclusion set. `members` is the answered project set, checked by answers.mjs against the real engine: a union where the visitor asked for an intersection is the failure this rung exists to fix.",
+  "subjects": [
+    "Hobnob",
+    "Readback",
+    "Groundglass",
+    "boaz",
+    "Python 3.10+",
+    "SQLite",
+    "TypeScript",
+    "Vite",
+    "pytest",
+    "Docker",
+    "the archive",
+    "the blog",
+    "the resume",
+    "shobyde.com"
+  ],
+  "tasks": [
+    {
+      "q": "which projects use python and sqlite",
+      "expect": { "entities": ["Python 3.10+", "SQLite"], "combine": "all" },
+      "members": ["Readback"]
+    },
+    {
+      "q": "which projects use python and python 3.10+",
+      "expect": { "entities": ["Python 3.10+"], "combine": null },
+      "members": ["Readback", "Groundglass"]
+    },
+    {
+      "q": "which projects use python and docker",
+      "expect": { "entities": ["Python 3.10+", "Docker"], "combine": "all" },
+      "members": ["Readback"]
+    },
+    {
+      "q": "which projects use python and typescript",
+      "expect": { "entities": ["Python 3.10+", "TypeScript"], "combine": "all" },
+      "members": []
+    },
+    {
+      "q": "which projects use python and vite",
+      "expect": { "entities": ["Python 3.10+", "Vite"], "combine": "all" },
+      "members": []
+    },
+    {
+      "q": "which projects use sqlite and python",
+      "expect": { "entities": ["SQLite", "Python 3.10+"], "combine": "all" },
+      "members": ["Readback"]
+    },
+    {
+      "q": "which projects are written in python and sqlite",
+      "expect": { "entities": ["Python 3.10+", "SQLite"], "combine": "all" },
+      "members": ["Readback"]
+    },
+    {
+      "q": "which projects use python plus sqlite",
+      "expect": { "entities": ["Python 3.10+", "SQLite"], "combine": "all" },
+      "members": ["Readback"]
+    },
+    {
+      "q": "which projects use both python and sqlite",
+      "expect": { "entities": ["Python 3.10+", "SQLite"], "combine": "all" },
+      "members": ["Readback"]
+    },
+    {
+      "q": "which projects use python along with sqlite",
+      "expect": { "entities": ["Python 3.10+", "SQLite"], "combine": "all" },
+      "members": ["Readback"]
+    },
+    {
+      "q": "which projects use python or sqlite",
+      "expect": { "entities": ["Python 3.10+", "SQLite"], "combine": "any" },
+      "members": ["Readback", "Groundglass"]
+    },
+    {
+      "q": "which projects use python or typescript",
+      "expect": { "entities": ["Python 3.10+", "TypeScript"], "combine": "any" },
+      "members": ["Readback", "Groundglass", "Boaz"]
+    },
+    {
+      "q": "which projects use sqlite or docker",
+      "expect": { "entities": ["SQLite", "Docker"], "combine": "any" },
+      "members": ["Readback"]
+    },
+    {
+      "q": "which projects use either python or sqlite",
+      "expect": { "entities": ["Python 3.10+", "SQLite"], "combine": "any" },
+      "members": ["Readback", "Groundglass"]
+    },
+    {
+      "q": "which projects use vite or python",
+      "expect": { "entities": ["Vite", "Python 3.10+"], "combine": "any" },
+      "members": ["Boaz", "shobyde.com", "Readback", "Groundglass"]
+    },
+    {
+      "q": "which projects use python and sqlite but not docker",
+      "expect": { "entities": ["Python 3.10+", "SQLite"], "combine": "all", "exclude": ["Docker"] },
+      "members": [],
+      "note": "Readback lists Python, SQLite and Docker, so the exclusion empties the intersection. An answer naming Readback would be ignoring the \"but not\"."
+    },
+    {
+      "q": "which projects use python or sqlite, not hobnob",
+      "expect": { "entities": ["Python 3.10+", "SQLite"], "combine": "any", "exclude": ["Hobnob"] },
+      "members": ["Readback", "Groundglass"]
+    },
+    {
+      "q": "which projects use sqlite and not python",
+      "expect": { "entities": ["SQLite"], "combine": null, "exclude": ["Python 3.10+"] },
+      "members": []
+    },
+    {
+      "q": "which projects use python and not typescript",
+      "expect": { "entities": ["Python 3.10+"], "combine": null, "exclude": ["TypeScript"] },
+      "members": ["Readback", "Groundglass"]
+    },
+    {
+      "q": "which projects use python, and tell me who he is",
+      "expect": { "entities": ["Python 3.10+"], "combine": null },
+      "note": "The comma starts a second command, so there is no second name to join."
+    },
+    {
+      "q": "which projects use python",
+      "expect": { "entities": ["Python 3.10+"], "combine": null },
+      "members": ["Readback", "Groundglass"]
+    },
+    {
+      "q": "which projects use sqlite",
+      "expect": { "entities": ["SQLite"], "combine": null },
+      "members": ["Readback"]
+    },
+    {
+      "q": "which projects use python sqlite",
+      "expect": { "entities": ["Python 3.10+", "SQLite"], "combine": null },
+      "note": "No connective: a half-written list. Answering it as a union or an intersection would be a guess."
+    }
+  ]
+}

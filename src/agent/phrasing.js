@@ -119,6 +119,38 @@ export function phraseProjectsUsing(query, matches, term) {
   );
 }
 
+/**
+ * "Which projects use python and sqlite" — the intersection, which is a
+ * different set from the union the `or` form asks for. Names both when they
+ * hold, and says which one is missing when they do not, because "no project
+ * lists both" is the useful half of the answer.
+ */
+export function phraseProjectsUsingAll(query, matches, terms) {
+  const names = matches.map((match) => shortName(match.title));
+  const pair = join(terms.map((term) => String(term).trim()));
+  if (names.length === 0) {
+    return `No project on this page lists both ${pair}.`;
+  }
+  if (names.length === 1) {
+    return pick(
+      [
+        `${names[0]} is the only one listing both ${pair}.`,
+        `Just ${names[0]}: it has ${pair} in its stack.`,
+        `${names[0]}, and nothing else, lists ${pair} together.`,
+      ],
+      query,
+    );
+  }
+  return pick(
+    [
+      `${join(names)} list both ${pair}.`,
+      `${join(names)}: ${count(names.length, 'project')} with ${pair}.`,
+      `Both ${pair} show up in ${join(names)}.`,
+    ],
+    query,
+  );
+}
+
 /** "How many posts" / "what is the newest post". */
 export function phraseNewestPost(query, { count: total, newest }) {
   const n = Number(total) || 0;
