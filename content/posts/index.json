@@ -1,5 +1,14 @@
 [
   {
+    "slug": "2026-11-24-a-queued-chat-is-a-state-problem-not-a-buffer-problem",
+    "date": "2026-11-24",
+    "title": "A Queued Chat Is a State Problem, Not a Buffer Problem",
+    "tag": "ui-direction",
+    "excerpt": "Vercel's AI SDK 7.0.168-169 adds an experimental queue for messages sent while a response is in progress, retains request options when a tool approval sends first, and pauses the queue during async sendAutomaticallyWhen decisions. The interesting part is not the queue. It is that the SDK now has to model three overlapping timelines: the model generating, the user typing, and a tool approval waiting on a human.",
+    "words": 221,
+    "minutes": 1
+  },
+  {
     "slug": "2026-11-24-a-manifest-already-knows-what-to-test",
     "date": "2026-11-24",
     "title": "A manifest already knows what to test",
