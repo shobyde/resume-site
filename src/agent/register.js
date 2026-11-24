@@ -10,30 +10,34 @@
 // use python, in one line" is the same question as "which projects use python"
 // and must resolve to the same capability.
 
+import { preferenceMemory } from './preferences.js';
+
 export const REGISTERS = ['terse', 'normal', 'explanatory'];
 
-let session = 'normal';
 let pending = null;
 
 /** The register the session is set to ("keep it short" holds until it changes). */
-export const currentRegister = () => session;
+export const currentRegister = () => preferenceMemory.get('register') ?? 'normal';
 
 /** The register this answer uses: the cue in the question, else the session. */
-export const answerRegister = () => pending ?? session;
+export const answerRegister = () => pending ?? currentRegister();
 
 /** Called by the host after a turn, so a one-off cue does not stick. */
 export const endTurn = () => {
   pending = null;
 };
 
-export function setRegister(register) {
-  session = REGISTERS.includes(register) ? register : 'normal';
-  return session;
+export function setRegister(register, utterance = '') {
+  const value = REGISTERS.includes(register) ? register : 'normal';
+  // A stated preference is an assertion about the session, kept the way any
+  // other fact is, so the trace and the recap can both read it back.
+  preferenceMemory.record('register', value, { utterance: String(utterance || '') });
+  return currentRegister();
 }
 
 export const resetRegister = () => {
   pending = null;
-  setRegister('normal');
+  preferenceMemory.reset('register');
 };
 
 const TERSE_CUE =
@@ -72,7 +76,7 @@ export function readRegister(query) {
   const text = String(query ?? '');
   const pureNormal = !PURE_TERSE.test(text) && !PURE_EXPLAIN.test(text) && PURE_NORMAL.test(text);
   if (pureNormal) {
-    setRegister('normal');
+    setRegister('normal', text);
     return { cleaned: '', register: 'normal', cue: 'normal', sticky: true, preference: true, reply: CONFIRM.normal };
   }
   const pureTerse = PURE_TERSE.test(text);
@@ -80,7 +84,7 @@ export function readRegister(query) {
 
   if (pureTerse || pureExplain) {
     const register = pureTerse ? 'terse' : 'explanatory';
-    setRegister(register);
+    setRegister(register, text);
     pending = register;
     return { cleaned: '', register, cue: register, sticky: true, preference: true, reply: CONFIRM[register] };
   }
@@ -90,7 +94,7 @@ export function readRegister(query) {
   const match = terse ?? explain;
   if (!match) {
     pending = null;
-    return { cleaned: text.trim(), register: session, cue: null, sticky: false, preference: false, reply: '' };
+    return { cleaned: text.trim(), register: currentRegister(), cue: null, sticky: false, preference: false, reply: '' };
   }
 
   const cue = terse ? 'terse' : 'explanatory';
@@ -99,7 +103,7 @@ export function readRegister(query) {
     .replace(/[\s,;]+(?:and|but|please|so)$/i, '')
     .replace(TRIM, '');
   const sticky = /\bfrom now on\b/i.test(text);
-  if (sticky) setRegister(cue);
+  if (sticky) setRegister(cue, text);
   pending = cue;
   // "explain" on its own is a request about the previous answer, not a noun in
   // the question; with nothing left to route, the session register answers.

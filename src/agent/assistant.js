@@ -19,6 +19,15 @@ import { createRulesEngine } from 'boaz/rules';
 import { createDomContextReader } from 'boaz/dom';
 import { createAssistantKnowledge } from './knowledge.js';
 import { readRegister, endTurn } from './register.js';
+import {
+  isPreferenceQuery,
+  preferenceLine,
+  preferenceMemory,
+  preferenceRecap,
+  recordLine,
+  unknownPreference,
+  UNKNOWN_REPLY,
+} from './preferences.js';
 import { describeTrace } from './trace.js';
 import { siteCapabilities } from './capabilities.js';
 import { siteSkills } from './skills.js';
@@ -418,7 +427,24 @@ export function initAssistant({ posts = [] } = {}) {
       const register = readRegister(question);
       if (register.preference) {
         state.query = question;
-        addBubble('assistant', register.reply);
+        // The preference is a fact now, so the reply shows the assertion it made
+        // rather than asking the visitor to trust that it stuck.
+        addSkillAnswer(register.reply, [recordLine(preferenceMemory.stated('register').at(-1))].filter(Boolean).map((line) => line.label));
+        return;
+      }
+      // A preference is a statement about the session, so it is answered from the
+      // store. A standing request the site has no setting for is declined here,
+      // before routing can answer it as a question about the page.
+      if (isPreferenceQuery(question)) {
+        const recap = preferenceRecap(preferenceMemory, register.register);
+        state.query = question;
+        addSkillAnswer(recap.text, [recap.line]);
+        return;
+      }
+      const unknown = unknownPreference(register.cleaned || question);
+      if (unknown) {
+        state.query = question;
+        addSkillAnswer(UNKNOWN_REPLY, [`Heard a standing request with no setting behind it: "${unknown}"`]);
         return;
       }
       // A conversation, not a turn: a pointer ("and its stack") is rewritten
@@ -483,6 +509,10 @@ export function initAssistant({ posts = [] } = {}) {
         if (!execution.ok && execution.summary) addBubble('assistant', execution.summary);
         return;
       }
+      // The session preference changed the answer, so the trace says so. An
+      // inline cue is not repeated here: it applied to one answer, not the session.
+      const sessionLine = register.cue ? null : preferenceLine(register.register);
+      if (sessionLine) appendTrace(sessionLine);
       const result = await runtime.send(state.query);
       const streamed = live;
       // A host bug must not put JSON on screen: the visitor asked a question.

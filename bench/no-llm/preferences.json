@@ -1,0 +1,131 @@
+{
+  "class": "preferences",
+  "rung": 15,
+  "note": "Rung 15: a stated preference is an assertion about the session, not one answer. `before` is the panel as it shipped after rung 8: the register lives in a module variable, nothing can be asked about it, and a standing request the site cannot serve is routed as a question about the page. `after` is the same panel with boaz 0.7.11 `createPreferenceMemory`: the preference is a `prefers()` fact, a recap answers what was set, and an unservable standing request is declined in a sentence instead of answered by a capability. A task passes only when every key it names matches.",
+  "tasks": [
+    {
+      "id": "p1",
+      "session": ["keep it short"],
+      "q": "what did I ask for?",
+      "expect": { "register": "terse", "must": ["short answers"], "trace": ["stated at turn 1"], "noEngine": true },
+      "why": "the recap reads the store, so it can name the value and the words that set it"
+    },
+    {
+      "id": "p2",
+      "session": ["keep it short", "fuller answers"],
+      "q": "what are you set to?",
+      "expect": { "register": "explanatory", "must": ["fuller answers"], "noEngine": true }
+    },
+    {
+      "id": "p3",
+      "session": [],
+      "q": "what are my preferences?",
+      "expect": { "register": "normal", "must": ["Nothing set"], "noEngine": true },
+      "why": "an empty store is a state the recap can report; before this rung the question routed as a capability"
+    },
+    {
+      "id": "p4",
+      "session": ["normal answers"],
+      "q": "what setting are you on?",
+      "expect": { "register": "normal", "must": ["normal answers"], "noEngine": true }
+    },
+    {
+      "id": "p5",
+      "session": ["keep it short"],
+      "q": "how are you set?",
+      "expect": { "register": "terse", "must": ["short answers"], "sentences": [1, 2] }
+    },
+    {
+      "id": "p6",
+      "session": [],
+      "q": "always answer in French",
+      "expect": { "must": ["only change how long"], "noEngine": true },
+      "why": "a standing request with no declared value is declined, not answered as a question about the page"
+    },
+    {
+      "id": "p7",
+      "session": [],
+      "q": "call me boss",
+      "expect": { "must": ["did not act on that"], "noEngine": true }
+    },
+    {
+      "id": "p8",
+      "session": [],
+      "q": "from now on use bullet points",
+      "expect": { "must": ["only change how long"], "noEngine": true }
+    },
+    {
+      "id": "p9",
+      "session": [],
+      "q": "does he always work in typescript",
+      "expect": { "mustNot": ["only change how long"], "register": "normal" },
+      "why": "control: a question containing \"always\" must stay a question"
+    },
+    {
+      "id": "p10",
+      "session": ["keep it short"],
+      "q": "which projects use python",
+      "expect": { "register": "terse", "must": ["Readback"], "sentences": [1, 2] }
+    },
+    {
+      "id": "p11",
+      "session": ["keep it short"],
+      "q": "which projects use python, in more detail",
+      "expect": { "register": "explanatory", "must": ["Readback"], "sentences": [3, 9] },
+      "why": "an inline cue wins for one answer; the stored preference is unchanged"
+    },
+    {
+      "id": "p12",
+      "session": ["keep it short", "normal answers"],
+      "q": "which projects use python",
+      "expect": { "register": "normal", "must": ["Readback"], "sentences": [2, 6] }
+    },
+    {
+      "id": "p13",
+      "session": ["fuller answers"],
+      "q": "how many posts has he written",
+      "expect": { "register": "explanatory", "must": ["post"], "sentences": [3, 9] },
+      "why": "ceiling: the count phrasing has no third sentence, so explanatory register returns the same two sentences as normal"
+    },
+    {
+      "id": "p14",
+      "session": ["keep it short"],
+      "q": "what is his email",
+      "expect": { "register": "terse", "must": ["shobyde@gmail.com"], "sentences": [1, 2] }
+    },
+    {
+      "id": "p15",
+      "session": ["keep it short"],
+      "q": "which projects use python",
+      "expect": { "register": "terse", "trace": ["You asked for short answers"] },
+      "why": "the trace says why the answer is short; a module variable had no way to say it"
+    },
+    {
+      "id": "p16",
+      "session": ["fuller answers"],
+      "q": "what is his email",
+      "expect": { "register": "explanatory", "trace": ["You asked for fuller answers"] }
+    },
+    {
+      "id": "p17",
+      "session": [],
+      "q": "in one line which projects use python",
+      "expect": { "register": "terse", "traceNot": ["You asked for"], "must": ["Readback"] },
+      "why": "a one-off cue applied to one answer, so no session preference is claimed"
+    },
+    {
+      "id": "p18",
+      "session": ["keep it short"],
+      "q": "what is his email",
+      "expect": { "facts": ["prefers(register, terse)"] },
+      "why": "the stored preference is the assertion a rule could join"
+    },
+    {
+      "id": "p19",
+      "session": ["be brief and always cite sources"],
+      "q": "what did I ask for?",
+      "expect": { "must": ["short answers", "cites"], "register": "terse" },
+      "why": "ceiling: two preferences in one sentence are not split. The register cue is stripped as a one-off (no \"from now on\"), nothing is stored, and \"always cite sources\" is dropped without a word"
+    }
+  ]
+}
