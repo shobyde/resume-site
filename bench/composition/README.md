@@ -6,13 +6,17 @@ visitors get today.
 
 ```
 system        fidelity  similarity  openers  spread  ttr   stable  corpus  frames  follow  ms
-legacy           100%        1.00     0.25     5.9  1.00    100%    1.66     100%       0   2
-shipped          100%        0.51     0.67     8.3  0.99    100%    1.75      83%       0  26
-A pools          100%        0.39     0.79     5.2  0.99    100%    1.91      71%       0   1
-B grammar        100%        0.48     0.58     6.9  0.99    100%    1.73      71%       1   2
-C voice          100%        0.27     0.58     5.4  0.99    100%    1.60      17%       0   2
-D hybrid         100%        0.39     0.71     6.6  0.98    100%    1.75      67%       1   2
+legacy           100%        1.00     0.25     5.0  1.00    100%    1.60     100%       0   2
+shipped          100%        0.48     0.67     8.2  1.00    100%    1.71      79%       0  26
+A pools          100%        0.37     0.79     4.3  0.99    100%    1.87      62%       0   1
+B grammar        100%        0.46     0.58     6.8  0.99    100%    1.74      62%       1   2
+C voice          100%        0.25     0.58     4.7  0.99    100%    1.56      17%       0   2
+D hybrid         100%        0.37     0.71     5.8  0.98    100%    1.81      67%       1   2
 ```
+
+Last run: 2026-11-23, against six project cards and 59 posts. Similarity, spread and frame variety move
+whenever the data changes (a new project rewords every list answer), so compare a run against the table
+in this file only when the data is the same size.
 
 `legacy` is the composer set the site shipped before this work, fed the same facts; `shipped` is the
 routed system now in `src/agent/phrasing.js`. Similarity is computed with the required facts masked, so it
@@ -64,7 +68,7 @@ follow-up refers back ("Both of them — Readback and Groundglass."). Highest le
 answers vary in how much they say, not just how they say it. Its weakness is the opposite of A's: fewer
 distinct openers (0.58), since form-driven choice collapses paraphrases onto the same construction.
 
-**C — borrowed voice** (`systems/c-voice.mjs`). Harvests sentence openers from the 58 posts (439 sentences)
+**C — borrowed voice** (`systems/c-voice.mjs`). Harvests sentence openers from the 59 posts (439 sentences)
 and hangs facts off them. Lowest similarity (0.37) and the closest style match (1.60) — and the worst
 `frames` score (17%), because the openers are topic sentences from essays: "The synthesis:", "This Week in
 Agents:", "The unsolved layer is controls:". Numerically the most "human", semantically the least usable.
