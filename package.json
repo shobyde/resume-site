@@ -21,8 +21,11 @@
     "bench:preferences": "node bench/no-llm/preferences.mjs && node bench/no-llm/actions.mjs",
     "bench:mcp": "node bench/no-llm/mcp.mjs --before",
     "bench:browser": "node bench/no-llm/browser-agent.mjs && node bench/no-llm/browser-agent.mjs --before",
+    "scorecard": "node scripts/gen-scorecard.mjs",
     "smoke:prod": "node bench/no-llm/browser-agent.mjs --base https://shobyde.com/",
-    "prebuild": "python3 scripts/check_posts.py"
+    "prebuild": "python3 scripts/check_posts.py",
+    "bench:threads": "node bench/threads/run.mjs && node bench/threads/run.mjs --baseline && node bench/threads/compile.mjs",
+    "judge:threads": "python3 bench/threads/judge.py && python3 bench/threads/judge.py --stateless && node bench/threads/compile.mjs"
   },
   "devDependencies": {
     "vite": "^6.0.0"

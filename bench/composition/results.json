@@ -9,7 +9,7 @@
     "stable": 1,
     "style": 1.6455644140723866,
     "offTopic": 1,
-    "ms": 2.849711,
+    "ms": 2.757184,
     "rows": [
       {
         "intent": "list_titles",
@@ -243,15 +243,15 @@
   },
   {
     "name": "shipped",
-    "fidelity": 1,
-    "similarity": 0.49726990488301803,
+    "fidelity": 0.875,
+    "similarity": 0.5054306122701737,
     "openers": 0.6666666666666666,
-    "spread": 9.295682988474931,
-    "ttr": 0.9468675827819051,
+    "spread": 8.767739953311164,
+    "ttr": 0.9516409897292251,
     "stable": 1,
-    "style": 1.4989348688095838,
-    "offTopic": 0.9166666666666666,
-    "ms": 40.755567,
+    "style": 1.5236213933181473,
+    "offTopic": 0.7916666666666666,
+    "ms": 58.766986,
     "rows": [
       {
         "intent": "list_titles",
@@ -301,33 +301,37 @@
           },
           {
             "question": "what's built with python?",
-            "text": "Readback and Groundglass, 2 projects on Python 3.10+. All both also list pytest. Boaz does not list it; its stack is TypeScript and Vite.",
+            "text": "I'm not sure about that. I can help with: List projects; Selected projects.",
             "action": false
           },
           {
             "question": "any projects in python?",
-            "text": "Readback and Groundglass, 2 out of the projects here. They share pytest as well. The closest without it is Boaz, on TypeScript and Vite.",
+            "text": "I'm not sure about that. I can help with: List projects; Show a project card; Selected projects.",
             "action": false
           },
           {
             "question": "does he have python projects?",
-            "text": "2 projects use it: Readback and Groundglass. All both also list pytest. Boaz does not list it; its stack is TypeScript and Vite.",
+            "text": "I'm not sure about that. I can help with: List projects; Show a project card; Selected projects.",
             "action": false
           }
         ],
-        "fidelity": 1,
-        "missing": [],
-        "similarity": 0.44375835841679184,
+        "fidelity": 0.25,
+        "missing": [
+          "I'm not sure about that. I can help with: List projects; Selected proj",
+          "I'm not sure about that. I can help with: List projects; Show a projec",
+          "I'm not sure about that. I can help with: List projects; Show a projec"
+        ],
+        "similarity": 0.492722602739726,
         "stable": true,
         "lengths": [
           21,
-          24,
-          24,
-          23
+          14,
+          18,
+          18
         ],
-        "ttr": 0.9138198757763975,
-        "style": 1.5161035180966842,
-        "offTopic": 0.75
+        "ttr": 0.9424603174603174,
+        "style": 1.6642226651480638,
+        "offTopic": 0
       },
       {
         "intent": "posts_newest",
@@ -493,7 +497,7 @@
     "stable": 1,
     "style": 1.8609371045304988,
     "offTopic": 0.7083333333333334,
-    "ms": 2.190246,
+    "ms": 1.890087,
     "rows": [
       {
         "intent": "list_titles",
@@ -735,7 +739,7 @@
     "stable": 1,
     "style": 1.682117660086054,
     "offTopic": 0.7083333333333334,
-    "ms": 2.328743,
+    "ms": 2.459985,
     "rows": [
       {
         "intent": "list_titles",
@@ -977,7 +981,7 @@
     "stable": 1,
     "style": 1.5887908124525436,
     "offTopic": 0.16666666666666666,
-    "ms": 1.745514,
+    "ms": 2.228129,
     "rows": [
       {
         "intent": "list_titles",
@@ -1219,7 +1223,7 @@
     "stable": 1,
     "style": 1.7532982156416095,
     "offTopic": 0.6666666666666666,
-    "ms": 2.147871,
+    "ms": 1.728638,
     "rows": [
       {
         "intent": "list_titles",

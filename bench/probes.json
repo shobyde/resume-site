@@ -86,7 +86,7 @@
     },
     {
       "question": "what is readback?",
-      "expect": "projects.card"
+      "expect": "projects.about"
     },
     {
       "question": "expand the hobnob card",
@@ -94,7 +94,7 @@
     },
     {
       "question": "more about groundglass",
-      "expect": "projects.expand"
+      "expect": "projects.about"
     },
     {
       "question": "open the hobnob site",

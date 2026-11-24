@@ -8,7 +8,9 @@ import {
   phraseProfile,
   phraseLinkedin,
   phraseNewestPost,
+  phraseProjectAbout,
   phraseProjectList,
+  phraseProjectStack,
   phraseProjectsUsing,
   phraseProjectsUsingAll,
   shortName,
@@ -32,6 +34,15 @@ const slugOf = (title) =>
  * repeated. Used by the intersection form, where the union's `asked()` join
  * would return a project that has only one of the two.
  */
+/** The names a visitor can type, longest first so "shobyde.com" wins over "shobyde". */
+const PROJECT_NAME = new RegExp(
+  `\\b(?:${DATA.projects
+    .map((project) => shortName(project.title).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .sort((a, b) => b.length - a.length)
+    .join('|')})\\b`,
+  'i',
+);
+
 const stackWords = (value) =>
   String(value)
     .toLowerCase()
@@ -53,6 +64,10 @@ export function createAssistantKnowledge({ posts }) {
     facts: [],
     rules: [
       'projects_using(?P) :- uses(?P, ?T), asked(?T).',
+      // A project named outright: "what stack does Hobnob use", "what is Hobnob".
+      // The name is the constant the visitor typed, so the join is on it.
+      'project_stack(?P, ?S) :- uses(?P, ?S), project(?P, ?N), asked(?N).',
+      'project_named(?P) :- project(?P, ?N), asked(?N).',
       // Declared facts would come first if there were any; the page scan is the
       // fallback, and the only way an undeclared address can be answered.
       'email(?V) :- field(email, ?V).',
@@ -119,6 +134,16 @@ export function createAssistantKnowledge({ posts }) {
       compose: ({ query, solutions, terms, mentions, observed, combine, exclude }) => {
         const records = observed['projects.list']?.projects ?? [];
         const asked = terms[0] || mentions[0] || '';
+        // "what stack does hobnob use" contains the word "use": if every term
+        // is a project's name, this is not a stack question and the rule stays
+        // out of it rather than answering "no stack lists hobnob".
+        const isProjectTerm = (term) =>
+          records.some(
+            (project) =>
+              slugOf(project.title) === slugOf(term) ||
+              shortName(project.title).toLowerCase() === String(term).toLowerCase(),
+          );
+        if (terms.length && terms.every(isProjectTerm)) return '';
         // "not python" rules the technology out of the answer, not just out of
         // the question: Readback lists Python, so it cannot answer "sqlite but
         // not python".
@@ -164,6 +189,11 @@ export function createAssistantKnowledge({ posts }) {
       // question names a technology: keep this one for plain "list" questions.
       threshold: 1.1,
       requiresSubject: false,
+      // The phrase is fixed, so a deliberate match beats BM25: adding answer
+      // rules shrinks every score, and a 1.1 floor made this rule vanish as the
+      // corpus grew. "Which projects use python" still belongs to the join rule.
+      match: (question) =>
+        /^\s*(what (has|did) he (build|built|make|made|ship|shipped)|list (the|his) projects|project list)\b/i.test(question),
       explain: ({ solutions }) => `Read the project list: ${solutions.length} projects`,
       compose: ({ query, solutions, observed }) => {
         if (solutions.length === 0) return '';
@@ -171,6 +201,53 @@ export function createAssistantKnowledge({ posts }) {
           ? observed['projects.list'].projects
           : solutions.map((solution) => ({ title: solution.bindings['?T'] ?? '' }));
         return phraseProjectList(query, records.filter((project) => project?.title), { register: answerRegister() });
+      },
+    },
+    {
+      id: 'projects.stack',
+      title: 'What a project is built with',
+      keywords: ['tech stack', 'stack', 'built with', 'made with', 'what does it use'],
+      goal: 'project_stack(?P, ?S)',
+      steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
+      // A project has to be named: "what technologies does he know" is the
+      // profile's skill list, not any one project's stack.
+      match: (question) =>
+        PROJECT_NAME.test(question) &&
+        !/^\s*which projects/i.test(question) &&
+        /\b(stack|tech|technolog(y|ies)|built with|made (with|of)|what does .+ use)\b/i.test(question),
+      explain: ({ solutions, observed }) =>
+        observed['projects.list']
+          ? `Read the project list: ${solutions.length} stack entries for the project named`
+          : 'Read the project list',
+      compose: ({ query, solutions, observed }) => {
+        const records = observed['projects.list']?.projects ?? [];
+        const first = solutions[0]?.bindings['?P'];
+        const record = records.find((project) => slugOf(project.title) === first);
+        const name = record ? shortName(record.title) : String(first ?? '');
+        const stack = [...new Set(solutions.map((solution) => solution.bindings['?S']).filter(Boolean))];
+        if (!name || stack.length === 0) return '';
+        return phraseProjectStack(query, name, stack, { register: answerRegister() });
+      },
+    },
+    {
+      id: 'projects.about',
+      title: 'A project, described',
+      keywords: ['tell me about', 'what is', 'describe'],
+      goal: 'project_named(?P)',
+      steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
+      // Named projects only: "what is that" belongs to the pointer layer, and
+      // "what is his email" belongs to the grounding rule.
+      match: (question) => PROJECT_NAME.test(question) && /^\s*(what is|tell me about|describe)\b/i.test(question),
+      explain: ({ observed }) => (observed['projects.list'] ? 'Read the project list and matched the name' : 'Read the project list'),
+      compose: ({ query, solutions, observed }) => {
+        const records = observed['projects.list']?.projects ?? [];
+        const slug = solutions[0]?.bindings['?P'];
+        const record = records.find((project) => slugOf(project.title) === slug);
+        if (!record) return '';
+        return phraseProjectAbout(query, record, {
+          register: answerRegister(),
+          stack: solutions.map((solution) => solution.bindings['?S']).filter(Boolean),
+        });
       },
     },
     {

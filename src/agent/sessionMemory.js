@@ -45,12 +45,60 @@ export function entitiesIn(text) {
  * or nothing salient, nothing is rewritten and the visitor gets the old
  * behaviour, which is the honest fallback rather than a guess.
  */
+const ORDINALS = { first: 1, second: 2, third: 3, fourth: 4, fifth: 5, sixth: 6, last: -1 };
+
+/** The last recorded turn, which is what a pointer resolves against. */
+function summaryLast(memory) {
+  const turns = memory.turns ?? [];
+  return turns[turns.length - 1];
+}
+
 export function resolvePointer(memory, query) {
   const text = String(query ?? '').trim();
   const context = memory.context();
   const subject = context.subject;
-  if (!subject) return { query: text, subject: null, rewritten: false };
   const analysis = analyzeQuestion(text, { subjects: SITE_SUBJECTS, context });
+  const listed = Array.isArray(summaryLast(memory)?.entities) ? summaryLast(memory).entities : [];
+
+  // A pointer into the list the last answer produced. "The third one" is not a
+  // question about the page; it is a question about the sentence above it, and
+  // only the session can answer it.
+  const ordinal = String(text).toLowerCase().match(/\b(first|second|third|fourth|fifth|sixth|last)\b/)?.[1];
+  if (ordinal && listed.length > 1) {
+    const index = ordinal === 'last' ? listed.length - 1 : ORDINALS[ordinal] - 1;
+    const target = listed[index];
+    if (target) {
+      return {
+        query: analysis.slots.attribute ? `what is ${target}'s ${analysis.slots.attribute}?` : `tell me about ${target}`,
+        subject: target,
+        rewritten: true,
+      };
+    }
+  }
+
+  // "Not readback, the other one": the exclusion names what to drop, and the
+  // answer above names what is left. One candidate is a pointer; two is a guess,
+  // so the rewrite stays out of it.
+  if (/\b(the other one|the other|the rest)\b/i.test(text)) {
+    const excluded = (analysis.slots.exclude ?? []).map((name) => String(name).toLowerCase());
+    const remaining = listed.filter((name) => !excluded.includes(String(name).toLowerCase()));
+    if (excluded.length && remaining.length === 1) {
+      return {
+        query: analysis.slots.attribute ? `what is ${remaining[0]}'s ${analysis.slots.attribute}?` : `tell me about ${remaining[0]}`,
+        subject: remaining[0],
+        rewritten: true,
+      };
+    }
+  }
+
+  // Navigation is a place, and "now the blog" is a place too. A nav turn makes
+  // the next bare destination readable as one.
+  const bareNav = String(text).trim().match(/^(?:and\s+|now\s+|then\s+)?the\s+(blog|projects|contact|about|archive|resume|top)\b/i)?.[1];
+  if (bareNav) {
+    return { query: `take me to the ${bareNav.toLowerCase()}`, subject: null, rewritten: true };
+  }
+
+  if (!subject) return { query: text, subject: null, rewritten: false };
   // `slots.subject` is set by the reference itself, so only an explicit name
   // counts as naming something here.
   const namesSomething = analysis.slots.entities.length > 0;

@@ -1,0 +1,346 @@
+{
+  "note": "Threads, not single questions. Each turn is scored on its own; a turn marked context only counts if it resolves a referent from an earlier turn, which is what a stateless assistant cannot do.",
+  "threads": [
+    {
+      "id": "portfolio-stack",
+      "title": "Build list, then filter it",
+      "turns": [
+        {
+          "ask": "what has he built?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "hobnob",
+              "readback",
+              "groundglass"
+            ]
+          }
+        },
+        {
+          "ask": "which of those use python?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "readback",
+              "groundglass"
+            ]
+          }
+        },
+        {
+          "ask": "and what does the reading one use?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "flask"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "stack-switch",
+      "title": "A stack, then a different project by description",
+      "turns": [
+        {
+          "ask": "what stack does hobnob use?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "whisper"
+            ]
+          }
+        },
+        {
+          "ask": "and the one for testing generated interfaces?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "groundglass"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "blog-depth",
+      "title": "Count, newest, subject",
+      "turns": [
+        {
+          "ask": "how many posts has he written?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "60"
+            ]
+          }
+        },
+        {
+          "ask": "which is the newest?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "queued"
+            ]
+          }
+        },
+        {
+          "ask": "what is that one about?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "queue"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "navigation",
+      "title": "Move around the page, then back",
+      "turns": [
+        {
+          "ask": "show me the projects",
+          "kind": "tool",
+          "expect": {
+            "tool": "site.projects"
+          }
+        },
+        {
+          "ask": "now the blog",
+          "kind": "context",
+          "expect": {
+            "tool": "site.blog"
+          }
+        },
+        {
+          "ask": "take me back to the top",
+          "kind": "context",
+          "expect": {
+            "tool": "site.top"
+          }
+        }
+      ]
+    },
+    {
+      "id": "contact-tools",
+      "title": "Read an address, then act on it",
+      "turns": [
+        {
+          "ask": "what is his email?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "shobyde@gmail.com"
+            ]
+          }
+        },
+        {
+          "ask": "copy it",
+          "kind": "context",
+          "expect": {
+            "tool": "contact.copy_email"
+          }
+        },
+        {
+          "ask": "and his linkedin?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "linkedin"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "exclusion-followup",
+      "title": "Undo part of the last answer",
+      "turns": [
+        {
+          "ask": "which projects use python?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "readback",
+              "groundglass"
+            ]
+          }
+        },
+        {
+          "ask": "not readback, the other one",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "groundglass"
+            ],
+            "exclude": [
+              "readback"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "ordinal",
+      "title": "Point at an item by position",
+      "turns": [
+        {
+          "ask": "what has he built?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "hobnob"
+            ]
+          }
+        },
+        {
+          "ask": "the third one?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "groundglass"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "ellipsis",
+      "title": "Drop the subject entirely",
+      "turns": [
+        {
+          "ask": "tell me about hobnob",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "meeting"
+            ]
+          }
+        },
+        {
+          "ask": "and its stack?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "whisper"
+            ]
+          }
+        },
+        {
+          "ask": "does it send anything to a server?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "local",
+              "cloud"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "who",
+      "title": "Identity, then the follow-up people actually ask",
+      "turns": [
+        {
+          "ask": "who is sho?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "engineering"
+            ]
+          }
+        },
+        {
+          "ask": "what does he do now?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "conversica"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "compound",
+      "title": "Two conditions in one ask",
+      "turns": [
+        {
+          "ask": "which projects use python and have a web interface?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "readback"
+            ]
+          }
+        },
+        {
+          "ask": "why not both?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "groundglass"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "compare",
+      "title": "Compare, then pick",
+      "turns": [
+        {
+          "ask": "compare hobnob and readback",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "hobnob",
+              "readback"
+            ]
+          }
+        },
+        {
+          "ask": "which one is bigger?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "hobnob"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "capability-list",
+      "title": "Ask what it can do, then do one",
+      "turns": [
+        {
+          "ask": "what can you do?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "capabilit"
+            ]
+          }
+        },
+        {
+          "ask": "open the archive",
+          "kind": "tool",
+          "expect": {
+            "tool": "blog.open_archive"
+          }
+        },
+        {
+          "ask": "and the newest post?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "queued"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

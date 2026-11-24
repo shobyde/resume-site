@@ -25,6 +25,12 @@ export default defineConfig({
         // The tools lab runs the JSON-RPC server and the accessibility resolver
         // from the published package against this page's own controls.
         'tools-lab': resolve(__dirname, 'labs/tools/index.html'),
+        // The scorecard grades the five slot suites live, with the same grader
+        // the Node harness imports (bench/no-llm/grade.mjs).
+        'no-llm': resolve(__dirname, 'labs/no-llm/index.html'),
+        // The benchmark page renders a compiled data file: threads, the judge's
+        // scores and the recorded suite ladder. No engine runs on it.
+        benchmarks: resolve(__dirname, 'labs/benchmarks/index.html'),
       },
     },
   },

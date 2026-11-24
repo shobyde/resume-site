@@ -376,3 +376,38 @@ export function phraseProfile(query, { name, years, org, since, role, register =
   if (register !== 'explanatory' || !role) return body;
   return `${body} The current title on the page reads "${role}".`;
 }
+
+/**
+ * A named project's stack. The visitor named the project, so the sentence keeps
+ * naming it: "it" after one word reads as a pronoun with no antecedent.
+ */
+export function phraseProjectStack(query, name, stack, { register = 'normal' } = {}) {
+  const list = join(stack);
+  if (register === 'terse') return `${name}: ${list}.`;
+  const forms = [
+    (bag) => `${name} runs on ${bag}.`,
+    (bag) => `${name} is built with ${bag}.`,
+  ];
+  return pick(forms, query)(list);
+}
+
+/** A project described from its own pitch, tags stripped, one sentence of it. */
+export function phraseProjectAbout(query, project, { register = 'normal', stack = [] } = {}) {
+  const name = shortName(project.title);
+  const plain = String(project.summary ?? '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const sentence = plain.split(/(?<=[.!?])\s+/)[0] ?? '';
+  const st = stack.length ? stack : (project.stack ?? []);
+  if (register === 'terse') {
+    return st.length ? `${name}: ${join(st)}.` : `${name}: ${sentence}`;
+  }
+  const forms = [
+    () => (sentence ? `${name}: ${sentence}` : ''),
+    () => (sentence ? `${name}. ${sentence}` : ''),
+  ];
+  const said = pick(forms, query)();
+  if (said) return said;
+  return st.length ? `${name} runs on ${join(st)}.` : '';
+}

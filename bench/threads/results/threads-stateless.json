@@ -1,0 +1,842 @@
+{
+  "generated": "2026-11-24T17:20:25.514Z",
+  "mode": "stateless",
+  "library": "0.7.14",
+  "threads": [
+    {
+      "id": "portfolio-stack",
+      "title": "Build list, then filter it",
+      "turns": [
+        {
+          "ask": "what has he built?",
+          "routed": "what has he built?",
+          "rewritten": false,
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "hobnob",
+              "readback",
+              "groundglass"
+            ]
+          },
+          "text": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Every card opens to notes except 0.",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.list_titles",
+          "flesch": 42,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "which of those use python?",
+          "routed": "which of those use python?",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "readback",
+              "groundglass"
+            ]
+          },
+          "text": "Readback and Groundglass, 2 projects on Python 3.10+. All both also list pytest. Boaz does not list it; its stack is TypeScript and Vite.",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.using",
+          "flesch": 88,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "and what does the reading one use?",
+          "routed": "and what does the reading one use?",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "flask"
+            ]
+          },
+          "text": "No project on this page lists reading. All 6 stacks are on the page.",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.using",
+          "flesch": 103,
+          "pass": false,
+          "declined": true,
+          "missing": [
+            "flask"
+          ],
+          "leaked": [],
+          "toolOk": true
+        }
+      ]
+    },
+    {
+      "id": "stack-switch",
+      "title": "A stack, then a different project by description",
+      "turns": [
+        {
+          "ask": "what stack does hobnob use?",
+          "routed": "what stack does hobnob use?",
+          "rewritten": false,
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "whisper"
+            ]
+          },
+          "text": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.stack",
+          "flesch": 52,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "and the one for testing generated interfaces?",
+          "routed": "and the one for testing generated interfaces?",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "groundglass"
+            ]
+          },
+          "text": "I'm not sure about that. I can help with: Log statistics; Open the printable resume; Summarise the blog.",
+          "calls": [],
+          "plannedBy": null,
+          "flesch": 71,
+          "pass": false,
+          "declined": true,
+          "missing": [
+            "groundglass"
+          ],
+          "leaked": [],
+          "toolOk": true
+        }
+      ]
+    },
+    {
+      "id": "blog-depth",
+      "title": "Count, newest, subject",
+      "turns": [
+        {
+          "ask": "how many posts has he written?",
+          "routed": "how many posts has he written?",
+          "rewritten": false,
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "60"
+            ]
+          },
+          "text": "That is 60 entries, most recently \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
+          "calls": [
+            {
+              "id": "blog.stats",
+              "args": {}
+            }
+          ],
+          "plannedBy": "posts.newest",
+          "flesch": 70,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "which is the newest?",
+          "routed": "which is the newest?",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "queued"
+            ]
+          },
+          "text": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\" is the latest; 60 in all.",
+          "calls": [
+            {
+              "id": "blog.stats",
+              "args": {}
+            }
+          ],
+          "plannedBy": "posts.newest",
+          "flesch": 80,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "what is that one about?",
+          "routed": "what is that one about?",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "queue"
+            ]
+          },
+          "text": "```json\n{\"tool\":\"blog.topics\",\"arguments\":{}}\n```",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            },
+            {
+              "id": "blog.topics",
+              "args": {}
+            },
+            {
+              "id": "blog.topics",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.about",
+          "flesch": -50,
+          "pass": false,
+          "declined": false,
+          "missing": [
+            "queue"
+          ],
+          "leaked": [],
+          "toolOk": true
+        }
+      ]
+    },
+    {
+      "id": "navigation",
+      "title": "Move around the page, then back",
+      "turns": [
+        {
+          "ask": "show me the projects",
+          "routed": "show me the projects",
+          "rewritten": false,
+          "kind": "tool",
+          "expect": {
+            "tool": "site.projects"
+          },
+          "text": "```json\n{\"tool\":\"site.projects\",\"arguments\":{}}\n```",
+          "calls": [
+            {
+              "id": "site.projects",
+              "args": {}
+            },
+            {
+              "id": "site.projects",
+              "args": {}
+            },
+            {
+              "id": "site.projects",
+              "args": {}
+            }
+          ],
+          "plannedBy": null,
+          "flesch": -78,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "now the blog",
+          "routed": "now the blog",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "tool": "site.blog"
+          },
+          "text": "I'm not sure about that. I can help with: Summarise the blog; Engineering log; Log statistics.",
+          "calls": [],
+          "plannedBy": null,
+          "flesch": 72,
+          "pass": false,
+          "declined": true,
+          "missing": [],
+          "leaked": [],
+          "toolOk": false
+        },
+        {
+          "ask": "take me back to the top",
+          "routed": "take me back to the top",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "tool": "site.top"
+          },
+          "text": "```json\n{\"tool\":\"site.top\",\"arguments\":{}}\n```",
+          "calls": [
+            {
+              "id": "site.top",
+              "args": {}
+            },
+            {
+              "id": "site.top",
+              "args": {}
+            },
+            {
+              "id": "site.top",
+              "args": {}
+            }
+          ],
+          "plannedBy": null,
+          "flesch": -50,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        }
+      ]
+    },
+    {
+      "id": "contact-tools",
+      "title": "Read an address, then act on it",
+      "turns": [
+        {
+          "ask": "what is his email?",
+          "routed": "what is his email?",
+          "rewritten": false,
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "shobyde@gmail.com"
+            ]
+          },
+          "text": "One address: shobyde@gmail.com.",
+          "calls": [],
+          "plannedBy": null,
+          "flesch": -20,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "copy it",
+          "routed": "copy it",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "tool": "contact.copy_email"
+          },
+          "text": "```json\n{\"tool\":\"contact.copy_email\",\"arguments\":{}}\n```",
+          "calls": [
+            {
+              "id": "contact.copy_email",
+              "args": {}
+            },
+            {
+              "id": "contact.copy_email",
+              "args": {}
+            },
+            {
+              "id": "contact.copy_email",
+              "args": {}
+            }
+          ],
+          "plannedBy": null,
+          "flesch": -106,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "and his linkedin?",
+          "routed": "and his linkedin?",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "linkedin"
+            ]
+          },
+          "text": "One profile: www.linkedin.com/in/sho-byde-556954138.",
+          "calls": [],
+          "plannedBy": null,
+          "flesch": -104,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        }
+      ]
+    },
+    {
+      "id": "exclusion-followup",
+      "title": "Undo part of the last answer",
+      "turns": [
+        {
+          "ask": "which projects use python?",
+          "routed": "which projects use python?",
+          "rewritten": false,
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "readback",
+              "groundglass"
+            ]
+          },
+          "text": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. Boaz takes the other route: TypeScript and Vite.",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.using",
+          "flesch": 85,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "not readback, the other one",
+          "routed": "not readback, the other one",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "groundglass"
+            ],
+            "exclude": [
+              "readback"
+            ]
+          },
+          "text": "I'm not sure about that. I can help with: Pick points from these sentences; Show a project card; Selected projects.",
+          "calls": [],
+          "plannedBy": null,
+          "flesch": 91,
+          "pass": false,
+          "declined": true,
+          "missing": [
+            "groundglass"
+          ],
+          "leaked": [],
+          "toolOk": true
+        }
+      ]
+    },
+    {
+      "id": "ordinal",
+      "title": "Point at an item by position",
+      "turns": [
+        {
+          "ask": "what has he built?",
+          "routed": "what has he built?",
+          "rewritten": false,
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "hobnob"
+            ]
+          },
+          "text": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Every card opens to notes except 0.",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.list_titles",
+          "flesch": 42,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "the third one?",
+          "routed": "the third one?",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "groundglass"
+            ]
+          },
+          "text": "I'm not sure about that. I can help with: Log statistics; Open the printable resume; Summarise the blog.",
+          "calls": [],
+          "plannedBy": null,
+          "flesch": 71,
+          "pass": false,
+          "declined": true,
+          "missing": [
+            "groundglass"
+          ],
+          "leaked": [],
+          "toolOk": true
+        }
+      ]
+    },
+    {
+      "id": "ellipsis",
+      "title": "Drop the subject entirely",
+      "turns": [
+        {
+          "ask": "tell me about hobnob",
+          "routed": "tell me about hobnob",
+          "rewritten": false,
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "meeting"
+            ]
+          },
+          "text": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.about",
+          "flesch": 52,
+          "pass": false,
+          "declined": false,
+          "missing": [
+            "meeting"
+          ],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "and its stack?",
+          "routed": "and its stack?",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "whisper"
+            ]
+          },
+          "text": "I'm not sure about that. I can help with: Skills and stack; Skills; List projects.",
+          "calls": [],
+          "plannedBy": null,
+          "flesch": 103,
+          "pass": false,
+          "declined": true,
+          "missing": [
+            "whisper"
+          ],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "does it send anything to a server?",
+          "routed": "does it send anything to a server?",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "local",
+              "cloud"
+            ]
+          },
+          "text": "I can only help with the screens and controls built into this app.",
+          "calls": [],
+          "plannedBy": null,
+          "flesch": 90,
+          "pass": false,
+          "declined": true,
+          "missing": [
+            "local",
+            "cloud"
+          ],
+          "leaked": [],
+          "toolOk": true
+        }
+      ]
+    },
+    {
+      "id": "who",
+      "title": "Identity, then the follow-up people actually ask",
+      "turns": [
+        {
+          "ask": "who is sho?",
+          "routed": "who is sho?",
+          "rewritten": false,
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "engineering"
+            ]
+          },
+          "text": "An engineering manager who still ships: 12+ years across APIs, cloud systems and applications people actually use. He has been at Conversica since Jul 2021.",
+          "calls": [],
+          "plannedBy": null,
+          "flesch": 49,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "what does he do now?",
+          "routed": "what does he do now?",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "conversica"
+            ]
+          },
+          "text": "12+ years of software, now managing engineers and still writing code. He has been at Conversica since Jul 2021.",
+          "calls": [],
+          "plannedBy": null,
+          "flesch": 68,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        }
+      ]
+    },
+    {
+      "id": "compound",
+      "title": "Two conditions in one ask",
+      "turns": [
+        {
+          "ask": "which projects use python and have a web interface?",
+          "routed": "which projects use python and have a web interface?",
+          "rewritten": false,
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "readback"
+            ]
+          },
+          "text": "Readback, Groundglass and shobyde.com: 3 projects name Python 3.10+. Those 3 stacks overlap on Python 3.10+ and nothing else. Boaz takes the other route: TypeScript and Datalog (rules).",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.using",
+          "flesch": 66,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "why not both?",
+          "routed": "why not both?",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "groundglass"
+            ]
+          },
+          "text": "I'm not sure about that. I can help with: Selected projects; Pick points from these sentences; Engineering log.",
+          "calls": [],
+          "plannedBy": null,
+          "flesch": 80,
+          "pass": false,
+          "declined": true,
+          "missing": [
+            "groundglass"
+          ],
+          "leaked": [],
+          "toolOk": true
+        }
+      ]
+    },
+    {
+      "id": "compare",
+      "title": "Compare, then pick",
+      "turns": [
+        {
+          "ask": "compare hobnob and readback",
+          "routed": "compare hobnob and readback",
+          "rewritten": false,
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "hobnob",
+              "readback"
+            ]
+          },
+          "text": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"hobnob\"}}\n```",
+          "calls": [
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "hobnob"
+              }
+            },
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "hobnob"
+              }
+            },
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "hobnob"
+              }
+            }
+          ],
+          "plannedBy": null,
+          "flesch": -163,
+          "pass": false,
+          "declined": false,
+          "missing": [
+            "readback"
+          ],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "which one is bigger?",
+          "routed": "which one is bigger?",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "hobnob"
+            ]
+          },
+          "text": "I'm not sure about that. I can help with: Log statistics; Open the printable resume; Summarise the blog.",
+          "calls": [],
+          "plannedBy": null,
+          "flesch": 71,
+          "pass": false,
+          "declined": true,
+          "missing": [
+            "hobnob"
+          ],
+          "leaked": [],
+          "toolOk": true
+        }
+      ]
+    },
+    {
+      "id": "capability-list",
+      "title": "Ask what it can do, then do one",
+      "turns": [
+        {
+          "ask": "what can you do?",
+          "routed": "what can you do?",
+          "rewritten": false,
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "capabilit"
+            ]
+          },
+          "text": "I can only help with the screens and controls built into this app.",
+          "calls": [],
+          "plannedBy": null,
+          "flesch": 90,
+          "pass": false,
+          "declined": true,
+          "missing": [
+            "capabilit"
+          ],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "open the archive",
+          "routed": "open the archive",
+          "rewritten": false,
+          "kind": "tool",
+          "expect": {
+            "tool": "blog.open_archive"
+          },
+          "text": "```json\n{\"tool\":\"blog.open_archive\",\"arguments\":{}}\n```",
+          "calls": [
+            {
+              "id": "blog.open_archive",
+              "args": {}
+            },
+            {
+              "id": "blog.open_archive",
+              "args": {}
+            },
+            {
+              "id": "blog.open_archive",
+              "args": {}
+            }
+          ],
+          "plannedBy": null,
+          "flesch": -106,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        },
+        {
+          "ask": "and the newest post?",
+          "routed": "and the newest post?",
+          "rewritten": false,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "queued"
+            ]
+          },
+          "text": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\" is the latest; 60 in all.",
+          "calls": [
+            {
+              "id": "blog.stats",
+              "args": {}
+            }
+          ],
+          "plannedBy": "posts.newest",
+          "flesch": 80,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true
+        }
+      ]
+    }
+  ]
+}

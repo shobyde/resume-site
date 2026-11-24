@@ -1,0 +1,951 @@
+{
+  "generated": "2026-11-24T17:39:40.793Z",
+  "library": "0.7.14",
+  "threads": {
+    "memory": {
+      "passed": 21,
+      "total": 30,
+      "kinds": {
+        "knowledge": {
+          "passed": 8,
+          "total": 11
+        },
+        "context": {
+          "passed": 11,
+          "total": 17
+        },
+        "tool": {
+          "passed": 2,
+          "total": 2
+        }
+      }
+    },
+    "stateless": {
+      "passed": 17,
+      "total": 30,
+      "kinds": {
+        "knowledge": {
+          "passed": 8,
+          "total": 11
+        },
+        "context": {
+          "passed": 7,
+          "total": 17
+        },
+        "tool": {
+          "passed": 2,
+          "total": 2
+        }
+      }
+    },
+    "threads": [
+      {
+        "id": "portfolio-stack",
+        "title": "Build list, then filter it",
+        "turns": [
+          {
+            "ask": "what has he built?",
+            "kind": "knowledge",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "what has he built?",
+            "text": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Every card opens to notes except 0.",
+            "baselineText": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Every card opens to notes except 0.",
+            "calls": [
+              "projects.list"
+            ],
+            "flesch": 42,
+            "missing": []
+          },
+          {
+            "ask": "which of those use python?",
+            "kind": "context",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "which of those use python?",
+            "text": "Readback and Groundglass, 2 projects on Python 3.10+. All both also list pytest. Boaz does not list it; its stack is TypeScript and Vite.",
+            "baselineText": "Readback and Groundglass, 2 projects on Python 3.10+. All both also list pytest. Boaz does not list it; its stack is TypeScript and Vite.",
+            "calls": [
+              "projects.list"
+            ],
+            "flesch": 88,
+            "missing": []
+          },
+          {
+            "ask": "and what does the reading one use?",
+            "kind": "context",
+            "pass": false,
+            "baseline": false,
+            "rewritten": true,
+            "routed": "what is Boaz's stack?",
+            "text": "Boaz runs on TypeScript, Vite, Datalog (rules), BM25 retrieval and A2UI surfaces.",
+            "baselineText": "No project on this page lists reading. All 6 stacks are on the page.",
+            "calls": [
+              "projects.list"
+            ],
+            "flesch": 54,
+            "missing": [
+              "flask"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "stack-switch",
+        "title": "A stack, then a different project by description",
+        "turns": [
+          {
+            "ask": "what stack does hobnob use?",
+            "kind": "knowledge",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "what stack does hobnob use?",
+            "text": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+            "baselineText": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+            "calls": [
+              "projects.list"
+            ],
+            "flesch": 52,
+            "missing": []
+          },
+          {
+            "ask": "and the one for testing generated interfaces?",
+            "kind": "context",
+            "pass": false,
+            "baseline": false,
+            "rewritten": false,
+            "routed": "and the one for testing generated interfaces?",
+            "text": "I'm not sure about that. I can help with: Log statistics; Open the printable resume; Summarise the blog.",
+            "baselineText": "I'm not sure about that. I can help with: Log statistics; Open the printable resume; Summarise the blog.",
+            "calls": [],
+            "flesch": 71,
+            "missing": [
+              "groundglass"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "blog-depth",
+        "title": "Count, newest, subject",
+        "turns": [
+          {
+            "ask": "how many posts has he written?",
+            "kind": "knowledge",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "how many posts has he written?",
+            "text": "That is 60 entries, most recently \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
+            "baselineText": "That is 60 entries, most recently \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
+            "calls": [
+              "blog.stats"
+            ],
+            "flesch": 70,
+            "missing": []
+          },
+          {
+            "ask": "which is the newest?",
+            "kind": "context",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "which is the newest?",
+            "text": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\" is the latest; 60 in all.",
+            "baselineText": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\" is the latest; 60 in all.",
+            "calls": [
+              "blog.stats"
+            ],
+            "flesch": 80,
+            "missing": []
+          },
+          {
+            "ask": "what is that one about?",
+            "kind": "context",
+            "pass": true,
+            "baseline": false,
+            "rewritten": false,
+            "routed": "what is that one about?",
+            "text": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\", number 60 if you are counting.",
+            "baselineText": "```json\n{\"tool\":\"blog.topics\",\"arguments\":{}}\n```",
+            "calls": [
+              "blog.stats"
+            ],
+            "flesch": 75,
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "navigation",
+        "title": "Move around the page, then back",
+        "turns": [
+          {
+            "ask": "show me the projects",
+            "kind": "tool",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "show me the projects",
+            "text": "```json\n{\"tool\":\"site.projects\",\"arguments\":{}}\n```",
+            "baselineText": "```json\n{\"tool\":\"site.projects\",\"arguments\":{}}\n```",
+            "calls": [
+              "site.projects",
+              "site.projects",
+              "site.projects"
+            ],
+            "flesch": -78,
+            "missing": []
+          },
+          {
+            "ask": "now the blog",
+            "kind": "context",
+            "pass": true,
+            "baseline": false,
+            "rewritten": true,
+            "routed": "take me to the blog",
+            "text": "```json\n{\"tool\":\"site.blog\",\"arguments\":{}}\n```",
+            "baselineText": "I'm not sure about that. I can help with: Summarise the blog; Engineering log; Log statistics.",
+            "calls": [
+              "site.blog",
+              "site.blog",
+              "site.blog"
+            ],
+            "flesch": -50,
+            "missing": []
+          },
+          {
+            "ask": "take me back to the top",
+            "kind": "context",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "take me back to the top",
+            "text": "```json\n{\"tool\":\"site.top\",\"arguments\":{}}\n```",
+            "baselineText": "```json\n{\"tool\":\"site.top\",\"arguments\":{}}\n```",
+            "calls": [
+              "site.top",
+              "site.top",
+              "site.top"
+            ],
+            "flesch": -50,
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "contact-tools",
+        "title": "Read an address, then act on it",
+        "turns": [
+          {
+            "ask": "what is his email?",
+            "kind": "knowledge",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "what is his email?",
+            "text": "One address: shobyde@gmail.com.",
+            "baselineText": "One address: shobyde@gmail.com.",
+            "calls": [],
+            "flesch": -20,
+            "missing": []
+          },
+          {
+            "ask": "copy it",
+            "kind": "context",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "copy it",
+            "text": "```json\n{\"tool\":\"contact.copy_email\",\"arguments\":{}}\n```",
+            "baselineText": "```json\n{\"tool\":\"contact.copy_email\",\"arguments\":{}}\n```",
+            "calls": [
+              "contact.copy_email",
+              "contact.copy_email",
+              "contact.copy_email"
+            ],
+            "flesch": -106,
+            "missing": []
+          },
+          {
+            "ask": "and his linkedin?",
+            "kind": "context",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "and his linkedin?",
+            "text": "One profile: www.linkedin.com/in/sho-byde-556954138.",
+            "baselineText": "One profile: www.linkedin.com/in/sho-byde-556954138.",
+            "calls": [],
+            "flesch": -104,
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "exclusion-followup",
+        "title": "Undo part of the last answer",
+        "turns": [
+          {
+            "ask": "which projects use python?",
+            "kind": "knowledge",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "which projects use python?",
+            "text": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. Boaz takes the other route: TypeScript and Vite.",
+            "baselineText": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. Boaz takes the other route: TypeScript and Vite.",
+            "calls": [
+              "projects.list"
+            ],
+            "flesch": 85,
+            "missing": []
+          },
+          {
+            "ask": "not readback, the other one",
+            "kind": "context",
+            "pass": false,
+            "baseline": false,
+            "rewritten": false,
+            "routed": "not readback, the other one",
+            "text": "I'm not sure about that. I can help with: Pick points from these sentences; Show a project card; Selected projects.",
+            "baselineText": "I'm not sure about that. I can help with: Pick points from these sentences; Show a project card; Selected projects.",
+            "calls": [],
+            "flesch": 91,
+            "missing": [
+              "groundglass"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ordinal",
+        "title": "Point at an item by position",
+        "turns": [
+          {
+            "ask": "what has he built?",
+            "kind": "knowledge",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "what has he built?",
+            "text": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Every card opens to notes except 0.",
+            "baselineText": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Every card opens to notes except 0.",
+            "calls": [
+              "projects.list"
+            ],
+            "flesch": 42,
+            "missing": []
+          },
+          {
+            "ask": "the third one?",
+            "kind": "context",
+            "pass": true,
+            "baseline": false,
+            "rewritten": true,
+            "routed": "tell me about Groundglass",
+            "text": "Groundglass runs on Python 3.10+, Standard library only, A2UI v1.0, pytest and GitHub Actions.",
+            "baselineText": "I'm not sure about that. I can help with: Log statistics; Open the printable resume; Summarise the blog.",
+            "calls": [
+              "projects.list"
+            ],
+            "flesch": 63,
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "ellipsis",
+        "title": "Drop the subject entirely",
+        "turns": [
+          {
+            "ask": "tell me about hobnob",
+            "kind": "knowledge",
+            "pass": false,
+            "baseline": false,
+            "rewritten": false,
+            "routed": "tell me about hobnob",
+            "text": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+            "baselineText": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+            "calls": [
+              "projects.list"
+            ],
+            "flesch": 52,
+            "missing": [
+              "meeting"
+            ]
+          },
+          {
+            "ask": "and its stack?",
+            "kind": "context",
+            "pass": true,
+            "baseline": false,
+            "rewritten": true,
+            "routed": "what is Hobnob's stack?",
+            "text": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+            "baselineText": "I'm not sure about that. I can help with: Skills and stack; Skills; List projects.",
+            "calls": [
+              "projects.list"
+            ],
+            "flesch": 52,
+            "missing": []
+          },
+          {
+            "ask": "does it send anything to a server?",
+            "kind": "context",
+            "pass": false,
+            "baseline": false,
+            "rewritten": false,
+            "routed": "does it send anything to a server?",
+            "text": "I can only help with the screens and controls built into this app.",
+            "baselineText": "I can only help with the screens and controls built into this app.",
+            "calls": [],
+            "flesch": 90,
+            "missing": [
+              "local",
+              "cloud"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "who",
+        "title": "Identity, then the follow-up people actually ask",
+        "turns": [
+          {
+            "ask": "who is sho?",
+            "kind": "knowledge",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "who is sho?",
+            "text": "An engineering manager who still ships: 12+ years across APIs, cloud systems and applications people actually use. He has been at Conversica since Jul 2021.",
+            "baselineText": "An engineering manager who still ships: 12+ years across APIs, cloud systems and applications people actually use. He has been at Conversica since Jul 2021.",
+            "calls": [],
+            "flesch": 49,
+            "missing": []
+          },
+          {
+            "ask": "what does he do now?",
+            "kind": "context",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "what does he do now?",
+            "text": "12+ years of software, now managing engineers and still writing code. He has been at Conversica since Jul 2021.",
+            "baselineText": "12+ years of software, now managing engineers and still writing code. He has been at Conversica since Jul 2021.",
+            "calls": [],
+            "flesch": 68,
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "compound",
+        "title": "Two conditions in one ask",
+        "turns": [
+          {
+            "ask": "which projects use python and have a web interface?",
+            "kind": "knowledge",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "which projects use python and have a web interface?",
+            "text": "Readback, Groundglass and shobyde.com: 3 projects name Python 3.10+. Those 3 stacks overlap on Python 3.10+ and nothing else. Boaz takes the other route: TypeScript and Datalog (rules).",
+            "baselineText": "Readback, Groundglass and shobyde.com: 3 projects name Python 3.10+. Those 3 stacks overlap on Python 3.10+ and nothing else. Boaz takes the other route: TypeScript and Datalog (rules).",
+            "calls": [
+              "projects.list"
+            ],
+            "flesch": 66,
+            "missing": []
+          },
+          {
+            "ask": "why not both?",
+            "kind": "context",
+            "pass": false,
+            "baseline": false,
+            "rewritten": false,
+            "routed": "why not both?",
+            "text": "I'm not sure about that. I can help with: Selected projects; Pick points from these sentences; Engineering log.",
+            "baselineText": "I'm not sure about that. I can help with: Selected projects; Pick points from these sentences; Engineering log.",
+            "calls": [],
+            "flesch": 80,
+            "missing": [
+              "groundglass"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "compare",
+        "title": "Compare, then pick",
+        "turns": [
+          {
+            "ask": "compare hobnob and readback",
+            "kind": "knowledge",
+            "pass": false,
+            "baseline": false,
+            "rewritten": false,
+            "routed": "compare hobnob and readback",
+            "text": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"hobnob\"}}\n```",
+            "baselineText": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"hobnob\"}}\n```",
+            "calls": [
+              "projects.card",
+              "projects.card",
+              "projects.card"
+            ],
+            "flesch": -163,
+            "missing": [
+              "readback"
+            ]
+          },
+          {
+            "ask": "which one is bigger?",
+            "kind": "context",
+            "pass": false,
+            "baseline": false,
+            "rewritten": false,
+            "routed": "which one is bigger?",
+            "text": "I'm not sure about that. I can help with: Log statistics; Open the printable resume; Summarise the blog.",
+            "baselineText": "I'm not sure about that. I can help with: Log statistics; Open the printable resume; Summarise the blog.",
+            "calls": [],
+            "flesch": 71,
+            "missing": [
+              "hobnob"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "capability-list",
+        "title": "Ask what it can do, then do one",
+        "turns": [
+          {
+            "ask": "what can you do?",
+            "kind": "knowledge",
+            "pass": false,
+            "baseline": false,
+            "rewritten": false,
+            "routed": "what can you do?",
+            "text": "I can only help with the screens and controls built into this app.",
+            "baselineText": "I can only help with the screens and controls built into this app.",
+            "calls": [],
+            "flesch": 90,
+            "missing": [
+              "capabilit"
+            ]
+          },
+          {
+            "ask": "open the archive",
+            "kind": "tool",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "open the archive",
+            "text": "```json\n{\"tool\":\"blog.open_archive\",\"arguments\":{}}\n```",
+            "baselineText": "```json\n{\"tool\":\"blog.open_archive\",\"arguments\":{}}\n```",
+            "calls": [
+              "blog.open_archive",
+              "blog.open_archive",
+              "blog.open_archive"
+            ],
+            "flesch": -106,
+            "missing": []
+          },
+          {
+            "ask": "and the newest post?",
+            "kind": "context",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "and the newest post?",
+            "text": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\" is the latest; 60 in all.",
+            "baselineText": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\" is the latest; 60 in all.",
+            "calls": [
+              "blog.stats"
+            ],
+            "flesch": 80,
+            "missing": []
+          }
+        ]
+      }
+    ],
+    "carried": [
+      {
+        "thread": "Count, newest, subject",
+        "ask": "what is that one about?",
+        "routed": "what is that one about?",
+        "before": "```json\n{\"tool\":\"blog.topics\",\"arguments\":{}}\n```",
+        "after": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\", number 60 if you are counting."
+      },
+      {
+        "thread": "Move around the page, then back",
+        "ask": "now the blog",
+        "routed": "take me to the blog",
+        "before": "I'm not sure about that. I can help with: Summarise the blog; Engineering log; Log statistics.",
+        "after": "```json\n{\"tool\":\"site.blog\",\"arguments\":{}}\n```"
+      },
+      {
+        "thread": "Point at an item by position",
+        "ask": "the third one?",
+        "routed": "tell me about Groundglass",
+        "before": "I'm not sure about that. I can help with: Log statistics; Open the printable resume; Summarise the blog.",
+        "after": "Groundglass runs on Python 3.10+, Standard library only, A2UI v1.0, pytest and GitHub Actions."
+      },
+      {
+        "thread": "Drop the subject entirely",
+        "ask": "and its stack?",
+        "routed": "what is Hobnob's stack?",
+        "before": "I'm not sure about that. I can help with: Skills and stack; Skills; List projects.",
+        "after": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman)."
+      }
+    ]
+  },
+  "judge": {
+    "model": "minimax-m3.1-flash",
+    "judged": "2026-11-24T09:37:12",
+    "turns": 30,
+    "answered": 21,
+    "grounded": 80,
+    "readability": 4.4,
+    "tools": {
+      "ok": 5,
+      "total": 7
+    },
+    "stateless": {
+      "judged": "2026-11-24T09:39:36",
+      "model": "minimax-m3.1-flash",
+      "turns": 30,
+      "answered": 17,
+      "readability": 4.1
+    },
+    "examples": [
+      {
+        "ask": "what has he built?",
+        "answered": 1,
+        "readability": 4,
+        "why": "Lists his builds, though the final card claim is unclear."
+      },
+      {
+        "ask": "which of those use python?",
+        "answered": 1,
+        "readability": 4,
+        "why": "Identifies Python projects clearly; awkward wording and unnecessary tool call."
+      },
+      {
+        "ask": "and what does the reading one use?",
+        "answered": 0,
+        "readability": 5,
+        "why": "It describes Boaz, not Readback, and does not answer the question."
+      },
+      {
+        "ask": "what stack does hobnob use?",
+        "answered": 1,
+        "readability": 5,
+        "why": "Directly lists Hobnob's stack; no tool was needed and the called tool was unnecessary."
+      }
+    ]
+  },
+  "dimension": [
+    {
+      "id": "knowledge",
+      "suites": 4,
+      "before": 41.3,
+      "after": 98.9,
+      "at90": 4
+    },
+    {
+      "id": "language",
+      "suites": 4,
+      "before": 33.7,
+      "after": 90.5,
+      "at90": 2
+    },
+    {
+      "id": "context",
+      "suites": 3,
+      "before": 36.6,
+      "after": 96.5,
+      "at90": 2
+    },
+    {
+      "id": "planning",
+      "suites": 4,
+      "before": 24.8,
+      "after": 96.7,
+      "at90": 4
+    },
+    {
+      "id": "tools",
+      "suites": 3,
+      "before": 40.4,
+      "after": 94.2,
+      "at90": 3
+    }
+  ],
+  "ladder": [
+    {
+      "id": "taxonomy",
+      "dimension": "knowledge",
+      "label": "Question taxonomy + slots",
+      "suite": "tasks.json",
+      "before": 47.5,
+      "after": 100,
+      "n": 40,
+      "release": "v0.6.9",
+      "date": "2026-11-24T03:05Z"
+    },
+    {
+      "id": "negation",
+      "dimension": "knowledge",
+      "label": "Negation and exclusion",
+      "suite": "negation.json",
+      "before": 26.1,
+      "after": 95.7,
+      "n": 23,
+      "release": "v0.7.0",
+      "date": "2026-11-24T03:42Z"
+    },
+    {
+      "id": "reference",
+      "dimension": "context",
+      "label": "Ordinals, pronouns, partial names",
+      "suite": "reference.json",
+      "before": 48.1,
+      "after": 100,
+      "n": 27,
+      "release": "v0.7.1",
+      "date": "2026-11-24T04:05Z"
+    },
+    {
+      "id": "compound",
+      "dimension": "knowledge",
+      "label": "Compound asks (and / or)",
+      "suite": "compound.json",
+      "before": 47.6,
+      "after": 100,
+      "n": 21,
+      "release": "v0.7.3",
+      "date": "2026-11-24T05:35Z"
+    },
+    {
+      "id": "synonyms",
+      "dimension": "knowledge",
+      "label": "Synonyms without a model",
+      "suite": "synonyms.json",
+      "before": 44,
+      "after": 100,
+      "n": 25,
+      "release": "v0.7.3",
+      "date": "2026-11-24T05:25Z"
+    },
+    {
+      "id": "discourse",
+      "dimension": "language",
+      "label": "Discourse plans (elaborate, contrast)",
+      "suite": "discourse.json",
+      "before": 26.3,
+      "after": 84.2,
+      "n": 19,
+      "release": "v0.7.3",
+      "date": "2026-11-24T06:30Z"
+    },
+    {
+      "id": "summarise",
+      "dimension": "language",
+      "label": "Extractive summaries with citations",
+      "suite": "summarise",
+      "before": 77.8,
+      "after": 77.8,
+      "n": 18,
+      "release": "v0.7.5",
+      "date": "2026-11-24T08:25Z"
+    },
+    {
+      "id": "register",
+      "dimension": "language",
+      "label": "Register control (terse / normal)",
+      "suite": "register.json",
+      "before": 30.8,
+      "after": 100,
+      "n": 26,
+      "release": "v0.7.5",
+      "date": "2026-11-24T07:42Z"
+    },
+    {
+      "id": "outline",
+      "dimension": "language",
+      "label": "Long-form outline from facts",
+      "suite": "outline.json",
+      "before": 0,
+      "after": 100,
+      "n": 9,
+      "release": "v0.7.5",
+      "date": "2026-11-24T08:32Z"
+    },
+    {
+      "id": "plan",
+      "dimension": "planning",
+      "label": "Two-step plans from one sentence",
+      "suite": "plan",
+      "before": 0,
+      "after": 100,
+      "n": 8,
+      "release": "v0.7.6",
+      "date": "2026-11-24T09:03Z"
+    },
+    {
+      "id": "execute",
+      "dimension": "planning",
+      "label": "Execute both steps",
+      "suite": "execute",
+      "before": 23.1,
+      "after": 100,
+      "n": 13,
+      "release": "v0.7.7",
+      "date": "2026-11-24T10:05Z"
+    },
+    {
+      "id": "recover",
+      "dimension": "planning",
+      "label": "Failure recovery (runner-up)",
+      "suite": "recover.json",
+      "before": 57.1,
+      "after": 92.9,
+      "n": 14,
+      "release": "v0.7.8",
+      "date": "2026-11-24T10:58Z"
+    },
+    {
+      "id": "skills",
+      "dimension": "planning",
+      "label": "Declarative skills (trigger, steps)",
+      "suite": "skill",
+      "before": 18.8,
+      "after": 93.8,
+      "n": 16,
+      "release": "v0.7.10",
+      "date": "2026-11-24T12:45Z"
+    },
+    {
+      "id": "memory",
+      "dimension": "context",
+      "label": "Working memory with salience",
+      "suite": "memory.json",
+      "before": 25,
+      "after": 100,
+      "n": 16,
+      "release": "v0.7.10",
+      "date": "2026-11-24T12:40Z"
+    },
+    {
+      "id": "preferences",
+      "dimension": "context",
+      "label": "Stated preferences as facts",
+      "suite": "preferences",
+      "before": 36.8,
+      "after": 89.5,
+      "n": 19,
+      "release": "v0.7.12",
+      "date": "2026-11-24T13:18Z"
+    },
+    {
+      "id": "actions",
+      "dimension": "tools",
+      "label": "Click and fill by accessible name",
+      "suite": "actions.json",
+      "before": 41.7,
+      "after": 91.7,
+      "n": 24,
+      "release": "v0.7.13",
+      "date": "2026-11-24T14:17Z"
+    },
+    {
+      "id": "mcp",
+      "dimension": "tools",
+      "label": "MCP-shaped JSON-RPC bridge",
+      "suite": "mcp.json",
+      "before": 6.9,
+      "after": 100,
+      "n": 29,
+      "release": "v0.7.14",
+      "date": "2026-11-24T15:20Z"
+    },
+    {
+      "id": "browser",
+      "dimension": "tools",
+      "label": "Scripted browser agent",
+      "suite": "browser-agent.mjs",
+      "before": 72.7,
+      "after": 90.9,
+      "n": 11,
+      "release": "v0.7.14",
+      "date": "2026-11-24T16:14Z"
+    }
+  ],
+  "releases": [
+    {
+      "version": "0.6.8",
+      "suites_at_90": 0,
+      "note": "before the campaign"
+    },
+    {
+      "version": "0.6.9",
+      "suites_at_90": 1,
+      "note": "taxonomy"
+    },
+    {
+      "version": "0.7.0",
+      "suites_at_90": 2,
+      "note": "negation"
+    },
+    {
+      "version": "0.7.1",
+      "suites_at_90": 3,
+      "note": "reference"
+    },
+    {
+      "version": "0.7.3",
+      "suites_at_90": 5,
+      "note": "compound, synonyms"
+    },
+    {
+      "version": "0.7.5",
+      "suites_at_90": 7,
+      "note": "register, outline"
+    },
+    {
+      "version": "0.7.6",
+      "suites_at_90": 8,
+      "note": "plan"
+    },
+    {
+      "version": "0.7.7",
+      "suites_at_90": 9,
+      "note": "execute"
+    },
+    {
+      "version": "0.7.8",
+      "suites_at_90": 10,
+      "note": "recover"
+    },
+    {
+      "version": "0.7.10",
+      "suites_at_90": 12,
+      "note": "skills, memory"
+    },
+    {
+      "version": "0.7.13",
+      "suites_at_90": 13,
+      "note": "actions"
+    },
+    {
+      "version": "0.7.14",
+      "suites_at_90": 15,
+      "note": "mcp, browser"
+    }
+  ]
+}
