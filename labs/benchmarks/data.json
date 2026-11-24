@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T23:22:38.123Z",
+  "generated": "2026-11-24T23:26:46.456Z",
   "library": "0.8.2",
   "threads": {
     "memory": {
@@ -449,12 +449,12 @@
             "baseline": true,
             "rewritten": false,
             "routed": "which projects use python and have a web interface?",
-            "text": "No project lists both Python 3.10+ and Three.js (WebGL). Readback and Groundglass list Python 3.10+; shobyde.com lists Three.js (WebGL).",
-            "baselineText": "No project lists both Python 3.10+ and Three.js (WebGL). Readback and Groundglass list Python 3.10+; shobyde.com lists Three.js (WebGL).",
+            "text": "No project lists both Python 3.10+ and Three.js (WebGL). Readback and Groundglass list Python 3.10+; shobyde.com lists Three.js (WebGL). 3 of 6 projects match one of them.",
+            "baselineText": "No project lists both Python 3.10+ and Three.js (WebGL). Readback and Groundglass list Python 3.10+; shobyde.com lists Three.js (WebGL). 3 of 6 projects match one of them.",
             "calls": [
               "projects.list"
             ],
-            "flesch": 84,
+            "flesch": 91,
             "missing": []
           },
           {
@@ -970,7 +970,7 @@
     }
   ],
   "kb": {
-    "generated": "2026-11-24T23:22:52.472Z",
+    "generated": "2026-11-24T23:26:46.823Z",
     "facts": 170,
     "documents": 170,
     "threads": 40,

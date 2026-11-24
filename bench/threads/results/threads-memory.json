@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T23:22:37.974Z",
+  "generated": "2026-11-24T23:26:46.306Z",
   "mode": "memory",
   "library": "0.8.2",
   "threads": [
@@ -657,7 +657,7 @@
               "readback"
             ]
           },
-          "text": "No project lists both Python 3.10+ and Three.js (WebGL). Readback and Groundglass list Python 3.10+; shobyde.com lists Three.js (WebGL).",
+          "text": "No project lists both Python 3.10+ and Three.js (WebGL). Readback and Groundglass list Python 3.10+; shobyde.com lists Three.js (WebGL). 3 of 6 projects match one of them.",
           "calls": [
             {
               "id": "projects.list",
@@ -665,7 +665,7 @@
             }
           ],
           "plannedBy": "projects.using",
-          "flesch": 84,
+          "flesch": 91,
           "pass": true,
           "declined": false,
           "missing": [],

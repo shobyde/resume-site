@@ -295,11 +295,11 @@ export function phraseProjectsSplit(query, groups, { both = [], conjunction = tr
       : `No project lists both ${join(terms)}.`;
   const claim = `${overlap} ${present.map(has).join('; ')}.`.trim();
   if (register === 'terse') return claim;
-  if (register === 'explanatory' && total) {
-    const matched = present.reduce((sum, group) => sum + group.names.length, 0);
-    return `${claim} ${matched} stack${matched === 1 ? '' : 's'} of ${total} answered the two conditions.`;
-  }
-  return claim;
+  // The support sentence is a count, so a two-condition answer still says more
+  // than the names without reaching for an adjective (rung 6's discourse rule).
+  const matched = present.reduce((sum, group) => sum + group.names.length, 0);
+  const support = total ? ` ${matched} of ${total} projects match one of them.` : '';
+  return `${claim}${support}`;
 }
 
 /**
