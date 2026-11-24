@@ -39,7 +39,7 @@ export function createAssistantKnowledge({ posts }) {
     {
       id: 'projects.using',
       title: 'Which projects use a technology',
-      keywords: ['which projects use', 'built with', 'written in', 'uses', 'stack'],
+      keywords: ['which projects use', 'what uses', 'written in', 'uses', 'dependencies', 'powered by'],
       goal: 'projects_using(?P)',
       steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
       explain: ({ solutions, terms, mentions, observed }) => {
@@ -74,12 +74,13 @@ export function createAssistantKnowledge({ posts }) {
     {
       id: 'projects.list_titles',
       title: 'List the projects',
-      keywords: ['list projects', 'which projects', 'what has he built', 'project names', 'what did he build'],
+      keywords: ['list projects', 'project list', 'which projects', 'what has he built', 'what did he build', 'what has he shipped'],
       goal: 'project(?P, ?T)',
       steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
       // Both rules read the same tool, so the join rule must win whenever the
       // question names a technology: keep this one for plain "list" questions.
-      threshold: 2.4,
+      threshold: 1.1,
+      requiresSubject: false,
       explain: ({ solutions }) => `Read the project list: ${solutions.length} projects`,
       compose: ({ solutions }) => {
         if (solutions.length === 0) return '';
@@ -92,7 +93,7 @@ export function createAssistantKnowledge({ posts }) {
     {
       id: 'contact.email',
       title: 'His email address',
-      keywords: ['email', 'e-mail', 'mail him', 'reach him', 'contact him', 'write to him'],
+      keywords: ['what is his email', 'his email', 'email address', 'how do i email him', 'how do i reach him'],
       goal: 'email(?V)',
       compose: ({ bindings, observed }) =>
         bindings['?V'] ? `His email is ${bindings['?V']}.` : '',
@@ -102,7 +103,7 @@ export function createAssistantKnowledge({ posts }) {
     {
       id: 'contact.linkedin',
       title: 'His LinkedIn profile',
-      keywords: ['linkedin', 'his profile', 'social'],
+      keywords: ['his linkedin', 'what is his linkedin', 'linkedin profile'],
       goal: 'linkedin(?V)',
       compose: ({ bindings }) => (bindings['?V'] ? `His LinkedIn is ${bindings['?V']}.` : ''),
       explain: () => 'Read the LinkedIn link off this page',
@@ -110,7 +111,7 @@ export function createAssistantKnowledge({ posts }) {
     {
       id: 'posts.newest',
       title: 'The newest article',
-      keywords: ['newest post', 'latest article', 'last thing he wrote', 'how many posts'],
+      keywords: ['newest post', 'latest post', 'last thing he wrote'],
       goal: 'post_newest(?T)',
       steps: [
         {

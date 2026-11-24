@@ -125,7 +125,7 @@ export const siteCapabilities = [
     kind: 'action',
     title: 'Read the newest article',
     description: 'Opens the most recent post in the engineering log as a full page.',
-    keywords: ['newest', 'latest', 'read the last post', 'most recent article'],
+    keywords: ['newest', 'latest', 'read the newest article', 'read the last post', 'most recent article', 'newest article'],
     handler: async (_params, ctx) => {
       const newest = ctx.read('newestPost');
       if (!newest || !newest.slug) throw new Error('the post index has not loaded');
@@ -139,7 +139,7 @@ export const siteCapabilities = [
     title: 'Open the full archive',
     description:
       'Opens the archive page with every post, plus topic filters, search, and the publication calendar.',
-    keywords: ['archive', 'all posts', 'everything', 'older posts', 'browse writing'],
+    keywords: ['archive', 'all posts', 'see all posts', 'all the posts', 'every post', 'older posts', 'browse writing'],
     handler: async (_params, ctx) => {
       ctx.dispatch('blog:archive');
       return { opened: '/archive/' };
@@ -151,7 +151,7 @@ export const siteCapabilities = [
     title: 'Expand a project card',
     description:
       'Opens the engineering detail on one project card: the architecture, the trade-offs, and sometimes a diagram. Pick the project to open.',
-    keywords: ['expand', 'details', 'architecture', 'how it works', 'open card', 'more about'],
+    keywords: ['expand', 'expand card', 'engineering detail', 'architecture', 'how it works', 'more about'],
     route: '#projects',
     paramsSchema: {
       type: 'object',
@@ -186,7 +186,7 @@ export const siteCapabilities = [
     title: 'Show a project card',
     description:
       'Shows a card for one project with its summary, its stack, and buttons for the engineering detail and the live site. Use it when the visitor asks what a project is or wants to see it rather than read a list.',
-    keywords: ['show project', 'tell me about', 'card', 'preview', 'what is hobnob', 'what is readback'],
+    keywords: ['show project', 'card', 'preview', 'what is hobnob', 'what is readback', 'project card'],
     route: '#projects',
     paramsSchema: {
       type: 'object',
@@ -209,7 +209,7 @@ export const siteCapabilities = [
     title: 'Open a project link',
     description:
       'Opens the live site or the public source for one project in a new tab. The link is chosen from a fixed list, never typed by the model.',
-    keywords: ['open project', 'visit site', 'source code', 'github', 'open link'],
+    keywords: ['open project', 'visit site', 'the site', 'website', 'source code', 'github', 'repo', 'open link'],
     paramsSchema: {
       type: 'object',
       properties: {
@@ -265,7 +265,7 @@ export const siteCapabilities = [
     title: 'Profile summary',
     description:
       'Reads his current role, how many years he has been building software, where he is based, and the one line summary from the top of the page.',
-    keywords: ['who is sho', 'what does he do', 'current role', 'how long', 'where based', 'manager'],
+    keywords: ['who is sho', 'what does he do', 'current role', 'how long', 'how long has he been working', 'years of experience', 'where based', 'manager'],
     paramsSchema: { type: 'object', properties: {}, additionalProperties: false },
     handler: async () => {
       const role = plain(DATA.hero.role);
@@ -288,7 +288,7 @@ export const siteCapabilities = [
     kind: 'query',
     title: 'Log statistics',
     description: 'Reads how many posts are published and which one is the newest.',
-    keywords: ['how many posts', 'post count', 'latest article', 'updated when'],
+    keywords: ['how many posts', 'post count', 'posts published', 'updated when'],
     paramsSchema: { type: 'object', properties: {}, additionalProperties: false },
     handler: async (_params, ctx) => {
       const posts = ctx.read('postCount') || 0;
@@ -323,7 +323,7 @@ export const siteCapabilities = [
     id: 'knowledge.about',
     title: 'About Sho',
     description: 'Who Sho is and what he has worked on for twelve years.',
-    keywords: ['about', 'bio', 'background', 'who is', 'summary'],
+    keywords: ['about', 'bio', 'background', 'who is', 'who is he', 'tell me about him', 'about sho', 'summary'],
     knowledge:
       'Sho is a software engineer with twelve years of experience building web applications and platforms. ' +
       'He has worked across frontend, backend, and infrastructure, partnering with product and design teams to ship user-facing features.',

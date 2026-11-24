@@ -6,13 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "audit:routing": "node scripts/audit-routing.mjs",
     "preview": "vite preview"
   },
   "devDependencies": {
     "vite": "^6.0.0"
   },
   "dependencies": {
-    "client-agent": "https://github.com/shobyde/client-agent/releases/download/v0.5.6/client-agent-0.5.6.tgz",
+    "client-agent": "https://github.com/shobyde/client-agent/releases/download/v0.6.1/client-agent-0.6.1.tgz",
     "lenis": "^1.3.26",
     "three": "^0.170.0"
   }
