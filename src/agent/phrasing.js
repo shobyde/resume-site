@@ -278,6 +278,31 @@ function contrastSentence(query, matches, term, records) {
 }
 
 /**
+ * Two conditions, two declared technologies, and the answer is not one set.
+ * Naming every match under the first term claims they all have it ("3 projects
+ * name Python" was the bug), so the sentence is per term: who lists which.
+ * `both` is the intersection, and when it is empty the claim says so.
+ */
+export function phraseProjectsSplit(query, groups, { both = [], conjunction = true, total = 0, register = 'normal' } = {}) {
+  const present = groups.filter((group) => (group.names ?? []).length > 0);
+  if (present.length < 2) return '';
+  const terms = present.map((group) => String(group.term).trim());
+  const has = (group) => `${join(group.names)} ${group.names.length === 1 ? 'lists' : 'list'} ${String(group.term).trim()}`;
+  const overlap = !conjunction
+    ? ''
+    : both.length
+      ? `${join(both)} ${both.length === 1 ? 'lists' : 'list'} both ${join(terms)}.`
+      : `No project lists both ${join(terms)}.`;
+  const claim = `${overlap} ${present.map(has).join('; ')}.`.trim();
+  if (register === 'terse') return claim;
+  if (register === 'explanatory' && total) {
+    const matched = present.reduce((sum, group) => sum + group.names.length, 0);
+    return `${claim} ${matched} stack${matched === 1 ? '' : 's'} of ${total} answered the two conditions.`;
+  }
+  return claim;
+}
+
+/**
  * "Which projects use python and sqlite": the intersection, which is a
  * different set from the union the `or` form asks for. Names both when they
  * hold, and says which one is missing when they do not, because "no project

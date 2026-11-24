@@ -11,7 +11,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseModelOutput } from '@shobyde/boaz';
 import { createEngine, runCapability } from '../agent-setup.mjs';
-import { createSessionMemory, entitiesIn, resolvePointer } from '../../src/agent/sessionMemory.js';
+import { createSessionMemory, entitiesIn, exclusionAnswer, rememberSetAnswer, resolvePointer } from '../../src/agent/sessionMemory.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const baseline = process.argv.includes('--baseline');
@@ -29,6 +29,7 @@ async function turn(engine, ask) {
   let observations;
   let text = '';
   const calls = [];
+  const steps = [];
   let plannedBy;
   for (let step = 0; step < 3; step += 1) {
     const completion = await engine.complete({
@@ -36,6 +37,7 @@ async function turn(engine, ask) {
       tools: [],
       ...(observations ? { observations } : {}),
     });
+    steps.push(...(completion.steps ?? []));
     text = typeof completion.text === 'string' ? completion.text : String(completion.text ?? '');
     if (engine.memory?.planned?.ruleId) plannedBy = engine.memory.planned.ruleId;
     const parsed = parseModelOutput(text);
@@ -46,7 +48,7 @@ async function turn(engine, ask) {
     const result = await runCapability(id, args);
     observations = { ...(observations ?? {}), [id]: result };
   }
-  return { text, calls, plannedBy };
+  return { text, calls, plannedBy, steps };
 }
 
 const DECLINE = /(not sure about that|can only help with the screens|no project on this page|i can help with:)/i;
@@ -90,8 +92,17 @@ for (const thread of suite.threads) {
     // into and no rewrite. That is the control, not a weaker implementation.
     const active = baseline ? createEngine() : engine;
     const pointer = session ? resolvePointer(session, spec.ask) : { query: spec.ask, rewritten: false };
-    const result = await turn(active, pointer.query);
-    if (session) session.observe(spec.ask, { entities: entitiesIn(result.text) });
+    // The panel answers "why not both?" from the split the last set answer
+    // kept, without routing: mirror that here or the harness grades a panel
+    // that does not exist.
+    const exclusion = session ? exclusionAnswer(session, spec.ask) : null;
+    const result = exclusion
+      ? { text: exclusion.text, calls: [], plannedBy: null, steps: [] }
+      : await turn(active, pointer.query);
+    if (session) {
+      rememberSetAnswer(session, result.steps);
+      session.observe(spec.ask, { entities: entitiesIn(result.text) });
+    }
     const verdict = check({ ...spec, ...result }, spec.kind);
     turns.push({
       ask: spec.ask,

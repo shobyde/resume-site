@@ -15,6 +15,7 @@ import {
   phraseProjectStack,
   phraseProjectsUsing,
   phraseProjectsUsingAll,
+  phraseProjectsSplit,
   shortName,
 } from './phrasing.js';
 
@@ -55,6 +56,25 @@ const namedProjects = (query, records) => {
       (a, b) =>
         order.get(shortName(a.title).toLowerCase()) - order.get(shortName(b.title).toLowerCase()),
     );
+};
+
+/** The projects each resolved technology matched, in the order the engine bound them. */
+const groupByTerm = (solutions, records) => {
+  const groups = new Map();
+  for (const solution of solutions ?? []) {
+    const term = solution.bindings?.['?1_T'] ?? solution.bindings?.['?T'];
+    const slug = solution.bindings?.['?P'] ?? solution.bindings?.['?1_P'];
+    if (!term || !slug) continue;
+    const record = (records ?? []).find(
+      (project) => slugOf(project.title) === slug || shortName(project.title).toLowerCase() === slug,
+    );
+    const name = record ? shortName(record.title) : String(slug);
+    const key = String(term);
+    if (!groups.has(key)) groups.set(key, { term: key, names: [] });
+    const group = groups.get(key);
+    if (!group.names.includes(name)) group.names.push(name);
+  }
+  return [...groups.values()];
 };
 
 const stackWords = (value) =>
@@ -175,6 +195,18 @@ export function createAssistantKnowledge({ posts }) {
         if (combine?.op === 'all' && terms.length >= 2) {
           return `Read the project list and kept the projects that list both ${terms.join(' and ')}`;
         }
+        // Two conditions with no named pair: the answer splits the stacks by
+        // condition, so the trace counts each side instead of saying "or".
+        if (terms.length >= 2) {
+          const counts = new Map();
+          for (const solution of solutions) {
+            const bindings = solution.bindings ?? solution;
+            const term = bindings['?1_T'];
+            if (term) counts.set(term, (counts.get(term) ?? 0) + 1);
+          }
+          const sides = terms.map((term) => `${counts.get(term) ?? 0} on ${term}`);
+          return `Read the project list and checked each stack: ${sides.join(', ')}`;
+        }
         const tech = terms.join(' or ') || mentions[0] || 'that';
         if (solutions.length === 0) return `Read the project list: no stack lists ${tech}`;
         return `Read the project list and matched ${tech} against ${solutions.length} project${solutions.length === 1 ? '' : 's'}`;
@@ -205,9 +237,30 @@ export function createAssistantKnowledge({ posts }) {
         // "python and sqlite" is a different question from "python or sqlite":
         // the join over asked() is a union, so the intersection is computed
         // against the tool result the rule already holds.
-        if (combine?.op === 'all' && terms.length >= 2 && records.length > 0) {
+        const groups = groupByTerm(solutions, records);
+        // No project lists both terms. The union claim would name every match
+        // under the first term, which is false for the second: "which projects
+        // use python and have a web interface" answered "3 projects name
+        // Python", one of them there for Three.js.
+        const conjunction = combine ? combine.op === 'all' : terms.length >= 2 && /\band\b/i.test(query) && !/\bor\b|\bversus\b|\bvs\.?\b/i.test(query);
+        if (conjunction && terms.length >= 2 && records.length > 0) {
           const both = records.filter((project) => terms.every((term) => stackHas(project, term)) && !notWanted(project));
+          if (both.length === 0 && groups.length >= 2) {
+            return phraseProjectsSplit(query, groups, {
+              both: [],
+              total: records.length,
+              register: answerRegister(),
+            });
+          }
           return phraseProjectsUsingAll(query, both, terms, { records, register: answerRegister() });
+        }
+        if (groups.length > 1) {
+          return phraseProjectsSplit(query, groups, {
+            both: [],
+            conjunction: false,
+            total: records.length,
+            register: answerRegister(),
+          });
         }
         if (solutions.length === 0) {
           // The tool ran, so "no stack lists TypeScript" is a fact about the

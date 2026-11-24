@@ -28,7 +28,32 @@ export const SITE_SUBJECTS = [
 ];
 
 export function createSessionMemory(options = {}) {
-  return createWorkingMemory({ subjects: SITE_SUBJECTS, ...options });
+  const memory = createWorkingMemory({ subjects: SITE_SUBJECTS, ...options });
+  // What only the host knows about a turn: the split behind a set answer. The
+  // library record keeps entities and items; the reason a set was narrowed has
+  // no place in the engine, so it lives here, on the session that produced it.
+  let notes = [];
+  memory.note = (entry) => {
+    notes = [...notes.slice(-8), entry];
+    return entry;
+  };
+  memory.lastNote = () => notes[notes.length - 1] ?? null;
+  return memory;
+}
+
+/** The slug a project is bound by in an inference solution. */
+const slugOfTitle = (title) =>
+  String(title)
+    .split(':')[0]
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+/** "a, b and c" for the names a sentence lists. */
+function joinNames(names) {
+  const list = (names ?? []).filter(Boolean).map(String);
+  if (list.length <= 1) return list[0] ?? '';
+  return `${list.slice(0, -1).join(', ')} and ${list[list.length - 1]}`;
 }
 
 /** Project titles an answer names, so a turn is remembered by what it produced. */
@@ -182,6 +207,77 @@ export function resolvePointer(memory, query) {
     query: `what is ${subject}'s ${analysis.slots.attribute}?`,
     subject,
     rewritten: true,
+  };
+}
+
+/**
+ * The reason a set answer was narrowed, kept with the turn (rung 23).
+ *
+ * "Which projects use python and sqlite" is answered from two conditions, and
+ * "why not both?" is a question the engine cannot see: the page has no fact
+ * about why, only which project lists what. The note records the split (each
+ * condition and the projects that held it) at the turn it was computed, so the
+ * follow-up explains the exclusion instead of routing the words somewhere else.
+ */
+export function rememberSetAnswer(memory, steps) {
+  if (typeof memory?.note !== 'function') return null;
+  const inference = (steps ?? []).find(
+    (step) =>
+      step?.type === 'inference' &&
+      (step.solutions ?? []).some((solution) => (solution.bindings ?? solution)?.['?1_T']),
+  );
+  if (!inference) return null;
+  const bySlug = new Map(DATA.projects.map((project) => [slugOfTitle(project.title), shortTitle(project)]));
+  const groups = new Map();
+  for (const solution of inference.solutions ?? []) {
+    // A step event carries the bindings flat; a compose receives them under
+    // `bindings`. Accept both, so the note reads the same step either way.
+    const bindings = solution.bindings ?? solution;
+    const term = bindings['?1_T'];
+    const slug = bindings['?P'];
+    if (!term || !slug) continue;
+    const name = bySlug.get(slug);
+    if (!name) continue;
+    if (!groups.has(term)) groups.set(term, { term, names: [] });
+    const group = groups.get(term);
+    if (!group.names.includes(name)) group.names.push(name);
+  }
+  if (groups.size < 2) return null;
+  return memory.note({ groups: [...groups.values()], turn: memory.turns.length });
+}
+
+/** The answer to "why not both?", read from the split the last set answer kept. */
+export function exclusionAnswer(memory, question, register = 'normal') {
+  const note = typeof memory?.lastNote === 'function' ? memory.lastNote() : null;
+  if (!note || (note.groups ?? []).length < 2) return null;
+  // Only the turn right after the set answer: a "why not both" three turns
+  // later is about whatever came in between, and answering this would be a guess.
+  if (note.turn + 1 !== (memory.turns ?? []).length) return null;
+  if (!/^\s*why\s+(not|isn'?t|aren'?t|didn'?t|doesn'?t)\b/i.test(String(question ?? ''))) return null;
+
+  const groups = note.groups;
+  const terms = groups.map((group) => group.term);
+  const shared = groups[0].names.filter((name) => groups.every((group) => group.names.includes(name)));
+  const claim = shared.length
+    ? `${joinNames(shared)} ${shared.length === 1 ? 'is' : 'are'} the only ${shared.length === 1 ? 'one' : 'ones'} with both ${joinNames(terms)}.`
+    : `No project lists both ${joinNames(terms)}.`;
+  if (register === 'terse') {
+    return { text: claim, line: 'Read the two conditions of the last answer' };
+  }
+  // Each side says what it has and what it lacks: that is the exclusion, and it
+  // is read off the stacks rather than inferred from the sentence above.
+  const sides = groups
+    .map((group) => {
+      const only = group.names.filter((name) => !shared.includes(name));
+      if (only.length === 0) return '';
+      const missing = terms.filter((term) => term !== group.term);
+      return `${joinNames(only)} ${only.length === 1 ? 'lists' : 'list'} ${group.term} and ${only.length === 1 ? 'not' : 'neither lists'} ${missing.length === 1 ? missing[0] : joinNames(missing)}`;
+    })
+    .filter(Boolean);
+  const text = `${claim}${sides.length ? ` ${sides.join('; ')}.` : ''}`;
+  return {
+    text,
+    line: `Read the two conditions of the last answer and which project lists each`,
   };
 }
 

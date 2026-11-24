@@ -286,6 +286,30 @@
       ]
     },
     {
+      "id": "compound-both",
+      "title": "Two conditions with one answer, then the exclusion",
+      "turns": [
+        {
+          "ask": "which projects use python and sqlite?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "readback"
+            ]
+          }
+        },
+        {
+          "ask": "why not both?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "groundglass"
+            ]
+          }
+        }
+      ]
+    },
+    {
       "id": "compare",
       "title": "Compare, then pick",
       "turns": [

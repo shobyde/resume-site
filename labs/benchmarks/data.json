@@ -1,18 +1,18 @@
 {
-  "generated": "2026-11-24T22:41:03.072Z",
+  "generated": "2026-11-24T23:22:38.123Z",
   "library": "0.8.2",
   "threads": {
     "memory": {
-      "passed": 29,
-      "total": 30,
+      "passed": 32,
+      "total": 32,
       "kinds": {
         "knowledge": {
-          "passed": 11,
-          "total": 11
+          "passed": 12,
+          "total": 12
         },
         "context": {
-          "passed": 16,
-          "total": 17
+          "passed": 18,
+          "total": 18
         },
         "tool": {
           "passed": 2,
@@ -21,16 +21,16 @@
       }
     },
     "stateless": {
-      "passed": 21,
-      "total": 30,
+      "passed": 22,
+      "total": 32,
       "kinds": {
         "knowledge": {
-          "passed": 11,
-          "total": 11
+          "passed": 12,
+          "total": 12
         },
         "context": {
           "passed": 8,
-          "total": 17
+          "total": 18
         },
         "tool": {
           "passed": 2,
@@ -449,28 +449,60 @@
             "baseline": true,
             "rewritten": false,
             "routed": "which projects use python and have a web interface?",
-            "text": "Readback, Groundglass and shobyde.com: 3 projects name Python 3.10+. Those 3 stacks overlap on Python 3.10+ and nothing else. Boaz takes the other route: TypeScript and Datalog (rules).",
-            "baselineText": "Readback, Groundglass and shobyde.com: 3 projects name Python 3.10+. Those 3 stacks overlap on Python 3.10+ and nothing else. Boaz takes the other route: TypeScript and Datalog (rules).",
+            "text": "No project lists both Python 3.10+ and Three.js (WebGL). Readback and Groundglass list Python 3.10+; shobyde.com lists Three.js (WebGL).",
+            "baselineText": "No project lists both Python 3.10+ and Three.js (WebGL). Readback and Groundglass list Python 3.10+; shobyde.com lists Three.js (WebGL).",
             "calls": [
               "projects.list"
             ],
-            "flesch": 66,
+            "flesch": 84,
             "missing": []
           },
           {
             "ask": "why not both?",
             "kind": "context",
-            "pass": false,
+            "pass": true,
             "baseline": false,
             "rewritten": false,
             "routed": "why not both?",
-            "text": "Only his email and LinkedIn are published here. For a phone number or anything else, email him and he will send it.",
+            "text": "No project lists both Python 3.10+ and Three.js (WebGL). Readback and Groundglass list Python 3.10+ and neither lists Three.js (WebGL); shobyde.com lists Three.js (WebGL) and not Python 3.10+.",
             "baselineText": "Only his email and LinkedIn are published here. For a phone number or anything else, email him and he will send it.",
             "calls": [],
-            "flesch": 76,
-            "missing": [
-              "groundglass"
-            ]
+            "flesch": 89,
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "compound-both",
+        "title": "Two conditions with one answer, then the exclusion",
+        "turns": [
+          {
+            "ask": "which projects use python and sqlite?",
+            "kind": "knowledge",
+            "pass": true,
+            "baseline": true,
+            "rewritten": false,
+            "routed": "which projects use python and sqlite?",
+            "text": "Just Readback: it has Python 3.10+ and SQLite in its stack. The other 5 list different stacks.",
+            "baselineText": "Just Readback: it has Python 3.10+ and SQLite in its stack. The other 5 list different stacks.",
+            "calls": [
+              "projects.list"
+            ],
+            "flesch": 92,
+            "missing": []
+          },
+          {
+            "ask": "why not both?",
+            "kind": "context",
+            "pass": true,
+            "baseline": false,
+            "rewritten": false,
+            "routed": "why not both?",
+            "text": "Readback is the only one with both Python 3.10+ and SQLite. Groundglass lists Python 3.10+ and not SQLite.",
+            "baselineText": "Only his email and LinkedIn are published here. For a phone number or anything else, email him and he will send it.",
+            "calls": [],
+            "flesch": 94,
+            "missing": []
           }
         ]
       },
@@ -938,7 +970,7 @@
     }
   ],
   "kb": {
-    "generated": "2026-11-24T22:41:05.396Z",
+    "generated": "2026-11-24T23:22:52.472Z",
     "facts": 170,
     "documents": 170,
     "threads": 40,

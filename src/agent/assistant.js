@@ -31,7 +31,7 @@ import {
 import { describeTrace } from './trace.js';
 import { siteCapabilities } from './capabilities.js';
 import { siteSkills } from './skills.js';
-import { coverageAnswer, createSessionMemory, entitiesIn, isCoverageQuery, resolvePointer } from './sessionMemory.js';
+import { coverageAnswer, createSessionMemory, entitiesIn, exclusionAnswer, isCoverageQuery, rememberSetAnswer, resolvePointer } from './sessionMemory.js';
 import { renderA2UI } from './a2ui.js';
 import { DATA } from '../data.js';
 import { motionPrefs } from '../motionPrefs.js';
@@ -494,6 +494,13 @@ export function initAssistant({ posts = [] } = {}) {
       }
       const pointer = resolvePointer(session, register.cleaned || question);
       state.query = pointer.query;
+      // "Why not both?" after a two-condition answer is a question about the
+      // last turn, not about the page: the split it kept is what answers it.
+      const exclusion = exclusionAnswer(session, register.cleaned || question, register.register);
+      if (exclusion) {
+        addSkillAnswer(exclusion.text, [exclusion.line]);
+        return;
+      }
       // A skill is a shape the sentence names but does not spell out: it runs
       // its own steps, and a check can stop it before it pads. It claims the
       // sentence before planning, because its trigger is more specific than any
@@ -550,6 +557,9 @@ export function initAssistant({ posts = [] } = {}) {
       const sessionLine = register.cue ? null : preferenceLine(register.register);
       if (sessionLine) appendTrace(sessionLine);
       const result = await runtime.send(state.query);
+      // Remember why the answer set was narrowed before the turn is recorded,
+      // so "why not both?" can reply from this turn's own split.
+      rememberSetAnswer(session, result.steps);
       const streamed = live;
       // A host bug must not put JSON on screen: the visitor asked a question.
       const safeReply = /^\s*[[{]/.test(result.text)
