@@ -1,0 +1,1221 @@
+[
+  {
+    "name": "baseline",
+    "fidelity": 0.75,
+    "similarity": 0.5949024875154764,
+    "openers": 0.375,
+    "spread": 8.573214099741124,
+    "ttr": 0.9757158046631732,
+    "stable": 1,
+    "style": 1.608690837762592,
+    "offTopic": 0.875,
+    "ms": 24.150781,
+    "rows": [
+      {
+        "intent": "list_titles",
+        "answers": [
+          {
+            "question": "what has he built?",
+            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "action": false
+          },
+          {
+            "question": "list the projects",
+            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "action": false
+          },
+          {
+            "question": "what has he shipped?",
+            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "action": false
+          },
+          {
+            "question": "what did he make?",
+            "text": "I can only help with the screens and controls built into this app.",
+            "action": false
+          }
+        ],
+        "fidelity": 0.75,
+        "missing": [
+          "I can only help with the screens and controls built into this app."
+        ],
+        "similarity": 0.5170068027210883,
+        "stable": true,
+        "lengths": [
+          14,
+          14,
+          14,
+          13
+        ],
+        "ttr": 1,
+        "style": 1.5211180713743357,
+        "offTopic": 1
+      },
+      {
+        "intent": "using_python",
+        "answers": [
+          {
+            "question": "which projects use python?",
+            "text": "Readback and Groundglass use it.",
+            "action": false
+          },
+          {
+            "question": "what's built with python?",
+            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "action": false
+          },
+          {
+            "question": "any projects in python?",
+            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "action": false
+          },
+          {
+            "question": "does he have python projects?",
+            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.6060606060606061,
+        "stable": true,
+        "lengths": [
+          5,
+          14,
+          14,
+          14
+        ],
+        "ttr": 1,
+        "style": 1.6877847380410023,
+        "offTopic": 1
+      },
+      {
+        "intent": "posts_newest",
+        "answers": [
+          {
+            "question": "how many posts are there?",
+            "text": "58 posts are published, and the newest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "action": false
+          },
+          {
+            "question": "what's the newest post?",
+            "text": "I'm not sure about that. I can help with: Show the newest article card; Read the newest article; Log statistics.",
+            "action": false
+          },
+          {
+            "question": "how much has he written?",
+            "text": "I can only help with the screens and controls built into this app.",
+            "action": false
+          },
+          {
+            "question": "what's the latest article?",
+            "text": "I'm not sure about that. I can help with: Read the newest article; Show the newest article card.",
+            "action": false
+          }
+        ],
+        "fidelity": 0.25,
+        "missing": [
+          "I'm not sure about that. I can help with: Show the newest article card",
+          "I can only help with the screens and controls built into this app.",
+          "I'm not sure about that. I can help with: Read the newest article; Sho"
+        ],
+        "similarity": 0.2461424379796975,
+        "stable": true,
+        "lengths": [
+          20,
+          21,
+          13,
+          19
+        ],
+        "ttr": 0.899749373433584,
+        "style": 1.386958997722096,
+        "offTopic": 0.5
+      },
+      {
+        "intent": "email",
+        "answers": [
+          {
+            "question": "what is his email?",
+            "text": "His email is shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "how do i email him?",
+            "text": "His email is shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "his email address?",
+            "text": "His email is shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "can i get his email?",
+            "text": "His email is shobyde@gmail.com.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 1,
+        "stable": true,
+        "lengths": [
+          4,
+          4,
+          4,
+          4
+        ],
+        "ttr": 1,
+        "style": 1.9466590736522398,
+        "offTopic": 1
+      },
+      {
+        "intent": "linkedin",
+        "answers": [
+          {
+            "question": "his linkedin?",
+            "text": "His LinkedIn is www.linkedin.com/in/sho-byde-556954138.",
+            "action": false
+          },
+          {
+            "question": "what's his linkedin?",
+            "text": "His LinkedIn is www.linkedin.com/in/sho-byde-556954138.",
+            "action": false
+          },
+          {
+            "question": "where can i find him on linkedin?",
+            "text": "His LinkedIn is www.linkedin.com/in/sho-byde-556954138.",
+            "action": false
+          },
+          {
+            "question": "linkedin profile?",
+            "text": "His LinkedIn is www.linkedin.com/in/sho-byde-556954138.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 1,
+        "stable": true,
+        "lengths": [
+          4,
+          4,
+          4,
+          4
+        ],
+        "ttr": 1,
+        "style": 1.9466590736522398,
+        "offTopic": 1
+      },
+      {
+        "intent": "summary",
+        "answers": [
+          {
+            "question": "who is sho?",
+            "text": "Sho is a software engineer with twelve years of experience building web applications and platforms. He has worked across frontend, backend, and infrastructure, partnering with product and design teams to ship user-facing features.",
+            "action": false
+          },
+          {
+            "question": "what does he do?",
+            "text": "I can only help with the screens and controls built into this app.",
+            "action": false
+          },
+          {
+            "question": "what's his background?",
+            "text": "[action: site.about]",
+            "action": true
+          },
+          {
+            "question": "tell me about him",
+            "text": "Sho is a software engineer with twelve years of experience building web applications and platforms. He has worked across frontend, backend, and infrastructure, partnering with product and design teams to ship user-facing features.",
+            "action": false
+          }
+        ],
+        "fidelity": 0.5,
+        "missing": [
+          "I can only help with the screens and controls built into this app.",
+          "[action: site.about]"
+        ],
+        "similarity": 0.2002050783314658,
+        "stable": true,
+        "lengths": [
+          33,
+          13,
+          2,
+          33
+        ],
+        "ttr": 0.9545454545454546,
+        "style": 1.162965072133637,
+        "offTopic": 0.75
+      }
+    ]
+  },
+  {
+    "name": "A pools",
+    "fidelity": 1,
+    "similarity": 0.5195429335414198,
+    "openers": 0.7916666666666666,
+    "spread": 5.211998710241164,
+    "ttr": 0.9899288662833555,
+    "stable": 1,
+    "style": 1.9104419767147556,
+    "offTopic": 0.7083333333333334,
+    "ms": 2.024529,
+    "rows": [
+      {
+        "intent": "list_titles",
+        "answers": [
+          {
+            "question": "what has he built?",
+            "text": "Hobnob, Readback, Groundglass, shobyde.com and C++. That is the whole public set.",
+            "action": false
+          },
+          {
+            "question": "list the projects",
+            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "action": false
+          },
+          {
+            "question": "what has he shipped?",
+            "text": "Hobnob, Readback, Groundglass, shobyde.com and C++. That is the whole public set.",
+            "action": false
+          },
+          {
+            "question": "what did he make?",
+            "text": "Cutting to it — Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.5701465873452665,
+        "stable": true,
+        "lengths": [
+          12,
+          11,
+          12,
+          9
+        ],
+        "ttr": 1,
+        "style": 1.9800208807896735,
+        "offTopic": 1
+      },
+      {
+        "intent": "using_python",
+        "answers": [
+          {
+            "question": "which projects use python?",
+            "text": "Python shows up in Readback and Groundglass.",
+            "action": false
+          },
+          {
+            "question": "what's built with python?",
+            "text": "Readback and Groundglass both run it.",
+            "action": false
+          },
+          {
+            "question": "any projects in python?",
+            "text": "Readback and Groundglass both run it.",
+            "action": false
+          },
+          {
+            "question": "does he have python projects?",
+            "text": "Readback and Groundglass: both list Python 3.10+.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.5744550054381236,
+        "stable": true,
+        "lengths": [
+          7,
+          6,
+          6,
+          7
+        ],
+        "ttr": 1,
+        "style": 1.7383257403189067,
+        "offTopic": 0.75
+      },
+      {
+        "intent": "posts_newest",
+        "answers": [
+          {
+            "question": "how many posts are there?",
+            "text": "\"LangChain's Frontend SDK Hands You State, Not a Chat Widget\" — number 58, if you are counting.",
+            "action": false
+          },
+          {
+            "question": "what's the newest post?",
+            "text": "\"LangChain's Frontend SDK Hands You State, Not a Chat Widget\" — number 58, if you are counting.",
+            "action": false
+          },
+          {
+            "question": "how much has he written?",
+            "text": "That is 58 entries; the latest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "action": false
+          },
+          {
+            "question": "what's the latest article?",
+            "text": "The log has 58 posts, ending with \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.6183864117454726,
+        "stable": true,
+        "lengths": [
+          17,
+          17,
+          19,
+          19
+        ],
+        "ttr": 0.9574303405572755,
+        "style": 1.7736332574031892,
+        "offTopic": 1
+      },
+      {
+        "intent": "email",
+        "answers": [
+          {
+            "question": "what is his email?",
+            "text": "Best address: shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "how do i email him?",
+            "text": "That would be shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "his email address?",
+            "text": "He answers at shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "can i get his email?",
+            "text": "shobyde@gmail.com works.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.39004224941724946,
+        "stable": true,
+        "lengths": [
+          3,
+          4,
+          4,
+          2
+        ],
+        "ttr": 1,
+        "style": 2.00915907365224,
+        "offTopic": 0.75
+      },
+      {
+        "intent": "linkedin",
+        "answers": [
+          {
+            "question": "his linkedin?",
+            "text": "https://www.linkedin.com/in/sho-byde-556954138/ — that is the profile.",
+            "action": false
+          },
+          {
+            "question": "what's his linkedin?",
+            "text": "https://www.linkedin.com/in/sho-byde-556954138/.",
+            "action": false
+          },
+          {
+            "question": "where can i find him on linkedin?",
+            "text": "https://www.linkedin.com/in/sho-byde-556954138/ — that is the profile.",
+            "action": false
+          },
+          {
+            "question": "linkedin profile?",
+            "text": "He is on LinkedIn at https://www.linkedin.com/in/sho-byde-556954138/.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.6924242424242424,
+        "stable": true,
+        "lengths": [
+          6,
+          2,
+          6,
+          7
+        ],
+        "ttr": 1,
+        "style": 2.377325360668185,
+        "offTopic": 0
+      },
+      {
+        "intent": "summary",
+        "answers": [
+          {
+            "question": "who is sho?",
+            "text": "Engineering manager and individual contributor, 12+ years in software — APIs, cloud systems, client-facing apps.",
+            "action": false
+          },
+          {
+            "question": "what does he do?",
+            "text": "An engineering manager who still ships, 12+ years in.",
+            "action": false
+          },
+          {
+            "question": "what's his background?",
+            "text": "He manages engineers and writes code: 12+ years across APIs, cloud, and client-facing applications.",
+            "action": false
+          },
+          {
+            "question": "tell me about him",
+            "text": "12+ years in software, now managing and still building: APIs, cloud systems, front ends.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.2718031048781644,
+        "stable": true,
+        "lengths": [
+          14,
+          9,
+          14,
+          14
+        ],
+        "ttr": 0.9821428571428572,
+        "style": 1.58418754745634,
+        "offTopic": 0.75
+      }
+    ]
+  },
+  {
+    "name": "B grammar",
+    "fidelity": 1,
+    "similarity": 0.5513666535484252,
+    "openers": 0.5833333333333334,
+    "spread": 6.940220937885671,
+    "ttr": 0.9862914862914863,
+    "stable": 1,
+    "style": 1.7316225322703112,
+    "offTopic": 0.7083333333333334,
+    "ms": 2.1088,
+    "rows": [
+      {
+        "intent": "list_titles",
+        "answers": [
+          {
+            "question": "what has he built?",
+            "text": "Everything public, in one line: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "action": false
+          },
+          {
+            "question": "list the projects",
+            "text": "5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++. Hobnob is the largest of them: a meeting recorder that never leaves the machine.",
+            "action": false
+          },
+          {
+            "question": "what has he shipped?",
+            "text": "He has shipped five: Hobnob, Readback, Groundglass, shobyde.com and C++. Hobnob is the largest of them: a meeting recorder that never leaves the machine.",
+            "action": false
+          },
+          {
+            "question": "what did he make?",
+            "text": "He has shipped five: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.47895380443795754,
+        "stable": true,
+        "lengths": [
+          11,
+          22,
+          24,
+          10
+        ],
+        "ttr": 0.9564393939393939,
+        "style": 1.6292710706150344,
+        "offTopic": 1
+      },
+      {
+        "intent": "using_python",
+        "answers": [
+          {
+            "question": "which projects use python?",
+            "text": "Readback and Groundglass — 2 projects on Python.",
+            "action": false
+          },
+          {
+            "question": "what's built with python?",
+            "text": "Readback and Groundglass — 2 projects on Python. Both keep the dependency explicit in their stack.",
+            "action": false
+          },
+          {
+            "question": "any projects in python?",
+            "text": "Readback and Groundglass name Python 3.10+ in their stack.",
+            "action": false
+          },
+          {
+            "question": "does he have python projects?",
+            "text": "Readback and Groundglass — 2 projects on Python. Both keep the dependency explicit in their stack.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.540266644306557,
+        "stable": true,
+        "lengths": [
+          7,
+          15,
+          9,
+          15
+        ],
+        "ttr": 1,
+        "style": 2.0822418375094913,
+        "offTopic": 0.25
+      },
+      {
+        "intent": "posts_newest",
+        "answers": [
+          {
+            "question": "how many posts are there?",
+            "text": "58 posts; the newest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "action": false
+          },
+          {
+            "question": "what's the newest post?",
+            "text": "\"LangChain's Frontend SDK Hands You State, Not a Chat Widget\" — number 58, most recent first.",
+            "action": false
+          },
+          {
+            "question": "how much has he written?",
+            "text": "\"LangChain's Frontend SDK Hands You State, Not a Chat Widget\" — number 58, most recent first.",
+            "action": false
+          },
+          {
+            "question": "what's the latest article?",
+            "text": "58 posts; the newest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.7058823529411765,
+        "stable": true,
+        "lengths": [
+          17,
+          16,
+          16,
+          17
+        ],
+        "ttr": 1,
+        "style": 1.7736332574031892,
+        "offTopic": 1
+      },
+      {
+        "intent": "email",
+        "answers": [
+          {
+            "question": "what is his email?",
+            "text": "shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "how do i email him?",
+            "text": "shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "his email address?",
+            "text": "shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "can i get his email?",
+            "text": "shobyde@gmail.com, and he answers it. Mail is the fastest route; LinkedIn works too.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.591549295774648,
+        "stable": true,
+        "lengths": [
+          1,
+          1,
+          1,
+          13
+        ],
+        "ttr": 1,
+        "style": 2.0195757403189063,
+        "offTopic": 1
+      },
+      {
+        "intent": "linkedin",
+        "answers": [
+          {
+            "question": "his linkedin?",
+            "text": "https://www.linkedin.com/in/sho-byde-556954138/. He does not keep a second profile.",
+            "action": false
+          },
+          {
+            "question": "what's his linkedin?",
+            "text": "https://www.linkedin.com/in/sho-byde-556954138/.",
+            "action": false
+          },
+          {
+            "question": "where can i find him on linkedin?",
+            "text": "https://www.linkedin.com/in/sho-byde-556954138/. He does not keep a second profile.",
+            "action": false
+          },
+          {
+            "question": "linkedin profile?",
+            "text": "https://www.linkedin.com/in/sho-byde-556954138/ — the one he keeps current. He does not keep a second profile.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.6603743582754077,
+        "stable": true,
+        "lengths": [
+          9,
+          2,
+          9,
+          14
+        ],
+        "ttr": 0.9821428571428572,
+        "style": 2.068242217160212,
+        "offTopic": 0
+      },
+      {
+        "intent": "summary",
+        "answers": [
+          {
+            "question": "who is sho?",
+            "text": "Engineering manager and individual contributor, 12+ years in software. Most of that has been client-facing work, plus a year teaching CS before work hours.",
+            "action": false
+          },
+          {
+            "question": "what does he do?",
+            "text": "An engineering manager who still ships, 12+ years across APIs and cloud systems.",
+            "action": false
+          },
+          {
+            "question": "what's his background?",
+            "text": "Engineering manager and individual contributor, 12+ years in software. Most of that has been client-facing work, plus a year teaching CS before work hours.",
+            "action": false
+          },
+          {
+            "question": "tell me about him",
+            "text": "12+ years in software, now managing and still writing code.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.33117346555480426,
+        "stable": true,
+        "lengths": [
+          24,
+          13,
+          24,
+          10
+        ],
+        "ttr": 0.9791666666666667,
+        "style": 0.816771070615034,
+        "offTopic": 1
+      }
+    ]
+  },
+  {
+    "name": "C voice",
+    "fidelity": 1,
+    "similarity": 0.36846920529199734,
+    "openers": 0.5833333333333334,
+    "spread": 5.441449714919729,
+    "ttr": 0.9917328487459057,
+    "stable": 1,
+    "style": 1.5972696785623892,
+    "offTopic": 0.16666666666666666,
+    "ms": 1.788905,
+    "rows": [
+      {
+        "intent": "list_titles",
+        "answers": [
+          {
+            "question": "what has he built?",
+            "text": "Multi-tab coordination rounds it out: Hobnob, Readback, Groundglass, shobyde.com and C++ — 5 projects, all of it public.",
+            "action": false
+          },
+          {
+            "question": "list the projects",
+            "text": "Introduction to the site Tag: Hobnob, Readback, Groundglass, shobyde.com and C++ — 5 projects, all of it public.",
+            "action": false
+          },
+          {
+            "question": "what has he shipped?",
+            "text": "On-Device Meeting Notes: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "action": false
+          },
+          {
+            "question": "what did he make?",
+            "text": "First, model memory: Hobnob, Readback, Groundglass, shobyde.com and C++ — 5 projects, all of it public.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.4783762988601909,
+        "stable": true,
+        "lengths": [
+          17,
+          17,
+          9,
+          15
+        ],
+        "ttr": 0.9852941176470589,
+        "style": 2.7648538344722855,
+        "offTopic": 0
+      },
+      {
+        "intent": "using_python",
+        "answers": [
+          {
+            "question": "which projects use python?",
+            "text": "The synthesis: Readback and Groundglass.",
+            "action": false
+          },
+          {
+            "question": "what's built with python?",
+            "text": "The metric that matters becomes: Readback and Groundglass.",
+            "action": false
+          },
+          {
+            "question": "any projects in python?",
+            "text": "One caution the survey underplays: Readback and Groundglass, both of them.",
+            "action": false
+          },
+          {
+            "question": "does he have python projects?",
+            "text": "Multi-tab coordination rounds it out: Readback and Groundglass — the 2 projects that name Python 3.10+.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.30715315345399496,
+        "stable": true,
+        "lengths": [
+          5,
+          8,
+          11,
+          15
+        ],
+        "ttr": 1,
+        "style": 1.5722285497342445,
+        "offTopic": 0.25
+      },
+      {
+        "intent": "posts_newest",
+        "answers": [
+          {
+            "question": "how many posts are there?",
+            "text": "The unsolved layer is controls: 58 of them; the newest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "action": false
+          },
+          {
+            "question": "what's the newest post?",
+            "text": "The broader lesson: \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\", one of 58.",
+            "action": false
+          },
+          {
+            "question": "how much has he written?",
+            "text": "This Week in Agents: 58 posts, the most recent being \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "action": false
+          },
+          {
+            "question": "what's the latest article?",
+            "text": "That is a real boundary: \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\", one of 58.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.49908708006300045,
+        "stable": true,
+        "lengths": [
+          23,
+          17,
+          22,
+          19
+        ],
+        "ttr": 0.9651029748283753,
+        "style": 1.2987376613515567,
+        "offTopic": 0.25
+      },
+      {
+        "intent": "email",
+        "answers": [
+          {
+            "question": "what is his email?",
+            "text": "The unsolved layer is controls: shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "how do i email him?",
+            "text": "It is the native-first constraint: shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "his email address?",
+            "text": "First, model memory: shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "can i get his email?",
+            "text": "The broader lesson: shobyde@gmail.com, and he answers it.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.24257280354054547,
+        "stable": true,
+        "lengths": [
+          6,
+          6,
+          4,
+          8
+        ],
+        "ttr": 1,
+        "style": 1.5379650721336369,
+        "offTopic": 0.25
+      },
+      {
+        "intent": "linkedin",
+        "answers": [
+          {
+            "question": "his linkedin?",
+            "text": "The unsolved layer is controls: https://www.linkedin.com/in/sho-byde-556954138/.",
+            "action": false
+          },
+          {
+            "question": "what's his linkedin?",
+            "text": "Introduction to the site Tag: https://www.linkedin.com/in/sho-byde-556954138/.",
+            "action": false
+          },
+          {
+            "question": "where can i find him on linkedin?",
+            "text": "First, model memory: https://www.linkedin.com/in/sho-byde-556954138/.",
+            "action": false
+          },
+          {
+            "question": "linkedin profile?",
+            "text": "Multi-tab coordination rounds it out: https://www.linkedin.com/in/sho-byde-556954138/ — the only one he keeps current.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.3824942893345454,
+        "stable": true,
+        "lengths": [
+          7,
+          7,
+          5,
+          13
+        ],
+        "ttr": 1,
+        "style": 1.801395216400911,
+        "offTopic": 0
+      },
+      {
+        "intent": "summary",
+        "answers": [
+          {
+            "question": "who is sho?",
+            "text": "It is the native-first constraint: 12+ years in software, now managing and still shipping.",
+            "action": false
+          },
+          {
+            "question": "what does he do?",
+            "text": "A static publishing loop: an engineering manager who still writes code, 12+ years in.",
+            "action": false
+          },
+          {
+            "question": "what's his background?",
+            "text": "Introduction to the site Tag: 12+ years in software, now managing and still shipping.",
+            "action": false
+          },
+          {
+            "question": "tell me about him",
+            "text": "What gets stored is metadata: an engineering manager who still writes code, 12+ years in.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.30113160649970694,
+        "stable": true,
+        "lengths": [
+          14,
+          14,
+          14,
+          15
+        ],
+        "ttr": 1,
+        "style": 0.6084377372817007,
+        "offTopic": 0.25
+      }
+    ]
+  },
+  {
+    "name": "D hybrid",
+    "fidelity": 1,
+    "similarity": 0.48740376878230146,
+    "openers": 0.7083333333333334,
+    "spread": 6.563657305361259,
+    "ttr": 0.9796149519604896,
+    "stable": 1,
+    "style": 1.748983643381422,
+    "offTopic": 0.6666666666666666,
+    "ms": 1.633468,
+    "rows": [
+      {
+        "intent": "list_titles",
+        "answers": [
+          {
+            "question": "what has he built?",
+            "text": "Everything he has shipped is public: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "action": false
+          },
+          {
+            "question": "list the projects",
+            "text": "5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++. Hobnob is the largest of them: a meeting recorder that never leaves the machine.",
+            "action": false
+          },
+          {
+            "question": "what has he shipped?",
+            "text": "5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "action": false
+          },
+          {
+            "question": "what did he make?",
+            "text": "5 in total — Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.46847699583620717,
+        "stable": true,
+        "lengths": [
+          12,
+          22,
+          8,
+          9
+        ],
+        "ttr": 0.9772727272727273,
+        "style": 2.000854214123007,
+        "offTopic": 1
+      },
+      {
+        "intent": "using_python",
+        "answers": [
+          {
+            "question": "which projects use python?",
+            "text": "Python shows up in Readback and Groundglass; nothing else claims it. Both keep the dependency explicit in their stack.",
+            "action": false
+          },
+          {
+            "question": "what's built with python?",
+            "text": "Readback and Groundglass — 2 projects on Python. Both keep the dependency explicit in their stack.",
+            "action": false
+          },
+          {
+            "question": "any projects in python?",
+            "text": "Readback and Groundglass both list Python 3.10+.",
+            "action": false
+          },
+          {
+            "question": "does he have python projects?",
+            "text": "2 projects use Python: Readback and Groundglass. Both keep the dependency explicit in their stack.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.502388660334348,
+        "stable": true,
+        "lengths": [
+          19,
+          15,
+          7,
+          15
+        ],
+        "ttr": 0.9868421052631579,
+        "style": 1.7349088838268794,
+        "offTopic": 0.75
+      },
+      {
+        "intent": "posts_newest",
+        "answers": [
+          {
+            "question": "how many posts are there?",
+            "text": "58 of them, ending with \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\". Roughly one a day since the log started.",
+            "action": false
+          },
+          {
+            "question": "what's the newest post?",
+            "text": "\"LangChain's Frontend SDK Hands You State, Not a Chat Widget\" is the latest; 58 in all.",
+            "action": false
+          },
+          {
+            "question": "how much has he written?",
+            "text": "That is 58 entries, most recently \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "action": false
+          },
+          {
+            "question": "what's the latest article?",
+            "text": "58 of them, ending with \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\". Roughly one a day since the log started.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.5801815021424529,
+        "stable": true,
+        "lengths": [
+          25,
+          17,
+          18,
+          25
+        ],
+        "ttr": 0.98,
+        "style": 1.051300303720577,
+        "offTopic": 1
+      },
+      {
+        "intent": "email",
+        "answers": [
+          {
+            "question": "what is his email?",
+            "text": "One address: shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "how do i email him?",
+            "text": "Mail goes to shobyde@gmail.com. Mail is the fastest route.",
+            "action": false
+          },
+          {
+            "question": "his email address?",
+            "text": "Mail goes to shobyde@gmail.com. Mail is the fastest route.",
+            "action": false
+          },
+          {
+            "question": "can i get his email?",
+            "text": "shobyde@gmail.com — and he answers it.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.3850058412607587,
+        "stable": true,
+        "lengths": [
+          3,
+          9,
+          9,
+          5
+        ],
+        "ttr": 0.9444444444444444,
+        "style": 2.151575550493546,
+        "offTopic": 0.75
+      },
+      {
+        "intent": "linkedin",
+        "answers": [
+          {
+            "question": "his linkedin?",
+            "text": "https://www.linkedin.com/in/sho-byde-556954138/. He does not keep a second profile.",
+            "action": false
+          },
+          {
+            "question": "what's his linkedin?",
+            "text": "https://www.linkedin.com/in/sho-byde-556954138/.",
+            "action": false
+          },
+          {
+            "question": "where can i find him on linkedin?",
+            "text": "https://www.linkedin.com/in/sho-byde-556954138/. He does not keep a second profile.",
+            "action": false
+          },
+          {
+            "question": "linkedin profile?",
+            "text": "https://www.linkedin.com/in/sho-byde-556954138/ — the one he keeps current.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.5952382335963801,
+        "stable": true,
+        "lengths": [
+          9,
+          2,
+          9,
+          7
+        ],
+        "ttr": 1,
+        "style": 2.193242217160212,
+        "offTopic": 0
+      },
+      {
+        "intent": "summary",
+        "answers": [
+          {
+            "question": "who is sho?",
+            "text": "Engineering manager and individual contributor, 12+ years in software.",
+            "action": false
+          },
+          {
+            "question": "what does he do?",
+            "text": "He manages engineers and writes code — 12+ years, mostly client-facing work.",
+            "action": false
+          },
+          {
+            "question": "what's his background?",
+            "text": "Engineering manager and individual contributor, 12+ years in software. A year of that was teaching CS at a high school, before work hours.",
+            "action": false
+          },
+          {
+            "question": "tell me about him",
+            "text": "He manages engineers and writes code — 12+ years, mostly client-facing work.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.3931313795236622,
+        "stable": true,
+        "lengths": [
+          9,
+          11,
+          23,
+          11
+        ],
+        "ttr": 0.9891304347826086,
+        "style": 1.3620206909643127,
+        "offTopic": 0.5
+      }
+    ]
+  }
+]
