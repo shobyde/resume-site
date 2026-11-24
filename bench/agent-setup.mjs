@@ -1,8 +1,8 @@
-// The site's engine, for `client-agent audit` and `client-agent bench`.
+// The site's engine, for `boaz audit` and `boaz bench`.
 // Nothing here is a reimplementation: it wires the real manifest, the real
 // knowledge and the same page scan the panel uses.
 import fs from 'node:fs';
-import { createRulesEngine } from 'client-agent/rules';
+import { createRulesEngine } from 'boaz/rules';
 import { createAssistantKnowledge } from '../src/agent/knowledge.js';
 import { DATA } from '../src/data.js';
 

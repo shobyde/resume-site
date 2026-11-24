@@ -1,14 +1,14 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
-import { clientAgent } from 'client-agent/vite';
+import { boaz } from 'boaz/vite';
 
 export default defineConfig({
   base: '/',
   server: { watch: { usePolling: true, interval: 300 } },
   plugins: [
     // Reads defineCapability() declarations with the TypeScript AST and emits
-    // agent-manifest.json, served here as the client-agent:manifest module.
-    clientAgent({ include: ['src/**/*.js'], fileName: 'agent-manifest.json' }),
+    // agent-manifest.json, served here as the boaz:manifest module.
+    boaz({ include: ['src/**/*.js'], fileName: 'agent-manifest.json' }),
   ],
   build: {
     outDir: 'dist',
@@ -16,9 +16,9 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        // The client-agent page runs the engine live, so it is a Vite entry
+        // The boaz page runs the engine live, so it is a Vite entry
         // rather than a static file in public/.
-        clientAgent: resolve(__dirname, 'client-agent/index.html'),
+        boaz: resolve(__dirname, 'boaz/index.html'),
         // Labs: the probe generator runs the pure generator from the published
         // package in the browser, so it needs the same treatment.
         'probe-gen': resolve(__dirname, 'labs/probe-gen/index.html'),

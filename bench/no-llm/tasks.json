@@ -5,7 +5,7 @@
     "Hobnob",
     "Readback",
     "Groundglass",
-    "client-agent",
+    "boaz",
     "Python 3.10+",
     "SQLite",
     "TypeScript",
@@ -25,7 +25,7 @@
     { "q": "who should I contact about the assistant", "expect": { "type": "who" } },
 
     { "q": "what has he built", "expect": { "type": "what" } },
-    { "q": "what does the client-agent library do", "expect": { "type": "what" } },
+    { "q": "what does the boaz library do", "expect": { "type": "what" } },
     { "q": "what is groundglass", "expect": { "type": "what", "entities": ["Groundglass"] } },
     {
       "q": "what technologies does Readback use",
@@ -71,8 +71,8 @@
       "expect": { "type": "compare", "entities": ["Hobnob", "Readback"] }
     },
     {
-      "q": "what's the difference between Groundglass and client-agent",
-      "expect": { "type": "compare", "entities": ["Groundglass", "client-agent"] }
+      "q": "what's the difference between Groundglass and boaz",
+      "expect": { "type": "compare", "entities": ["Groundglass", "boaz"] }
     },
     { "q": "how does Readback compare with Hobnob", "expect": { "type": "compare" } },
     { "q": "Readback vs Hobnob, which is bigger", "expect": { "type": "compare" } },

@@ -7,7 +7,7 @@
  *              first wh-word, special-case "how many", look for compare/vs. For
  *              negation: any subject word that follows a negation word anywhere
  *              in the sentence, with no scope and no effect on the entities.
- *   library  — analyzeQuestion() from client-agent.
+ *   library  — analyzeQuestion() from boaz.
  *
  * A task passes only when the type matches (where asserted), every declared
  * entity is present, the exclusion set matches exactly, and no excluded subject
@@ -102,7 +102,7 @@ function argValue(flag) {
 }
 
 async function main() {
-  const { analyzeQuestion } = await import('client-agent');
+  const { analyzeQuestion } = await import('boaz');
   const suitePath = argValue('--suite') ?? 'tasks.json';
   const suite = JSON.parse(await readFile(path.resolve(here, suitePath), 'utf8'));
   const subjects = suite.subjects ?? [];

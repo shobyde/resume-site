@@ -87,6 +87,27 @@ export const DATA = {
       },
     },
     {
+      meta: ['PERSONAL PROJECT', 'OPEN SOURCE · MIT'],
+      title: 'Boaz: an in-browser assistant with no model',
+      summary: `Most "AI in your app" features ship weights: a download, a GPU requirement, and answers nobody can check. I built <strong>Boaz</strong> to take the other position. The app declares its capabilities and its facts at build time, the library retrieves and joins them, and every sentence it composes can be traced back to the rows that produced it. It runs this site's own assistant. No model, no API key, nothing leaving the page.`,
+      contribution: 'Sole engineer: the capability contract and the build-time manifest extractor, the BM25 retrieval and Datalog rules engines, the tool loop with schema validation and confirmation gates, the audit and bench harnesses, the Vite and React bindings, the documentation, and the site integration it runs on.',
+      stack: ['TypeScript', 'Vite', 'Datalog (rules)', 'BM25 retrieval', 'A2UI surfaces'],
+      links: [
+        { label: 'Read the product page', url: '/boaz/' },
+        { label: 'Source & releases', url: 'https://github.com/shobyde/boaz' },
+      ],
+      details: {
+        architecture: 'A Vite plugin scans defineCapability() and defineKnowledge() declarations with the TypeScript AST and emits one JSON manifest, which the runtime treats as the closed list of what exists. A question is ranked against that manifest with BM25, then either answered by a declared rule (a small Datalog subset: joins, scoped assumptions, a depth cap, and asked() terms injected from the question) or handed to a keyword engine that navigates and calls actions. Rules can declare tool steps, so a question about live data runs the app\'s own capability and turns the structured result into facts for that turn. Replies stream as deltas on the same event channel as tool steps, and an answer carries the goal, the terms it matched and the rule it applied. The app never hands the library a DOM dump, and the library never generates code: it matches a parsed id against the manifest and calls the handler registered for it.',
+        decisions: [
+          'No bundled model. Earlier versions shipped WebLLM and Chrome\'s Prompt API; both are gone. A multi-hundred-megabyte download and a GPU requirement are three good reasons for a visitor not to get an answer, and none of them buy a reply that can be checked.',
+          'The build is the source of truth. Capabilities live beside the feature that owns them and are extracted statically, so the manifest cannot drift from the app, and a feature without a declaration is invisible to the assistant by construction.',
+          'Safety is structural, not prompted: ids must exist in the manifest, arguments are validated against the JSON Schema with one corrective retry, mutating actions pass a confirmation gate, and a turn is capped at three sequential calls.',
+          'The harnesses ship with the package. audit asks every probe and reports the engine\'s own decision (the rule that planned a call, the capability that ran, the paragraph quoted) and exits 1 on a miss; bench scores the composed copy for fidelity, paraphrase spread, opener variety and stability.',
+          'When the facts run out it reads the page it already has, and names what it found. It answers "which projects use TypeScript" with the project that does, and "no project stack lists Cobol" rather than inventing a sentence.',
+        ],
+      },
+    },
+    {
       meta: ['PERSONAL PROJECT', 'LIVE'],
       title: 'shobyde.com: resume + daily engineering log',
       summary: `A personal site that publishes like a newsroom: I wanted a résumé that stays alive instead of rotting, so I built an <strong>LLM-assisted publishing loop</strong>. Automated agents draft daily entries and site updates; I review, curate, and merge every change.`,

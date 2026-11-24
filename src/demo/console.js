@@ -1,11 +1,11 @@
 /**
- * The live console on /client-agent/: the same knowledge, rules and capabilities
+ * The live console on /boaz/: the same knowledge, rules and capabilities
  * the site's assistant uses, wired to this page's own text so a reader can try
  * the engine without opening the panel.
  */
-import manifest from 'client-agent:manifest';
-import { AgentRuntime, registry } from 'client-agent/core';
-import { createRulesEngine } from 'client-agent/rules';
+import manifest from 'boaz:manifest';
+import { AgentRuntime, registry } from 'boaz/core';
+import { createRulesEngine } from 'boaz/rules';
 import { DATA } from '../data.js';
 import { siteCapabilities } from '../agent/capabilities.js';
 import { createAssistantKnowledge } from '../agent/knowledge.js';
@@ -96,7 +96,7 @@ async function boot() {
     }),
     capabilities,
     registry,
-    getSnapshot: () => ({ currentRoute: '/client-agent/', state }),
+    getSnapshot: () => ({ currentRoute: '/boaz/', state }),
     navigate: () => {},
     dispatch: () => {},
     confirm: async () => true,

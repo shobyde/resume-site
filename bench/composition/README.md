@@ -80,7 +80,7 @@ corpus 1.75. The only approach that scores well on both variety and discourse.
 Three of the four "what has he built" phrasings return the identical sentence; the fourth refuses. All four
 "what is his email" phrasings return the same 24 characters (similarity 1.00), same for LinkedIn. Only one
 of four post questions is answered — "how much has he written?" fell through to a refusal and, before
-client-agent 0.6.2, to "No project stack lists much." because the quantifier "much" was a searchable term.
+boaz 0.6.2, to "No project stack lists much." because the quantifier "much" was a searchable term.
 "Both?" after a two-entity answer gets nothing.
 
 That is the templated feel: not one bad sentence, but the same good sentence every time, and no memory of

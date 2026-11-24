@@ -1,6 +1,6 @@
 /**
  * One trace line per step, in the words a visitor would use. Shared by the
- * assistant panel and the live console on /client-agent/.
+ * assistant panel and the live console on /boaz/.
  */
 export function describeTrace(step, titleOf) {
   const sentence = (title) => String(title).charAt(0).toLowerCase() + String(title).slice(1);

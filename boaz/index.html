@@ -3,14 +3,43 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>client-agent · an assistant with no model</title>
-<meta name="description" content="client-agent answers from an app's own capabilities and data, calls them when it needs to, and shows the facts behind every sentence. No model, no download." />
-<link rel="canonical" href="https://shobyde.com/client-agent/" />
+<title>Boaz: a free in-browser assistant with no LLM or API key</title>
+<meta name="description" content="Boaz is a free, open-source in-browser assistant that needs no LLM, no API key and no model download. It answers from your app's own routes, facts and rules, and shows the steps behind every sentence." />
+<link rel="canonical" href="https://shobyde.com/boaz/" />
 <meta name="theme-color" content="#0b0b0f" />
-<meta property="og:title" content="client-agent · an assistant with no model" />
-<meta property="og:description" content="Declared capabilities, a knowledge base with rules, tool steps, and streamed answers with provenance. Nothing leaves the page." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://shobyde.com/client-agent/" />
+<meta property="og:title" content="Boaz: a free in-browser assistant with no LLM" />
+<meta property="og:description" content="A free, MIT-licensed alternative to hosted LLM chat and to shipping a model in the tab: the app declares what it can do, the library answers from that, and every reply is traceable. No key, no network call." />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="og:url" content="https://shobyde.com/boaz/" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Boaz: a free in-browser assistant with no LLM" />
+<meta name="twitter:description" content="Free, MIT, no API key, no model download. Answers come from the app's own capabilities, facts and rules, and every sentence is traceable to the rows that produced it." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Boaz",
+  "alternateName": "client-agent",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any modern web browser",
+  "description": "A free, open-source in-browser assistant that needs no LLM, no API key and no model download. The app declares capabilities, facts and Datalog rules at build time; the library answers from them and traces every sentence to the rows that produced it.",
+  "url": "https://shobyde.com/boaz/",
+  "codeRepository": "https://github.com/shobyde/boaz",
+  "sameAs": ["https://github.com/shobyde/boaz"],
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": [
+    "No model download and no API key",
+    "Answers composed from the app's own facts and rules",
+    "Every reply traceable to the rows that produced it",
+    "Audit and bench harnesses that ship with the package",
+    "Vite plugin, React bindings, framework-free core"
+  ],
+  "author": { "@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/" }
+}
+</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -136,6 +165,27 @@ strong { color: var(--fg); font-weight: 600; }
 .table td:nth-child(2) { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--fg); white-space: nowrap; }
 .table code { font-family: var(--mono); font-size: 0.78rem; color: var(--accent-soft); }
 
+/* api list */
+.api { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-top: 1.4rem; }
+.api__row { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 1rem; padding: 0.8rem 1rem; background: rgba(255,255,255,0.02); font-size: 0.9rem; color: var(--dim); }
+.api__row code { font-family: var(--mono); font-size: 0.8rem; color: var(--accent-soft); }
+.api__row span code { color: var(--fg); }
+.api__row span { text-wrap: pretty; }
+
+/* comparison */
+.compare { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 0.8rem; margin-top: 1.6rem; }
+.compare__col { border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.05rem; background: rgba(255,255,255,0.02); }
+.compare__col--this { border-color: rgba(0,217,184,0.35); background: rgba(0,217,184,0.05); }
+.compare__head { font-family: var(--head); font-size: 0.95rem; color: var(--fg); margin: 0; }
+.compare__head em { display: block; font-style: normal; font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); margin-top: 0.2rem; }
+.compare ul { margin: 0.7rem 0 0; padding-left: 1.05rem; color: var(--dim); font-size: 0.85rem; display: grid; gap: 0.4rem; }
+.compare li::marker { color: var(--accent2); }
+
+/* faq */
+.faq { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1.1rem 1.5rem; margin-top: 1.4rem; }
+.faq h3 { margin-bottom: 0.25rem; }
+.faq p { margin: 0; font-size: 0.9rem; }
+
 /* callout */
 .note { border-left: 2px solid var(--accent); padding: 0.2rem 0 0.2rem 1rem; margin: 1.4rem 0; color: var(--dim); font-size: 0.94rem; }
 .note b { color: var(--fg); }
@@ -180,7 +230,8 @@ footer a:hover { color: var(--fg); }
 }
 
 @media (max-width: 760px) {
-  .split, .limits { grid-template-columns: 1fr; }
+  .split, .limits, .compare, .faq { grid-template-columns: 1fr; }
+  .api__row { grid-template-columns: 1fr; gap: 0.15rem; }
   .stats { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .step { grid-template-columns: 2.6rem 1fr; }
 }
@@ -194,20 +245,21 @@ footer a:hover { color: var(--fg); }
   <nav class="bar">
     <a href="/">← shobyde.com</a>
     <div class="bar__right">
-      <a href="https://github.com/shobyde/client-agent">GitHub</a>
-      <a href="https://github.com/shobyde/client-agent/releases">Releases</a>
+      <a href="https://github.com/shobyde/boaz">GitHub</a>
+      <a href="https://github.com/shobyde/boaz/releases">Releases</a>
     </div>
   </nav>
 
   <header class="hero">
     <div class="hero__grid">
       <div class="hero__copy">
-        <p class="eyebrow">client-agent · v0.6.10</p>
+        <p class="eyebrow">boaz · v0.7.0 · free, MIT, open source</p>
         <h1>An assistant with <em>no model</em>.<br />Nothing to hide.</h1>
-        <p class="lede">It answers from the app's own capabilities and data, calls them when a question needs live state, and shows the facts behind every sentence.</p>
+        <p class="lede">Boaz is a free, open-source assistant that answers from your app's own routes, facts and rules, calls them when a question needs live state, and shows the facts behind every sentence. No LLM, no API key, no download.</p>
         <div class="ctas">
-          <a class="btn btn--primary" href="https://github.com/shobyde/client-agent">Read the source</a>
-          <a class="btn" href="#turn">How a turn works</a>
+          <a class="btn btn--primary" href="#install">Install it</a>
+          <a class="btn" href="#try">Ask it something</a>
+          <a class="btn" href="https://github.com/shobyde/boaz">Read the source</a>
         </div>
       </div>
 
@@ -236,10 +288,39 @@ footer a:hover { color: var(--fg); }
     <div class="stats">
       <div class="stat"><b>0 MB</b><span>downloaded to answer</span></div>
       <div class="stat"><b>3 µs</b><span>to rank 22 capabilities</span></div>
-      <div class="stat"><b>7.4 kB</b><span>generated manifest</span></div>
+      <div class="stat"><b>7.7 kB</b><span>generated manifest</span></div>
       <div class="stat"><b>149</b><span>tests, no network</span></div>
     </div>
   </header>
+
+  <section id="install">
+    <p class="kicker">Install</p>
+    <h2>One package, eight entry points, nothing to host.</h2>
+    <p class="tight">Boaz is MIT and framework-free: no service to run, no key to provision, no weights to fetch. The npm name is reserved; until the publish runs, the GitHub release tarball carries the same prebuilt <code class="mono">dist/</code>.</p>
+
+    <div class="code code--wrap">
+      <div class="code__bar"><span>terminal</span><span>v0.7.0</span></div>
+<pre>npm install boaz
+<span class="c"># or, from the release tarball, while npm auth is pending</span>
+npm install https://github.com/shobyde/boaz/releases/download/v0.7.0/boaz-0.7.0.tgz
+
+npx boaz init --skill    <span class="c"># the skill that keeps capabilities in sync</span>
+npx boaz verify          <span class="c"># check the declarations, exit 1 on an error</span>
+npx boaz audit --probes agent-probes.json --module agent-setup.mjs
+npx boaz bench --probes agent-probes.json --module agent-setup.mjs --samples</pre>
+    </div>
+
+    <div class="api">
+      <div class="api__row"><code>boaz/core</code><span>Registry, JSON Schema validation, BM25 retrieval, the tool loop, and a deterministic keyword engine</span></div>
+      <div class="api__row"><code>boaz/rules</code><span>Facts, Datalog rules, and the answer contract that turns solutions into a sentence</span></div>
+      <div class="api__row"><code>boaz/vite</code><span>Scans the declarations with the TypeScript AST, emits the manifest, serves it as <code>boaz:manifest</code></span></div>
+      <div class="api__row"><code>boaz/probes</code><span>Turns a manifest into a probe file, in the CLI or in a browser tab</span></div>
+      <div class="api__row"><code>boaz/build</code><span>The AST extractor, the diagnostic code table and the terminal report</span></div>
+      <div class="api__row"><code>boaz/react</code><span><code>AgentProvider</code>, <code>useAgentChat</code>, <code>useRegisterCapability</code>. The core needs no framework</span></div>
+      <div class="api__row"><code>boaz/dom</code><span>Labelled, budgeted page text for a custom engine that wants grounding</span></div>
+      <div class="api__row"><code>boaz/extract</code><span>Email, phone, URL and LinkedIn scanning for rules that need a value off the page</span></div>
+    </div>
+  </section>
 
   <section id="try">
     <p class="kicker">Live</p>
@@ -275,7 +356,39 @@ footer a:hover { color: var(--fg); }
     <p class="kicker">The trade most assistants make</p>
     <h2>A model in the tab costs a download, a GPU, and the truth.</h2>
     <p class="tight">Shipping an assistant usually means shipping weights: hundreds of megabytes, a WebGPU requirement, and an answer nobody can check. On a phone with metered data, or a work laptop with the CDN blocked, the assistant is a spinner.</p>
-    <p class="tight">client-agent takes the other position. The app publishes what it can do and what it knows. The library retrieves, joins and composes. When the facts run out, it reads the page it is standing on. Every reply can be traced to the rows that produced it.</p>
+    <p class="tight">Boaz takes the other position. The app publishes what it can do and what it knows. The library retrieves, joins and composes. When the facts run out, it reads the page it is standing on. Every reply can be traced to the rows that produced it.</p>
+
+    <div class="compare">
+      <div class="compare__col">
+        <p class="compare__head">Hosted model<em>per token, per call</em></p>
+        <ul>
+          <li>A key to provision and a bill for every conversation</li>
+          <li>Page text leaves the origin for someone else's server</li>
+          <li>Nothing in the reply can be checked against a source</li>
+          <li>Blocked outright on plenty of work networks</li>
+        </ul>
+      </div>
+      <div class="compare__col">
+        <p class="compare__head">Model in the tab<em>WebLLM, Prompt API</em></p>
+        <ul>
+          <li>Free at the API, but hundreds of megabytes to fetch</li>
+          <li>Needs a capable GPU and a browser that ships the API</li>
+          <li>Metered data or a blocked CDN leaves a spinner</li>
+          <li>Still no provenance: plausible text is the product</li>
+        </ul>
+      </div>
+      <div class="compare__col compare__col--this">
+        <p class="compare__head">Boaz<em>this page</em></p>
+        <ul>
+          <li>Free and MIT: one package, no per-call billing</li>
+          <li>No key, no account, no network call during a turn</li>
+          <li>Each sentence carries the rows and the rule behind it</li>
+          <li>When the data is missing it says so, by name</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="note"><b>The honest limit.</b> This is not a general-purpose chatbot. It cannot write an essay about a topic nobody declared, and it should not pretend to. It answers what the app actually knows, which on most pages is most of what a visitor asks.</p>
   </section>
 
   <section id="turn">
@@ -424,7 +537,7 @@ Readback and Groundglass use it.</pre>
       </thead>
       <tbody>
         <tr><td>Install</td><td>0 bytes</td><td>No weights, no worker, no cache to warm.</td></tr>
-        <tr><td>Rank 22 capabilities</td><td>3 µs</td><td>BM25 over a 7.4 kB manifest already in memory.</td></tr>
+        <tr><td>Rank 22 capabilities</td><td>3 µs</td><td>BM25 over a 7.7 kB manifest already in memory.</td></tr>
         <tr><td>Join 32 facts</td><td>0.03 ms</td><td>A depth-capped unification over rows the app declared.</td></tr>
         <tr><td>First word</td><td>about 12 ms</td><td>Retrieval, inference, composition, and one animation frame.</td></tr>
         <tr><td>Step visibility</td><td>650 ms lead-in</td><td>Deliberate pacing: the trace is readable before the answer starts.</td></tr>
@@ -445,9 +558,48 @@ Readback and Groundglass use it.</pre>
     </div>
   </section>
 
+  <section id="faq">
+    <p class="kicker">Questions</p>
+    <h2>Free, in the browser, and no key to manage.</h2>
+    <div class="faq">
+      <div>
+        <h3>Is it really free?</h3>
+        <p>Yes. MIT licensed, no per-call billing, no hosted tier to upgrade into, no account. The whole cost is the JavaScript already in your bundle.</p>
+      </div>
+      <div>
+        <h3>Do I need an API key or a model download?</h3>
+        <p>Neither. No model runs in the loop, so there is nothing to download and nothing to authenticate. A turn makes no network request; the page's own data and DOM are the source.</p>
+      </div>
+      <div>
+        <h3>How is this different from a free in-browser LLM?</h3>
+        <p>A model in the tab still guesses. Boaz retrieves a capability or joins a rule, so the sentence is derived from rows the app declared and it can show them. The trade is coverage: it answers what was declared, and says out loud when the answer is not there.</p>
+      </div>
+      <div>
+        <h3>Can it replace a chat widget on a marketing site?</h3>
+        <p>For navigation, "what does this section do", pricing, docs lookup and "show me the form", yes: those are declarations plus a few rules. For open-ended conversation about anything, no, and the page says so when it cannot answer.</p>
+      </div>
+      <div>
+        <h3>What does it cost to run in production?</h3>
+        <p>Nothing per turn. The work happens in the visitor's browser against a 7.7 kB manifest, so an answer costs about what rendering a list costs.</p>
+      </div>
+      <div>
+        <h3>Where is it used today?</h3>
+        <p>This site's assistant runs on it: 22 declared capabilities, rules over the project and post data, and a page scan for contact details. Source and release tarball are on <a href="https://github.com/shobyde/boaz">GitHub</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="name">
+    <p class="kicker">The name</p>
+    <h2>Boaz kept the record.</h2>
+    <p class="tight">In Ruth 4, Boaz settles a transaction at the city gate, in front of ten elders, where it can be witnessed: "you are witnesses this day." In Ruth 2:11, asked why Ruth had found favor, he answers from what had been reported to him, not from what he could guess.</p>
+    <p class="tight">That is the contract this library keeps, in both directions. A change happens where it can be seen: the id must exist in the manifest, the arguments are validated before a handler runs, and a mutating action waits for a confirmation. An answer comes from the record: facts the app declared, rules it wrote, or the page it is standing on, with the steps shown above the sentence.</p>
+    <p class="note"><b>Formerly client-agent.</b> The package carried that name through 0.6.10. 0.7.0 renames the package, the CLI, the virtual module and the shipped skill to <span class="mono">boaz</span>; the entry points and the behaviour are unchanged.</p>
+  </section>
+
   <footer>
-    <div>client-agent · MIT · built by <a href="/">Sho Byde</a></div>
-    <div><a href="https://github.com/shobyde/client-agent">github.com/shobyde/client-agent</a></div>
+    <div>boaz · MIT · built by <a href="/">Sho Byde</a></div>
+    <div><a href="https://github.com/shobyde/boaz">github.com/shobyde/boaz</a></div>
   </footer>
 </div>
 <script type="module" src="/src/demo/console.js"></script>

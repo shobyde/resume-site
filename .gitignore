@@ -4,14 +4,14 @@ dist/
 *.log
 node_modules/
 public/*
-!public/client-agent
 !public/content
 !public/favicon.svg
 !public/assets
 !public/posts
 !public/sitemap.xml
 !public/archive
+!public/_redirects
 scripts/__pycache__/
 .worktrees/
 
-.client-agent/
+.boaz/

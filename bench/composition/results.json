@@ -4,34 +4,34 @@
     "fidelity": 1,
     "similarity": 1,
     "openers": 0.25,
-    "spread": 4.9216076867444665,
+    "spread": 4.9916597106239795,
     "ttr": 1,
     "stable": 1,
-    "style": 1.5353075170842825,
+    "style": 1.6047519615287271,
     "offTopic": 1,
-    "ms": 2.414622,
+    "ms": 2.668902,
     "rows": [
       {
         "intent": "list_titles",
         "answers": [
           {
             "question": "what has he built?",
-            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "text": "He has shipped 6 projects: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++.",
             "action": false
           },
           {
             "question": "list the projects",
-            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "text": "He has shipped 6 projects: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++.",
             "action": false
           },
           {
             "question": "what has he shipped?",
-            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "text": "He has shipped 6 projects: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++.",
             "action": false
           },
           {
             "question": "what did he make?",
-            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "text": "He has shipped 6 projects: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++.",
             "action": false
           }
         ],
@@ -40,13 +40,13 @@
         "similarity": 1,
         "stable": true,
         "lengths": [
-          11,
-          11,
-          11,
-          11
+          12,
+          12,
+          12,
+          12
         ],
         "ttr": 1,
-        "style": 1.8792710706150342,
+        "style": 2.295937737281701,
         "offTopic": 1
       },
       {
@@ -246,34 +246,34 @@
     "fidelity": 1,
     "similarity": 0.4805321986641418,
     "openers": 0.6666666666666666,
-    "spread": 8.031189202104505,
-    "ttr": 0.9948611111111112,
+    "spread": 8.183655798127278,
+    "ttr": 0.9950000000000001,
     "stable": 1,
-    "style": 1.659765723867375,
+    "style": 1.7118490572007083,
     "offTopic": 0.7916666666666666,
-    "ms": 32.487592,
+    "ms": 33.194545,
     "rows": [
       {
         "intent": "list_titles",
         "answers": [
           {
             "question": "what has he built?",
-            "text": "Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "text": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines.",
             "action": false
           },
           {
             "question": "list the projects",
-            "text": "Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines — 5 of them, every one shipped. Each one has engineering notes behind an expand button.",
+            "text": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines — 6 of them, every one shipped. Each one has engineering notes behind an expand button.",
             "action": false
           },
           {
             "question": "what has he shipped?",
-            "text": "Everything he has shipped is public: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines. Each one has engineering notes behind an expand button.",
+            "text": "Everything he has shipped is public: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Each one has engineering notes behind an expand button.",
             "action": false
           },
           {
             "question": "what did he make?",
-            "text": "Everything he has shipped is public: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "text": "Everything he has shipped is public: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines.",
             "action": false
           }
         ],
@@ -282,13 +282,13 @@
         "similarity": 0.5015512720430753,
         "stable": true,
         "lengths": [
-          9,
-          24,
-          24,
-          15
+          10,
+          25,
+          25,
+          16
         ],
-        "ttr": 0.9791666666666667,
-        "style": 1.5946042141230068,
+        "ttr": 0.98,
+        "style": 1.9071042141230068,
         "offTopic": 1
       },
       {
@@ -488,34 +488,34 @@
     "fidelity": 1,
     "similarity": 0.3696233673217813,
     "openers": 0.7916666666666666,
-    "spread": 4.24243607952894,
+    "spread": 4.344336990714336,
     "ttr": 0.9942460317460317,
     "stable": 1,
-    "style": 1.8220782713237151,
+    "style": 1.8741616046570486,
     "offTopic": 0.625,
-    "ms": 1.43074,
+    "ms": 1.389571,
     "rows": [
       {
         "intent": "list_titles",
         "answers": [
           {
             "question": "what has he built?",
-            "text": "Hobnob, Readback, Groundglass, shobyde.com and C++. That is the whole public set.",
+            "text": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++. That is the whole public set.",
             "action": false
           },
           {
             "question": "list the projects",
-            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "text": "He has shipped 6 projects: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++.",
             "action": false
           },
           {
             "question": "what has he shipped?",
-            "text": "Hobnob, Readback, Groundglass, shobyde.com and C++. That is the whole public set.",
+            "text": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++. That is the whole public set.",
             "action": false
           },
           {
             "question": "what did he make?",
-            "text": "Cutting to it — Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "text": "Cutting to it — Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++.",
             "action": false
           }
         ],
@@ -524,13 +524,13 @@
         "similarity": 0.3261490388505129,
         "stable": true,
         "lengths": [
+          13,
           12,
-          11,
-          12,
-          9
+          13,
+          10
         ],
         "ttr": 1,
-        "style": 1.9800208807896735,
+        "style": 2.2925208807896733,
         "offTopic": 1
       },
       {
@@ -730,34 +730,34 @@
     "fidelity": 1,
     "similarity": 0.46233141252024446,
     "openers": 0.5833333333333334,
-    "spread": 6.712343521867422,
-    "ttr": 0.9862914862914863,
+    "spread": 6.843488389215937,
+    "ttr": 0.986595065562457,
     "stable": 1,
-    "style": 1.6842611047835987,
+    "style": 1.736344438116932,
     "offTopic": 0.625,
-    "ms": 2.029264,
+    "ms": 1.826832,
     "rows": [
       {
         "intent": "list_titles",
         "answers": [
           {
             "question": "what has he built?",
-            "text": "Everything public, in one line: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "text": "Everything public, in one line: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++.",
             "action": false
           },
           {
             "question": "list the projects",
-            "text": "5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++. Hobnob is the largest of them: a meeting recorder that never leaves the machine.",
+            "text": "6 projects: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++. Hobnob is the largest of them: a meeting recorder that never leaves the machine.",
             "action": false
           },
           {
             "question": "what has he shipped?",
-            "text": "He has shipped five: Hobnob, Readback, Groundglass, shobyde.com and C++. Hobnob is the largest of them: a meeting recorder that never leaves the machine.",
+            "text": "He has shipped 6: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++. Hobnob is the largest of them: a meeting recorder that never leaves the machine.",
             "action": false
           },
           {
             "question": "what did he make?",
-            "text": "He has shipped five: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "text": "He has shipped 6: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++.",
             "action": false
           }
         ],
@@ -766,13 +766,13 @@
         "similarity": 0.27365196542537723,
         "stable": true,
         "lengths": [
-          11,
-          22,
-          24,
-          10
+          12,
+          23,
+          25,
+          11
         ],
-        "ttr": 0.9564393939393939,
-        "style": 1.6292710706150344,
+        "ttr": 0.9582608695652174,
+        "style": 1.9417710706150344,
         "offTopic": 1
       },
       {
@@ -972,34 +972,34 @@
     "fidelity": 1,
     "similarity": 0.24996589476454933,
     "openers": 0.5833333333333334,
-    "spread": 4.582386265788699,
-    "ttr": 0.9903852769177847,
+    "spread": 4.7064893144111855,
+    "ttr": 0.9905214424951266,
     "stable": 1,
-    "style": 1.4815553024550747,
+    "style": 1.5575170842824602,
     "offTopic": 0.16666666666666666,
-    "ms": 1.571652,
+    "ms": 1.793126,
     "rows": [
       {
         "intent": "list_titles",
         "answers": [
           {
             "question": "what has he built?",
-            "text": "Multi-tab coordination rounds it out: Hobnob, Readback, Groundglass, shobyde.com and C++ — 5 projects, all of it public.",
+            "text": "Multi-tab coordination rounds it out: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ — 6 projects, all of it public.",
             "action": false
           },
           {
             "question": "list the projects",
-            "text": "Introduction to the site Tag: Hobnob, Readback, Groundglass, shobyde.com and C++ — 5 projects, all of it public.",
+            "text": "Introduction to the site Tag: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ — 6 projects, all of it public.",
             "action": false
           },
           {
             "question": "what has he shipped?",
-            "text": "On-Device Meeting Notes: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "text": "On-Device Meeting Notes: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++.",
             "action": false
           },
           {
             "question": "what did he make?",
-            "text": "First, model memory: Hobnob, Readback, Groundglass, shobyde.com and C++ — 5 projects, all of it public.",
+            "text": "First, model memory: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ — 6 projects, all of it public.",
             "action": false
           }
         ],
@@ -1008,13 +1008,13 @@
         "similarity": 0.2801612067058291,
         "stable": true,
         "lengths": [
-          17,
-          17,
-          9,
-          15
+          18,
+          18,
+          10,
+          16
         ],
-        "ttr": 0.9852941176470589,
-        "style": 2.7648538344722855,
+        "ttr": 0.9861111111111112,
+        "style": 3.220624525436598,
         "offTopic": 0
       },
       {
@@ -1214,34 +1214,34 @@
     "fidelity": 1,
     "similarity": 0.37007885833933485,
     "openers": 0.7083333333333334,
-    "spread": 5.794963090669536,
-    "ttr": 0.9789800313255691,
+    "spread": 5.834374907010653,
+    "ttr": 0.9791447217076508,
     "stable": 1,
-    "style": 1.7530411604657046,
+    "style": 1.8138050493545939,
     "offTopic": 0.6666666666666666,
-    "ms": 1.685893,
+    "ms": 1.630949,
     "rows": [
       {
         "intent": "list_titles",
         "answers": [
           {
             "question": "what has he built?",
-            "text": "Everything he has shipped is public: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "text": "Everything he has shipped is public: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++.",
             "action": false
           },
           {
             "question": "list the projects",
-            "text": "5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++. Hobnob is the largest of them: a meeting recorder that never leaves the machine.",
+            "text": "6 projects: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++. Hobnob is the largest of them: a meeting recorder that never leaves the machine.",
             "action": false
           },
           {
             "question": "what has he shipped?",
-            "text": "5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "text": "6 projects: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++.",
             "action": false
           },
           {
             "question": "what did he make?",
-            "text": "5 in total — Hobnob, Readback, Groundglass, shobyde.com and C++.",
+            "text": "6 in total — Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++.",
             "action": false
           }
         ],
@@ -1250,13 +1250,13 @@
         "similarity": 0.19899224222205925,
         "stable": true,
         "lengths": [
-          12,
-          22,
-          8,
-          9
+          13,
+          23,
+          9,
+          10
         ],
-        "ttr": 0.9772727272727273,
-        "style": 2.000854214123007,
+        "ttr": 0.9782608695652174,
+        "style": 2.3654375474563403,
         "offTopic": 1
       },
       {

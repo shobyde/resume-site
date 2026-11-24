@@ -5,7 +5,7 @@
     "Hobnob",
     "Readback",
     "Groundglass",
-    "client-agent",
+    "boaz",
     "Python 3.10+",
     "SQLite",
     "TypeScript",
@@ -133,7 +133,7 @@
       }
     },
     {
-      "q": "compare hobnob and readback, but not client-agent",
+      "q": "compare hobnob and readback, but not boaz",
       "expect": {
         "type": "compare",
         "entities": [
@@ -141,7 +141,7 @@
           "Readback"
         ],
         "exclude": [
-          "client-agent"
+          "boaz"
         ]
       }
     },

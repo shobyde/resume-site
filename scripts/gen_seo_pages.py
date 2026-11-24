@@ -188,7 +188,7 @@ def main() -> None:
     latest = urls[0][1] if urls else fmt_dt(datetime.now(timezone.utc).strftime('%Y-%m-%d'))
     sitemap.append(f"<url><loc>{SITE}/</loc><lastmod>{latest}</lastmod></url>")
     sitemap.append(f"<url><loc>{SITE}/archive/</loc><lastmod>{latest}</lastmod></url>")
-    sitemap.append(f"<url><loc>{SITE}/client-agent/</loc><lastmod>{latest}</lastmod></url>")
+    sitemap.append(f"<url><loc>{SITE}/boaz/</loc><lastmod>{latest}</lastmod></url>")
     for slug, dt in urls:
         sitemap.append(f"<url><loc>{SITE}/posts/{slug}/</loc><lastmod>{dt}</lastmod></url>")
     sitemap.append("</urlset>")

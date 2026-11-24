@@ -13,10 +13,10 @@
    surface (src/agent/surfaces.js), rendered against the site's own
    components.
    ============================================================ */
-import manifest from 'client-agent:manifest';
-import { AgentRuntime, registry } from 'client-agent/core';
-import { createRulesEngine } from 'client-agent/rules';
-import { createDomContextReader } from 'client-agent/dom';
+import manifest from 'boaz:manifest';
+import { AgentRuntime, registry } from 'boaz/core';
+import { createRulesEngine } from 'boaz/rules';
+import { createDomContextReader } from 'boaz/dom';
 import { createAssistantKnowledge } from './knowledge.js';
 import { describeTrace } from './trace.js';
 import { siteCapabilities } from './capabilities.js';
@@ -187,7 +187,7 @@ export function initAssistant({ posts = [] } = {}) {
         <input class="agent__input" id="agentInput" type="text" placeholder="Which projects use Python?" />
         <button class="agent__send" type="submit">Send</button>
       </form>
-      <p class="agent__foot">Answers come from the facts on this page. Nothing is downloaded and nothing is sent to a server. <a href="/client-agent/">How this works</a></p>
+      <p class="agent__foot">Answers come from the facts on this page. Nothing is downloaded and nothing is sent to a server. <a href="/boaz/">How this works</a></p>
       <details class="agent__diag" id="agentDiag">
         <summary>Diagnostics</summary>
         <p class="agent__diag-line" id="agentDiagOut">Press to check this page.</p>
@@ -199,8 +199,8 @@ export function initAssistant({ posts = [] } = {}) {
 
   if (new URLSearchParams(location.search).has('agentDebug')) {
     // ?agentDebug=1 exposes the engine so a stuck answer can be inspected
-    // without a rebuild: __clientAgent.engine.memory says what it last did.
-    window.__clientAgent = { engine, runtime };
+    // without a rebuild: __boaz.engine.memory says what it last did.
+    window.__boaz = { engine, runtime };
   }
 
   const panel = root.querySelector('#agentPanel');

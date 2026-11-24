@@ -10,7 +10,7 @@
    every description written in the visitor's words rather than the
    component's.
    ============================================================ */
-import { defineCapability, defineKnowledge } from 'client-agent/core';
+import { defineCapability, defineKnowledge } from 'boaz/core';
 import { DATA } from '../data.js';
 import { articleCard, contactCard, findProject, projectCard } from './surfaces.js';
 

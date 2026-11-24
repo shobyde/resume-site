@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
-const MODULES = `${SITE}/node_modules/client-agent/dist`;
+const MODULES = `${SITE}/node_modules/boaz/dist`;
 
 export async function baseline(facts) {
   const { createRulesEngine } = await import(`${MODULES}/rules/index.js`);
