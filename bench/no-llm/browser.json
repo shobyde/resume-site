@@ -1,0 +1,18 @@
+{
+  "suite": "browser-agent",
+  "rung": 18,
+  "base": "http://localhost:5066/",
+  "tasks": [
+    { "id": "b1", "say": "read the newest post", "expect": { "path": "^/posts/\\d{4}-\\d{2}-\\d{2}-" }, "why": "panel action navigates to the prerendered post, which is a dated slug" },
+    { "id": "b2", "say": "open the archive", "expect": { "path": "^/archive/" }, "why": "archive is a static page, not a hash route" },
+    { "id": "b3", "say": "take me to the blog", "expect": { "hash": "^#blog" }, "why": "route capability behind a confirmation bubble" },
+    { "id": "b4", "say": "open the boaz page", "expect": { "path": "^/boaz/" }, "why": "a Vite entry with its own document" },
+    { "id": "b5", "say": "copy his email", "expect": { "clipboard": "shobyde@gmail.com" }, "why": "clipboard has no visible effect, so the stub is the observation" },
+    { "id": "b6", "say": "print his resume", "expect": { "printed": true }, "why": "print dialog is an effect with no DOM change" },
+    { "id": "b7", "say": "which projects use python", "expect": { "bubble": "Readback" }, "why": "a rule with a tool step, answered in the panel" },
+    { "id": "b8", "say": "what is his email", "expect": { "bubble": "shobyde@gmail.com" }, "why": "grounding scan of the page, not a declared fact" },
+    { "id": "b9", "say": "how many posts has he written", "expect": { "bubble": "\\b\\d+\\b" }, "why": "count query over the fetched index" },
+    { "id": "b10", "say": "show me the hobnob card", "expect": { "card": "Hobnob" }, "why": "surface rendered by the A2UI card capability" },
+    { "id": "b11", "say": "fill the contact form", "expect": { "refuse": "name-mismatch" }, "why": "CEILING: this site has no contact form; the resolver refuses and names the Contact link as the near miss" }
+  ]
+}
