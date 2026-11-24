@@ -35,6 +35,8 @@ header.hero { margin: 2.5rem 0 2rem; }
 .kicker { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent2); margin: 0 0 0.75rem; }
 h1 { font-family: var(--display); font-size: clamp(2rem, 5vw, 3rem); line-height: 1.05; margin: 0 0 1rem; letter-spacing: -0.02em; text-wrap: balance; }
 .lede { color: var(--dim); font-size: 1.05rem; max-width: 66ch; margin: 0; }
+.provenance { font-family: var(--mono); font-size: 0.74rem; color: var(--mute); margin: 0.9rem 0 0; max-width: 76ch; }
+.provenance b { color: var(--dim); font-weight: 500; }
 .stats { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.5rem; font-family: var(--mono); font-size: 0.78rem; color: var(--mute); }
 .stats b { display: block; font-family: var(--display); font-size: 1.5rem; color: var(--fg); font-weight: 500; }
 section.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 1.25rem; margin: 1.5rem 0; }
@@ -47,6 +49,7 @@ tbody tr:hover { background: var(--panel-2); }
 tbody tr.on { background: var(--panel-2); box-shadow: inset 2px 0 0 var(--accent); }
 tbody td { padding: 0.45rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: baseline; }
 td.cls { color: var(--fg); }
+td.cls .why { display: block; font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.04em; color: var(--mute); margin-top: 0.1rem; }
 td.num, td.rate { font-family: var(--mono); font-size: 0.78rem; color: var(--dim); white-space: nowrap; }
 td.rate.good { color: var(--accent2); }
 td.rate.bad { color: var(--warn); }
@@ -96,6 +99,7 @@ code { font-family: var(--mono); font-size: 0.85em; color: var(--accent-soft); }
       own harness printed, because scoring them needs a browser or a page tree. Every number was measured in
       the run that wrote the file this page loads. None of it calls a model.
     </p>
+    <p class="provenance" id="provenance" hidden></p>
     <div class="stats" id="stats"></div>
   </header>
 

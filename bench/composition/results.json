@@ -9,7 +9,7 @@
     "stable": 1,
     "style": 1.6455644140723866,
     "offTopic": 1,
-    "ms": 2.766518,
+    "ms": 2.764362,
     "rows": [
       {
         "intent": "list_titles",
@@ -243,22 +243,22 @@
   },
   {
     "name": "shipped",
-    "fidelity": 0.875,
-    "similarity": 0.5054306122701737,
+    "fidelity": 1,
+    "similarity": 0.4983206375545108,
     "openers": 0.6666666666666666,
-    "spread": 8.767739953311164,
-    "ttr": 0.9516409897292251,
+    "spread": 9.145429945545967,
+    "ttr": 0.9464695810252076,
     "stable": 1,
-    "style": 1.5236213933181473,
-    "offTopic": 0.7916666666666666,
-    "ms": 42.698156,
+    "style": 1.5081941280688433,
+    "offTopic": 0.9166666666666666,
+    "ms": 42.023677,
     "rows": [
       {
         "intent": "list_titles",
         "answers": [
           {
             "question": "what has he built?",
-            "text": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Every card opens to notes except 0.",
+            "text": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Every card opens to notes.",
             "action": false
           },
           {
@@ -273,22 +273,22 @@
           },
           {
             "question": "what did he make?",
-            "text": "Everything he has shipped is public: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Every card opens to notes except 0.",
+            "text": "Everything he has shipped is public: Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Every card opens to notes.",
             "action": false
           }
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.5311033339075152,
+        "similarity": 0.5361599608586666,
         "stable": true,
         "lengths": [
-          17,
+          15,
           25,
           25,
-          23
+          21
         ],
         "ttr": 0.98,
-        "style": 1.483437737281701,
+        "style": 1.5251044039483674,
         "offTopic": 1
       },
       {
@@ -301,37 +301,33 @@
           },
           {
             "question": "what's built with python?",
-            "text": "I'm not sure about that. I can help with: List projects; Selected projects.",
+            "text": "Readback and Groundglass, 2 projects on Python 3.10+. Both also list pytest. Boaz does not list it; its stack is TypeScript and Vite.",
             "action": false
           },
           {
             "question": "any projects in python?",
-            "text": "I'm not sure about that. I can help with: List projects; Show a project card; Selected projects.",
+            "text": "Readback and Groundglass, 2 out of the projects here. They share pytest as well. The closest without it is Boaz, on TypeScript and Vite.",
             "action": false
           },
           {
             "question": "does he have python projects?",
-            "text": "I'm not sure about that. I can help with: List projects; Show a project card; Selected projects.",
+            "text": "2 projects use it: Readback and Groundglass. Both also list pytest. Boaz does not list it; its stack is TypeScript and Vite.",
             "action": false
           }
         ],
-        "fidelity": 0.25,
-        "missing": [
-          "I'm not sure about that. I can help with: List projects; Selected proj",
-          "I'm not sure about that. I can help with: List projects; Show a projec",
-          "I'm not sure about that. I can help with: List projects; Show a projec"
-        ],
-        "similarity": 0.492722602739726,
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.44500612749459684,
         "stable": true,
         "lengths": [
           21,
-          14,
-          18,
-          18
+          23,
+          24,
+          22
         ],
-        "ttr": 0.9424603174603174,
-        "style": 1.6642226651480638,
-        "offTopic": 0
+        "ttr": 0.911431865236213,
+        "style": 1.5299924069855735,
+        "offTopic": 0.75
       },
       {
         "intent": "posts_newest",
@@ -497,7 +493,7 @@
     "stable": 1,
     "style": 1.8609371045304988,
     "offTopic": 0.7083333333333334,
-    "ms": 1.836676,
+    "ms": 1.776259,
     "rows": [
       {
         "intent": "list_titles",
@@ -739,7 +735,7 @@
     "stable": 1,
     "style": 1.682117660086054,
     "offTopic": 0.7083333333333334,
-    "ms": 2.449678,
+    "ms": 2.290716,
     "rows": [
       {
         "intent": "list_titles",
@@ -981,7 +977,7 @@
     "stable": 1,
     "style": 1.5887908124525436,
     "offTopic": 0.16666666666666666,
-    "ms": 2.23884,
+    "ms": 2.288925,
     "rows": [
       {
         "intent": "list_titles",
@@ -1223,7 +1219,7 @@
     "stable": 1,
     "style": 1.7532982156416095,
     "offTopic": 0.6666666666666666,
-    "ms": 1.639793,
+    "ms": 1.573347,
     "rows": [
       {
         "intent": "list_titles",

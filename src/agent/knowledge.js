@@ -122,6 +122,16 @@ export function createAssistantKnowledge({ posts }) {
       keywords: ['which projects use', 'what uses', 'written in', 'uses', 'dependencies', 'powered by'],
       goal: 'projects_using(?P)',
       steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
+      // Fixed shapes, so say them outright: a second rule that mentions a
+      // project ("what a project is built with") otherwise wins the score tie
+      // these phrasings get from naming a declared technology, then composes ''
+      // because no project is named. Match order in this file decides.
+      match: (question) =>
+        /\b(built|written|shipped|made|powered|runs)\s+(with|in|on|by)\b/i.test(question) ||
+        /^\s*which projects\b/i.test(question) ||
+        /\b(any|some) projects\b/i.test(question) ||
+        /\bprojects (that|which) (use|are|list)\b/i.test(question) ||
+        /\bdoes (he|she) have\b[^?]*\bprojects\b/i.test(question),
       explain: ({ solutions, terms, mentions, observed, combine }) => {
         if (!observed['projects.list']) return 'Read the project list';
         if (combine?.op === 'all' && terms.length >= 2) {

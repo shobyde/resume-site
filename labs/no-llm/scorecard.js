@@ -55,6 +55,38 @@ for (const [id, suite] of Object.entries(SUITES)) live.set(id, gradeSuite(suite)
 const pct = (pair) => (pair && pair.total ? Math.round((pair.passed / pair.total) * 1000) / 10 : null);
 const frac = (pair) => (pair ? `${pair.passed}/${pair.total}` : 'not printed');
 
+const recordedOn = String(doc.generated).slice(0, 10);
+
+/** Why a class cannot be graded in this tab. Shown on its row, not implied. */
+const NOT_LIVE = {
+  answers: 'needs the site build: the real engine answers',
+  discourse: 'needs the site build: phrasing module',
+  summarise: 'needs the post corpus on disk',
+  register: 'needs the site build: register module',
+  outline: 'needs the ledger file on disk',
+  plan: 'needs the built capability manifest',
+  execute: 'needs a DOM to act on',
+  recover: 'needs a DOM to act on',
+  skills: 'needs the site build: skills module',
+  memory: 'needs the site build: session memory',
+  preferences: 'needs the site build: preference store',
+  actions: 'needs a captured page tree',
+  mcp: 'needs a JSON-RPC transport',
+  browser: 'needs a real Chromium session',
+};
+
+function provenance() {
+  const node = $('provenance');
+  if (!node) return;
+  node.hidden = false;
+  node.append(
+    el('b', null, 'Recorded'),
+    document.createTextNode(` rows below were measured ${recordedOn} against ${doc.library}, by each class's own harness. `),
+    el('b', null, 'Live'),
+    document.createTextNode(' rows are graded in this tab on load, and again when you press the button.'),
+  );
+}
+
 function stats() {
   const liveTasks = [...live.values()].reduce((sum, suite) => sum + suite.rows.length, 0);
   const box = $('stats');
@@ -92,7 +124,8 @@ function renderRows() {
     );
     const afterCell = el('td', `rate ${pctAfter === null ? '' : pctAfter >= 90 ? 'good' : pctAfter < 70 ? 'bad' : ''}`, pctAfter === null ? 'see report' : `${pctAfter}%`);
     tr.append(afterCell, el('td', null, ''));
-    const tag = el('span', `tag ${isLive ? 'live' : ''}`, isLive ? 'live here' : 'harness');
+    if (!isLive && NOT_LIVE[entry.id]) tr.children[1].append(el('span', 'why', `recorded ${recordedOn} · ${NOT_LIVE[entry.id]}`));
+    const tag = el('span', `tag ${isLive ? 'live' : ''}`, isLive ? 'live here' : 'recorded');
     tr.lastElementChild.append(tag);
     tr.addEventListener('click', () => select(entry.id));
     tr.addEventListener('keydown', (event) => {
@@ -156,7 +189,7 @@ function renderLive(entry, panel) {
     'div',
     'meta',
     `graded in this tab: ${frac(suite.after)} = ${pct(suite.after)}%  ·  naive ${frac(suite.before)} = ${pct(suite.before)}%` +
-      `  ·  harness printed: ${entry.headline[0] ?? 'n/a'}`,
+      `  ·  recorded ${recordedOn} on ${doc.library}: ${entry.headline[0] ?? 'n/a'}`,
   );
   panel.append(meta);
 
@@ -199,7 +232,7 @@ function renderHarness(entry, panel) {
     el(
       'div',
       'meta',
-      `${frac(entry.before)} naive → ${frac(entry.after)} with the machinery` +
+      `${doc.library}, recorded ${recordedOn} · ${frac(entry.before)} naive → ${frac(entry.after)} with the machinery` +
         `${entry.afterPct !== null && entry.afterPct !== undefined ? ` (${entry.afterPct}%)` : ''}` +
         `  ·  scored by its own harness, which needs ${entry.id === 'browser' ? 'a real Chromium session' : entry.id === 'actions' ? 'a captured page tree' : 'the site build'}`,
     ),
@@ -248,5 +281,6 @@ function select(id) {
 }
 
 stats();
+provenance();
 renderRows();
 select('negation');

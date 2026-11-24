@@ -53,7 +53,7 @@ export function phraseProjectList(query, projectRecords, { register = 'normal' }
     [
       notes ? `${notes === n ? 'Each one' : `${notes} of them`} has engineering notes behind an expand button.` : '',
       `Between them the ${n === 1 ? 'one' : n} name ${entries} distinct stack entries.`,
-      notes ? `Every card opens to notes except ${n - notes}.` : `Each card lists its own stack.`,
+      notes ? (notes === n ? 'Every card opens to notes.' : `Every card opens to notes except ${n - notes}.`) : `Each card lists its own stack.`,
     ].filter(Boolean),
     query,
   );
@@ -215,7 +215,7 @@ function supportSentence(query, matches, term, records) {
   }
 
   const shared = sharedStack(matches, term);
-  const among = `All ${matches.length === 2 ? 'both' : matches.length}`;
+  const among = matches.length === 2 ? 'Both' : `All ${matches.length}`;
   if (shared.length > 0) {
     return pick(
       [

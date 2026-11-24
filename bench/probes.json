@@ -179,6 +179,18 @@
     {
       "question": "which projects use sqlite, excluding readback?",
       "expect": "projects.using"
+    },
+    {
+      "question": "what's built with python?",
+      "expect": "projects.using"
+    },
+    {
+      "question": "any projects in python?",
+      "expect": "projects.using"
+    },
+    {
+      "question": "does he have python projects?",
+      "expect": "projects.using"
     }
   ]
 }
