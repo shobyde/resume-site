@@ -9,7 +9,7 @@
     "stable": 1,
     "style": 1.6047519615287271,
     "offTopic": 1,
-    "ms": 2.447859,
+    "ms": 2.434208,
     "rows": [
       {
         "intent": "list_titles",
@@ -251,7 +251,7 @@
     "stable": 1,
     "style": 1.7118490572007083,
     "offTopic": 0.7916666666666666,
-    "ms": 36.855603,
+    "ms": 37.350956,
     "rows": [
       {
         "intent": "list_titles",
@@ -493,7 +493,7 @@
     "stable": 1,
     "style": 1.8741616046570486,
     "offTopic": 0.625,
-    "ms": 1.272043,
+    "ms": 1.437354,
     "rows": [
       {
         "intent": "list_titles",
@@ -735,7 +735,7 @@
     "stable": 1,
     "style": 1.736344438116932,
     "offTopic": 0.625,
-    "ms": 1.845438,
+    "ms": 1.823288,
     "rows": [
       {
         "intent": "list_titles",
@@ -977,7 +977,7 @@
     "stable": 1,
     "style": 1.5575170842824602,
     "offTopic": 0.16666666666666666,
-    "ms": 1.80413,
+    "ms": 1.655961,
     "rows": [
       {
         "intent": "list_titles",
@@ -1219,7 +1219,7 @@
     "stable": 1,
     "style": 1.8138050493545939,
     "offTopic": 0.6666666666666666,
-    "ms": 1.571695,
+    "ms": 1.676648,
     "rows": [
       {
         "intent": "list_titles",
