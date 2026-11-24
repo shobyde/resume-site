@@ -44,8 +44,29 @@ input[type="text"]:focus { outline: 2px solid var(--accent); outline-offset: 1px
 button { background: var(--accent); color: #0b0b0f; border: 0; border-radius: 9px; padding: 0.7rem 1rem; font-family: var(--mono); font-size: 0.82rem; font-weight: 500; letter-spacing: 0.04em; cursor: pointer; }
 button.ghost { background: transparent; color: var(--dim); border: 1px solid var(--line); }
 button:hover { filter: brightness(1.08); }
-pre { background: #0e0e15; border: 1px solid var(--line); border-radius: 10px; padding: 0.9rem; overflow: auto; font-family: var(--mono); font-size: 0.8rem; line-height: 1.5; margin: 0.9rem 0 0; max-height: 320px; }
+pre { background: #0e0e15; border: 1px solid var(--line); border-radius: 10px; padding: 0.9rem; overflow: auto; font-family: var(--mono); font-size: 0.78rem; line-height: 1.55; margin: 0.9rem 0 0; max-height: 320px; white-space: pre; scrollbar-width: thin; scrollbar-color: #33334a transparent; }
+pre::-webkit-scrollbar { height: 8px; width: 8px; }
+pre::-webkit-scrollbar-thumb { background: #33334a; border-radius: 4px; }
+@media (max-width: 720px) {
+  pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+}
 pre:empty { display: none; }
+.pre-wrap { position: relative; }
+.pre-wrap:has(> pre:empty) { display: none; }
+.pre-wrap::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 2.5rem;
+  border-radius: 0 10px 10px 0;
+  background: linear-gradient(to right, transparent, #0e0e15);
+  pointer-events: none;
+}
+@media (max-width: 720px) {
+  .pre-wrap::after { display: none; }
+}
 .hint { color: var(--mute); font-size: 0.82rem; margin-top: 0.6rem; }
 .status { font-family: var(--mono); font-size: 0.8rem; margin-top: 0.7rem; color: var(--dim); }
 .status.ok { color: var(--accent2); }
@@ -57,12 +78,26 @@ table.tools th, table.tools td { text-align: left; padding: 0.35rem 0.5rem; bord
 table.tools th { color: var(--mute); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem; }
 footer.foot { margin-top: 3rem; color: var(--mute); font-size: 0.85rem; }
 .hit { outline: 2px solid var(--accent2); outline-offset: 2px; }
-.fixture { border: 1px dashed var(--line); border-radius: 10px; padding: 0.9rem; margin-bottom: 1rem; display: grid; gap: 0.55rem; }
-.fixture nav { display: flex; gap: 0.9rem; font-family: var(--mono); font-size: 0.78rem; }
-.fixture input { flex: none; width: 100%; max-width: 320px; background: var(--panel-2); border: 1px solid var(--line); color: var(--fg); border-radius: 8px; padding: 0.5rem 0.7rem; font-family: var(--mono); font-size: 0.8rem; }
-.fixture button { justify-self: start; padding: 0.5rem 0.8rem; }
+.fixture {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: grid;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.025);
+}
+.fixture__bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.fixture__brand { font-family: var(--display); font-size: 0.98rem; letter-spacing: -0.01em; color: var(--fg); }
+.fixture nav { display: flex; gap: 0.9rem; font-family: var(--mono); font-size: 0.72rem; }
+.fixture nav a { color: var(--mute); text-decoration: none; }
+.fixture nav a:hover { color: var(--fg); }
+.fixture input { width: 100%; background: var(--panel-2); border: 1px solid var(--line); color: var(--fg); border-radius: 8px; padding: 0.5rem 0.7rem; font-family: var(--mono); font-size: 0.8rem; }
+.fixture__actions { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.fixture button { padding: 0.42rem 0.8rem; border-radius: 8px; border: 1px solid var(--line-strong); background: rgba(255,255,255,0.04); color: var(--fg); font-size: 0.82rem; cursor: pointer; }
+.fixture button:hover { border-color: var(--accent); }
 .fixture button[disabled] { opacity: 0.45; cursor: not-allowed; }
-.fixture .hint { margin: 0; }
+.fixture .hint { margin: 0; font-size: 0.8rem; color: var(--mute); line-height: 1.55; }
 </style>
 </head>
 <body>
@@ -73,7 +108,7 @@ footer.foot { margin-top: 3rem; color: var(--mute); font-size: 0.85rem; }
     <p class="kicker">Labs · no model</p>
     <h1>Tools without a model.</h1>
     <p class="lede">
-      This site's assistant owns 25 capabilities. Below, the same manifest is served as JSON-RPC tools,
+      This site's assistant owns 26 capabilities. Below, the same manifest is served as JSON-RPC tools,
       and the same controls are found by role and accessible name. Both run on this page, in this tab,
       with no model and no network call.
     </p>
@@ -85,12 +120,13 @@ footer.foot { margin-top: 3rem; color: var(--mute); font-size: 0.85rem; }
       The planner reads the capability metadata, not a prompt. Try a sentence; the plan and the
       JSON-RPC exchange are shown as they happen.
     </p>
-    <div class="row" data-lab-ui>\n      <input id="planInput" type="text" value="which projects use python" aria-label="Sentence to plan" />
+    <div class="row" data-lab-ui>
+      <input id="planInput" type="text" value="which projects use python" aria-label="Sentence to plan" />
       <button id="planBtn">Plan</button>
       <button id="listBtn" class="ghost">tools/list</button>
     </div>
     <div class="chips" id="planChips" data-lab-ui></div>
-    <pre id="planOut"></pre>
+    <div class="pre-wrap"><pre id="planOut"></pre></div>
     <div class="status" id="planStatus"></div>
   </section>
 
@@ -100,34 +136,41 @@ footer.foot { margin-top: 3rem; color: var(--mute); font-size: 0.85rem; }
       The page's own controls are read as an accessibility tree. The resolver refuses rather than
       guesses: two buttons with the same name is reported as ambiguous, and nothing is clicked.
     </p>
-    <div class="fixture" role="region" aria-label="Sample panel">
-      <nav aria-label="Sample navigation">
-        <a href="#projects" onclick="return false">Projects</a>
-        <a href="#about" onclick="return false">About</a>
-        <a href="#contact" onclick="return false">Contact</a>
-      </nav>
+    <div class="fixture" role="region" aria-label="Sample invoice app">
+      <div class="fixture__bar">
+        <span class="fixture__brand">Invoices</span>
+        <nav aria-label="Sample navigation">
+          <a href="#projects" onclick="return false">Projects</a>
+          <a href="#about" onclick="return false">About</a>
+          <a href="#contact" onclick="return false">Contact</a>
+        </nav>
+      </div>
       <input type="search" id="fixtureSearch" placeholder="Search invoices" aria-label="Search invoices" />
-      <button type="button" id="fixtureSend">Send</button>
-      <button type="button" onclick="return false">Open</button>
-      <button type="button" onclick="return false">Open</button>
-      <button type="button" disabled>Archive</button>
+      <div class="fixture__actions">
+        <button type="button" id="fixtureSend">Send</button>
+        <button type="button" onclick="return false">Open</button>
+        <button type="button" onclick="return false">Open</button>
+        <button type="button" disabled>Archive</button>
+      </div>
       <button type="button" hidden>Hidden action</button>
-      <p class="hint" id="fixtureNote">A sample panel. Nothing here is wired to the site; the resolver
-      only needs a role and a name.</p>
+      <p class="hint" id="fixtureNote">Two “Open” buttons are deliberate: the resolver reports the
+      duplicate as ambiguous instead of picking one. Nothing here is wired to the site; it only
+      needs a role and a name.</p>
     </div>
 
-    <div class="row" data-lab-ui>\n      <input id="actInput" type="text" value="click the send button" aria-label="Action to resolve" />
+    <div class="row" data-lab-ui>
+      <input id="actInput" type="text" value="click the send button" aria-label="Action to resolve" />
       <button id="actBtn">Resolve</button>
       <button id="treeBtn" class="ghost">Show the tree</button>
     </div>
     <div class="chips" id="actChips" data-lab-ui></div>
-    <pre id="actOut"></pre>
+    <div class="pre-wrap"><pre id="actOut"></pre></div>
     <div class="status" id="actStatus"></div>
   </section>
 
   <footer class="foot">
-    The resolver and the tool server live in <a href="https://github.com/shobyde/boaz">boaz</a>, the library
-    this site's assistant runs on. Rungs 16 and 17 of the <a href="/boaz/">no-model programme</a>.
+    The resolver and the tool server live in <a href="https://github.com/shobyde/boaz">@shobyde/boaz</a>, the library
+    this site's assistant runs on. Rungs 16 and 17 of the <a href="/labs/no-llm/">no-model programme</a>.
     All three exhibits are indexed at <a href="/labs/">/labs/</a>. The measured side is the <a href="/labs/benchmarks/">benchmarks page</a>, and the class-by-class
     scorecard is <a href="/labs/no-llm/">here</a>.
   </footer>

@@ -83,7 +83,7 @@ function provenance() {
     el('b', null, 'Recorded'),
     document.createTextNode(` rows below were measured ${recordedOn} against ${doc.library}, by each class's own harness. `),
     el('b', null, 'Live'),
-    document.createTextNode(' rows are graded in this tab on load, and again when you press the button.'),
+    document.createTextNode(` rows are graded in this tab on load, and again when you press the button, with the @shobyde/boaz build this page shipped against.`),
   );
 }
 
@@ -92,7 +92,7 @@ function stats() {
   const box = $('stats');
   for (const [value, label] of [
     [String(doc.classes.length), 'task classes'],
-    [String(liveTasks), 'graded live in this tab'],
+    [String(liveTasks), `tasks graded live (${live.size} classes)`],
     ['0', 'model calls'],
   ]) {
     const item = el('div');
@@ -106,6 +106,14 @@ let selected = null;
 function renderRows() {
   const body = $('rows');
   body.textContent = '';
+  // One class cross-checks an earlier rung instead of adding a new one; label
+  // it 4b rather than printing "4" twice in a numbered column.
+  const rungs = new Map();
+  for (const entry of doc.classes) {
+    const seen = rungs.get(entry.rung) ?? 0;
+    rungs.set(entry.rung, seen + 1);
+    entry.rungLabel = seen ? `${entry.rung}${String.fromCharCode(96 + seen)}` : String(entry.rung);
+  }
   for (const entry of doc.classes) {
     const isLive = live.has(entry.id);
     const after = isLive ? live.get(entry.id).after : entry.after;
@@ -116,14 +124,22 @@ function renderRows() {
     const tr = el('tr');
     if (selected === entry.id) tr.className = 'on';
     tr.tabIndex = 0;
-    tr.append(
-      el('td', 'num', String(entry.rung)),
-      el('td', 'cls', entry.name),
-      el('td', 'num', entry.tasks ? String(entry.tasks) : '—'),
-      el('td', 'num', pctBefore === null ? '—' : `${pctBefore}%`),
-    );
+    const tasksCell = el('td', 'num', entry.tasks ? String(entry.tasks) : '—');
+    const beforeCell = el('td', 'num', pctBefore === null ? '—' : `${pctBefore}%`);
     const afterCell = el('td', `rate ${pctAfter === null ? '' : pctAfter >= 90 ? 'good' : pctAfter < 70 ? 'bad' : ''}`, pctAfter === null ? 'see report' : `${pctAfter}%`);
-    tr.append(afterCell, el('td', null, ''));
+    // Labels for the stacked phone layout; the desktop table header carries them.
+    tasksCell.dataset.label = 'Tasks';
+    beforeCell.dataset.label = 'Naive';
+    afterCell.dataset.label = 'This library';
+    const scoredCell = el('td', null, '');
+    tr.append(
+      el('td', 'num', entry.rungLabel),
+      el('td', 'cls', entry.name),
+      tasksCell,
+      beforeCell,
+      afterCell,
+      scoredCell,
+    );
     if (!isLive && NOT_LIVE[entry.id]) tr.children[1].append(el('span', 'why', `recorded ${recordedOn} · ${NOT_LIVE[entry.id]}`));
     const tag = el('span', `tag ${isLive ? 'live' : ''}`, isLive ? 'live here' : 'recorded');
     tr.lastElementChild.append(tag);

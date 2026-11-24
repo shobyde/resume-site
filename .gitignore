@@ -6,6 +6,8 @@ node_modules/
 public/*
 !public/content
 !public/favicon.svg
+!public/og-image.png
+!public/og-boaz.png
 !public/assets
 !public/posts
 !public/sitemap.xml

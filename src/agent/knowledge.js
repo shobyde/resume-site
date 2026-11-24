@@ -43,6 +43,18 @@ const PROJECT_NAME = new RegExp(
   'i',
 );
 
+/** The projects named in the question itself, in the order they were asked about. */
+const namedProjects = (query, records) => {
+  const asked = String(query ?? '').match(new RegExp(PROJECT_NAME.source, 'gi')) ?? [];
+  const order = new Map(asked.map((name, index) => [name.toLowerCase(), index]));
+  return records
+    .filter((project) => order.has(shortName(project.title).toLowerCase()))
+    .sort(
+      (a, b) =>
+        order.get(shortName(a.title).toLowerCase()) - order.get(shortName(b.title).toLowerCase()),
+    );
+};
+
 const stackWords = (value) =>
   String(value)
     .toLowerCase()
@@ -313,18 +325,24 @@ export function createAssistantKnowledge({ posts }) {
       steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
       requiresSubject: false,
       match: (question) => /^\s*compare\b/i.test(question),
-      explain: ({ solutions }) =>
-        solutions.length >= 2 ? `Read the project list and set ${solutions.length} projects side by side` : 'Read the project list for both names',
-      compose: ({ solutions, observed }) => {
+      explain: ({ query, solutions }) => {
+        const named = namedProjects(query, DATA.projects);
+        if (named.length >= 2) {
+          return `Read the project list and set ${named.slice(0, 2).map((project) => shortName(project.title)).join(' and ')} side by side`;
+        }
+        return solutions.length >= 2 ? 'Read the project list and picked the two projects named' : 'Read the project list for both names';
+      },
+      compose: ({ query, solutions, observed }) => {
         const records = observed['projects.list']?.projects ?? [];
-        const picked = solutions
-          .map((solution) => records.find((project) => slugOf(project.title) === solution.bindings['?P']))
-          .filter(Boolean);
-        if (picked.length < 2) return '';
+        // The question names the two sides. The rule's goal returns every
+        // project, so without this filter "compare Groundglass and Boaz" would
+        // compare whichever two happen to sit first in the list.
+        const named = namedProjects(query, records);
+        if (named.length < 2) return '';
+        const picked = named.slice(0, 2);
         // One sentence each, from the project's own pitch: a comparison that
         // invents a winner would need a judgement this page does not hold.
         return picked
-          .slice(0, 2)
           .map((project) => {
             const pitch = String(project.summary ?? '')
               .replace(/<[^>]+>/g, '')
@@ -336,6 +354,22 @@ export function createAssistantKnowledge({ posts }) {
           })
           .join(' ');
       },
+    },
+    {
+      id: 'contact.private',
+      title: 'Details he does not publish',
+      // "postal code" is not a keyword: its "code" token steals "source code
+      // for readback" in the BM25 fallback. The match below still catches it.
+      keywords: ['phone', 'phone number', 'cell', 'mobile', 'telephone', 'call him', 'zip', 'where does he live'],
+      goal: 'profile(?N)',
+      requiresSubject: false,
+      match: (question) =>
+        /\b(phone|cell|mobile|telephone|home address|street address|postal code|zip)\b/i.test(question) ||
+        /^\s*(what is|what's|where is) his (home |street |mailing )?address\b/i.test(question) ||
+        /\bwhere (does|do) (he|sho) live\b/i.test(question),
+      explain: () => 'Checked the contact details this site publishes',
+      compose: () =>
+        'Only his email and LinkedIn are published here. For a phone number or anything else, email him and he will send it.',
     },
     {
       id: 'contact.email',

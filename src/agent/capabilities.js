@@ -371,6 +371,9 @@ export const siteCapabilities = [
     handler: async () => ({
       projects: DATA.projects.map((project) => ({
         title: project.title,
+        // The card's own pitch. A comparison quotes the first sentence rather
+        // than inventing a summary, so the payload has to carry it.
+        summary: project.summary,
         stack: project.stack,
         details: Boolean(project.details),
       })),

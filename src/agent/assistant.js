@@ -203,7 +203,7 @@ export function initAssistant({ posts = [] } = {}) {
   root.id = 'agentRoot';
   root.className = 'agent';
   root.innerHTML = `
-    <button class="agent__launcher" id="agentLauncher" type="button" aria-expanded="false" aria-controls="agentPanel">
+    <button class="agent__launcher" id="agentLauncher" type="button" aria-expanded="false" aria-controls="agentPanel" aria-label="Ask about Sho">
       <span class="agent__avatar" aria-hidden="true">${AVATAR}</span>
       <span class="agent__launcher-copy">
         <span class="agent__launcher-label">Ask about Sho</span>
@@ -221,7 +221,9 @@ export function initAssistant({ posts = [] } = {}) {
         </div>
         <button class="agent__close" id="agentClose" type="button" aria-label="Close the assistant">&times;</button>
       </header>
-      <div class="agent__messages" id="agentMessages" role="log" aria-live="polite"></div>
+      <div class="agent__messages" id="agentMessages" role="log" aria-live="polite">
+        <p class="agent__empty" id="agentWelcome">Ask about the work, the stack, or where something lives on this page. Every answer is composed from the facts here, and nothing is sent anywhere.</p>
+      </div>
       <div class="agent__chips" id="agentChips"></div>
       <form class="agent__composer" id="agentForm" autocomplete="off">
         <label class="sr-only" for="agentInput">Ask about Sho</label>
@@ -308,7 +310,12 @@ export function initAssistant({ posts = [] } = {}) {
     }
   }
 
+  const clearWelcome = () => {
+    messagesEl.querySelector('.agent__empty')?.remove();
+  };
+
   const addSurface = (capabilityId, messages) => {
+    clearWelcome();
     const holder = document.createElement('div');
     holder.className = 'agent__surface';
     messagesEl.appendChild(holder);
@@ -329,6 +336,7 @@ export function initAssistant({ posts = [] } = {}) {
   };
 
   function addBubble(role, text, steps = []) {
+    clearWelcome();
     const bubble = document.createElement('div');
     bubble.className = `agent__bubble agent__bubble--${role}`;
     if (text) {
@@ -385,6 +393,7 @@ export function initAssistant({ posts = [] } = {}) {
    */
   function ensureLive() {
     if (live) return live;
+    clearWelcome();
     const bubble = document.createElement('div');
     bubble.className = 'agent__bubble agent__bubble--assistant';
     const trace = document.createElement('ul');

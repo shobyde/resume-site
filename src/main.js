@@ -1,6 +1,7 @@
 /* ============================================================
    Main - assembles DOM, wires everything up
    ============================================================ */
+import boazPackage from '@shobyde/boaz/package.json';
 import { DATA } from './data.js';
 import { initBackground } from './background.js';
 import { initSmoothScroll, initReveals, initMagnetic, initProgress } from './motion.js';
@@ -45,13 +46,15 @@ function buildPage() {
 
   const projects = DATA.projects.map((p, i) => `
     <article class="project-card reveal" style="transition-delay:${i * 80}ms">
-      <div class="project-card__meta">${p.meta.map((m) => `<span>${esc(m)}</span>`).join('')}</div>
+      <div class="project-card__top">
+        <div class="project-card__meta">${p.meta.map((m) => `<span>${esc(m)}</span>`).join('')}</div>
+        ${p.details ? `<button class="project-card__toggle" type="button" aria-expanded="false" aria-controls="proj-details-${i}" aria-label="Engineering detail for ${esc(p.title)}" title="Architecture and engineering decisions">Details</button>` : ''}
+      </div>
       <h3 class="project-card__title">${p.title}</h3>
       <p class="project-card__summary">${p.summary}</p>
       <div class="project-card__stack">${p.stack.map((t) => `<span class="tag">${t}</span>`).join('')}</div>
       <div class="project-card__actions">
         ${p.links.map((l) => `<a class="project-card__link" href="${l.url}"${l.url.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${l.label}</a>`).join('')}
-        ${p.details ? `<button class="project-card__toggle" type="button" aria-expanded="false" aria-controls="proj-details-${i}">Engineering detail</button>` : ''}
       </div>
       ${p.details ? `
       <div class="project-card__details" id="proj-details-${i}">
@@ -67,6 +70,7 @@ function buildPage() {
   `).join('');
 
   return `
+  <div class="nav-scrim" aria-hidden="true"></div>
   <nav class="nav" id="nav" aria-label="Primary">
     <a href="#about" class="nav__link">About</a>
     <a href="#projects" class="nav__link">Projects</a>
@@ -103,7 +107,7 @@ function buildPage() {
     <div class="featured__card">
       <div class="featured__copy">
         <p class="featured__eyebrow"><span class="featured__pulse" aria-hidden="true"></span>Featured work <span class="featured__year">2026</span></p>
-        <h2 class="featured__title" id="featuredTitle"><a href="/boaz/">boaz</a><span class="featured__version">v0.7.14</span></h2>
+        <h2 class="featured__title" id="featuredTitle"><a href="/boaz/">boaz</a><span class="featured__version">v${boazPackage.version}</span></h2>
         <p class="featured__lede">The assistant on this page runs on it: 26 capabilities, a declarative planner, session memory and a skill runner, with no model and no network.</p>
         <ul class="featured__links">
           <li><a href="/boaz/">How it works</a></li>
@@ -204,7 +208,7 @@ function initProjectToggles() {
       const panel = document.getElementById(btn.getAttribute('aria-controls'));
       const open = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', String(!open));
-      btn.textContent = open ? 'Engineering detail' : 'Hide detail';
+      btn.textContent = open ? 'Details' : 'Close';
       panel.classList.toggle('is-open', !open);
     });
   });

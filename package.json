@@ -23,7 +23,7 @@
     "bench:browser": "node bench/no-llm/browser-agent.mjs && node bench/no-llm/browser-agent.mjs --before",
     "scorecard": "node scripts/gen-scorecard.mjs",
     "smoke:prod": "node bench/no-llm/browser-agent.mjs --base https://shobyde.com/",
-    "prebuild": "python3 scripts/check_posts.py && node bench/no-llm/lint-tasks.mjs",
+    "prebuild": "python3 scripts/check_posts.py && python3 scripts/contrast-check.py && node bench/no-llm/lint-tasks.mjs",
     "bench:threads": "node bench/threads/run.mjs && node bench/threads/run.mjs --baseline && node bench/threads/compile.mjs",
     "judge:threads": "python3 bench/threads/judge.py && python3 bench/threads/judge.py --stateless && node bench/threads/compile.mjs",
     "bench:kb": "node bench/kb/run.mjs && node bench/kb/run.mjs --heldout && node bench/kb/run.mjs --heldout2 && node bench/kb/compile.mjs",

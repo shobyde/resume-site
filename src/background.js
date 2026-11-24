@@ -201,7 +201,7 @@ function initAnimated() {
 
   /* --- 1. star fly-through ---------------------------------------- */
 
-  const STAR_COUNT = isMobile ? 900 : 2200;
+  const STAR_COUNT = isMobile ? 420 : 1200;
   const starPos = new Float32Array(STAR_COUNT * 3);
   const starCol = new Float32Array(STAR_COUNT * 3);
   const starSpeeds = new Float32Array(STAR_COUNT);
@@ -213,7 +213,7 @@ function initAnimated() {
     starPos[i * 3 + 1] = (Math.random() - 0.5) * 1600;
     starPos[i * 3 + 2] = (Math.random() - 0.5) * 2200; // straddle camera z=1000
     const mix = Math.random();
-    const c = mix < 0.12 ? cAccent : mix < 0.22 ? cTeal : cWhite;
+    const c = mix < 0.06 ? cAccent : mix < 0.14 ? cTeal : cWhite;
     const dim = 0.25 + Math.random() * 0.75; // twinkle-by-brightness
     starCol[i * 3] = c.r * dim;
     starCol[i * 3 + 1] = c.g * dim;
@@ -224,11 +224,11 @@ function initAnimated() {
   starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
   starGeo.setAttribute('color', new THREE.BufferAttribute(starCol, 3));
   const starMat = new THREE.PointsMaterial({
-    size: 3.0,
+    size: 2.4,
     map: starTex,
     vertexColors: true,
     transparent: true,
-    opacity: 0.85,
+    opacity: 0.58,
     depthWrite: false,
     blending: THREE.AdditiveBlending, // correct on a dark ground
     sizeAttenuation: true,

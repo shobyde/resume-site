@@ -3,7 +3,7 @@
 
    A skill is data: a trigger, an ordered set of capability calls where a
    later call consumes an earlier result, checks between them, and a stop
-   condition. `runSkill` (boaz/core) executes it through the same capability
+   condition. `runSkill` (@shobyde/boaz/core) executes it through the same capability
    path a single request uses, so validation, confirmation and navigation
    still apply.
 

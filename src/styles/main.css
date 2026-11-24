@@ -13,12 +13,17 @@
   --accent-dim: #3a2f8f;
   --border: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.16);
-  --card: rgba(255, 255, 255, 0.03);
-  --card-hover: rgba(255, 255, 255, 0.06);
+  /* A dark plate, not clear glass: the WebGL scene sits behind the page and
+     stars read as specks inside body copy when a card is only 3% white. */
+  --card: rgba(17, 17, 25, 0.84);
+  --card-hover: rgba(24, 24, 34, 0.92);
   --radius: 8px;
   --font-head: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+  /* Alias used by the featured plate and the assistant chrome. It was
+     referenced but never defined, so those labels fell back to Inter. */
+  --font-display: var(--font-head);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -77,8 +82,8 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
 .section-sub {
   color: var(--fg-dim);
   font-size: 1.05rem;
-  max-width: 55ch;
-  margin-bottom: 3rem;
+  max-width: 58ch;
+  margin-bottom: 2.4rem;
 }
 .mono { font-family: var(--font-mono); }
 
@@ -164,7 +169,7 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
   padding: 0 clamp(1.2rem, 4vw, 3rem);
 }
 .section {
-  padding: clamp(5rem, 12vh, 9rem) 0;
+  padding: clamp(3.75rem, 8vh, 6rem) 0;
   position: relative;
 }
 
@@ -235,6 +240,32 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 600; letter-spacing
     align-items: center;
     justify-content: center;
   }
+}
+
+/* A quiet scrim behind the floating nav. Without it, a heading passes under
+   the pill and is cut mid-line; with it, the page fades out before the nav. */
+.nav-scrim {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6.5rem;
+  z-index: 99;
+  pointer-events: none;
+  /* Solid through the nav's own height, then a short fade. A gradient that is
+     already half transparent under the pill leaves ghost text around its
+     edges; this is the band a fixed header would have had. */
+  background: linear-gradient(
+    to bottom,
+    #0b0b0f 0%,
+    #0b0b0f 50%,
+    rgba(11, 11, 15, 0.86) 64%,
+    rgba(11, 11, 15, 0) 100%
+  );
+}
+
+@media (max-width: 720px) {
+  .nav-scrim { height: 5.5rem; }
 }
 
 /* ---------- stream-text chars ---------- */

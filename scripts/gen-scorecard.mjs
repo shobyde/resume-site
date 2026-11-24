@@ -13,8 +13,8 @@
  *
  * Cost: about 90 seconds, most of it the browser-agent suite (real Chromium).
  * Run it after any change to a suite, a harness, or the library. The suites are
- * scored against the installed `boaz`, so a page built on an older tarball will
- * show the older numbers.
+ * scored against the installed `@shobyde/boaz`, so a page built on an older
+ * package will show the older numbers.
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
@@ -249,7 +249,7 @@ if (failures.length) {
 
 const doc = {
   generated: new Date().toISOString(),
-  library: `boaz ${boazVersion}`,
+  library: `@shobyde/boaz ${boazVersion}`,
   note: 'Every number here was parsed from the harness output in the same run that wrote this file. The five slot-filling classes are also graded live in the browser by /labs/no-llm/, through bench/no-llm/grade.mjs, which is the module the Node harness uses.',
   classes,
 };

@@ -23,13 +23,16 @@ on a dark stock.
 - `--fg: #e8e8ee` is body ink. `--fg-dim` and `--fg-mute` are the two
   de-emphasis steps; `--fg-mute` is the contrast floor and must not be pushed
   darker without a measurement.
-- Surfaces are translucent white at 3 percent (`--card`) and 6 percent on hover
-  (`--card-hover`), with `--border` / `--border-strong` hairlines. Depth comes
-  from those hairlines and blur, not from drop shadows.
+- Surfaces are near-black plates over the scene: `--card` is a high-opacity
+  dark fill and `--card-hover` lifts it another step, with `--border` /
+  `--border-strong` hairlines. They read as paper on the ground, not glass, so
+  stars from the WebGL scene do not show through body copy. Depth comes from
+  the hairlines and blur, not from drop shadows.
 - `--radius: 8px` for cards, panels and buttons. Tags, nav links and toggles are
   100px pills. Do not introduce a third radius.
 - The nav is a fixed frosted pill: `rgba(18, 18, 26, 0.7)` plus 20px backdrop
-  blur, centered at the top.
+  blur, centered at the top. A fixed full-width scrim fades the page out behind
+  it, so a heading never passes through the pill mid-line.
 
 **The WebGL scene is atmosphere, never content.** `#bg3d` is a fixed,
 `pointer-events: none`, `aria-hidden` canvas behind the `.site` layer. It
@@ -132,8 +135,10 @@ Tokens and inventory:
   `index.html` puts on `<html>`, so no-JS visitors never see blank content.
 - Scroll: Lenis smooth scroll, a top reading-progress bar scaled by scroll
   fraction, and the hero support copy drifting and fading as the page moves.
-- Pointer: magnetic offset on `.btn` (pointer devices only), card lift on hover,
-  radial highlight following the pointer across `.post-card`.
+- Pointer: magnetic offset on `.btn` (pointer devices only), a lift on the
+  post card (which is a link), and a radial highlight following the pointer
+  across `.post-card`. Cards, tags, stats and skill groups that are not
+  clickable do not move on hover: a lift promises an action.
 - Data: stat numerals count up over 1.4s on first view.
 - Text: per-character opacity stream on About paragraphs, section subtitles, and
   experience bullets.
@@ -218,6 +223,9 @@ Non-negotiable, checked on every change:
 - **No numbered kickers above section headings.** A sequence number above every
   `h2` turns the page into a template and tells the reader nothing the scroll
   position already tells them. The heading carries the hierarchy.
+- The project "Detail" control lives in the card's top row, opposite the meta
+  line. It is a control, not a footer ornament, and keeping it out of the
+  links row stops the card footers from going ragged.
 - A mono label may still appear where it adds information the heading cannot
   carry (a date stamp, a category, a project status). It must not repeat the
   heading, must not be numbered, and must not sit above every section on the
@@ -245,3 +253,24 @@ is a decision for Sho, recorded here before code lands. A clarification or a
 correction of something the code already does can land with the code in the same
 change, provided both the doc and the implementation move together. Adding a new
 deviation to section 8 requires a ticket id and an owner.
+
+## 10. Cleanup batch (2026-11-24)
+
+- The package publishes as `@shobyde/boaz`; the boaz page, install block, entry
+  point table and the homepage badge all follow the scoped name. The homepage
+  badge reads the installed package's version instead of a hand-typed string.
+- The assistant compares the two projects the question names, not the first two
+  in the list, and answers a phone/address question with the published-contact
+  rule rather than routing to About.
+- Benchmark scores separate the deterministic thread count from the judge's
+  stricter rubric, so 28/30, 21/30, 25/30 and 20/30 read as four measurements
+  rather than a contradiction. The thread matrix has one header row; the
+  ladder chart uses one colour for the movement and one for the destination;
+  the handbook bars are pass rates, not raw counts on mismatched totals.
+- On phones, the thread matrix becomes labelled rows, the handbook table
+  becomes labelled metric tiles, and the scorecard becomes a card per class.
+  Wide charts scroll with a visible hint. Long code samples wrap; nothing is
+  clipped at a panel edge.
+- The new-article notice waits for the log section and dismisses itself. The
+  assistant launcher collapses to a circular target on phones, and the footer
+  reserves space for it. Non-interactive cards and tags no longer lift on hover.

@@ -48,7 +48,7 @@ document.querySelector('#hero-stateless').textContent =
 
 const meta = document.querySelector('#meta');
 meta.textContent =
-  `boaz ${data.library} · ${data.threads.memory.total} turns over ${data.threads.threads.length} threads` +
+  `measured on @shobyde/boaz ${data.library} · ${data.threads.memory.total} turns over ${data.threads.threads.length} threads` +
   (data.judge ? ` · judged by ${data.judge.model}` : ' · judge pending') +
   ` · ${when.toISOString().slice(0, 10)}`;
 
@@ -66,11 +66,13 @@ const tiles = [
     note: `<b>${data.threads.stateless.kinds.context.passed}/${data.threads.stateless.kinds.context.total}</b> stateless`,
   },
   {
-    label: 'Tools matched',
+    label: 'Judge: answered',
     value: data.judge
-      ? `${data.judge.tools.ok}<small>/${data.judge.tools.total}</small>`
-      : `${data.threads.memory.kinds.tool.passed}<small>/${data.threads.memory.kinds.tool.total}</small>`,
-    note: data.judge ? 'judged against the tool the turn needed' : 'deterministic tool check',
+      ? `${data.judge.answered}<small>/${data.judge.turns}</small>`
+      : 'pending',
+    note: data.judge
+      ? `<b>${data.judge.stateless?.answered ?? '–'}/${data.judge.stateless?.turns ?? data.judge.turns}</b> with a fresh engine`
+      : 'the judge has not run yet',
   },
   {
     label: 'Readability',
@@ -93,25 +95,20 @@ for (const tile of tiles) {
 /* ---------------------------------------------------------------- matrix */
 const matrix = document.querySelector('#matrix');
 const grid = text('div', 'matrix');
-for (const [name, count] of [
-  ['Thread', 'turns'],
-  ['boaz', ''],
-  ['stateless', ''],
-]) {
-  const head = text('div', 'row head');
-  head.appendChild(text('span', '', name));
-  head.appendChild(text('span', '', count));
-  head.appendChild(text('span', '', ''));
-  grid.appendChild(head);
-}
+const head = text('div', 'row head');
+head.appendChild(text('span', '', `Thread · ${data.threads.memory.total} turns`));
+head.appendChild(text('span', '', 'boaz'));
+head.appendChild(text('span', '', 'stateless'));
+grid.appendChild(head);
 for (const thread of data.threads.threads) {
   const row = text('div', 'row');
   const name = text('div', 'name');
   name.appendChild(text('b', '', thread.title));
   name.appendChild(text('span', '', thread.id));
   row.appendChild(name);
-  for (const key of ['pass', 'baseline']) {
+  for (const [key, label] of [['pass', 'boaz'], ['baseline', 'stateless']]) {
     const dots = text('div', 'dots');
+    dots.appendChild(text('span', 'dots-label', label));
     for (const turn of thread.turns) {
       const dot = text('span', `dot ${turn[key] ? 'on' : 'off'}`);
       dot.title = `${turn.ask}${turn[key] ? '' : ' (missed)'}`;
@@ -194,14 +191,34 @@ function renderLadder() {
     ).textContent = rung.label;
     const x1 = left + ((right - left) * rung.before) / 100;
     const x2 = left + ((right - left) * rung.after) / 100;
-    chart.appendChild(svg('line', { x1, y1: y, x2, y2: y, stroke: COLORS[rung.dimension], 'stroke-opacity': 0.35, 'stroke-width': 2 }));
-    chart.appendChild(svg('circle', { cx: x1, cy: y, r: 3.4, fill: 'var(--bg)', stroke: 'var(--bad)', 'stroke-width': 1.6 }));
-    chart.appendChild(svg('circle', { cx: x2, cy: y, r: 4.6, fill: COLORS[rung.dimension] }));
+    // One colour for the movement, one for the destination: the category is
+    // already carried by the group tick and the means strip, so a separate
+    // hue for every rung turns the chart into a rainbow with no legend.
+    chart.appendChild(svg('line', { x1, y1: y, x2, y2: y, stroke: 'var(--border-strong)', 'stroke-width': 2 }));
+    const beforeDot = svg('circle', { cx: x1, cy: y, r: 3.4, fill: 'var(--bg)', stroke: 'var(--bad)', 'stroke-width': 1.6 });
+    beforeDot.appendChild(svg('title', {})).textContent = `${rung.label}: ${rung.before}% before, ${rung.after}% after`;
+    chart.appendChild(beforeDot);
+    const afterDot = svg('circle', { cx: x2, cy: y, r: 4.6, fill: 'var(--accent2)' });
+    afterDot.appendChild(svg('title', {})).textContent = `${rung.label}: ${rung.before}% before, ${rung.after}% after (n=${rung.n})`;
+    chart.appendChild(afterDot);
     label(chart, x2 + 10, y + 3.5, `${rung.after}%`, { fill: 'var(--dim)', 'font-size': 9.5 });
-    label(chart, x1 - 8, y + 3.5, `${rung.before}%`, { 'text-anchor': 'end', fill: 'var(--mute)', 'font-size': 9 });
+    // A 0% before-dot sits on the axis; put its label inside the plot so it
+    // does not collide with the group tick.
+    const beforeX = x1 < left + 26 ? x1 + 8 : x1 - 8;
+    label(chart, beforeX, y + 3.5, `${rung.before}%`, {
+      'text-anchor': x1 < left + 26 ? 'start' : 'end',
+      fill: 'var(--mute)',
+      'font-size': 9,
+    });
   });
 }
 renderLadder();
+const ladderLegend = text('div', 'legend');
+ladderLegend.innerHTML =
+  '<span><i class="lg-before"></i>before the release</span>' +
+  '<span><i class="lg-after"></i>after</span>' +
+  '<span>the tick at 0 marks a new category</span>';
+document.querySelector('#ladder-chart').after(ladderLegend);
 
 const means = document.querySelector('#means');
 for (const dimension of data.dimension) {
@@ -210,8 +227,9 @@ for (const dimension of data.dimension) {
   key.style.color = COLORS[dimension.id];
   cell.appendChild(key);
   const value = text('p', 'v');
-  value.innerHTML = `${dimension.before} → ${dimension.after}<span> ${dimension.suites} suites</span>`;
+  value.innerHTML = `${dimension.before} → ${dimension.after}`;
   cell.appendChild(value);
+  cell.appendChild(text('p', 'n', `${dimension.suites} suite${dimension.suites === 1 ? '' : 's'}`));
   means.appendChild(cell);
 }
 
@@ -241,10 +259,12 @@ function renderReleases() {
     const px = x(index);
     const py = y(point.suites_at_90);
     path += index === 0 ? `M ${px} ${py}` : ` H ${px} V ${py}`;
-    chart.appendChild(svg('circle', { cx: px, cy: py, r: 4.5, fill: 'var(--accent2)' }));
+    const dot = svg('circle', { cx: px, cy: py, r: 4.5, fill: 'var(--accent2)' });
+    dot.appendChild(svg('title', {})).textContent =
+      `v${point.version}: ${point.suites_at_90} suites at 90%+` + (point.note ? ` (${point.note})` : '');
+    chart.appendChild(dot);
     label(chart, px, py - 12, String(point.suites_at_90), { 'text-anchor': 'middle', fill: 'var(--fg)', 'font-size': 10 });
-    label(chart, px, bottom + 20, `v${point.version}`, { 'text-anchor': 'middle', fill: 'var(--dim)', 'font-size': 9.5 });
-    if (point.note) label(chart, px, bottom + 34, point.note, { 'text-anchor': 'middle', 'font-size': 8.5 });
+    label(chart, px, bottom + 20, `v${point.version}`, { 'text-anchor': 'middle', fill: 'var(--dim)', 'font-size': 9 });
   });
   const line = svg('path', { d: path, fill: 'none', stroke: 'var(--accent2)', 'stroke-width': 2, 'stroke-opacity': 0.8 });
   chart.insertBefore(line, chart.firstChild);
@@ -259,7 +279,7 @@ if (!data.judge) {
   const bars = text('div', 'bars');
   const rows = [
     ['Answered', data.judge.answered, data.judge.turns],
-    ['Tool called correctly', data.judge.tools.ok, data.judge.tools.total],
+    ['Tool choice', data.judge.tools.ok, data.judge.tools.total],
     ['Grounded claims', data.judge.grounded, 100],
     ['Readability', data.judge.readability, 5],
   ];
@@ -285,8 +305,10 @@ if (!data.judge) {
     const line = text(
       'p',
       'sub',
-      `Fresh engine per turn: ${data.judge.stateless.answered}/${data.judge.stateless.turns} answered, ` +
-        `${data.judge.stateless.readability}/5 readable. The judge saw the same rubric and no expected facts.`,
+      `The judge's rubric is stricter than the deterministic check, which is why it scores fewer turns: ` +
+        `with a fresh engine it answered ${data.judge.stateless.answered}/${data.judge.stateless.turns} ` +
+        `(deterministic: ${data.threads.stateless.passed}/${data.threads.stateless.total}), and readability was ` +
+        `${data.judge.stateless.readability}/5. It saw the same rubric and no expected facts.`,
     );
     line.style.marginTop = '0.9rem';
     bars.appendChild(line);
@@ -298,7 +320,7 @@ if (!data.judge) {
 const arenaTable = document.querySelector('#arena-table');
 if (data.kb && arenaTable) {
   const kbdata = data.kb;
-  const rows = [['Approach', 'knowledge', 'context', 'tools', 'planning', 'read', 'all']];
+  const rows = [['Approach', 'know', 'ctx', 'tools', 'plan', 'read', 'all']];
   for (const system of kbdata.systems) {
     rows.push([
       system.label,
@@ -325,6 +347,7 @@ if (data.kb && arenaTable) {
         continue;
       }
       const cellNode = text('span', 'kcell');
+      cellNode.dataset.label = ['know', 'ctx', 'tools', 'plan', 'read', 'all'][column - 1] || '';
       if (index > 0 && column < 6) {
         const system = kbdata.systems[index - 1];
         const key = ['knowledge', 'context', 'tool', 'planning', 'readability'][column - 1];
@@ -363,33 +386,53 @@ if (data.kb && arenaTable) {
     note.after(judgeLine);
   }
 
-  // Three bars per approach: fitted, paraphrase set, fresh.
+  // Four bars per approach: fitted, paraphrase set, second set, fresh. They
+  // have different totals, so the axis is pass rate, not raw passes: a 30/91
+  // bar and an 8/23 bar cannot share a count axis without lying.
   const chart = document.querySelector('#arena-bars');
   const width = 980;
-  const rowH = 52;
-  const top = 26;
+  const rowH = 62;
+  const top = 40;
   const left = 210;
-  const right = width - 90;
-  const height = top + kbdata.systems.length * rowH + 10;
+  const right = width - 74;
+  const height = top + kbdata.systems.length * rowH + 8;
   chart.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  for (const tick of [0, 25, 50, 75, 100]) {
+    const x = left + ((right - left) * tick) / 100;
+    chart.appendChild(svg('line', { x1: x, y1: top - 14, x2: x, y2: height - 2, stroke: 'var(--line)' }));
+    label(chart, x, top - 22, `${tick}%`, { 'text-anchor': 'middle', 'font-size': 9 });
+  }
   const series = [
-    ['fitted', 'var(--accent2)'],
-    ['dev', 'var(--accent)'],
-    ['fresh', 'var(--warn)'],
-    ['fresh2', 'var(--bad)'],
+    ['fitted', 'var(--accent2)', 'fitted suite'],
+    ['dev', 'var(--accent)', 'paraphrase set'],
+    ['fresh', 'var(--warn)', 'second set'],
+    ['fresh2', 'var(--bad)', 'fresh set'],
   ];
   for (const [index, system] of kbdata.systems.entries()) {
     const y = top + index * rowH;
     chart.appendChild(
-      svg('text', { x: left - 14, y: y + 18, 'text-anchor': 'end', 'font-family': 'var(--sans)', 'font-size': 11.5, fill: 'var(--fg)' }),
+      svg('text', { x: left - 14, y: y + 20, 'text-anchor': 'end', 'font-family': 'var(--sans)', 'font-size': 11.5, fill: 'var(--fg)' }),
     ).textContent = system.label;
-    for (const [row, [key, color]] of series.entries()) {
+    for (const [row, [key, color, name]] of series.entries()) {
       const stat = system[key];
       if (!stat) continue;
       const rate = stat.passed / stat.total;
       const barY = y + row * 13;
-      chart.appendChild(svg('rect', { x: left, y: barY, width: (right - left) * rate, height: 9, rx: 3, fill: color, 'fill-opacity': 0.85 }));
-      label(chart, left + (right - left) * rate + 8, barY + 8.5, `${stat.passed}/${stat.total}`, { 'font-size': 9, fill: 'var(--dim)' });
+      const bar = svg('rect', {
+        x: left,
+        y: barY,
+        width: Math.max(2, (right - left) * rate),
+        height: 9,
+        rx: 3,
+        fill: color,
+        'fill-opacity': 0.82,
+      });
+      bar.appendChild(svg('title', {})).textContent = `${name}: ${stat.passed}/${stat.total} (${Math.round(rate * 100)}%)`;
+      chart.appendChild(bar);
+      label(chart, left + (right - left) * rate + 8, barY + 8.5, `${Math.round(rate * 100)}%`, {
+        'font-size': 9,
+        fill: 'var(--dim)',
+      });
     }
   }
 }

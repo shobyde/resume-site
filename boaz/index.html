@@ -12,9 +12,14 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="shobyde.com" />
 <meta property="og:url" content="https://shobyde.com/boaz/" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://shobyde.com/og-boaz.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Boaz: an assistant with no model. Nothing to hide." />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Boaz: a free in-browser assistant with no LLM" />
 <meta name="twitter:description" content="Free, MIT, no API key, no model download. Answers come from the app's own capabilities, facts and rules, and every sentence is traceable to the rows that produced it." />
+<meta name="twitter:image" content="https://shobyde.com/og-boaz.png" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -71,8 +76,8 @@ html { color-scheme: dark; scroll-behavior: smooth; }
 body {
   margin: 0;
   background:
-    radial-gradient(900px 520px at 12% -8%, rgba(124,108,255,0.16), transparent 60%),
-    radial-gradient(760px 460px at 92% 4%, rgba(0,217,184,0.10), transparent 62%),
+    radial-gradient(900px 520px at 12% -8%, rgba(124,108,255,0.08), transparent 60%),
+    radial-gradient(760px 460px at 92% 4%, rgba(0,217,184,0.05), transparent 62%),
     var(--bg);
   color: var(--fg);
   font-family: var(--body);
@@ -97,7 +102,7 @@ a:hover { color: var(--fg); }
 .hero__aside { padding-top: 0.5rem; }
 .hero__aside figcaption { margin-top: 0.65rem; font-family: var(--mono); font-size: 0.68rem; line-height: 1.6; color: var(--dim); max-width: 46ch; }
 .eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent2); margin: 0 0 1.1rem; }
-.eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); box-shadow: 0 0 0 4px rgba(0,217,184,0.12); }
+.eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); }
 h1 { font-family: var(--head); font-size: clamp(2.15rem, 4.6vw, 3.55rem); line-height: 1.05; letter-spacing: -0.032em; margin: 0 0 1.1rem; text-wrap: balance; }
 h1 em { font-style: normal; color: var(--accent-soft); }
 .lede { font-size: clamp(1.02rem, 2.2vw, 1.2rem); color: var(--dim); max-width: 46ch; margin: 0 0 1.6rem; }
@@ -120,6 +125,15 @@ section { padding: 3.4rem 0 0.6rem; }
 h2 { font-family: var(--head); font-size: clamp(1.55rem, 3.4vw, 2.3rem); letter-spacing: -0.028em; line-height: 1.1; margin: 0 0 0.9rem; text-wrap: balance; }
 h3 { font-family: var(--head); font-size: 1.02rem; letter-spacing: -0.01em; margin: 0 0 0.35rem; }
 p { color: var(--dim); margin: 0 0 1rem; }
+p code, li code, .tight code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  color: var(--accent-soft);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.05em 0.32em;
+}
 p.tight { max-width: 54ch; text-wrap: pretty; }
 strong { color: var(--fg); font-weight: 600; }
 
@@ -127,13 +141,23 @@ strong { color: var(--fg); font-weight: 600; }
 .steps { display: grid; gap: 0.75rem; margin-top: 1.4rem; counter-reset: step; }
 .step { display: grid; grid-template-columns: 3.6rem 1fr; gap: 1rem; padding: 1.15rem 1.2rem; background: rgba(255,255,255,0.025); border: 1px solid var(--line); border-radius: 12px; }
 .step::before { counter-increment: step; content: counter(step, decimal-leading-zero); font-family: var(--mono); font-size: 0.82rem; color: var(--accent-soft); padding-top: 0.2rem; }
-.step p { margin: 0.2rem 0 0; font-size: 0.94rem; }
+.step p { margin: 0.2rem 0 0; font-size: 0.94rem; max-width: 78ch; }
 .step p:last-child { margin-bottom: 0; }
 
 /* code */
 .code { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin: 1.1rem 0 0; }
 .code__bar { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.85rem; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 0.68rem; color: var(--mute); }
-.code pre { margin: 0; padding: 0.95rem 1rem; overflow-x: auto; font-family: var(--mono); font-size: 0.78rem; line-height: 1.7; color: #d6d6e2; }
+.code pre {
+  margin: 0;
+  padding: 0.95rem 1rem;
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  line-height: 1.7;
+  color: #d6d6e2;
+  /* Wrapping beats a clipped line with no visible scrollbar. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 /* The surface sample is data, not code: wrap it rather than clip the right edge. */
 .code--wrap pre { white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: hidden; font-size: 0.74rem; }
 .k { color: #b9a6ff; } /* keyword */
@@ -200,8 +224,9 @@ strong { color: var(--fg); font-weight: 600; }
 .console__note br { display: block; content: ""; margin-top: 0.2rem; }
 .console__note code { color: var(--accent-soft); }
 .console { border: 1px solid var(--line); border-radius: 14px; background: var(--panel-2); padding: 1rem; margin-top: 1.2rem; }
-.console__log { display: grid; gap: 0.6rem; min-height: 7rem; max-height: 22rem; overflow-y: auto; padding-right: 0.3rem; }
-.console__empty { color: var(--mute); font-size: 0.9rem; }
+.console__log { display: grid; gap: 0.6rem; min-height: 0; max-height: 22rem; overflow-y: auto; padding-right: 0.3rem; }
+.console__log:not(:empty) { padding-top: 0.1rem; }
+.console__empty { margin: 0; color: var(--mute); font-size: 0.88rem; line-height: 1.5; }
 .console form { display: flex; gap: 0.5rem; margin-top: 0.85rem; }
 .console input {
   flex: 1; min-width: 0; padding: 0.62rem 0.75rem; border-radius: 9px;
@@ -245,6 +270,7 @@ footer a:hover { color: var(--fg); }
   <nav class="bar">
     <a href="/">← shobyde.com</a>
     <div class="bar__right">
+      <a href="https://www.npmjs.com/package/@shobyde/boaz">npm</a>
       <a href="https://github.com/shobyde/boaz">GitHub</a>
       <a href="https://github.com/shobyde/boaz/releases">Releases</a>
     </div>
@@ -301,6 +327,8 @@ footer a:hover { color: var(--fg); }
     <div class="code code--wrap">
       <div class="code__bar"><span>terminal</span><span>v0.8.2</span></div>
 <pre>npm install @shobyde/boaz
+<span class="c"># or pin the release tarball, which is the same dist/</span>
+npm install https://github.com/shobyde/boaz/releases/download/v0.8.2/shobyde-boaz-0.8.2.tgz
 
 npx boaz init --skill    <span class="c"># the skill that keeps capabilities in sync</span>
 npx boaz verify          <span class="c"># check the declarations, exit 1 on an error</span>
@@ -309,14 +337,14 @@ npx boaz bench --probes agent-probes.json --module agent-setup.mjs --samples</pr
     </div>
 
     <div class="api">
-      <div class="api__row"><code>boaz/core</code><span>Registry, JSON Schema validation, BM25 retrieval, the tool loop, and a deterministic keyword engine</span></div>
-      <div class="api__row"><code>boaz/rules</code><span>Facts, Datalog rules, and the answer contract that turns solutions into a sentence</span></div>
-      <div class="api__row"><code>boaz/vite</code><span>Scans the declarations with the TypeScript AST, emits the manifest, serves it as <code>boaz:manifest</code></span></div>
-      <div class="api__row"><code>boaz/probes</code><span>Turns a manifest into a probe file, in the CLI or in a browser tab</span></div>
-      <div class="api__row"><code>boaz/build</code><span>The AST extractor, the diagnostic code table and the terminal report</span></div>
-      <div class="api__row"><code>boaz/react</code><span><code>AgentProvider</code>, <code>useAgentChat</code>, <code>useRegisterCapability</code>. The core needs no framework</span></div>
-      <div class="api__row"><code>boaz/dom</code><span>Labelled, budgeted page text for a custom engine that wants grounding</span></div>
-      <div class="api__row"><code>boaz/extract</code><span>Email, phone, URL and LinkedIn scanning for rules that need a value off the page</span></div>
+      <div class="api__row"><code>@shobyde/boaz/core</code><span>Registry, JSON Schema validation, BM25 retrieval, the tool loop, and a deterministic keyword engine</span></div>
+      <div class="api__row"><code>@shobyde/boaz/rules</code><span>Facts, Datalog rules, and the answer contract that turns solutions into a sentence</span></div>
+      <div class="api__row"><code>@shobyde/boaz/vite</code><span>Scans the declarations with the TypeScript AST, emits the manifest, serves it as <code>boaz:manifest</code></span></div>
+      <div class="api__row"><code>@shobyde/boaz/probes</code><span>Turns a manifest into a probe file, in the CLI or in a browser tab</span></div>
+      <div class="api__row"><code>@shobyde/boaz/build</code><span>The AST extractor, the diagnostic code table and the terminal report</span></div>
+      <div class="api__row"><code>@shobyde/boaz/react</code><span><code>AgentProvider</code>, <code>useAgentChat</code>, <code>useRegisterCapability</code>. The core needs no framework</span></div>
+      <div class="api__row"><code>@shobyde/boaz/dom</code><span>Labelled, budgeted page text for a custom engine that wants grounding</span></div>
+      <div class="api__row"><code>@shobyde/boaz/extract</code><span>Email, phone, URL and LinkedIn scanning for rules that need a value off the page</span></div>
     </div>
   </section>
 
@@ -331,14 +359,12 @@ npx boaz bench --probes agent-probes.json --module agent-setup.mjs --samples</pr
       </div>
       <form id="demoForm" autocomplete="off">
         <label class="sr-only" for="demoInput" style="position:absolute;left:-9999px">Ask the assistant</label>
-        <input id="demoInput" type="text" placeholder="which projects use Python?" />
+        <input id="demoInput" type="text" placeholder="Ask a question about this page" />
         <button type="submit" id="demoSend">Send</button>
       </form>
       <div class="console__chips" id="demoChips">
         <button type="button">which projects use Python?</button>
-        <button type="button">what has he built?</button>
         <button type="button">show the Hobnob card</button>
-        <button type="button">show the contact card</button>
         <button type="button">what is his email?</button>
         <button type="button">how many posts are there?</button>
       </div>
@@ -403,7 +429,7 @@ npx boaz bench --probes agent-probes.json --module agent-setup.mjs --samples</pr
       <div class="step">
         <div>
           <h3>The question is ranked against that manifest</h3>
-          <p>BM25 over titles, keywords and descriptions. Twenty-two capabilities take about three microseconds, which is why retrieval is not the thing the visitor waits for.</p>
+          <p>BM25 over titles, keywords and descriptions. Twenty-six capabilities take about three microseconds, which is why retrieval is not the thing the visitor waits for.</p>
         </div>
       </div>
       <div class="step">
@@ -415,7 +441,8 @@ npx boaz bench --probes agent-probes.json --module agent-setup.mjs --samples</pr
       <div class="step">
         <div>
           <h3>Rules join the question to the facts</h3>
-          <p>A small Datalog subset: joins, scoped assumptions, a depth cap. <code class="mono">projects_using(?P) :- uses(?P, ?T), asked(?T).</code></p>
+          <p>A small Datalog subset: joins, scoped assumptions, a depth cap.</p>
+          <p><code class="mono">projects_using(?P) :- uses(?P, ?T), asked(?T).</code></p>
         </div>
       </div>
       <div class="step">
@@ -428,8 +455,9 @@ npx boaz bench --probes agent-probes.json --module agent-setup.mjs --samples</pr
 
     <div class="split">
       <div class="code">
-        <div class="code__bar"><span>src/agent/assistant.js</span><span>the rule</span></div>
-<pre><span class="c">// The app's half: which tool, and how a solution becomes a sentence.</span>
+        <div class="code__bar"><span>src/agent/knowledge.js</span><span>the rule</span></div>
+<pre><span class="c">// The app's half: which tool, and how a
+// solution becomes a sentence.</span>
 {
   id: <span class="s">'projects.using'</span>,
   title: <span class="s">'Which projects use a technology'</span>,
@@ -437,12 +465,15 @@ npx boaz bench --probes agent-probes.json --module agent-setup.mjs --samples</pr
   goal: <span class="s">'projects_using(?P)'</span>,
   steps: [{
     capabilityId: <span class="s">'projects.list'</span>,
-    toFacts: (result) =&gt; result.projects.flatMap((p) =&gt; [
-      <span class="f">fact</span>(<span class="s">'project'</span>, slug(p.title), p.title),
-      ...p.stack.map((t) =&gt; <span class="f">fact</span>(<span class="s">'uses'</span>, slug(p.title), t)),
-    ]),
+    toFacts: (result) =&gt;
+      result.projects.flatMap((p) =&gt; [
+        <span class="f">fact</span>(<span class="s">'project'</span>, slug(p.title), p.title),
+        ...p.stack.map((t) =&gt;
+          <span class="f">fact</span>(<span class="s">'uses'</span>, slug(p.title), t)),
+      ]),
   }],
-  compose: ({ solutions }) =&gt; <span class="s">`${solutions.length} projects use it.`</span>,
+  compose: ({ solutions }) =&gt;
+    <span class="s">`${solutions.length} projects use it.`</span>,
 }</pre>
       </div>
 
@@ -582,7 +613,7 @@ Readback and Groundglass use it.</pre>
       </div>
       <div>
         <h3>Where is it used today?</h3>
-        <p>This site's assistant runs on it: 22 declared capabilities, rules over the project and post data, and a page scan for contact details. Source and release tarball are on <a href="https://github.com/shobyde/boaz">GitHub</a>.</p>
+        <p>This site's assistant runs on it: 26 declared capabilities, rules over the project and post data, and a page scan for contact details. Install it with <code class="mono">npm install @shobyde/boaz</code>, or read the source and the release tarball on <a href="https://github.com/shobyde/boaz">GitHub</a>.</p>
       </div>
     </div>
   </section>
@@ -592,7 +623,7 @@ Readback and Groundglass use it.</pre>
     <h2>Boaz kept the record.</h2>
     <p class="tight">In Ruth 4, Boaz settles a transaction at the city gate, in front of ten elders, where it can be witnessed: "you are witnesses this day." In Ruth 2:11, asked why Ruth had found favor, he answers from what had been reported to him, not from what he could guess.</p>
     <p class="tight">That is the contract this library keeps, in both directions. A change happens where it can be seen: the id must exist in the manifest, the arguments are validated before a handler runs, and a mutating action waits for a confirmation. An answer comes from the record: facts the app declared, rules it wrote, or the page it is standing on, with the steps shown above the sentence.</p>
-    <p class="note"><b>Formerly client-agent.</b> The package carried that name through 0.6.10. 0.7.0 renames the package, the CLI, the virtual module and the shipped skill to <span class="mono">boaz</span>; the entry points and the behaviour are unchanged.</p>
+    <p class="note"><b>Formerly client-agent.</b> The package carried that name through 0.6.10. 0.7.0 renamed the package, the CLI, the virtual module and the shipped skill to <span class="mono">boaz</span>. From 0.8.1 it publishes on npm as <span class="mono">@shobyde/boaz</span>, because the unscoped name trips npm's typo-squatting filter: the import paths carry the scope, the CLI is still <span class="mono">boaz</span>, and the behaviour is unchanged.</p>
   </section>
 
   <footer>

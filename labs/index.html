@@ -40,7 +40,6 @@ h1 { font-family: var(--display); font-size: clamp(2rem, 5vw, 3.2rem); line-heig
 .lede { color: var(--dim); max-width: 62ch; margin: 0; }
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 2.5rem; }
 .card { display: flex; flex-direction: column; gap: 0.5rem; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 1.3rem; text-decoration: none; color: inherit; position: relative; overflow: hidden; transition: border-color 160ms, transform 160ms; }
-.card::before { content: ''; position: absolute; inset: 0 0 auto; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent); opacity: 0.6; }
 .card:hover, .card:focus-visible { border-color: var(--accent); transform: translateY(-2px); }
 .card .num { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.16em; color: var(--mute); }
 .card h2 { font-family: var(--display); font-size: 1.3rem; margin: 0; letter-spacing: -0.01em; }
@@ -68,7 +67,7 @@ footer a { color: var(--mute); }
       <span class="num">01 · judge</span>
       <h2>Benchmarks</h2>
       <p>Twelve threads with and without a session, eighteen recorded suites, and five approaches on a 170-fact handbook that is not this site.</p>
-      <span class="stat">21/30 threaded · 4/14 fresh</span>
+      <span class="stat">28/30 with memory · 21/30 fresh</span>
     </a>
     <a class="card" href="/labs/no-llm/">
       <span class="num">02 · scorecard</span>
@@ -85,7 +84,7 @@ footer a { color: var(--mute); }
   </div>
 
   <footer>
-    <span>Built on <a href="/boaz/">boaz</a>, which ships no model.</span>
+    <span>Built on <a href="/boaz/">@shobyde/boaz</a>, which ships no model.</span>
     <span><a href="/">shobyde.com</a> · <a href="/archive/">archive</a></span>
   </footer>
 </div>

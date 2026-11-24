@@ -42,16 +42,45 @@ function showNewPostNotice(posts) {
   meta.textContent = bits.join(' · ');
 
   const markSeen = () => { try { localStorage.setItem(SEEN_KEY, newest.slug); } catch (e) { /* ignore */ } };
-  close.addEventListener('click', () => {
-    markSeen();
+  let timer = 0;
+  let shown = false;
+  const hide = (seen = true) => {
+    if (seen) markSeen();
+    window.clearTimeout(timer);
     box.classList.remove('is-visible');
-    box.hidden = true;
-  });
-  title.addEventListener('click', markSeen);
+    window.setTimeout(() => { box.hidden = true; }, 350);
+  };
+  close.addEventListener('click', () => hide(true));
+  title.addEventListener('click', () => markSeen());
 
-  box.hidden = false;
-  if (motionPrefs.reduced) box.classList.add('is-visible');
-  else requestAnimationFrame(() => box.classList.add('is-visible'));
+  // Do not sit on top of the hero on a first visit. Wait until the reader has
+  // moved past the fold; then show it once, briefly, and let it go.
+  const reveal = () => {
+    if (shown) return;
+    shown = true;
+    box.hidden = false;
+    if (motionPrefs.reduced) box.classList.add('is-visible');
+    else requestAnimationFrame(() => box.classList.add('is-visible'));
+    timer = window.setTimeout(() => hide(true), 8000);
+  };
+  // Show the notice where it is relevant: when the log comes into view. It
+  // used to sit over the hero and the project cards for the whole visit.
+  const blog = document.getElementById('blog');
+  if (location.hash === '#blog') reveal();
+  else if (blog && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      io.disconnect();
+      window.setTimeout(reveal, 700);
+    }, { threshold: 0.15 });
+    io.observe(blog);
+  } else {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY >= window.innerHeight * 0.6) reveal();
+    }, { passive: true });
+  }
+  box.addEventListener('pointerenter', () => window.clearTimeout(timer));
+  box.addEventListener('focusin', () => window.clearTimeout(timer));
 }
 
 function renderBlogStats(posts) {
