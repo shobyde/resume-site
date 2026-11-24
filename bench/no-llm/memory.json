@@ -1,0 +1,93 @@
+{
+  "class": "memory",
+  "rung": 14,
+  "note": "Rung 14: working memory across a conversation. Each conversation is a scripted session driven through the real engine. `before` is the panel as it shipped (engine memory: the last turn's rule and entities, no recap, no decay). `after` is the panel with `createSessionMemory`: pointer rewrites from the most salient subject, a coverage answer, and decay that drops a subject the session let go of. A task passes only when every key it names matches.",
+  "conversations": [
+    {
+      "id": "gap",
+      "turns": [
+        "tell me about hobnob",
+        "what is his email",
+        "how many posts has he written",
+        "and its stack"
+      ],
+      "tasks": [
+        { "id": "g1", "at": 3, "kind": "answer-names", "expect": { "names": "Hobnob" }, "why": "the pointer two turns later must still mean Hobnob" },
+        { "id": "g2", "at": 3, "kind": "rewritten", "expect": { "rewritten": true } },
+        { "id": "g3", "at": 1, "kind": "subject", "expect": { "subject": "Hobnob" } }
+      ]
+    },
+    {
+      "id": "gap-two",
+      "turns": [
+        "tell me about readback",
+        "what did he build with typescript",
+        "where did he study",
+        "and what stack is that"
+      ],
+      "tasks": [
+        { "id": "g4", "at": 3, "kind": "rewritten-to", "expect": { "rewrittenTo": "Boaz" }, "why": "the previous answer named four projects, so \"that\" resolves to that answer's subject, not the visitor's first topic; the ceiling is recorded in the ledger" },
+        { "id": "g5", "at": 3, "kind": "rewritten", "expect": { "rewritten": true } }
+      ]
+    },
+    {
+      "id": "decay",
+      "turns": [
+        "tell me about hobnob",
+        "which projects use python",
+        "what is his email",
+        "how many posts has he written",
+        "read the newest article",
+        "take me to the archive",
+        "print the resume"
+      ],
+      "tasks": [
+        { "id": "d1", "at": 6, "kind": "salient", "expect": { "excludes": "Hobnob" } },
+        { "id": "d2", "at": 6, "kind": "salient", "expect": { "includes": "Python 3.10+" } },
+        { "id": "d3", "at": 6, "kind": "covered", "expect": { "covered": "Hobnob" }, "why": "the recap reports the session, so it keeps what the working set released" }
+      ]
+    },
+    {
+      "id": "recap",
+      "turns": [
+        "tell me about hobnob",
+        "which projects use python",
+        "what is his email",
+        "what did we cover"
+      ],
+      "tasks": [
+        { "id": "r1", "at": 3, "kind": "recap", "expect": { "names": ["Hobnob", "Python 3.10+"], "empty": false } },
+        { "id": "r2", "at": 3, "kind": "recap", "expect": { "notNames": ["Cobol"] }, "why": "a subject nobody raised must not appear" },
+        { "id": "r3", "at": 3, "kind": "coverage-query", "expect": { "coverageQuery": true } }
+      ]
+    },
+    {
+      "id": "repeat",
+      "turns": [
+        "tell me about groundglass",
+        "tell me about readback",
+        "tell me about groundglass again",
+        "what is his email"
+      ],
+      "tasks": [
+        { "id": "p1", "at": 3, "kind": "salient-top", "expect": { "salientTop": "Groundglass" }, "why": "two mentions beat one, even though the other is newer" }
+      ]
+    },
+    {
+      "id": "fresh",
+      "turns": ["what did we cover"],
+      "tasks": [
+        { "id": "f1", "at": 0, "kind": "recap", "expect": { "empty": true } },
+        { "id": "f2", "at": 0, "kind": "control", "expect": { "names": null }, "why": "a first turn must not invent a recap" }
+      ]
+    },
+    {
+      "id": "control-question",
+      "turns": ["which projects use python", "what is his email"],
+      "tasks": [
+        { "id": "c1", "at": 1, "kind": "coverage-query", "expect": { "coverageQuery": false } },
+        { "id": "c2", "at": 1, "kind": "answer-names", "expect": { "names": "shobyde@gmail.com" } }
+      ]
+    }
+  ]
+}

@@ -22,6 +22,7 @@ import { readRegister, endTurn } from './register.js';
 import { describeTrace } from './trace.js';
 import { siteCapabilities } from './capabilities.js';
 import { siteSkills } from './skills.js';
+import { coverageAnswer, createSessionMemory, entitiesIn, isCoverageQuery, resolvePointer } from './sessionMemory.js';
 import { renderA2UI } from './a2ui.js';
 import { DATA } from '../data.js';
 import { motionPrefs } from '../motionPrefs.js';
@@ -235,6 +236,8 @@ export function initAssistant({ posts = [] } = {}) {
 
   let busy = false;
   let live = null; // streaming bubble: { body, text }
+  // The session outlives a turn: what was talked about, and how recently.
+  const session = createSessionMemory();
 
   const syncSend = () => {
     sendBtn.disabled = busy || input.value.trim().length === 0;
@@ -418,7 +421,17 @@ export function initAssistant({ posts = [] } = {}) {
         addBubble('assistant', register.reply);
         return;
       }
-      state.query = register.cleaned || question;
+      // A conversation, not a turn: a pointer ("and its stack") is rewritten
+      // against the most salient subject, and a question about the conversation
+      // is answered from it rather than routed as if it named something.
+      if (isCoverageQuery(question)) {
+        const recap = coverageAnswer(session, register.register);
+        state.query = question;
+        addSkillAnswer(recap.text, [recap.line]);
+        return;
+      }
+      const pointer = resolvePointer(session, register.cleaned || question);
+      state.query = pointer.query;
       // A skill is a shape the sentence names but does not spell out: it runs
       // its own steps, and a check can stop it before it pads. It claims the
       // sentence before planning, because its trigger is more specific than any
@@ -476,6 +489,7 @@ export function initAssistant({ posts = [] } = {}) {
       const safeReply = /^\s*[[{]/.test(result.text)
         ? 'That came back as data rather than a sentence. Try asking something narrower.'
         : result.text;
+      session.observe(question, { entities: entitiesIn(safeReply || result.text) });
       if (safeReply) {
         if (streamed) {
           // The stream is pacing, not inference: trust the finished text.
