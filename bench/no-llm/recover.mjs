@@ -18,7 +18,7 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { executePlan, parseModelOutput, planRequest } from 'boaz/core';
+import { executePlan, parseModelOutput, planRequest } from '@shobyde/boaz/core';
 import { createEngine, capabilities } from '../agent-setup.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));

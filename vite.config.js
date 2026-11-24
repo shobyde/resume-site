@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
-import { boaz } from 'boaz/vite';
+import { boaz } from '@shobyde/boaz/vite';
 
 export default defineConfig({
   base: '/',

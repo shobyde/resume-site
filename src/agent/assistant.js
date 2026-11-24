@@ -14,9 +14,9 @@
    components.
    ============================================================ */
 import manifest from 'boaz:manifest';
-import { AgentRuntime, executePlan, planRequest, registry, runSkill, selectSkill } from 'boaz/core';
-import { createRulesEngine } from 'boaz/rules';
-import { createDomContextReader } from 'boaz/dom';
+import { AgentRuntime, executePlan, planRequest, registry, runSkill, selectSkill } from '@shobyde/boaz/core';
+import { createRulesEngine } from '@shobyde/boaz/rules';
+import { createDomContextReader } from '@shobyde/boaz/dom';
 import { createAssistantKnowledge } from './knowledge.js';
 import { readRegister, endTurn } from './register.js';
 import {

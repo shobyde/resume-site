@@ -12,7 +12,7 @@
 // and declined in a sentence. The alternative, which is what shipped before this
 // rung, is routing it as a question about the page and answering something
 // adjacent, confidently.
-import { createPreferenceMemory } from 'boaz';
+import { createPreferenceMemory } from '@shobyde/boaz';
 
 /** The values this site can act on. Anything else `record()` refuses. */
 export const SITE_PREFERENCES = [

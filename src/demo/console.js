@@ -4,8 +4,8 @@
  * the engine without opening the panel.
  */
 import manifest from 'boaz:manifest';
-import { AgentRuntime, registry } from 'boaz/core';
-import { createRulesEngine } from 'boaz/rules';
+import { AgentRuntime, registry } from '@shobyde/boaz/core';
+import { createRulesEngine } from '@shobyde/boaz/rules';
 import { DATA } from '../data.js';
 import { siteCapabilities } from '../agent/capabilities.js';
 import { createAssistantKnowledge } from '../agent/knowledge.js';

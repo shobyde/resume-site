@@ -19,7 +19,7 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { parseModelOutput, runSkill, selectSkill } from 'boaz/core';
+import { parseModelOutput, runSkill, selectSkill } from '@shobyde/boaz/core';
 import { createEngine } from '../agent-setup.mjs';
 import { siteCapabilities } from '../../src/agent/capabilities.js';
 import { siteSkills } from '../../src/agent/skills.js';

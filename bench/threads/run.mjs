@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseModelOutput } from 'boaz';
+import { parseModelOutput } from '@shobyde/boaz';
 import { createEngine, runCapability } from '../agent-setup.mjs';
 import { createSessionMemory, entitiesIn, resolvePointer } from '../../src/agent/sessionMemory.js';
 
@@ -17,7 +17,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const baseline = process.argv.includes('--baseline');
 const suite = JSON.parse(fs.readFileSync(path.join(here, 'threads.json'), 'utf8'));
 const version = JSON.parse(
-  fs.readFileSync(new URL('../../node_modules/boaz/package.json', import.meta.url), 'utf8'),
+  fs.readFileSync(new URL('../../node_modules/@shobyde/boaz/package.json', import.meta.url), 'utf8'),
 ).version;
 
 const norm = (text) => String(text ?? '').toLowerCase().replace(/[’']/g, "'").replace(/\s+/g, ' ');

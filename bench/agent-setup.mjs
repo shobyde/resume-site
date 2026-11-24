@@ -2,7 +2,7 @@
 // Nothing here is a reimplementation: it wires the real manifest, the real
 // knowledge and the same page scan the panel uses.
 import fs from 'node:fs';
-import { createRulesEngine } from 'boaz/rules';
+import { createRulesEngine } from '@shobyde/boaz/rules';
 import { createAssistantKnowledge } from '../src/agent/knowledge.js';
 import { DATA } from '../src/data.js';
 

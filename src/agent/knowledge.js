@@ -1,6 +1,6 @@
 // The knowledge and answer rules the site's assistant runs on. Shared by the
 // panel (src/agent/assistant.js) and the live console on /boaz/.
-import { KnowledgeBase, fact } from 'boaz/rules';
+import { KnowledgeBase, fact } from '@shobyde/boaz/rules';
 import { DATA } from '../data.js';
 import { answerRegister } from './register.js';
 import {

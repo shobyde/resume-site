@@ -13,7 +13,7 @@
  * Nothing on this page contacts a model or the network after load.
  */
 import doc from './scorecard.json';
-import { analyzeQuestion } from 'boaz';
+import { analyzeQuestion } from '@shobyde/boaz';
 import { baselineAnalysis, scoreTask } from '../../bench/no-llm/grade.mjs';
 import taxonomy from '../../bench/no-llm/tasks.json';
 import negation from '../../bench/no-llm/negation.json';

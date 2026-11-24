@@ -33,7 +33,7 @@ const TOOLS = [
   { id: 'schedule_review', verbs: ['schedule', 'book a review'], arg: 'product' },
 ];
 
-import { createFactIndex, rankFacts } from 'boaz/rules';
+import { createFactIndex, rankFacts } from '@shobyde/boaz/rules';
 
 const norm = (text) => String(text ?? '').toLowerCase().replace(/[’']/g, "'").replace(/\s+/g, ' ').trim();
 const DECLINE = "I'm not sure about that.";

@@ -21,7 +21,7 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { createToolClient, createToolServer, planToolCall, toolName } from 'boaz';
+import { createToolClient, createToolServer, planToolCall, toolName } from '@shobyde/boaz';
 import { capabilities, runCapability } from '../agent-setup.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));

@@ -35,7 +35,7 @@ function argValue(flag) {
 }
 
 async function main() {
-  const { analyzeQuestion } = await import('boaz');
+  const { analyzeQuestion } = await import('@shobyde/boaz');
   const suitePath = argValue('--suite') ?? 'tasks.json';
   const suite = JSON.parse(await readFile(path.resolve(here, suitePath), 'utf8'));
   const subjects = suite.subjects ?? [];

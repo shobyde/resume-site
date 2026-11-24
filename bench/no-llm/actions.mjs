@@ -18,7 +18,7 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { describeResolution, parseAction, resolveAction } from 'boaz';
+import { describeResolution, parseAction, resolveAction } from '@shobyde/boaz';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const suite = JSON.parse(await readFile(path.join(here, 'actions.json'), 'utf8'));

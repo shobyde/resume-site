@@ -20,7 +20,7 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { parseModelOutput } from 'boaz';
+import { parseModelOutput } from '@shobyde/boaz';
 import { createEngine, runCapability } from '../agent-setup.mjs';
 import {
   coverageAnswer,

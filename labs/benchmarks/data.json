@@ -1,6 +1,6 @@
 {
-  "generated": "2026-11-24T18:58:59.414Z",
-  "library": "0.8.0",
+  "generated": "2026-11-24T21:14:18.331Z",
+  "library": "0.8.2",
   "threads": {
     "memory": {
       "passed": 28,
@@ -938,7 +938,7 @@
     }
   ],
   "kb": {
-    "generated": "2026-11-24T18:59:17.047Z",
+    "generated": "2026-11-24T21:14:45.526Z",
     "facts": 170,
     "documents": 170,
     "threads": 40,

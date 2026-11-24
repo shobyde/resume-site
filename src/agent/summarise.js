@@ -12,7 +12,7 @@
    functions over the files on disk that the panel runs over fetches.
    ============================================================ */
 
-import { analyzeQuestion, summarise, splitSentences, tokenize } from 'boaz/core';
+import { analyzeQuestion, summarise, splitSentences, tokenize } from '@shobyde/boaz/core';
 
 /**
  * The words worth summarising around. A summary question names the thing it

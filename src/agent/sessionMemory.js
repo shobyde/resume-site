@@ -8,7 +8,7 @@
 // answer. The arithmetic lives in `boaz` (0.7.10 `createWorkingMemory`); this
 // file supplies the site's vocabulary and writes the sentence in the panel's
 // voice.
-import { analyzeQuestion, createWorkingMemory, isCoverageQuery } from 'boaz';
+import { analyzeQuestion, createWorkingMemory, isCoverageQuery } from '@shobyde/boaz';
 import { DATA } from '../data.js';
 
 /**

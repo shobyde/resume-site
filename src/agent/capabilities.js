@@ -10,7 +10,7 @@
    every description written in the visitor's words rather than the
    component's.
    ============================================================ */
-import { defineCapability, defineKnowledge, splitSentences, summarise } from 'boaz/core';
+import { defineCapability, defineKnowledge, splitSentences, summarise } from '@shobyde/boaz/core';
 import { DATA } from '../data.js';
 import { articleCard, contactCard, findProject, projectCard } from './surfaces.js';
 import { phraseSummary, rankPosts, summariseDocuments } from './summarise.js';

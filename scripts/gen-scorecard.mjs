@@ -26,7 +26,7 @@ const repo = path.resolve(here, '..');
 const out = path.join(repo, 'labs/no-llm/scorecard.json');
 
 const boazVersion = JSON.parse(
-  readFileSync(path.join(repo, 'node_modules/boaz/package.json'), 'utf8'),
+  readFileSync(path.join(repo, 'node_modules/@shobyde/boaz/package.json'), 'utf8'),
 ).version;
 
 /**

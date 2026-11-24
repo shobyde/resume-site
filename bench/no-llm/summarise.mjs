@@ -30,7 +30,7 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { tokenize } from 'boaz/core';
+import { tokenize } from '@shobyde/boaz/core';
 import {
   contentTerms,
   corpusFrom,
