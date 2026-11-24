@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Labs · boaz</title>
+<meta name="description" content="The three working exhibits for boaz: benchmarks measured with an offline judge, a scorecard of what survives without a model, and a tools lab that runs the JSON-RPC bridge and the accessibility resolver in the tab." />
+<link rel="canonical" href="https://shobyde.com/labs/" />
+<meta name="theme-color" content="#0b0b0f" />
+<meta property="og:title" content="Labs · boaz" />
+<meta property="og:description" content="Benchmarks, a scorecard and a tools lab. All measured, none of them a demo slide." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://shobyde.com/labs/" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+<style>
+:root {
+  --bg: #0b0b0f; --panel: #101018; --fg: #e8e8ee; --dim: #b4b4c0; --mute: #8b8b9c;
+  --accent: #7c6cff; --accent-soft: #a79bff; --accent2: #00d9b8;
+  --line: rgba(255,255,255,0.08);
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --display: 'Space Grotesk', var(--sans);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.55; }
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none;
+  background: radial-gradient(70% 50% at 12% 0%, rgba(124,108,255,0.14), transparent 60%), radial-gradient(50% 40% at 100% 10%, rgba(0,217,184,0.08), transparent 60%);
+}
+.wrap { position: relative; max-width: 1000px; margin: 0 auto; padding: 2.2rem 1.25rem 6rem; }
+nav.crumbs { display: flex; gap: 0.6rem; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); }
+nav.crumbs a { color: var(--mute); text-decoration: none; }
+nav.crumbs a:hover { color: var(--fg); }
+header.hero { margin: 3rem 0 2.5rem; }
+.kicker { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent2); margin: 0 0 0.9rem; }
+h1 { font-family: var(--display); font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.03; margin: 0 0 1rem; letter-spacing: -0.025em; }
+.lede { color: var(--dim); max-width: 62ch; margin: 0; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 2.5rem; }
+.card { display: flex; flex-direction: column; gap: 0.5rem; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 1.3rem; text-decoration: none; color: inherit; position: relative; overflow: hidden; transition: border-color 160ms, transform 160ms; }
+.card::before { content: ''; position: absolute; inset: 0 0 auto; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent); opacity: 0.6; }
+.card:hover, .card:focus-visible { border-color: var(--accent); transform: translateY(-2px); }
+.card .num { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.16em; color: var(--mute); }
+.card h2 { font-family: var(--display); font-size: 1.3rem; margin: 0; letter-spacing: -0.01em; }
+.card p { margin: 0; color: var(--dim); font-size: 0.9rem; }
+.card .stat { font-family: var(--mono); font-size: 0.72rem; color: var(--accent2); margin-top: auto; padding-top: 0.6rem; }
+footer { margin-top: 3rem; padding-top: 1.4rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; font-family: var(--mono); font-size: 0.7rem; color: var(--mute); }
+footer a { color: var(--mute); }
+@media (max-width: 820px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="/">shobyde.com</a><span>/</span><a href="/boaz/">boaz</a><span>/</span><span>labs</span>
+  </nav>
+
+  <header class="hero">
+    <p class="kicker">Working exhibits</p>
+    <h1>Everything here was measured.</h1>
+    <p class="lede">Three pages that run the assistant's own code in the tab and report what it actually did: a benchmark suite with an offline judge, a scorecard of what survives without a model, and a tools lab that speaks JSON-RPC and clicks by accessible name.</p>
+  </header>
+
+  <div class="grid">
+    <a class="card" href="/labs/benchmarks/">
+      <span class="num">01 · judge</span>
+      <h2>Benchmarks</h2>
+      <p>Twelve threads with and without a session, eighteen recorded suites, and five approaches on a 170-fact handbook that is not this site.</p>
+      <span class="stat">21/30 threaded · 4/14 fresh</span>
+    </a>
+    <a class="card" href="/labs/no-llm/">
+      <span class="num">02 · scorecard</span>
+      <h2>How far does it get without a model?</h2>
+      <p>One row per task class, the pass rate before and after, and the exact input that broke it. Five classes are graded live, in this tab.</p>
+      <span class="stat">19 classes · 5 graded live</span>
+    </a>
+    <a class="card" href="/labs/tools/">
+      <span class="num">03 · tools</span>
+      <h2>Tools lab</h2>
+      <p>The manifest as JSON-RPC tools, and clicks resolved from the accessibility tree: resolved, ambiguous, disabled, hidden, filled.</p>
+      <span class="stat">tools/list · tools/call</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>Built on <a href="/boaz/">boaz</a>, which ships no model.</span>
+    <span><a href="/">shobyde.com</a> · <a href="/archive/">archive</a></span>
+  </footer>
+</div>
+</body>
+</html>

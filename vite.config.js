@@ -31,6 +31,9 @@ export default defineConfig({
         // The benchmark page renders a compiled data file: threads, the judge's
         // scores and the recorded suite ladder. No engine runs on it.
         benchmarks: resolve(__dirname, 'labs/benchmarks/index.html'),
+        // The index of the three exhibits. A Vite entry, not public/: public/ is
+        // generated, so anything hand-written there never reaches the build.
+        labs: resolve(__dirname, 'labs/index.html'),
       },
     },
   },

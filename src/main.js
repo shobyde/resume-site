@@ -108,6 +108,8 @@ function buildPage() {
         <ul class="featured__links">
           <li><a href="/boaz/">How it works</a></li>
           <li><a href="/labs/tools/">Tools lab</a></li>
+          <li><a href="/labs/benchmarks/">Benchmarks</a></li>
+          <li><a href="/labs/no-llm/">Scorecard</a></li>
           <li><a href="https://github.com/shobyde/boaz/releases">Source &amp; releases</a></li>
         </ul>
       </div>
@@ -182,6 +184,7 @@ function buildPage() {
 
   <div class="container"><footer class="footer">
     <div>© ${new Date().getFullYear()} Sho Byde</div>
+    <div class="footer__labs"><a href="/labs/">Labs</a> · <a href="/labs/benchmarks/">Benchmarks</a> · <a href="/labs/no-llm/">Scorecard</a> · <a href="/labs/tools/">Tools</a> · <a href="/boaz/">boaz</a></div>
     <div><a href="mailto:${DATA.contact.email}">${DATA.contact.email}</a></div>
   </footer></div>
 
