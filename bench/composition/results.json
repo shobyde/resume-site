@@ -4,12 +4,12 @@
     "fidelity": 1,
     "similarity": 1,
     "openers": 0.25,
-    "spread": 4.9916597106239795,
-    "ttr": 1,
+    "spread": 5.983774357005415,
+    "ttr": 0.9666666666666667,
     "stable": 1,
-    "style": 1.6047519615287271,
+    "style": 1.6455644140723866,
     "offTopic": 1,
-    "ms": 2.639239,
+    "ms": 2.757844,
     "rows": [
       {
         "intent": "list_titles",
@@ -92,22 +92,22 @@
         "answers": [
           {
             "question": "how many posts are there?",
-            "text": "59 posts are published, and the newest is \"A manifest already knows what to test\".",
+            "text": "60 posts are published, and the newest is \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
             "action": false
           },
           {
             "question": "what's the newest post?",
-            "text": "59 posts are published, and the newest is \"A manifest already knows what to test\".",
+            "text": "60 posts are published, and the newest is \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
             "action": false
           },
           {
             "question": "how much has he written?",
-            "text": "59 posts are published, and the newest is \"A manifest already knows what to test\".",
+            "text": "60 posts are published, and the newest is \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
             "action": false
           },
           {
             "question": "what's the latest article?",
-            "text": "59 posts are published, and the newest is \"A manifest already knows what to test\".",
+            "text": "60 posts are published, and the newest is \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
             "action": false
           }
         ],
@@ -116,13 +116,13 @@
         "similarity": 1,
         "stable": true,
         "lengths": [
-          16,
-          16,
-          16,
-          16
+          20,
+          20,
+          20,
+          20
         ],
-        "ttr": 1,
-        "style": 0.5459377372817007,
+        "ttr": 0.8,
+        "style": 0.79081245254366,
         "offTopic": 1
       },
       {
@@ -244,14 +244,14 @@
   {
     "name": "shipped",
     "fidelity": 1,
-    "similarity": 0.48456479652914325,
+    "similarity": 0.49726990488301803,
     "openers": 0.6666666666666666,
-    "spread": 9.247747473484196,
-    "ttr": 0.980636645962733,
+    "spread": 9.295682988474931,
+    "ttr": 0.9468675827819051,
     "stable": 1,
-    "style": 1.5121593689361343,
+    "style": 1.4989348688095838,
     "offTopic": 0.9166666666666666,
-    "ms": 40.219998,
+    "ms": 40.8851,
     "rows": [
       {
         "intent": "list_titles",
@@ -334,37 +334,37 @@
         "answers": [
           {
             "question": "how many posts are there?",
-            "text": "59 of them, ending with \"A manifest already knows what to test\".",
+            "text": "60 of them, ending with \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
             "action": false
           },
           {
             "question": "what's the newest post?",
-            "text": "\"A manifest already knows what to test\" is the latest; 59 in all.",
+            "text": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\" is the latest; 60 in all.",
             "action": false
           },
           {
             "question": "how much has he written?",
-            "text": "That is 59 entries, most recently \"A manifest already knows what to test\".",
+            "text": "That is 60 entries, most recently \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
             "action": false
           },
           {
             "question": "what's the latest article?",
-            "text": "\"A manifest already knows what to test\", number 59 if you are counting.",
+            "text": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\", number 60 if you are counting.",
             "action": false
           }
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.36083653320941456,
+        "similarity": 0.4370671833326632,
         "stable": true,
         "lengths": [
-          13,
-          13,
-          14,
-          13
+          17,
+          17,
+          18,
+          17
         ],
-        "ttr": 1,
-        "style": 0.8544514047076689,
+        "ttr": 0.7973856209150327,
+        "style": 0.7751044039483673,
         "offTopic": 1
       },
       {
@@ -486,14 +486,14 @@
   {
     "name": "A pools",
     "fidelity": 1,
-    "similarity": 0.3696233673217813,
+    "similarity": 0.37945779924490447,
     "openers": 0.7916666666666666,
-    "spread": 4.344336990714336,
-    "ttr": 0.9942460317460317,
+    "spread": 5.274249551673995,
+    "ttr": 0.9647740675217454,
     "stable": 1,
-    "style": 1.8741616046570486,
-    "offTopic": 0.625,
-    "ms": 1.734786,
+    "style": 1.8609371045304988,
+    "offTopic": 0.7083333333333334,
+    "ms": 1.905017,
     "rows": [
       {
         "intent": "list_titles",
@@ -576,38 +576,38 @@
         "answers": [
           {
             "question": "how many posts are there?",
-            "text": "\"A manifest already knows what to test\" — number 59, if you are counting.",
+            "text": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\" — number 60, if you are counting.",
             "action": false
           },
           {
             "question": "what's the newest post?",
-            "text": "\"A manifest already knows what to test\" — number 59, if you are counting.",
+            "text": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\" — number 60, if you are counting.",
             "action": false
           },
           {
             "question": "how much has he written?",
-            "text": "That is 59 entries; the latest is \"A manifest already knows what to test\".",
+            "text": "That is 60 entries; the latest is \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
             "action": false
           },
           {
             "question": "what's the latest article?",
-            "text": "The log has 59 posts, ending with \"A manifest already knows what to test\".",
+            "text": "The log has 60 posts, ending with \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
             "action": false
           }
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.44039344764237603,
+        "similarity": 0.4994000391811147,
         "stable": true,
         "lengths": [
-          13,
-          13,
-          15,
-          15
+          17,
+          17,
+          19,
+          19
         ],
-        "ttr": 0.9833333333333334,
-        "style": 1.2434510250569475,
-        "offTopic": 0.5
+        "ttr": 0.8065015479876161,
+        "style": 1.1641040242976461,
+        "offTopic": 1
       },
       {
         "intent": "email",
@@ -728,14 +728,14 @@
   {
     "name": "B grammar",
     "fidelity": 1,
-    "similarity": 0.46233141252024446,
+    "similarity": 0.4716349744553853,
     "openers": 0.5833333333333334,
-    "spread": 6.843488389215937,
-    "ttr": 0.986595065562457,
+    "spread": 7.051398600435393,
+    "ttr": 0.951362222425202,
     "stable": 1,
-    "style": 1.736344438116932,
-    "offTopic": 0.625,
-    "ms": 1.937639,
+    "style": 1.682117660086054,
+    "offTopic": 0.7083333333333334,
+    "ms": 1.952181,
     "rows": [
       {
         "intent": "list_titles",
@@ -818,38 +818,38 @@
         "answers": [
           {
             "question": "how many posts are there?",
-            "text": "59 posts; the newest is \"A manifest already knows what to test\".",
+            "text": "60 posts; the newest is \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
             "action": false
           },
           {
             "question": "what's the newest post?",
-            "text": "\"A manifest already knows what to test\" — number 59, most recent first.",
+            "text": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\" — number 60, most recent first.",
             "action": false
           },
           {
             "question": "how much has he written?",
-            "text": "\"A manifest already knows what to test\" — number 59, most recent first.",
+            "text": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\" — number 60, most recent first.",
             "action": false
           },
           {
             "question": "what's the latest article?",
-            "text": "59 posts; the newest is \"A manifest already knows what to test\".",
+            "text": "60 posts; the newest is \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
             "action": false
           }
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.5757575757575758,
+        "similarity": 0.631578947368421,
         "stable": true,
         "lengths": [
-          13,
-          12,
-          12,
-          13
+          17,
+          16,
+          16,
+          17
         ],
-        "ttr": 1,
-        "style": 1.4894646924829156,
-        "offTopic": 0.5
+        "ttr": 0.7886029411764706,
+        "style": 1.1641040242976461,
+        "offTopic": 1
       },
       {
         "intent": "email",
@@ -970,14 +970,14 @@
   {
     "name": "C voice",
     "fidelity": 1,
-    "similarity": 0.24996589476454933,
+    "similarity": 0.2600081254735061,
     "openers": 0.5833333333333334,
-    "spread": 4.7064893144111855,
-    "ttr": 0.9905214424951266,
+    "spread": 5.526294468769789,
+    "ttr": 0.9628159483288034,
     "stable": 1,
-    "style": 1.5575170842824602,
+    "style": 1.5887908124525436,
     "offTopic": 0.16666666666666666,
-    "ms": 2.306266,
+    "ms": 2.238292,
     "rows": [
       {
         "intent": "list_titles",
@@ -1060,37 +1060,37 @@
         "answers": [
           {
             "question": "how many posts are there?",
-            "text": "The unsolved layer is controls: 59 of them; the newest is \"A manifest already knows what to test\".",
+            "text": "The unsolved layer is controls: 60 of them; the newest is \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
             "action": false
           },
           {
             "question": "what's the newest post?",
-            "text": "The broader lesson: \"A manifest already knows what to test\", one of 59.",
+            "text": "The broader lesson: \"A Queued Chat Is a State Problem, Not a Buffer Problem\", one of 60.",
             "action": false
           },
           {
             "question": "how much has he written?",
-            "text": "This Week in Agents: 59 posts, the most recent being \"A manifest already knows what to test\".",
+            "text": "This Week in Agents: 60 posts, the most recent being \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
             "action": false
           },
           {
             "question": "what's the latest article?",
-            "text": "That is a real boundary: \"A manifest already knows what to test\", one of 59.",
+            "text": "That is a real boundary: \"A Queued Chat Is a State Problem, Not a Buffer Problem\", one of 60.",
             "action": false
           }
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.315356929273336,
+        "similarity": 0.3756103135270767,
         "stable": true,
         "lengths": [
-          19,
-          13,
-          18,
-          15
+          23,
+          17,
+          22,
+          19
         ],
-        "ttr": 0.9570175438596491,
-        "style": 0.6044514047076688,
+        "ttr": 0.790784578861709,
+        "style": 0.7920937737281701,
         "offTopic": 0.25
       },
       {
@@ -1212,14 +1212,14 @@
   {
     "name": "D hybrid",
     "fidelity": 1,
-    "similarity": 0.37007885833933485,
+    "similarity": 0.37815347567652674,
     "openers": 0.7083333333333334,
-    "spread": 5.834374907010653,
-    "ttr": 0.9791447217076508,
+    "spread": 6.581618975095211,
+    "ttr": 0.9507164615146846,
     "stable": 1,
-    "style": 1.8138050493545939,
+    "style": 1.7532982156416095,
     "offTopic": 0.6666666666666666,
-    "ms": 1.863745,
+    "ms": 1.97415,
     "rows": [
       {
         "intent": "list_titles",
@@ -1302,37 +1302,37 @@
         "answers": [
           {
             "question": "how many posts are there?",
-            "text": "59 of them, ending with \"A manifest already knows what to test\". Roughly one a day since the log started.",
+            "text": "60 of them, ending with \"A Queued Chat Is a State Problem, Not a Buffer Problem\". Roughly one a day since the log started.",
             "action": false
           },
           {
             "question": "what's the newest post?",
-            "text": "\"A manifest already knows what to test\" is the latest; 59 in all.",
+            "text": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\" is the latest; 60 in all.",
             "action": false
           },
           {
             "question": "how much has he written?",
-            "text": "That is 59 entries, most recently \"A manifest already knows what to test\".",
+            "text": "That is 60 entries, most recently \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
             "action": false
           },
           {
             "question": "what's the latest article?",
-            "text": "59 of them, ending with \"A manifest already knows what to test\". Roughly one a day since the log started.",
+            "text": "60 of them, ending with \"A Queued Chat Is a State Problem, Not a Buffer Problem\". Roughly one a day since the log started.",
             "action": false
           }
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.41824314266769513,
+        "similarity": 0.46669084669084665,
         "stable": true,
         "lengths": [
-          21,
-          13,
-          14,
-          21
+          25,
+          17,
+          18,
+          25
         ],
-        "ttr": 0.9761904761904763,
-        "style": 1.075645406226272,
+        "ttr": 0.8056209150326796,
+        "style": 0.7126044039483673,
         "offTopic": 1
       },
       {
