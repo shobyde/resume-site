@@ -1,0 +1,28 @@
+{
+  "class": "summarise",
+  "corpus": "content/posts/index.json",
+  "note": "One task is a question and the checks it must pass. `topic` words must appear in at least two of the three picked sentences (or their post title); no topic means the question is unguided and only novelty is scored.",
+  "tasks": [
+    { "id": "sum-generic-1", "query": "what does he write about" },
+    { "id": "sum-generic-2", "query": "what topics does he cover" },
+    { "id": "sum-generic-3", "query": "summarize the blog" },
+    { "id": "sum-generic-4", "query": "what is the blog about" },
+    { "id": "sum-generic-5", "query": "give me the themes he writes about" },
+    { "id": "sum-generic-6", "query": "what does the blog cover" },
+
+    { "id": "sum-topic-agents", "query": "what does he write about agents", "topic": ["agent"] },
+    { "id": "sum-topic-browsers", "query": "what does he write about browsers", "topic": ["browser", "web"] },
+    { "id": "sum-topic-search", "query": "what does he write about search", "topic": ["search"] },
+    { "id": "sum-topic-readback", "query": "what does he write about readback", "topic": ["readback"] },
+    { "id": "sum-topic-jellyfin", "query": "what does he write about jellyfin", "topic": ["jellyfin", "media", "server"] },
+    { "id": "sum-topic-testing", "query": "what does he write about testing", "topic": ["test"] },
+    { "id": "sum-topic-accessibility", "query": "what does he write about accessibility", "topic": ["access", "a11y"] },
+    { "id": "sum-topic-python", "query": "what does he write about python", "topic": ["python"] },
+    { "id": "sum-topic-sqlite", "query": "what does he write about sqlite", "topic": ["sqlite"] },
+    { "id": "sum-topic-manifest", "query": "what does he write about manifests", "topic": ["manifest"] },
+    { "id": "sum-topic-probes", "query": "what does he write about probes", "topic": ["probe"] },
+    { "id": "sum-topic-hobnob", "query": "what does he write about hobnob", "topic": ["hobnob"] },
+    { "id": "sum-topic-design", "query": "what does he write about design", "topic": ["design"] },
+    { "id": "sum-topic-local-models", "query": "what does he write about local models", "topic": ["model", "local"] }
+  ]
+}

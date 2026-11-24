@@ -13,6 +13,7 @@
 import { defineCapability, defineKnowledge } from 'boaz/core';
 import { DATA } from '../data.js';
 import { articleCard, contactCard, findProject, projectCard } from './surfaces.js';
+import { phraseSummary, rankPosts, summariseDocuments } from './summarise.js';
 
 const plain = (html) => String(html).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 
@@ -71,7 +72,7 @@ export const siteCapabilities = [
     title: 'Engineering log',
     description:
       'Scrolls to the writing section, an AI-assisted daily log of news, notes, and build updates that he curates by hand.',
-    keywords: ['blog', 'writing', 'log', 'posts', 'articles', 'reading'],
+    keywords: ['blog', 'writing', 'log', 'posts', 'articles', 'reading', 'show me the blog'],
     requiresConfirmation: true,
     route: '#blog',
   }),
@@ -280,6 +281,51 @@ export const siteCapabilities = [
         region: 'Pacific Northwest',
         currentRole: current?.role || null,
         currentOrg: current?.org || null,
+      };
+    },
+  }),
+  defineCapability({
+    id: 'blog.topics',
+    kind: 'query',
+    title: 'Summarise the blog',
+    description:
+      'Reads the posts and answers with sentences from them: what he writes about, or what he wrote about one subject.',
+    keywords: [
+      'what does he write about',
+      'what does the blog cover',
+      'what is the blog about',
+      'topics',
+      'themes',
+      'summarise the blog',
+      'summarize the blog',
+    ],
+    paramsSchema: { type: 'object', properties: {}, additionalProperties: false },
+    // Retrieve, read, then pick three sentences that are not three versions of
+    // one idea. The corpus is the posts' own markdown, which is already served.
+    handler: async (_params, ctx) => {
+      const posts = ctx.read('postsIndex') || [];
+      const query = ctx.read('query') || '';
+      const documents = await Promise.all(
+        rankPosts(posts, query).map(async (post) => {
+          try {
+            const response = await fetch(`/content/posts/${post.slug}.md`);
+            const markdown = response.ok ? await response.text() : post.excerpt;
+            return { slug: post.slug, title: post.title, tag: post.tag, markdown };
+          } catch {
+            return { slug: post.slug, title: post.title, tag: post.tag, markdown: post.excerpt };
+          }
+        }),
+      );
+      const result = summariseDocuments(query, documents);
+      return {
+        answer: phraseSummary(result, { query }),
+        documents: result.documents,
+        sentences: result.sentences,
+        picks: result.picks.map((pick) => ({
+          slug: pick.source,
+          title: pick.sourceTitle,
+          text: pick.text,
+        })),
       };
     },
   }),

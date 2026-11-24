@@ -71,7 +71,7 @@ export function initAssistant({ posts = [] } = {}) {
 
   const sorted = newestFirst(posts);
   const newestPost = sorted[0] || null;
-  const state = { postCount: posts.length, newestPost };
+  const state = { postCount: posts.length, newestPost, postsIndex: sorted, query: '' };
 
   const dispatch = (event, payload) => {
     switch (event) {
@@ -365,6 +365,9 @@ export function initAssistant({ posts = [] } = {}) {
     setBusy(true);
     live = null;
     try {
+      // The summarise capability reads the question from the snapshot, the same
+      // way blog.stats reads the post count.
+      state.query = question;
       const result = await runtime.send(question);
       const streamed = live;
       // A host bug must not put JSON on screen: the visitor asked a question.
