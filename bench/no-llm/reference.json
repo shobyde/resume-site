@@ -1,0 +1,157 @@
+{
+  "class": "reference",
+  "note": "Rung 3: a visitor can point back at something instead of naming it. Three cue kinds: ordinals ('the second one', resolved against the list the previous answer produced), demonstrative pronouns ('its stack', 'does that project use sqlite', resolved against the previous subject), and partial names ('ground' for Groundglass). Personal pronouns (he/his) are a person reference, not a project one, so they must never resolve to a project. Tasks with no context and no partial must resolve to nothing.",
+  "subjects": [
+    "Hobnob",
+    "Readback",
+    "Groundglass",
+    "boaz",
+    "Python 3.10+",
+    "SQLite",
+    "TypeScript",
+    "the archive",
+    "the blog",
+    "the resume",
+    "the assistant",
+    "the site",
+    "Conversica",
+    "shobyde.com"
+  ],
+  "tasks": [
+    {
+      "q": "what about the second one",
+      "context": { "items": ["Readback", "Groundglass", "Hobnob"], "subject": "Readback" },
+      "expect": { "reference": "Groundglass" }
+    },
+    {
+      "q": "tell me about the third project",
+      "context": { "items": ["Readback", "Groundglass", "Hobnob"], "subject": "Groundglass" },
+      "expect": { "reference": "Hobnob" }
+    },
+    {
+      "q": "and the first one",
+      "context": { "items": ["Groundglass", "boaz"], "subject": "Groundglass" },
+      "expect": { "reference": "Groundglass" }
+    },
+    {
+      "q": "what is the last one written in",
+      "context": { "items": ["Readback", "Groundglass", "Hobnob"], "subject": "Hobnob" },
+      "expect": { "reference": "Hobnob", "attribute": "stack" }
+    },
+    {
+      "q": "number two, what stack does it use",
+      "context": { "items": ["Hobnob", "Readback"], "subject": "Readback" },
+      "expect": { "reference": "Readback" }
+    },
+    {
+      "q": "the second card, where does it link",
+      "context": { "items": ["Groundglass", "boaz", "Readback"], "subject": "boaz" },
+      "expect": { "reference": "boaz" }
+    },
+    {
+      "q": "the fifth one",
+      "context": { "items": ["Readback", "Groundglass"], "subject": "Groundglass" },
+      "expect": { "reference": null }
+    },
+    {
+      "q": "the second one",
+      "context": { "items": [], "subject": null },
+      "expect": { "reference": null }
+    },
+    {
+      "q": "what is its stack",
+      "context": { "items": [], "subject": "Groundglass" },
+      "expect": { "reference": "Groundglass", "attribute": "stack" }
+    },
+    {
+      "q": "does it use sqlite",
+      "context": { "items": [], "subject": "Readback" },
+      "expect": { "reference": "Readback" }
+    },
+    {
+      "q": "when was that project released",
+      "context": { "items": [], "subject": "Hobnob" },
+      "expect": { "reference": "Hobnob" }
+    },
+    {
+      "q": "who built this",
+      "context": { "items": [], "subject": "boaz" },
+      "expect": { "reference": "boaz", "type": "who" }
+    },
+    {
+      "q": "its stack",
+      "context": { "items": [], "subject": "Readback" },
+      "expect": { "reference": "Readback", "attribute": "stack" }
+    },
+    {
+      "q": "what does that one do",
+      "context": { "items": [], "subject": "Groundglass" },
+      "expect": { "reference": "Groundglass" }
+    },
+    {
+      "q": "is it open source",
+      "context": { "items": [], "subject": null },
+      "expect": { "reference": null }
+    },
+    {
+      "q": "tell me about ground",
+      "context": { "items": [], "subject": null },
+      "expect": { "reference": "Groundglass", "type": "what" }
+    },
+    {
+      "q": "what does readb do",
+      "context": { "items": [], "subject": null },
+      "expect": { "reference": "Readback" }
+    },
+    {
+      "q": "which stack does hobn use",
+      "context": { "items": [], "subject": null },
+      "expect": { "reference": "Hobnob", "attribute": "stack" }
+    },
+    {
+      "q": "what is the arch",
+      "context": { "items": [], "subject": null },
+      "expect": { "reference": "the archive" }
+    },
+    {
+      "q": "explain the assist",
+      "context": { "items": [], "subject": null },
+      "expect": { "reference": "the assistant", "type": "what" }
+    },
+    {
+      "q": "read the newest post",
+      "context": { "items": [], "subject": null },
+      "expect": { "reference": null }
+    },
+    {
+      "q": "show the archive",
+      "context": { "items": [], "subject": null },
+      "expect": { "reference": null }
+    },
+    {
+      "q": "what has he built",
+      "context": { "items": [], "subject": "Readback" },
+      "expect": { "reference": null }
+    },
+    {
+      "q": "what is his email",
+      "context": { "items": [], "subject": "Groundglass" },
+      "expect": { "reference": null }
+    },
+    {
+      "q": "which one that uses sqlite",
+      "context": { "items": ["Readback", "Groundglass", "Hobnob"], "subject": "Groundglass" },
+      "expect": { "reference": null }
+    },
+    {
+      "q": "the former, what stack",
+      "context": { "items": ["Readback", "Groundglass"], "subject": "Groundglass" },
+      "expect": { "reference": null }
+    },
+    {
+      "q": "the other one",
+      "context": { "items": ["Readback", "Groundglass", "Hobnob"], "subject": "Groundglass" },
+      "expect": { "reference": null }
+    }
+  ]
+}

@@ -54,7 +54,13 @@ export function baselineExclusions(query, subjects) {
   return out;
 }
 
-export function baselineAnalysis(query, subjects = []) {
+export function baselineAnalysis(query, subjects = [], context = {}) {
+  // A hand-written pointer scan: any pronoun resolves to whatever the last turn
+  // was about, ordinals resolve to nothing, and a partial name only matches when
+  // it is the whole name.
+  const saysPronoun = /\b(?:he|him|his|she|her|it|its|that|this|those|these|they|them)\b/.test(
+    query.toLowerCase(),
+  );
   return {
     type: baselineType(query),
     slots: {
@@ -62,7 +68,8 @@ export function baselineAnalysis(query, subjects = []) {
       attribute: null,
       subject: null,
       newest: null,
-      referenced: false,
+      referenced: saysPronoun,
+      reference: saysPronoun && context.subject ? { kind: 'pronoun', value: context.subject, cue: 'pronoun' } : null,
       exclude: baselineExclusions(query, subjects),
       mentions: [],
     },
@@ -88,6 +95,10 @@ export function scoreTask(task, analysis) {
   }
   const leaked = got.filter((subject) => analysis.slots.entities.includes(subject));
   if (leaked.length) problems.push(`excluded but counted as entity: ${leaked.join(', ')}`);
+  if ('reference' in want) {
+    const resolved = analysis.slots.reference?.value ?? null;
+    if (resolved !== want.reference) problems.push(`reference ${resolved} != ${want.reference}`);
+  }
   return { ok: problems.length === 0, problems };
 }
 
@@ -108,8 +119,9 @@ async function main() {
   const subjects = suite.subjects ?? [];
 
   const rows = suite.tasks.map((task) => {
-    const before = baselineAnalysis(task.q, subjects);
-    const after = analyzeQuestion(task.q, { subjects });
+    const context = task.context ?? {};
+    const before = baselineAnalysis(task.q, subjects, context);
+    const after = analyzeQuestion(task.q, { subjects, context });
     const b = scoreTask(task, before);
     const a = scoreTask(task, after);
     return { q: task.q, want: task.expect, before, after, b, a };
@@ -130,6 +142,7 @@ async function main() {
         beforeExclude: r.before.slots.exclude,
         afterExclude: r.after.slots.exclude,
         afterEntities: r.after.slots.entities,
+        afterReference: r.after.slots.reference,
         beforePass: r.b.ok,
         afterPass: r.a.ok,
         problems: r.a.problems,
