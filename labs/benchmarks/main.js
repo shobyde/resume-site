@@ -348,7 +348,7 @@ if (data.kb && arenaTable) {
   const best = kbdata.systems.find((s) => s.id === 'hybrid') ?? kbdata.systems.reduce((top, s) => (s.fitted.passed > top.fitted.passed ? s : top));
   note.innerHTML =
     `The fitted suite is not the interesting number. <b>${best.label}</b> answers ${best.fitted.passed}/${best.fitted.total} of it, ` +
-    `and ${best.fresh?.passed ?? 0}/${best.fresh?.total ?? 0} of a fresh paraphrase set, because a phrase table only knows the words it was given. ` +
+    `and ${best.fresh2?.passed ?? 0}/${best.fresh2?.total ?? 0} of a fresh set nothing was tuned against, because a phrase table only knows the words it was given. ` +
     (kbdata.freshMiss ? `“${escapeHtml(kbdata.freshMiss.ask)}” gets “${escapeHtml(clip(kbdata.freshMiss.text, 70))}”.` : '');
 
   if (kbdata.judge) {
@@ -376,6 +376,7 @@ if (data.kb && arenaTable) {
     ['fitted', 'var(--accent2)'],
     ['dev', 'var(--accent)'],
     ['fresh', 'var(--warn)'],
+    ['fresh2', 'var(--bad)'],
   ];
   for (const [index, system] of kbdata.systems.entries()) {
     const y = top + index * rowH;

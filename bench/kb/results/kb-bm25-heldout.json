@@ -42,7 +42,7 @@
       "thread": "h-owner-paraphrase",
       "ask": "and what does it run on?",
       "kind": "context",
-      "text": "Cost guardrail: text is Any service above 2,000 dollars a month in compute needs a named owner and a monthly review..",
+      "text": "I'm not sure about that.",
       "calls": [],
       "pass": false,
       "missing": [
@@ -50,14 +50,14 @@
       ],
       "leaked": [],
       "toolOk": true,
-      "declined": false,
+      "declined": true,
       "wantsDecline": false
     },
     {
       "thread": "h-uptime",
       "ask": "what is the uptime on Delta?",
       "kind": "knowledge",
-      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "text": "Delta: owner is Payments.",
       "calls": [],
       "pass": false,
       "missing": [
@@ -189,7 +189,7 @@
       "thread": "h-ticket",
       "ask": "who is on call for that?",
       "kind": "context",
-      "text": "Access review: text is Production access is reviewed quarterly. Any access unused for 90 days is revoked automatically..",
+      "text": "I'm not sure about that.",
       "calls": [],
       "pass": false,
       "missing": [
@@ -197,7 +197,7 @@
       ],
       "leaked": [],
       "toolOk": true,
-      "declined": false,
+      "declined": true,
       "wantsDecline": false
     },
     {
@@ -219,20 +219,20 @@
       "thread": "h-deploy-paraphrase",
       "ask": "and roll it back",
       "kind": "context",
-      "text": "Cost guardrail: text is Any service above 2,000 dollars a month in compute needs a named owner and a monthly review..",
+      "text": "I'm not sure about that.",
       "calls": [],
       "pass": false,
       "missing": [],
       "leaked": [],
       "toolOk": false,
-      "declined": false,
+      "declined": true,
       "wantsDecline": false
     },
     {
       "thread": "h-no-context",
       "ask": "did the deploy work?",
       "kind": "context",
-      "text": "Deploy freeze: text is No production deploys during the last two business days of the quarter, except for Sev 1 fixes approved by the owning team lead..",
+      "text": "Deploy freeze: owner is Platform.",
       "calls": [],
       "pass": false,
       "missing": [],
@@ -290,7 +290,7 @@
       "thread": "h-second",
       "ask": "the second one?",
       "kind": "context",
-      "text": "Deploy freeze: text is No production deploys during the last two business days of the quarter, except for Sev 1 fixes approved by the owning team lead..",
+      "text": "I'm not sure about that.",
       "calls": [],
       "pass": false,
       "missing": [
@@ -298,7 +298,7 @@
       ],
       "leaked": [],
       "toolOk": true,
-      "declined": false,
+      "declined": true,
       "wantsDecline": false
     },
     {
@@ -346,7 +346,7 @@
       "thread": "h-person-team",
       "ask": "and who leads it?",
       "kind": "context",
-      "text": "Cost guardrail: text is Any service above 2,000 dollars a month in compute needs a named owner and a monthly review..",
+      "text": "I'm not sure about that.",
       "calls": [],
       "pass": false,
       "missing": [
@@ -354,7 +354,7 @@
       ],
       "leaked": [],
       "toolOk": true,
-      "declined": false,
+      "declined": true,
       "wantsDecline": false
     }
   ]

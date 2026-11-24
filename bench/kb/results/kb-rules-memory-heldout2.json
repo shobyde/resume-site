@@ -1,14 +1,14 @@
 {
   "system": "rules+memory",
-  "passed": 3,
+  "passed": 10,
   "total": 14,
   "byKind": {
     "knowledge": {
-      "passed": 2,
+      "passed": 6,
       "total": 8
     },
     "context": {
-      "passed": 0,
+      "passed": 3,
       "total": 4
     },
     "tool": {
@@ -29,30 +29,26 @@
       "thread": "h2-responsible",
       "ask": "who is responsible for Cinder?",
       "kind": "knowledge",
-      "text": "I'm not sure about that.",
+      "text": "Cinder: Data.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "Data"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
       "thread": "h2-responsible",
       "ask": "what language is it in?",
       "kind": "context",
-      "text": "I'm not sure about that.",
+      "text": "Cinder: Python.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "Python"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
@@ -72,15 +68,13 @@
       "thread": "h2-highest",
       "ask": "which product has the highest SLA?",
       "kind": "knowledge",
-      "text": "I'm not sure about that.",
+      "text": "Delta has the highest sla at 99.99%.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "Delta"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
@@ -100,15 +94,13 @@
       "thread": "h2-team-owner",
       "ask": "and their lead?",
       "kind": "context",
-      "text": "I'm not sure about that.",
+      "text": "Payments: Lena Ortiz leads it.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "Lena Ortiz"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
@@ -175,45 +167,39 @@
       "thread": "h2-services",
       "ask": "which services belong to Beacon?",
       "kind": "knowledge",
-      "text": "I'm not sure about that.",
+      "text": "signup-web, experiment-api.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "signup-web"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
       "thread": "h2-person",
       "ask": "who is Ada Ferreira?",
       "kind": "knowledge",
-      "text": "I'm not sure about that.",
+      "text": "Ada Ferreira: SRE, on Platform.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "SRE"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
       "thread": "h2-person",
       "ask": "which team?",
       "kind": "context",
-      "text": "I'm not sure about that.",
+      "text": "Ada Ferreira: team is Platform.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "Platform"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {

@@ -1,0 +1,166 @@
+{
+  "judged": "2026-11-24T10:57:22",
+  "model": "minimax-m3.1-flash",
+  "source": "kb-templates-heldout3.json",
+  "system": "templates",
+  "turns": [
+    {
+      "thread": "h3-rotation",
+      "ask": "who's looking after the search rotation this week?",
+      "kind": "knowledge",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": 0,
+      "grounded": 0,
+      "readability": 5,
+      "why": "No answer or tool use; uncertainty does not identify the rotation owner."
+    },
+    {
+      "thread": "h3-uptime",
+      "ask": "what's the uptime promise for Flint?",
+      "kind": "knowledge",
+      "pass": true,
+      "calls": [],
+      "answered": 1,
+      "tool_ok": 0,
+      "grounded": 0,
+      "readability": 5,
+      "why": "Direct answer, but unsupported without a handbook source or tool."
+    },
+    {
+      "thread": "h3-uptime",
+      "ask": "and who owns it?",
+      "kind": "context",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": 0,
+      "grounded": 0,
+      "readability": 5,
+      "why": "No ownership answer; likely handbook lookup needed, though uncertainty is clearl"
+    },
+    {
+      "thread": "h3-oldest",
+      "ask": "which of our products is the oldest?",
+      "kind": "knowledge",
+      "pass": true,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": 0,
+      "grounded": 1,
+      "readability": 5,
+      "why": "It is clear and honest, but provides no product or supporting evidence."
+    },
+    {
+      "thread": "h3-count",
+      "ask": "how many teams are there?",
+      "kind": "knowledge",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": -1,
+      "grounded": 2,
+      "readability": 5,
+      "why": "No count provided; no tool was needed for the ambiguous question."
+    },
+    {
+      "thread": "h3-lead",
+      "ask": "who leads the data team?",
+      "kind": "knowledge",
+      "pass": true,
+      "calls": [],
+      "answered": 1,
+      "tool_ok": -1,
+      "grounded": 2,
+      "readability": 4,
+      "why": "Identifies Priya Raman; no tool was needed."
+    },
+    {
+      "thread": "h3-lead",
+      "ask": "how big is it?",
+      "kind": "context",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": -1,
+      "grounded": 2,
+      "readability": 5,
+      "why": "Does not answer team size; no tool was needed."
+    },
+    {
+      "thread": "h3-deploy",
+      "ask": "deploy cinder",
+      "kind": "tool",
+      "pass": true,
+      "calls": [
+        "deploy"
+      ],
+      "answered": 1,
+      "tool_ok": 1,
+      "grounded": 2,
+      "readability": 5,
+      "why": "Correctly invoked deploy for Cinder and clearly returned the requested action."
+    },
+    {
+      "thread": "h3-deploy",
+      "ask": "and roll it back",
+      "kind": "context",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": 0,
+      "grounded": 0,
+      "readability": 5,
+      "why": "Rollback required a tool call; the assistant only expressed uncertainty."
+    },
+    {
+      "thread": "h3-clickhouse",
+      "ask": "what runs on ClickHouse?",
+      "kind": "knowledge",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": -1,
+      "grounded": 0,
+      "readability": 5,
+      "why": "Non-answer; provides no information about what runs on ClickHouse."
+    },
+    {
+      "thread": "h3-summary",
+      "ask": "summarise Delta",
+      "kind": "readability",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": -1,
+      "grounded": 1,
+      "readability": 5,
+      "why": "No summary provided; uncertainty does not answer the request."
+    },
+    {
+      "thread": "h3-search-product",
+      "ask": "what is the SLA for the search product?",
+      "kind": "knowledge",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": 0,
+      "grounded": 0,
+      "readability": 5,
+      "why": "No SLA provided; it avoided the question and needed a handbook lookup."
+    },
+    {
+      "thread": "h3-ticket-lookup",
+      "ask": "what is in ticket OPS-123?",
+      "kind": "tool",
+      "pass": true,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": 0,
+      "grounded": 0,
+      "readability": 5,
+      "why": "No ticket content provided and no retrieval tool was used."
+    }
+  ]
+}

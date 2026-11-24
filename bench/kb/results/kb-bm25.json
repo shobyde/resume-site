@@ -1,14 +1,14 @@
 {
   "system": "bm25",
-  "passed": 23,
+  "passed": 20,
   "total": 91,
   "byKind": {
     "knowledge": {
-      "passed": 9,
+      "passed": 8,
       "total": 24
     },
     "context": {
-      "passed": 5,
+      "passed": 3,
       "total": 46
     },
     "tool": {
@@ -57,12 +57,10 @@
       "thread": "product-atlas",
       "ask": "what is its SLA?",
       "kind": "context",
-      "text": "Beacon: sla is 99.9%.",
+      "text": "Atlas: sla is 99.95%.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "99.95%"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -100,10 +98,12 @@
       "thread": "product-beacon",
       "ask": "what is its SLA?",
       "kind": "context",
-      "text": "Beacon: sla is 99.9%.",
+      "text": "Atlas: sla is 99.95%.",
       "calls": [],
-      "pass": true,
-      "missing": [],
+      "pass": false,
+      "missing": [
+        "99.9%"
+      ],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -141,7 +141,7 @@
       "thread": "product-cinder",
       "ask": "what is its SLA?",
       "kind": "context",
-      "text": "Beacon: sla is 99.9%.",
+      "text": "Atlas: sla is 99.95%.",
       "calls": [],
       "pass": false,
       "missing": [
@@ -184,7 +184,7 @@
       "thread": "product-delta",
       "ask": "what is its SLA?",
       "kind": "context",
-      "text": "Beacon: sla is 99.9%.",
+      "text": "Atlas: sla is 99.95%.",
       "calls": [],
       "pass": false,
       "missing": [
@@ -227,10 +227,12 @@
       "thread": "product-ember",
       "ask": "what is its SLA?",
       "kind": "context",
-      "text": "Beacon: sla is 99.9%.",
+      "text": "Atlas: sla is 99.95%.",
       "calls": [],
-      "pass": true,
-      "missing": [],
+      "pass": false,
+      "missing": [
+        "99.9%"
+      ],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -268,10 +270,12 @@
       "thread": "product-flint",
       "ask": "what is its SLA?",
       "kind": "context",
-      "text": "Beacon: sla is 99.9%.",
+      "text": "Atlas: sla is 99.95%.",
       "calls": [],
-      "pass": true,
-      "missing": [],
+      "pass": false,
+      "missing": [
+        "99.9%"
+      ],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -309,7 +313,7 @@
       "thread": "product-gauge",
       "ask": "what is its SLA?",
       "kind": "context",
-      "text": "Beacon: sla is 99.9%.",
+      "text": "Atlas: sla is 99.95%.",
       "calls": [],
       "pass": false,
       "missing": [
@@ -352,7 +356,7 @@
       "thread": "product-harbor",
       "ask": "what is its SLA?",
       "kind": "context",
-      "text": "Beacon: sla is 99.9%.",
+      "text": "Atlas: sla is 99.95%.",
       "calls": [],
       "pass": false,
       "missing": [
@@ -384,11 +388,10 @@
       "thread": "database-list",
       "ask": "which of those are tier 1?",
       "kind": "context",
-      "text": "Data retention: text is Application logs are kept 30 days. Audit logs are kept 400 days. Customer records are deleted within 30 days of a verified request..",
+      "text": "Atlas: tier is tier 1.",
       "calls": [],
       "pass": false,
       "missing": [
-        "Atlas",
         "Delta"
       ],
       "leaked": [],
@@ -400,7 +403,7 @@
       "thread": "database-list",
       "ask": "the first one?",
       "kind": "context",
-      "text": "Deploy freeze: text is No production deploys during the last two business days of the quarter, except for Sev 1 fixes approved by the owning team lead..",
+      "text": "I'm not sure about that.",
       "calls": [],
       "pass": false,
       "missing": [
@@ -408,7 +411,7 @@
       ],
       "leaked": [],
       "toolOk": true,
-      "declined": false,
+      "declined": true,
       "wantsDecline": false
     },
     {
@@ -846,13 +849,13 @@
       "thread": "page-platform",
       "ask": "and open a ticket for it",
       "kind": "tool",
-      "text": "Cost guardrail: text is Any service above 2,000 dollars a month in compute needs a named owner and a monthly review..",
+      "text": "I'm not sure about that.",
       "calls": [],
       "pass": false,
       "missing": [],
       "leaked": [],
       "toolOk": false,
-      "declined": false,
+      "declined": true,
       "wantsDecline": false
     },
     {
@@ -874,13 +877,13 @@
       "thread": "page-growth",
       "ask": "and open a ticket for it",
       "kind": "tool",
-      "text": "Cost guardrail: text is Any service above 2,000 dollars a month in compute needs a named owner and a monthly review..",
+      "text": "I'm not sure about that.",
       "calls": [],
       "pass": false,
       "missing": [],
       "leaked": [],
       "toolOk": false,
-      "declined": false,
+      "declined": true,
       "wantsDecline": false
     },
     {
@@ -902,13 +905,13 @@
       "thread": "page-data",
       "ask": "and open a ticket for it",
       "kind": "tool",
-      "text": "Cost guardrail: text is Any service above 2,000 dollars a month in compute needs a named owner and a monthly review..",
+      "text": "I'm not sure about that.",
       "calls": [],
       "pass": false,
       "missing": [],
       "leaked": [],
       "toolOk": false,
-      "declined": false,
+      "declined": true,
       "wantsDecline": false
     },
     {
@@ -930,13 +933,13 @@
       "thread": "page-payments",
       "ask": "and open a ticket for it",
       "kind": "tool",
-      "text": "Cost guardrail: text is Any service above 2,000 dollars a month in compute needs a named owner and a monthly review..",
+      "text": "I'm not sure about that.",
       "calls": [],
       "pass": false,
       "missing": [],
       "leaked": [],
       "toolOk": false,
-      "declined": false,
+      "declined": true,
       "wantsDecline": false
     },
     {
@@ -958,13 +961,13 @@
       "thread": "page-search",
       "ask": "and open a ticket for it",
       "kind": "tool",
-      "text": "Cost guardrail: text is Any service above 2,000 dollars a month in compute needs a named owner and a monthly review..",
+      "text": "I'm not sure about that.",
       "calls": [],
       "pass": false,
       "missing": [],
       "leaked": [],
       "toolOk": false,
-      "declined": false,
+      "declined": true,
       "wantsDecline": false
     },
     {
@@ -1329,10 +1332,12 @@
       "thread": "policy-p4",
       "ask": "what is the Oncall handoff policy?",
       "kind": "knowledge",
-      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "text": "Oncall handoff: owner is Platform.",
       "calls": [],
-      "pass": true,
-      "missing": [],
+      "pass": false,
+      "missing": [
+        "Oncall rotates weekly"
+      ],
       "leaked": [],
       "toolOk": true,
       "declined": false,

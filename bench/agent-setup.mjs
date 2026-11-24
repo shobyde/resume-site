@@ -25,6 +25,7 @@ const handlers = {
   'projects.list': async () => ({
     projects: DATA.projects.map((project) => ({
       title: project.title,
+      summary: project.summary,
       stack: project.stack,
       details: Boolean(project.details),
     })),

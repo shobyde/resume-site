@@ -1,5 +1,5 @@
 {
-  "judged": "2026-11-24T09:54:30",
+  "judged": "2026-11-24T10:56:18",
   "model": "minimax-m3.1-flash",
   "source": "kb-templates-heldout2.json",
   "system": "templates",
@@ -12,9 +12,9 @@
       "calls": [],
       "answered": 0,
       "tool_ok": -1,
-      "grounded": 1,
+      "grounded": 2,
       "readability": 5,
-      "why": "No answer provided; uncertainty is clear, and no tool was needed."
+      "why": "No answer was provided; admitting uncertainty does not address the question."
     },
     {
       "thread": "h2-responsible",
@@ -23,10 +23,10 @@
       "pass": false,
       "calls": [],
       "answered": 0,
-      "tool_ok": -1,
+      "tool_ok": 0,
       "grounded": 0,
-      "readability": 5,
-      "why": "Uncertain response does not identify the requested language."
+      "readability": 4,
+      "why": "No answer provided; Cinder\u2019s language is not identified or supported."
     },
     {
       "thread": "h2-language",
@@ -38,7 +38,7 @@
       "tool_ok": -1,
       "grounded": 0,
       "readability": 5,
-      "why": "Gauge is written in Go, not Python."
+      "why": "Direct, but incorrect: Gauge is written in Go."
     },
     {
       "thread": "h2-highest",
@@ -47,10 +47,10 @@
       "pass": false,
       "calls": [],
       "answered": 0,
-      "tool_ok": 0,
+      "tool_ok": -1,
       "grounded": 0,
       "readability": 5,
-      "why": "No product identified; no source consulted, so uncertainty is not an answer."
+      "why": "No product identified; uncertainty does not answer the question."
     },
     {
       "thread": "h2-team-owner",
@@ -62,7 +62,7 @@
       "tool_ok": -1,
       "grounded": 2,
       "readability": 5,
-      "why": "Directly identifies Payments as the team owning Delta."
+      "why": "It directly identifies Payments as the team owning Delta."
     },
     {
       "thread": "h2-team-owner",
@@ -71,10 +71,10 @@
       "pass": false,
       "calls": [],
       "answered": 0,
-      "tool_ok": -1,
-      "grounded": 0,
+      "tool_ok": 0,
+      "grounded": 2,
       "readability": 5,
-      "why": "Does not identify the Payments team lead."
+      "why": "It did not identify the Payments team lead."
     },
     {
       "thread": "h2-two-tools",
@@ -86,9 +86,9 @@
       ],
       "answered": 0,
       "tool_ok": 1,
-      "grounded": 2,
-      "readability": 4,
-      "why": "Paged Search oncall, but omitted filing the ticket."
+      "grounded": 1,
+      "readability": 3,
+      "why": "Paged Search oncall correctly, but did not file the requested ticket."
     },
     {
       "thread": "h2-sev1",
@@ -98,9 +98,9 @@
       "calls": [],
       "answered": 0,
       "tool_ok": -1,
-      "grounded": 1,
+      "grounded": 0,
       "readability": 5,
-      "why": "No explanation of what happens during a severity-one incident."
+      "why": "It declines to explain what happens during a severity-one incident."
     },
     {
       "thread": "h2-retention",
@@ -109,10 +109,10 @@
       "pass": false,
       "calls": [],
       "answered": 0,
-      "tool_ok": -1,
+      "tool_ok": 0,
       "grounded": 0,
       "readability": 5,
-      "why": "No retention duration was provided; the response did not answer."
+      "why": "Did not provide the audit log retention period."
     },
     {
       "thread": "h2-retention",
@@ -121,10 +121,10 @@
       "pass": false,
       "calls": [],
       "answered": 0,
-      "tool_ok": -1,
+      "tool_ok": 0,
       "grounded": 0,
       "readability": 5,
-      "why": "Did not provide the customer records retention period."
+      "why": "Did not answer the customer-record retention question or provide supported infor"
     },
     {
       "thread": "h2-services",
@@ -133,22 +133,22 @@
       "pass": false,
       "calls": [],
       "answered": 0,
-      "tool_ok": 0,
+      "tool_ok": -1,
       "grounded": 0,
       "readability": 5,
-      "why": "No services listed; uncertainty is clear but does not answer."
+      "why": "Did not identify Beacon's services; no substantive answer was provided."
     },
     {
       "thread": "h2-person",
       "ask": "who is Ada Ferreira?",
       "kind": "knowledge",
-      "pass": false,
+      "pass": true,
       "calls": [],
-      "answered": 0,
+      "answered": 1,
       "tool_ok": -1,
-      "grounded": 0,
+      "grounded": 2,
       "readability": 5,
-      "why": "Did not answer the question; no substantive information was provided."
+      "why": "Directly identifies her role and team; no tool was needed."
     },
     {
       "thread": "h2-person",
@@ -158,9 +158,9 @@
       "calls": [],
       "answered": 0,
       "tool_ok": -1,
-      "grounded": 0,
+      "grounded": 1,
       "readability": 5,
-      "why": "No team was named; the assistant merely expressed uncertainty."
+      "why": "It omitted the stated Platform team; no tool was needed."
     },
     {
       "thread": "h2-summary",
@@ -172,7 +172,7 @@
       "tool_ok": -1,
       "grounded": 0,
       "readability": 5,
-      "why": "Failed to summarize the payments stack in one sentence."
+      "why": "No summary provided; the response is a non-answer."
     }
   ]
 }

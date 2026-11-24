@@ -211,7 +211,7 @@ footer.page a { color: var(--mute); }
   <section class="block" id="arena">
     <header>
       <h2>Five approaches, a handbook that is not this site</h2>
-      <p class="sub">One hundred and seventy facts about invented products, services, teams and policies, forty threads, and five ways to answer them without a model. The suite is fitted, so a second and a third set were written afterwards: one paraphrase set used to fix vocabulary, and one fresh set that nothing was tuned against.</p>
+      <p class="sub">One hundred and seventy facts about invented products, services, teams and policies, forty threads, and five ways to answer them without a model. The suite is fitted, so three sets were written afterwards: two paraphrase sets, the second used to fix vocabulary, and a third that nothing was tuned against.</p>
     </header>
     <div class="panel">
       <div class="matrix" id="arena-table"></div>
@@ -225,7 +225,8 @@ footer.page a { color: var(--mute); }
     <div class="legend">
       <span><i style="background:var(--accent2)"></i>fitted suite (91 turns)</span>
       <span><i style="background:var(--accent)"></i>paraphrase set, after a vocabulary pass (23 turns)</span>
-      <span><i style="background:var(--warn)"></i>fresh set, nothing tuned against it (14 turns)</span>
+      <span><i style="background:var(--warn)"></i>second set, used to fix vocabulary (14 turns)</span>
+      <span><i style="background:var(--bad)"></i>fresh set, nothing tuned against it (13 turns)</span>
     </div>
   </section>
 
@@ -239,7 +240,7 @@ footer.page a { color: var(--mute); }
       <h3>The judge</h3>
       <p>Deterministic checks cannot tell whether a sentence <em>answered</em> the question, or whether it reads like writing. A model does that, offline, at build time: <code>bench/threads/judge.py</code> scores <code>answered</code>, <code>tool_ok</code>, <code>grounded</code> and <code>readability</code> per turn, and is given the question, the prior turns, the tools called and the answer. It never sees the expected facts.</p>
       <h3>The handbook arena</h3>
-      <p>Five approaches answer 91 turns over a synthetic handbook (170 facts, 14 services, 5 teams, 8 policies, none of it from this site). The suite is fitted: it was written alongside the systems. Two more sets were written afterwards, one of paraphrases used to fix vocabulary and one fresh set that nothing was tuned against. The gap between the three bars is the honest result, and it is the same gap an LLM would not have.</p>
+      <p>Five approaches answer 91 turns over a synthetic handbook (170 facts, 14 services, 5 teams, 8 policies, none of it from this site). The suite is fitted: it was written alongside the systems. Three more sets were written afterwards: two of paraphrases (the second used to fix vocabulary) and a third that nothing was tuned against. The gap between the bars is the honest result. 0.8.0 closed part of it, because ranking and topic retrieval are things a table cannot do by joining alone.</p>
       <h3>What this does not measure</h3>
       <ul>
         <li>Nothing here runs a model in the browser. The assistant is the same deterministic engine; the judge is a build-time grader.</li>

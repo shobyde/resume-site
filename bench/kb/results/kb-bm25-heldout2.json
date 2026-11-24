@@ -1,10 +1,10 @@
 {
   "system": "bm25",
-  "passed": 6,
+  "passed": 8,
   "total": 14,
   "byKind": {
     "knowledge": {
-      "passed": 3,
+      "passed": 4,
       "total": 8
     },
     "context": {
@@ -20,7 +20,7 @@
       "total": 1
     },
     "readability": {
-      "passed": 0,
+      "passed": 1,
       "total": 1
     }
   },
@@ -70,7 +70,7 @@
       "thread": "h2-highest",
       "ask": "which product has the highest SLA?",
       "kind": "knowledge",
-      "text": "Deploy freeze: text is No production deploys during the last two business days of the quarter, except for Sev 1 fixes approved by the owning team lead..",
+      "text": "Atlas: sla is 99.95%.",
       "calls": [],
       "pass": false,
       "missing": [
@@ -85,12 +85,10 @@
       "thread": "h2-team-owner",
       "ask": "tell me the team that owns Delta",
       "kind": "knowledge",
-      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "text": "Delta: owner is Payments.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "Payments"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -214,12 +212,10 @@
       "thread": "h2-summary",
       "ask": "summarise the payments stack in one sentence",
       "kind": "readability",
-      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "text": "Payments: channel is #payments.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "Payments"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
       "declined": false,

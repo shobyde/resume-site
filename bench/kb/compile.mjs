@@ -12,6 +12,7 @@ const kb = JSON.parse(fs.readFileSync(path.join(here, 'kb.json'), 'utf8'));
 const suite = JSON.parse(fs.readFileSync(path.join(here, 'threads.json'), 'utf8'));
 const heldout = JSON.parse(fs.readFileSync(path.join(here, 'heldout.json'), 'utf8'));
 const heldout2 = JSON.parse(fs.readFileSync(path.join(here, 'heldout2.json'), 'utf8'));
+const heldout3 = JSON.parse(fs.readFileSync(path.join(here, 'heldout3.json'), 'utf8'));
 
 const systems = ['templates', 'bm25', 'rules', 'rules-memory', 'hybrid'];
 const labels = {
@@ -39,6 +40,7 @@ const arena = systems.map((id) => {
   const fitted = read(`kb-${id}.json`);
   const dev = exists(`kb-${id}-heldout.json`) ? read(`kb-${id}-heldout.json`) : null;
   const fresh = exists(`kb-${id}-heldout2.json`) ? read(`kb-${id}-heldout2.json`) : null;
+  const fresh2 = exists(`kb-${id}-heldout3.json`) ? read(`kb-${id}-heldout3.json`) : null;
   return {
     id,
     label: labels[id],
@@ -46,6 +48,7 @@ const arena = systems.map((id) => {
     fitted: aggregate(fitted),
     dev: dev ? aggregate(dev) : null,
     fresh: fresh ? aggregate(fresh) : null,
+    fresh2: fresh2 ? aggregate(fresh2) : null,
     // The first run of the paraphrase set, recorded before the vocabulary pass:
     // 15/23 for the hybrid. Kept so the page can show both sides of iteration.
     devFirst: id === 'hybrid' ? 15 : null,
@@ -54,14 +57,14 @@ const arena = systems.map((id) => {
 
 // One honest example of the gap: a question the rules could not place.
 const freshMiss = (() => {
-  const run = read('kb-hybrid-heldout2.json');
+  const run = read('kb-hybrid-heldout3.json');
   const miss = run.turns.find((turn) => !turn.pass && turn.kind === 'knowledge');
   return miss ? { ask: miss.ask, text: miss.text } : null;
 })();
 
-const judgedFile = 'judged-kb-hybrid-heldout2.json';
+const judgedFile = 'judged-kb-hybrid-heldout3.json';
 const judged = exists(judgedFile) ? read(judgedFile) : null;
-const judgedBaseline = exists('judged-kb-templates-heldout2.json') ? read('judged-kb-templates-heldout2.json') : null;
+const judgedBaseline = exists('judged-kb-templates-heldout3.json') ? read('judged-kb-templates-heldout3.json') : null;
 
 const data = {
   generated: new Date().toISOString(),
@@ -71,6 +74,7 @@ const data = {
   turns: suite.threads.flatMap((thread) => thread.turns).length,
   heldoutTurns: heldout.threads.flatMap((thread) => thread.turns).length,
   freshTurns: heldout2.threads.flatMap((thread) => thread.turns).length,
+  fresh2Turns: heldout3.threads.flatMap((thread) => thread.turns).length,
   systems: arena,
   freshMiss,
   judge: judged

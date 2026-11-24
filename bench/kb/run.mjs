@@ -7,9 +7,11 @@ import { SYSTEMS } from './systems.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const kb = JSON.parse(fs.readFileSync(path.join(here, 'kb.json'), 'utf8'));
+const heldout3 = process.argv.includes('--heldout3');
 const heldout2 = process.argv.includes('--heldout2');
-const heldout = process.argv.includes('--heldout') || heldout2;
-const suite = JSON.parse(fs.readFileSync(path.join(here, heldout2 ? 'heldout2.json' : heldout ? 'heldout.json' : 'threads.json'), 'utf8'));
+const heldout = process.argv.includes('--heldout') || heldout2 || heldout3;
+const suiteFile = heldout3 ? 'heldout3.json' : heldout2 ? 'heldout2.json' : heldout ? 'heldout.json' : 'threads.json';
+const suite = JSON.parse(fs.readFileSync(path.join(here, suiteFile), 'utf8'));
 
 const DECLINE = /(not sure|nothing on the page|i can't help|i can only)/i;
 const norm = (text) => String(text ?? '').toLowerCase().replace(/[’']/g, "'").replace(/\s+/g, ' ').trim();
@@ -70,7 +72,7 @@ for (const [name, create] of SYSTEMS) {
 fs.mkdirSync(path.join(here, 'results'), { recursive: true });
 for (const result of results) {
   fs.writeFileSync(
-    path.join(here, 'results', `kb-${result.system.replace('+', '-')}${heldout2 ? '-heldout2' : heldout ? '-heldout' : ''}.json`),
+    path.join(here, 'results', `kb-${result.system.replace('+', '-')}${heldout3 ? '-heldout3' : heldout2 ? '-heldout2' : heldout ? '-heldout' : ''}.json`),
     JSON.stringify(result, null, 2),
   );
 }
@@ -86,4 +88,4 @@ for (const result of results) {
   cells.push(`${result.passed}/${result.total}`);
   console.log(cells.join(''));
 }
-console.log(`\n${suite.threads.length} threads, ${results[0].total} turns, ${kb.facts.length} facts${heldout2 ? ' (held out, second set)' : heldout ? ' (held out)' : ''}`);
+console.log(`\n${suite.threads.length} threads, ${results[0].total} turns, ${kb.facts.length} facts${heldout3 ? ' (held out, third set)' : heldout2 ? ' (held out, second set)' : heldout ? ' (held out)' : ''}`);

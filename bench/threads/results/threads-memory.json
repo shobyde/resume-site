@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-24T17:20:25.412Z",
+  "generated": "2026-11-24T18:54:17.539Z",
   "mode": "memory",
-  "library": "0.7.14",
+  "library": "0.8.0",
   "threads": [
     {
       "id": "portfolio-stack",
@@ -19,7 +19,7 @@
               "groundglass"
             ]
           },
-          "text": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Every card opens to notes except 0.",
+          "text": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Every card opens to notes.",
           "calls": [
             {
               "id": "projects.list",
@@ -27,7 +27,7 @@
             }
           ],
           "plannedBy": "projects.list_titles",
-          "flesch": 42,
+          "flesch": 38,
           "pass": true,
           "declined": false,
           "missing": [],
@@ -45,7 +45,7 @@
               "groundglass"
             ]
           },
-          "text": "Readback and Groundglass, 2 projects on Python 3.10+. All both also list pytest. Boaz does not list it; its stack is TypeScript and Vite.",
+          "text": "Readback and Groundglass, 2 projects on Python 3.10+. Both also list pytest. Boaz does not list it; its stack is TypeScript and Vite.",
           "calls": [
             {
               "id": "projects.list",
@@ -53,7 +53,7 @@
             }
           ],
           "plannedBy": "projects.using",
-          "flesch": 88,
+          "flesch": 87,
           "pass": true,
           "declined": false,
           "missing": [],
@@ -62,7 +62,7 @@
         },
         {
           "ask": "and what does the reading one use?",
-          "routed": "what is Boaz's stack?",
+          "routed": "what is Readback's stack?",
           "rewritten": true,
           "kind": "context",
           "expect": {
@@ -70,7 +70,7 @@
               "flask"
             ]
           },
-          "text": "Boaz runs on TypeScript, Vite, Datalog (rules), BM25 retrieval and A2UI surfaces.",
+          "text": "Readback is built with Python 3.10+, Flask 3, Jinja (no JS), SQLite, OpenAI-compatible LLMs, httpx, Docker and pytest.",
           "calls": [
             {
               "id": "projects.list",
@@ -78,12 +78,10 @@
             }
           ],
           "plannedBy": "projects.stack",
-          "flesch": 54,
-          "pass": false,
+          "flesch": 61,
+          "pass": true,
           "declined": false,
-          "missing": [
-            "flask"
-          ],
+          "missing": [],
           "leaked": [],
           "toolOk": true
         }
@@ -120,23 +118,26 @@
         },
         {
           "ask": "and the one for testing generated interfaces?",
-          "routed": "and the one for testing generated interfaces?",
-          "rewritten": false,
+          "routed": "tell me about Groundglass",
+          "rewritten": true,
           "kind": "context",
           "expect": {
             "include": [
               "groundglass"
             ]
           },
-          "text": "I'm not sure about that. I can help with: Log statistics; Open the printable resume; Summarise the blog.",
-          "calls": [],
-          "plannedBy": null,
-          "flesch": 71,
-          "pass": false,
-          "declined": true,
-          "missing": [
-            "groundglass"
+          "text": "Groundglass: Agents now assemble interfaces at runtime.",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
           ],
+          "plannedBy": "projects.about",
+          "flesch": 31,
+          "pass": true,
+          "declined": false,
+          "missing": [],
           "leaked": [],
           "toolOk": true
         }
@@ -431,8 +432,8 @@
         },
         {
           "ask": "not readback, the other one",
-          "routed": "not readback, the other one",
-          "rewritten": false,
+          "routed": "tell me about Groundglass",
+          "rewritten": true,
           "kind": "context",
           "expect": {
             "include": [
@@ -442,15 +443,18 @@
               "readback"
             ]
           },
-          "text": "I'm not sure about that. I can help with: Pick points from these sentences; Show a project card; Selected projects.",
-          "calls": [],
-          "plannedBy": null,
-          "flesch": 91,
-          "pass": false,
-          "declined": true,
-          "missing": [
-            "groundglass"
+          "text": "Groundglass: Agents now assemble interfaces at runtime.",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
           ],
+          "plannedBy": "projects.about",
+          "flesch": 31,
+          "pass": true,
+          "declined": false,
+          "missing": [],
           "leaked": [],
           "toolOk": true
         }
@@ -470,7 +474,7 @@
               "hobnob"
             ]
           },
-          "text": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Every card opens to notes except 0.",
+          "text": "Hobnob, Readback, Groundglass, Boaz, shobyde.com and C++ physics simulation engines. Every card opens to notes.",
           "calls": [
             {
               "id": "projects.list",
@@ -478,7 +482,7 @@
             }
           ],
           "plannedBy": "projects.list_titles",
-          "flesch": 42,
+          "flesch": 38,
           "pass": true,
           "declined": false,
           "missing": [],
@@ -495,7 +499,7 @@
               "groundglass"
             ]
           },
-          "text": "Groundglass runs on Python 3.10+, Standard library only, A2UI v1.0, pytest and GitHub Actions.",
+          "text": "Groundglass: Agents now assemble interfaces at runtime.",
           "calls": [
             {
               "id": "projects.list",
@@ -503,7 +507,7 @@
             }
           ],
           "plannedBy": "projects.about",
-          "flesch": 63,
+          "flesch": 31,
           "pass": true,
           "declined": false,
           "missing": [],
@@ -526,7 +530,7 @@
               "meeting"
             ]
           },
-          "text": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+          "text": "Hobnob. Meeting note-takers ship your conversations to someone else's server.",
           "calls": [
             {
               "id": "projects.list",
@@ -534,12 +538,10 @@
             }
           ],
           "plannedBy": "projects.about",
-          "flesch": 52,
-          "pass": false,
+          "flesch": 24,
+          "pass": true,
           "declined": false,
-          "missing": [
-            "meeting"
-          ],
+          "missing": [],
           "leaked": [],
           "toolOk": true
         },
@@ -570,25 +572,26 @@
         },
         {
           "ask": "does it send anything to a server?",
-          "routed": "does it send anything to a server?",
-          "rewritten": false,
+          "routed": "does Hobnob send data to a server?",
+          "rewritten": true,
           "kind": "context",
           "expect": {
             "include": [
-              "local",
-              "cloud"
+              "no cloud"
             ]
           },
-          "text": "I can only help with the screens and controls built into this app.",
-          "calls": [],
-          "plannedBy": null,
-          "flesch": 90,
-          "pass": false,
-          "declined": true,
-          "missing": [
-            "local",
-            "cloud"
+          "text": "Hobnob: private meeting notes, no cloud. Nothing in its stack needs a remote server.",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
           ],
+          "plannedBy": "projects.privacy",
+          "flesch": 79,
+          "pass": true,
+          "declined": false,
+          "missing": [],
           "leaked": [],
           "toolOk": true
         }
@@ -708,34 +711,18 @@
               "readback"
             ]
           },
-          "text": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"hobnob\"}}\n```",
+          "text": "Hobnob: Meeting note-takers ship your conversations to someone else's server. It runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions. Readback: Reading-comprehension programs are closed systems: the school picks the quizzes, parents never see them, and the reading log lives on someone else's server. It runs on Python 3.10+, Flask 3, Jinja (no JS).",
           "calls": [
             {
-              "id": "projects.card",
-              "args": {
-                "project": "hobnob"
-              }
-            },
-            {
-              "id": "projects.card",
-              "args": {
-                "project": "hobnob"
-              }
-            },
-            {
-              "id": "projects.card",
-              "args": {
-                "project": "hobnob"
-              }
+              "id": "projects.list",
+              "args": {}
             }
           ],
-          "plannedBy": null,
-          "flesch": -163,
-          "pass": false,
+          "plannedBy": "projects.compare",
+          "flesch": 61,
+          "pass": true,
           "declined": false,
-          "missing": [
-            "readback"
-          ],
+          "missing": [],
           "leaked": [],
           "toolOk": true
         },
@@ -777,15 +764,13 @@
               "capabilit"
             ]
           },
-          "text": "I can only help with the screens and controls built into this app.",
+          "text": "I have 26 capabilities, all answered from this page: Show the newest article card; Open the full archive; Read the newest article; Log statistics; Summarise the blog; Show the contact card, and 20 more.",
           "calls": [],
           "plannedBy": null,
-          "flesch": 90,
-          "pass": false,
-          "declined": true,
-          "missing": [
-            "capabilit"
-          ],
+          "flesch": 43,
+          "pass": true,
+          "declined": false,
+          "missing": [],
           "leaked": [],
           "toolOk": true
         },

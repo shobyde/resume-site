@@ -1,14 +1,14 @@
 {
   "system": "hybrid",
-  "passed": 4,
+  "passed": 13,
   "total": 14,
   "byKind": {
     "knowledge": {
-      "passed": 3,
+      "passed": 7,
       "total": 8
     },
     "context": {
-      "passed": 0,
+      "passed": 4,
       "total": 4
     },
     "tool": {
@@ -20,7 +20,7 @@
       "total": 1
     },
     "readability": {
-      "passed": 0,
+      "passed": 1,
       "total": 1
     }
   },
@@ -29,7 +29,7 @@
       "thread": "h2-responsible",
       "ask": "who is responsible for Cinder?",
       "kind": "knowledge",
-      "text": "Cinder: owner is Data.",
+      "text": "Cinder: Data.",
       "calls": [],
       "pass": true,
       "missing": [],
@@ -42,15 +42,13 @@
       "thread": "h2-responsible",
       "ask": "what language is it in?",
       "kind": "context",
-      "text": "I'm not sure about that.",
+      "text": "Cinder: Python.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "Python"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
@@ -70,15 +68,13 @@
       "thread": "h2-highest",
       "ask": "which product has the highest SLA?",
       "kind": "knowledge",
-      "text": "I'm not sure about that.",
+      "text": "Delta has the highest sla at 99.99%.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "Delta"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
@@ -98,15 +94,13 @@
       "thread": "h2-team-owner",
       "ask": "and their lead?",
       "kind": "context",
-      "text": "I'm not sure about that.",
+      "text": "Payments: Lena Ortiz leads it.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "Lena Ortiz"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
@@ -128,7 +122,7 @@
       "thread": "h2-sev1",
       "ask": "what happens during a sev 1?",
       "kind": "knowledge",
-      "text": "I'm not sure about that.",
+      "text": "Deploy freeze: text is No production deploys during the last two business days of the quarter, except for Sev 1 fixes approved by the owning team lead..",
       "calls": [],
       "pass": false,
       "missing": [
@@ -136,49 +130,43 @@
       ],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
       "thread": "h2-retention",
       "ask": "how long are audit logs kept?",
       "kind": "knowledge",
-      "text": "I'm not sure about that.",
+      "text": "Data retention: text is Application logs are kept 30 days. Audit logs are kept 400 days. Customer records are deleted within 30 days of a verified request..",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "400"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
       "thread": "h2-retention",
       "ask": "and customer records?",
       "kind": "context",
-      "text": "I'm not sure about that.",
+      "text": "Data retention: text is Application logs are kept 30 days. Audit logs are kept 400 days. Customer records are deleted within 30 days of a verified request..",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "30"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
       "thread": "h2-services",
       "ask": "which services belong to Beacon?",
       "kind": "knowledge",
-      "text": "Beacon: owner is Growth.",
+      "text": "signup-web, experiment-api.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "signup-web"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -188,12 +176,10 @@
       "thread": "h2-person",
       "ask": "who is Ada Ferreira?",
       "kind": "knowledge",
-      "text": "Ada Ferreira: team is Platform.",
+      "text": "Ada Ferreira: SRE, on Platform.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "SRE"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -203,30 +189,26 @@
       "thread": "h2-person",
       "ask": "which team?",
       "kind": "context",
-      "text": "I'm not sure about that.",
+      "text": "Ada Ferreira: team is Platform.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "Platform"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
       "thread": "h2-summary",
       "ask": "summarise the payments stack in one sentence",
       "kind": "readability",
-      "text": "I'm not sure about that.",
+      "text": "Payments: channel is #payments.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "Payments"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     }
   ]

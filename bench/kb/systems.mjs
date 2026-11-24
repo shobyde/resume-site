@@ -9,7 +9,7 @@
 // moment a question refers to the one before it.
 
 const ATTRIBUTES = {
-  owner: ['who owns', 'owner', 'owns'],
+  owner: ['who owns', 'owner', 'owns', 'responsible for'],
   language: ['written in', 'language'],
   sla: ['sla', 'uptime'],
   database: ['database', 'store', 'storage', 'run on', 'runs on'],
@@ -33,8 +33,12 @@ const TOOLS = [
   { id: 'schedule_review', verbs: ['schedule', 'book a review'], arg: 'product' },
 ];
 
+import { createFactIndex, rankFacts } from 'boaz/rules';
+
 const norm = (text) => String(text ?? '').toLowerCase().replace(/[’']/g, "'").replace(/\s+/g, ' ').trim();
 const DECLINE = "I'm not sure about that.";
+
+const rowsOf = (kb) => kb.facts.map(([relation, ...args]) => [relation, ...args]);
 
 function vocabulary(kb) {
   return {
@@ -134,6 +138,10 @@ export function createTemplates(kb) {
       if (tool && entity) return callTool(tool, entity.name);
       if (!entity) return { text: DECLINE, tools: [] };
       const facts = factsFor(kb, entity.kind, entity.name);
+      if (entity.kind === 'person' && /^who is\b/i.test(q)) {
+        const parts = [facts.role, facts.team && `on ${facts.team}`].filter(Boolean);
+        if (parts.length) return { text: `${entity.name}: ${parts.join(', ')}.`, tools: [] };
+      }
       const attribute = attributeOf(question);
       if (attribute && facts[attribute]) return { text: `${entity.name}: ${facts[attribute]}.`, tools: [] };
       return { text: DECLINE, tools: [] };
@@ -141,35 +149,17 @@ export function createTemplates(kb) {
   };
 }
 
-/** Retrieval: BM25 over the fact sentences, then quote the best one. */
+/** Retrieval: the library's fact index, then quote the best sentence. */
 export function createBm25(kb) {
-  const docs = kb.docs;
-  const N = docs.length;
-  const tokenize = (text) => norm(text).split(/[^a-z0-9]+/).filter((word) => word.length > 1);
-  const df = new Map();
-  for (const doc of docs) for (const token of new Set(tokenize(doc.text))) df.set(token, (df.get(token) ?? 0) + 1);
-  const avg = docs.reduce((sum, doc) => sum + tokenize(doc.text).length, 0) / N;
-  const score = (doc, terms) => {
-    const words = tokenize(doc.text);
-    let total = 0;
-    for (const term of terms) {
-      const tf = words.filter((word) => word === term).length;
-      if (!tf) continue;
-      const idf = Math.log(1 + (N - (df.get(term) ?? 0) + 0.5) / ((df.get(term) ?? 0) + 0.5));
-      total += idf * ((tf * 2.2) / (tf + 1.2 * (0.25 + 0.75 * (words.length / avg))));
-    }
-    return total;
-  };
+  const index = createFactIndex(rowsOf(kb));
   return {
     id: 'bm25',
     ask(question) {
       const tool = toolOf(question);
       const entity = findEntity(kb, question);
       if (tool && entity) return callTool(tool, entity.name);
-      const terms = tokenize(question);
-      const ranked = docs.map((doc) => ({ doc, score: score(doc, terms) })).sort((a, b) => b.score - a.score);
-      if (!ranked[0] || ranked[0].score < 1.2) return { text: DECLINE, tools: [] };
-      return { text: ranked[0].doc.text, tools: [] };
+      const [hit] = index.search(question, 1);
+      return hit ? { text: hit.text, tools: [] } : { text: DECLINE, tools: [] };
     },
   };
 }
@@ -198,6 +188,24 @@ export function createRules(kb) {
         const names = [...new Set([...byTier, ...byDatabase, ...byRuntime])];
         return names.length ? { text: `${names.join(', ')}.`, tools: [] } : { text: DECLINE, tools: [] };
       }
+      // A ranking question: "which product has the highest SLA". The library
+      // reads the number in the value, so "unknown" cannot win.
+      const best = question.match(/which\s+(product|service|team)\s+(?:has|had)\s+the\s+(highest|lowest|largest|smallest)\s+(\w+)/i);
+      if (best) {
+        const relation = best[1].toLowerCase();
+        const attribute = best[3].toLowerCase();
+        const winner = rankFacts(rowsOf(kb), { relation, attribute, direction: /lowest|smallest/.test(best[2]) ? 'min' : 'max' })[0];
+        if (winner) return { text: `${winner.subject} has the ${best[2]} ${attribute} at ${winner.value}.`, tools: [] };
+      }
+
+      // A relation the rules never declared: which services sit under a product.
+      const belongs = question.match(/which services (?:belong to|are under|sit under)\s+([A-Za-z]+)/i);
+      if (belongs) {
+        const product = kb.products.find((row) => norm(row.name) === norm(belongs[1]));
+        const names = product ? kb.services.filter((row) => norm(row.product) === norm(product.id)).map((row) => row.id) : [];
+        return names.length ? { text: `${names.join(', ')}.`, tools: [] } : { text: DECLINE, tools: [] };
+      }
+
       if (/who is on call|who's on call/.test(q)) {
         const team = entity?.kind === 'team' ? entity.name : entity ? factsFor(kb, entity.kind, entity.name).oncall : null;
         const person = team ? oncallFor(kb, team) : null;
@@ -207,6 +215,10 @@ export function createRules(kb) {
       if (tool && entity) return callTool(tool, entity.name);
       if (!entity) return { text: DECLINE, tools: [] };
       const facts = factsFor(kb, entity.kind, entity.name);
+      if (entity.kind === 'person' && /^who is\b/i.test(q)) {
+        const parts = [facts.role, facts.team && `on ${facts.team}`].filter(Boolean);
+        if (parts.length) return { text: `${entity.name}: ${parts.join(', ')}.`, tools: [] };
+      }
       const attribute = attributeOf(question);
       if (attribute && facts[attribute]) return { text: `${entity.name}: ${facts[attribute]}.`, tools: [] };
       if (facts.text) return { text: `${entity.name}: ${facts.text}.`, tools: [] };
@@ -235,6 +247,14 @@ export function createRulesMemory(kb) {
   return {
     id: 'rules+memory',
     state,
+    /** Lets a retrieval fallback leave the session with the subject it found. */
+    absorb(question, text) {
+      const entity = findEntity(kb, question) ?? findEntity(kb, text);
+      if (entity) {
+        state.subject = entity.name;
+        state.kind = entity.kind;
+      }
+    },
     ask(question) {
       const q = norm(question);
       const tool = toolOf(question);
@@ -310,6 +330,11 @@ export function createRulesMemory(kb) {
           if (team) {
             return say(`${subject}: team is ${team}.`, { subject: team, kind: 'team', attribute: 'team' });
           }
+        }
+        if (attribute === 'lead' && kind === 'product') {
+          const team = factsFor(kb, 'product', subject).owner;
+          const lead = team ? factsFor(kb, 'team', team).lead : null;
+          if (lead) return say(`${team}: ${lead} leads it.`, { subject: team, kind: 'team', attribute: 'lead' });
         }
         if (attribute === 'lead' && kind === 'person') {
           const team = factsFor(kb, 'person', subject).team;
@@ -395,12 +420,14 @@ export function createHybrid(kb) {
       const retrieved = bm25.ask(question);
       if (/not sure/i.test(retrieved.text)) return answer;
       // Retrieval is a fallback for facts the rules did not reach, not a licence
-      // to answer about whichever sentence shares a word. The document has to be
-      // about the subject in play, or the subject the question names.
+      // to answer about whichever sentence shares a word. When the question names
+      // a subject the document must be about it; when it names none (a topic
+      // question) the index's own floor is the guard, and the answer is absorbed
+      // into the session so the next turn has a subject.
       const named = findEntity(kb, question)?.name ?? null;
-      const about = named ?? null;
-      if (about && norm(retrieved.text).includes(norm(about))) return retrieved;
-      return answer;
+      if (named && !norm(retrieved.text).includes(norm(named))) return answer;
+      rules.absorb?.(question, retrieved.text);
+      return retrieved;
     },
   };
 }

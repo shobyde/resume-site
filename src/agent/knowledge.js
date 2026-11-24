@@ -117,6 +117,23 @@ export function createAssistantKnowledge({ posts }) {
       },
     },
     {
+      id: 'assistant.about',
+      title: 'What this assistant can do',
+      keywords: ['what can you do', 'what can this do', 'what do you do'],
+      goal: 'profile(?N)',
+      // Nothing to look up: the manifest is the answer.
+      requiresSubject: false,
+      match: (question) => /^\s*(what can you do|what can this do|what do you do)\b/i.test(question),
+      explain: ({ capabilities }) => `Read the manifest: ${capabilities.length} capabilities`,
+      compose: ({ capabilities }) => {
+        const titles = capabilities.map((capability) => capability.title).filter(Boolean);
+        if (!titles.length) return '';
+        const shown = titles.slice(0, 6).join('; ');
+        const rest = titles.length > 6 ? `, and ${titles.length - 6} more` : '';
+        return `I have ${capabilities.length} capabilities, all answered from this page: ${shown}${rest}.`;
+      },
+    },
+    {
       id: 'projects.using',
       title: 'Which projects use a technology',
       keywords: ['which projects use', 'what uses', 'written in', 'uses', 'dependencies', 'powered by'],
@@ -258,6 +275,59 @@ export function createAssistantKnowledge({ posts }) {
           register: answerRegister(),
           stack: solutions.map((solution) => solution.bindings['?S']).filter(Boolean),
         });
+      },
+    },
+    {
+      id: 'projects.privacy',
+      title: 'Where a project keeps its data',
+      keywords: ['send to a server', 'leaves the machine', 'cloud', 'private', 'local'],
+      goal: 'project(?P, ?N)',
+      steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
+      match: (question) =>
+        PROJECT_NAME.test(question) && /(send|upload|store|leave).{0,20}(server|cloud|machine|device)/i.test(question),
+      explain: ({ observed }) => (observed['projects.list'] ? 'Read the project list and its own pitch about data' : 'Read the project list'),
+      compose: ({ solutions, observed }) => {
+        const records = observed['projects.list']?.projects ?? [];
+        const record = records.find((project) => slugOf(project.title) === solutions[0]?.bindings['?P']);
+        if (!record) return '';
+        // The card's subtitle is the claim ("private meeting notes, no cloud");
+        // repeating it is honest, and inventing a data policy is not.
+        const subtitle = String(record.title).includes(':') ? String(record.title).split(':').slice(1).join(':').trim() : '';
+        const local = /no cloud|local|offline|on.device|private/i.test(`${subtitle} ${record.summary ?? ''}`);
+        if (!local) return '';
+        return `${shortName(record.title)}: ${subtitle || 'runs locally'}. Nothing in its stack needs a remote server.`;
+      },
+    },
+    {
+      id: 'projects.compare',
+      title: 'Compare two projects',
+      keywords: ['compare', 'versus', 'vs'],
+      goal: 'project(?P, ?N)',
+      steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
+      requiresSubject: false,
+      match: (question) => /^\s*compare\b/i.test(question),
+      explain: ({ solutions }) =>
+        solutions.length >= 2 ? `Read the project list and set ${solutions.length} projects side by side` : 'Read the project list for both names',
+      compose: ({ solutions, observed }) => {
+        const records = observed['projects.list']?.projects ?? [];
+        const picked = solutions
+          .map((solution) => records.find((project) => slugOf(project.title) === solution.bindings['?P']))
+          .filter(Boolean);
+        if (picked.length < 2) return '';
+        // One sentence each, from the project's own pitch: a comparison that
+        // invents a winner would need a judgement this page does not hold.
+        return picked
+          .slice(0, 2)
+          .map((project) => {
+            const pitch = String(project.summary ?? '')
+              .replace(/<[^>]+>/g, '')
+              .replace(/\s+/g, ' ')
+              .trim()
+              .split(/(?<=[.!?])\s+/)[0];
+            const stack = (project.stack ?? []).slice(0, 3).join(', ');
+            return `${shortName(project.title)}: ${pitch}${stack ? ` It runs on ${stack}.` : ''}`;
+          })
+          .join(' ');
       },
     },
     {

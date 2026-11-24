@@ -1,0 +1,78 @@
+{
+  "note": "Third held-out set, written after the second one had been used to fix lexicon and session behaviour. Nothing here was targeted by a change.",
+  "threads": [
+    {
+      "id": "h3-rotation",
+      "title": "On-call, said another way",
+      "turns": [
+        { "ask": "who's looking after the search rotation this week?", "kind": "knowledge", "expect": { "include": ["Ravi Shah"] } }
+      ]
+    },
+    {
+      "id": "h3-uptime",
+      "title": "A promise, phrased as a promise",
+      "turns": [
+        { "ask": "what's the uptime promise for Flint?", "kind": "knowledge", "expect": { "include": ["99.9%"] } },
+        { "ask": "and who owns it?", "kind": "context", "expect": { "include": ["Search"] } }
+      ]
+    },
+    {
+      "id": "h3-oldest",
+      "title": "A question the handbook has no column for",
+      "turns": [
+        { "ask": "which of our products is the oldest?", "kind": "knowledge", "expect": { "decline": true } }
+      ]
+    },
+    {
+      "id": "h3-count",
+      "title": "A count over the handbook",
+      "turns": [
+        { "ask": "how many teams are there?", "kind": "knowledge", "expect": { "include": ["5"] } }
+      ]
+    },
+    {
+      "id": "h3-lead",
+      "title": "Lead, named team",
+      "turns": [
+        { "ask": "who leads the data team?", "kind": "knowledge", "expect": { "include": ["Priya Raman"] } },
+        { "ask": "how big is it?", "kind": "context", "expect": { "include": ["7"] } }
+      ]
+    },
+    {
+      "id": "h3-deploy",
+      "title": "A deploy by product",
+      "turns": [
+        { "ask": "deploy cinder", "kind": "tool", "expect": { "tool": "deploy" } },
+        { "ask": "and roll it back", "kind": "context", "expect": { "tool": "rollback" } }
+      ]
+    },
+    {
+      "id": "h3-clickhouse",
+      "title": "Everything on one database",
+      "turns": [
+        { "ask": "what runs on ClickHouse?", "kind": "knowledge", "expect": { "include": ["Cinder", "Gauge"] } }
+      ]
+    },
+    {
+      "id": "h3-summary",
+      "title": "A project summarised",
+      "turns": [
+        { "ask": "summarise Delta", "kind": "readability", "expect": { "include": ["Payments", "Rust"] } }
+      ]
+    },
+    {
+      "id": "h3-search-product",
+      "title": "A product named by its team",
+      "turns": [
+        { "ask": "what is the SLA for the search product?", "kind": "knowledge", "expect": { "include": ["99.9%"] } }
+      ]
+    },
+    {
+      "id": "h3-ticket-lookup",
+      "title": "A tool that does not exist",
+      "turns": [
+        { "ask": "what is in ticket OPS-123?", "kind": "tool", "expect": { "decline": true } }
+      ]
+    }
+  ]
+}

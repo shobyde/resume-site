@@ -1,10 +1,10 @@
 {
   "system": "templates",
-  "passed": 3,
+  "passed": 5,
   "total": 14,
   "byKind": {
     "knowledge": {
-      "passed": 2,
+      "passed": 4,
       "total": 8
     },
     "context": {
@@ -29,15 +29,13 @@
       "thread": "h2-responsible",
       "ask": "who is responsible for Cinder?",
       "kind": "knowledge",
-      "text": "I'm not sure about that.",
+      "text": "Cinder: Data.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "Data"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
@@ -190,15 +188,13 @@
       "thread": "h2-person",
       "ask": "who is Ada Ferreira?",
       "kind": "knowledge",
-      "text": "I'm not sure about that.",
+      "text": "Ada Ferreira: SRE, on Platform.",
       "calls": [],
-      "pass": false,
-      "missing": [
-        "SRE"
-      ],
+      "pass": true,
+      "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {

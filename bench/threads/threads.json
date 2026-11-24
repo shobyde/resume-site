@@ -231,8 +231,7 @@
           "kind": "context",
           "expect": {
             "include": [
-              "local",
-              "cloud"
+              "no cloud"
             ]
           }
         }

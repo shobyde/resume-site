@@ -1,0 +1,216 @@
+{
+  "system": "rules",
+  "passed": 5,
+  "total": 13,
+  "byKind": {
+    "knowledge": {
+      "passed": 3,
+      "total": 7
+    },
+    "context": {
+      "passed": 0,
+      "total": 3
+    },
+    "tool": {
+      "passed": 2,
+      "total": 2
+    },
+    "planning": {
+      "passed": 0,
+      "total": 0
+    },
+    "readability": {
+      "passed": 0,
+      "total": 1
+    }
+  },
+  "turns": [
+    {
+      "thread": "h3-rotation",
+      "ask": "who's looking after the search rotation this week?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Ravi Shah"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h3-uptime",
+      "ask": "what's the uptime promise for Flint?",
+      "kind": "knowledge",
+      "text": "Flint: 99.9%.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h3-uptime",
+      "ask": "and who owns it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Search"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h3-oldest",
+      "ask": "which of our products is the oldest?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": true
+    },
+    {
+      "thread": "h3-count",
+      "ask": "how many teams are there?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "5"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h3-lead",
+      "ask": "who leads the data team?",
+      "kind": "knowledge",
+      "text": "Data: Priya Raman.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h3-lead",
+      "ask": "how big is it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "7"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h3-deploy",
+      "ask": "deploy cinder",
+      "kind": "tool",
+      "text": "{\"tool\":\"deploy\",\"arguments\":{\"service\":\"Cinder\"}}",
+      "calls": [
+        "deploy"
+      ],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h3-deploy",
+      "ask": "and roll it back",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [],
+      "leaked": [],
+      "toolOk": false,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h3-clickhouse",
+      "ask": "what runs on ClickHouse?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Cinder",
+        "Gauge"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h3-summary",
+      "ask": "summarise Delta",
+      "kind": "readability",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Payments",
+        "Rust"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h3-search-product",
+      "ask": "what is the SLA for the search product?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "99.9%"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h3-ticket-lookup",
+      "ask": "what is in ticket OPS-123?",
+      "kind": "tool",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": true
+    }
+  ]
+}

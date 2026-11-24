@@ -434,6 +434,19 @@ export function initAssistant({ posts = [] } = {}) {
     setBusy(true);
     live = null;
     try {
+      // "What can you do?" is a question about the assistant, not about the
+      // page. It is answered from the manifest rather than routed as a topic.
+      if (/^\s*(what can you do|what do you do|what can this do|what can the assistant do)\b/i.test(question)) {
+        const titles = manifest.capabilities.map((capability) => capability.title ?? capability.id).filter(Boolean);
+        const shown = titles.slice(0, 7).join(', ');
+        const rest = titles.length > 7 ? `, and ${titles.length - 7} more` : '';
+        state.query = question;
+        addSkillAnswer(
+          `I have ${manifest.capabilities.length} capabilities, all answered from this page: ${shown}${rest}. I can also walk the page, open a project card, or copy the email.`,
+          [`Read the manifest: ${manifest.capabilities.length} capabilities, ${titles.length} with titles`],
+        );
+        return;
+      }
       // The summarise capability reads the question from the snapshot, the same
       // way blog.stats reads the post count.
       // "in one line" / "keep it short" is a request about the answer, not a
