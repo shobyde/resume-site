@@ -1,0 +1,81 @@
+{
+  "class": "taxonomy",
+  "note": "One rung of the no-llm program: classify the question shape and fill the slots a router acts on. 5 utterances per type, taken from questions this site can actually be asked. Expect.pass needs the type to match; entities/attribute are asserted only where the task names them.",
+  "subjects": [
+    "Hobnob",
+    "Readback",
+    "Groundglass",
+    "client-agent",
+    "Python 3.10+",
+    "SQLite",
+    "TypeScript",
+    "the archive",
+    "the blog",
+    "the resume",
+    "the assistant",
+    "the site",
+    "Conversica",
+    "shobyde.com"
+  ],
+  "tasks": [
+    { "q": "who is Sho Byde", "expect": { "type": "who" } },
+    { "q": "who wrote the newest post", "expect": { "type": "who", "attribute": "writing" } },
+    { "q": "whose site is this", "expect": { "type": "who" } },
+    { "q": "who built groundglass", "expect": { "type": "who", "entities": ["Groundglass"] } },
+    { "q": "who should I contact about the assistant", "expect": { "type": "who" } },
+
+    { "q": "what has he built", "expect": { "type": "what" } },
+    { "q": "what does the client-agent library do", "expect": { "type": "what" } },
+    { "q": "what is groundglass", "expect": { "type": "what", "entities": ["Groundglass"] } },
+    {
+      "q": "what technologies does Readback use",
+      "expect": { "type": "what", "entities": ["Readback"], "attribute": "stack" }
+    },
+    { "q": "tell me about the blog", "expect": { "type": "what" } },
+
+    { "q": "where is he based", "expect": { "type": "where", "attribute": "location" } },
+    { "q": "where does the archive live", "expect": { "type": "where", "entities": ["the archive"] } },
+    { "q": "where can I download the resume", "expect": { "type": "where" } },
+    { "q": "where is the assistant on the page", "expect": { "type": "where" } },
+    { "q": "where are the older posts kept", "expect": { "type": "where" } },
+
+    { "q": "when was Readback released", "expect": { "type": "when", "entities": ["Readback"] } },
+    { "q": "when did he start at Conversica", "expect": { "type": "when", "entities": ["Conversica"] } },
+    { "q": "when was the newest post published", "expect": { "type": "when" } },
+    { "q": "what year did Hobnob ship", "expect": { "type": "when", "entities": ["Hobnob"] } },
+    { "q": "how long ago was the last post", "expect": { "type": "when" } },
+
+    { "q": "how many posts are there", "expect": { "type": "how-many" } },
+    { "q": "how many projects use python", "expect": { "type": "how-many" } },
+    { "q": "how much has he written", "expect": { "type": "how-many" } },
+    { "q": "what's the number of published articles", "expect": { "type": "how-many" } },
+    { "q": "count the projects that use sqlite", "expect": { "type": "how-many" } },
+
+    {
+      "q": "which projects use python",
+      "expect": { "type": "which", "entities": ["Python 3.10+"], "attribute": "stack" }
+    },
+    { "q": "which post is the newest", "expect": { "type": "which" } },
+    { "q": "which capabilities does the assistant have", "expect": { "type": "which" } },
+    { "q": "which of his projects are open source", "expect": { "type": "which" } },
+    { "q": "which sections does the site have", "expect": { "type": "which" } },
+
+    { "q": "why did he build groundglass", "expect": { "type": "why", "entities": ["Groundglass"] } },
+    { "q": "why is there no model in the assistant", "expect": { "type": "why" } },
+    { "q": "why does the site use a rules engine", "expect": { "type": "why" } },
+    { "q": "what's the reason for the no-LLM rule", "expect": { "type": "why" } },
+    { "q": "why did he rewrite the probe generator", "expect": { "type": "why" } },
+
+    {
+      "q": "compare Hobnob and Readback",
+      "expect": { "type": "compare", "entities": ["Hobnob", "Readback"] }
+    },
+    {
+      "q": "what's the difference between Groundglass and client-agent",
+      "expect": { "type": "compare", "entities": ["Groundglass", "client-agent"] }
+    },
+    { "q": "how does Readback compare with Hobnob", "expect": { "type": "compare" } },
+    { "q": "Readback vs Hobnob, which is bigger", "expect": { "type": "compare" } },
+    { "q": "which is newer, the archive or the blog", "expect": { "type": "compare" } }
+  ]
+}
