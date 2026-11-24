@@ -171,6 +171,14 @@
     {
       "question": "which projects use typescript?",
       "expect": "projects.using"
+    },
+    {
+      "question": "which projects use python but not readback?",
+      "expect": "projects.using"
+    },
+    {
+      "question": "which projects use sqlite, excluding readback?",
+      "expect": "projects.using"
     }
   ]
 }

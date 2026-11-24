@@ -9,13 +9,13 @@
     "audit:routing": "node node_modules/client-agent/dist/cli/index.js audit --probes bench/probes.json --module bench/agent-setup.mjs",
     "bench:composition": "node bench/composition/bench.mjs",
     "preview": "vite preview",
-    "bench:no-llm": "node bench/no-llm/run.mjs"
+    "bench:no-llm": "node bench/no-llm/run.mjs && node bench/no-llm/run.mjs --suite negation.json"
   },
   "devDependencies": {
     "vite": "^6.0.0"
   },
   "dependencies": {
-    "client-agent": "https://github.com/shobyde/client-agent/releases/download/v0.6.9/client-agent-0.6.9.tgz",
+    "client-agent": "https://github.com/shobyde/client-agent/releases/download/v0.6.10/client-agent-0.6.10.tgz",
     "lenis": "^1.3.26",
     "three": "^0.170.0"
   }

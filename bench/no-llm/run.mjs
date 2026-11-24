@@ -1,15 +1,17 @@
 #!/usr/bin/env node
 /**
- * Rung 1 runner: question taxonomy and slot filling, without a model.
+ * No-LLM benchmark runner. One suite per rung; `--suite` picks the file.
  *
- * Two systems answer the same 40 utterances:
- *   baseline — the leading-interrogative heuristic, i.e. what you write before
- *              you have a library: take the first wh-word, special-case "how
- *              many", and look for "compare"/"vs" anywhere.
+ * Two systems answer every utterance:
+ *   baseline — what you write before you have a library. For taxonomy: take the
+ *              first wh-word, special-case "how many", look for compare/vs. For
+ *              negation: any subject word that follows a negation word anywhere
+ *              in the sentence, with no scope and no effect on the entities.
  *   library  — analyzeQuestion() from client-agent.
  *
- * A task passes only when the type matches AND every slot the task declares is
- * filled. Numbers are per task; --json writes the full table.
+ * A task passes only when the type matches (where asserted), every declared
+ * entity is present, the exclusion set matches exactly, and no excluded subject
+ * is also counted as an entity.
  */
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
@@ -27,23 +29,65 @@ export function baselineType(query) {
   return lead[1];
 }
 
-export function baselineAnalysis(query) {
+const NEGATION_WORD = /\b(?:not|except|excluding|excludes?|besides|without|other than|apart from|anything but)\b/;
+
+/** The subject's own first word, which is what a hand-written scan would look for. */
+function anchor(subject) {
+  const words = subject
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]+/g, ' ')
+    .split(/\s+/)
+    .filter((word) => word && !['the', 'a', 'an'].includes(word));
+  return words[0] ?? '';
+}
+
+export function baselineExclusions(query, subjects) {
+  const text = query.toLowerCase();
+  const out = [];
+  for (const subject of subjects) {
+    const word = anchor(subject);
+    if (!word) continue;
+    const at = text.search(new RegExp(`\\b${word}`));
+    if (at < 0) continue;
+    if (NEGATION_WORD.test(text.slice(0, at))) out.push(subject);
+  }
+  return out;
+}
+
+export function baselineAnalysis(query, subjects = []) {
   return {
     type: baselineType(query),
-    slots: { entities: [], attribute: null, subject: null, newest: null, referenced: false, mentions: [] },
+    slots: {
+      entities: [],
+      attribute: null,
+      subject: null,
+      newest: null,
+      referenced: false,
+      exclude: baselineExclusions(query, subjects),
+      mentions: [],
+    },
   };
 }
+
+const sameSet = (a = [], b = []) =>
+  a.length === b.length && [...a].sort().every((value, i) => value === [...b].sort()[i]);
 
 export function scoreTask(task, analysis) {
   const want = task.expect;
   const problems = [];
-  if (analysis.type !== want.type) problems.push(`type ${analysis.type} != ${want.type}`);
+  if (want.type && analysis.type !== want.type) problems.push(`type ${analysis.type} != ${want.type}`);
   for (const entity of want.entities ?? []) {
     if (!analysis.slots.entities.includes(entity)) problems.push(`missing entity ${entity}`);
   }
   if (want.attribute && analysis.slots.attribute !== want.attribute) {
     problems.push(`attribute ${analysis.slots.attribute} != ${want.attribute}`);
   }
+  const got = analysis.slots.exclude ?? [];
+  if (want.exclude && !sameSet(got, want.exclude)) {
+    problems.push(`exclude [${got.join(', ')}] != [${want.exclude.join(', ')}]`);
+  }
+  const leaked = got.filter((subject) => analysis.slots.entities.includes(subject));
+  if (leaked.length) problems.push(`excluded but counted as entity: ${leaked.join(', ')}`);
   return { ok: problems.length === 0, problems };
 }
 
@@ -52,33 +96,27 @@ function rate(rows) {
   return Math.round((passed / rows.length) * 1000) / 10;
 }
 
+function argValue(flag) {
+  const at = process.argv.indexOf(flag);
+  return at >= 0 ? process.argv[at + 1] : undefined;
+}
+
 async function main() {
   const { analyzeQuestion } = await import('client-agent');
-  const suite = JSON.parse(await readFile(path.join(here, 'tasks.json'), 'utf8'));
+  const suitePath = argValue('--suite') ?? 'tasks.json';
+  const suite = JSON.parse(await readFile(path.resolve(here, suitePath), 'utf8'));
   const subjects = suite.subjects ?? [];
 
   const rows = suite.tasks.map((task) => {
-    const before = baselineAnalysis(task.q);
+    const before = baselineAnalysis(task.q, subjects);
     const after = analyzeQuestion(task.q, { subjects });
     const b = scoreTask(task, before);
     const a = scoreTask(task, after);
     return { q: task.q, want: task.expect, before, after, b, a };
   });
 
-  const byType = new Map();
-  for (const row of rows) {
-    const key = row.want.type;
-    const entry = byType.get(key) ?? { type: key, n: 0, before: 0, after: 0 };
-    entry.n += 1;
-    if (row.b.ok) entry.before += 1;
-    if (row.a.ok) entry.after += 1;
-    byType.set(key, entry);
-  }
-
   const beforePct = rate(rows.map((r) => ({ ok: r.b.ok })));
   const afterPct = rate(rows.map((r) => ({ ok: r.a.ok })));
-  const typeBefore = rate(rows.map((r) => ({ ok: r.before.type === r.want.type })));
-  const typeAfter = rate(rows.map((r) => ({ ok: r.after.type === r.want.type })));
 
   if (process.argv.includes('--json')) {
     const out = {
@@ -86,14 +124,12 @@ async function main() {
       n: rows.length,
       before: beforePct,
       after: afterPct,
-      typeBefore,
-      typeAfter,
       rows: rows.map((r) => ({
         q: r.q,
         want: r.want,
-        before: r.before.type,
-        after: r.after.type,
-        afterSlots: r.after.slots,
+        beforeExclude: r.before.slots.exclude,
+        afterExclude: r.after.slots.exclude,
+        afterEntities: r.after.slots.entities,
         beforePass: r.b.ok,
         afterPass: r.a.ok,
         problems: r.a.problems,
@@ -103,32 +139,20 @@ async function main() {
     return;
   }
 
-  const label = (n, total) => `${n}/${total}`;
-  for (const [type, entry] of byType) {
-    process.stdout.write(
-      `${type.padEnd(9)} ${label(entry.after, entry.n).padStart(5)} after  ` +
-        `${label(entry.before, entry.n).padStart(5)} before\n`,
-    );
-  }
   process.stdout.write(
-    `\n${suite.class}: ${afterPct}% (${rows.filter((r) => r.a.ok).length}/${rows.length}) after, ` +
+    `${suite.class}: ${afterPct}% (${rows.filter((r) => r.a.ok).length}/${rows.length}) after, ` +
       `${beforePct}% (${rows.filter((r) => r.b.ok).length}/${rows.length}) before\n`,
   );
-  process.stdout.write(`type only: ${typeAfter}% after, ${typeBefore}% before\n`);
 
   const misses = rows.filter((r) => !r.a.ok);
   if (misses.length > 0) {
     process.stdout.write('\nmisses:\n');
     for (const miss of misses) {
-      process.stdout.write(`  "${miss.q}"  want ${miss.want.type}, got ${miss.after.type}`);
-      if (miss.a.problems.length) process.stdout.write(`  (${miss.a.problems.join('; ')})`);
-      process.stdout.write('\n');
+      process.stdout.write(`  "${miss.q}"  (${miss.a.problems.join('; ')})\n`);
     }
   }
-  const breaks = rows.filter((r) => r.b.ok && !r.a.ok);
-  if (breaks.length > 0) {
-    process.stdout.write(`\nregressions against baseline: ${breaks.length}\n`);
-  }
+  const wins = rows.filter((r) => !r.b.ok && r.a.ok);
+  if (wins.length > 0) process.stdout.write(`\nfixed by the library: ${wins.length}\n`);
 }
 
 if (process.argv[1] && process.argv[1].endsWith('run.mjs')) {

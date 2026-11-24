@@ -1,0 +1,91 @@
+{
+  "class": "negation",
+  "note": "Rung 2: a visitor can rule something out. Pass needs the exclusion set to match exactly, every asserted entity present, and no excluded subject counted as an entity. Half the tasks are negations to read, half are negation-shaped words that must not be read as negations.",
+  "subjects": [
+    "Hobnob",
+    "Readback",
+    "Groundglass",
+    "client-agent",
+    "Python 3.10+",
+    "SQLite",
+    "TypeScript",
+    "the archive",
+    "the blog",
+    "the resume",
+    "the assistant",
+    "the site",
+    "Conversica",
+    "shobyde.com"
+  ],
+  "tasks": [
+    {
+      "q": "which projects use python but not readback",
+      "expect": { "type": "which", "entities": ["Python 3.10+"], "exclude": ["Readback"] }
+    },
+    {
+      "q": "which projects use sqlite, excluding readback",
+      "expect": { "type": "which", "entities": ["SQLite"], "exclude": ["Readback"] }
+    },
+    { "q": "anything but hobnob, what has he built", "expect": { "type": "what", "exclude": ["Hobnob"] } },
+    {
+      "q": "explain groundglass without mentioning hobnob",
+      "expect": { "type": "what", "entities": ["Groundglass"], "exclude": ["Hobnob"] }
+    },
+    {
+      "q": "who built groundglass, not readback",
+      "expect": { "type": "who", "entities": ["Groundglass"], "exclude": ["Readback"] }
+    },
+    {
+      "q": "which projects use python, not sqlite",
+      "expect": { "type": "which", "entities": ["Python 3.10+"], "exclude": ["SQLite"] }
+    },
+    {
+      "q": "which projects use python or sqlite, not readback",
+      "expect": { "entities": ["Python 3.10+", "SQLite"], "exclude": ["Readback"] }
+    },
+    {
+      "q": "tell me about the blog, not the archive",
+      "expect": { "type": "what", "entities": ["the blog"], "exclude": ["the archive"] }
+    },
+    {
+      "q": "how many posts mention python, not hobnob",
+      "expect": { "type": "how-many", "exclude": ["Hobnob"] }
+    },
+    {
+      "q": "where can I download the resume, not the blog",
+      "expect": { "type": "where", "entities": ["the resume"], "exclude": ["the blog"] }
+    },
+    {
+      "q": "compare hobnob and readback, but not client-agent",
+      "expect": { "type": "compare", "entities": ["Hobnob", "Readback"], "exclude": ["client-agent"] }
+    },
+    {
+      "q": "apart from readback, which projects use python",
+      "expect": { "entities": ["Python 3.10+"], "exclude": ["Readback"] }
+    },
+    {
+      "q": "what does he write about, other than the archive",
+      "expect": { "type": "what", "exclude": ["the archive"] }
+    },
+    {
+      "q": "not the archive, take me to the blog",
+      "expect": { "entities": ["the blog"], "exclude": ["the archive"] }
+    },
+
+    { "q": "why is there no model in the assistant", "expect": { "type": "why", "exclude": [] } },
+    {
+      "q": "not sure, which projects use python",
+      "expect": { "type": "which", "entities": ["Python 3.10+"], "exclude": [] }
+    },
+    { "q": "why not sqlite", "expect": { "exclude": [] } },
+    { "q": "is there anything about the archive on the blog", "expect": { "exclude": [] } },
+    { "q": "what's not to like about the site", "expect": { "exclude": [] } },
+    { "q": "does hobnob use sqlite", "expect": { "exclude": [] } },
+    { "q": "which is newer, the archive or the blog", "expect": { "exclude": [] } },
+    {
+      "q": "which projects use python and sqlite",
+      "expect": { "type": "which", "entities": ["Python 3.10+", "SQLite"], "exclude": [] }
+    },
+    { "q": "nothing about hobnob, tell me about readback", "expect": { "exclude": [] } }
+  ]
+}
