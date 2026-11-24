@@ -1,6 +1,16 @@
 // The knowledge and answer rules the site's assistant runs on. Shared by the
 // panel (src/agent/assistant.js) and the live console on /client-agent/.
 import { KnowledgeBase, fact } from 'client-agent/rules';
+import { DATA } from '../data.js';
+import {
+  phraseEmail,
+  phraseProfile,
+  phraseLinkedin,
+  phraseNewestPost,
+  phraseProjectList,
+  phraseProjectsUsing,
+  shortName,
+} from './phrasing.js';
 
 /**
  * Nothing about the projects is copied into a fact table: the assistant calls
@@ -37,6 +47,35 @@ export function createAssistantKnowledge({ posts }) {
 
   const answers = [
     {
+      id: 'profile.who',
+      title: 'Who he is',
+      keywords: [
+        'who is sho',
+        'who is he',
+        'tell me who he is',
+        'his background',
+        'what does he do',
+      ],
+      goal: 'profile(?N)',
+      // Nothing to look up: the profile is on the page already.
+      requiresSubject: false,
+      // "What does he do?" has no content words at all.
+      match: (question) =>
+        /^\s*(what does he do|what is his job|who is (sho|he)|tell me (about|who) (him|sho))/i.test(question),
+      explain: () => 'Read the profile from this page',
+      compose: ({ query }) => {
+        const current = DATA.experience?.[0];
+        const years = '12';
+        const since = String(current?.period || '').split('–')[0].trim();
+        return phraseProfile(query, {
+          name: DATA.hero?.name,
+          years,
+          org: current?.org,
+          since,
+        });
+      },
+    },
+    {
       id: 'projects.using',
       title: 'Which projects use a technology',
       keywords: ['which projects use', 'what uses', 'written in', 'uses', 'dependencies', 'powered by'],
@@ -48,33 +87,31 @@ export function createAssistantKnowledge({ posts }) {
         if (solutions.length === 0) return `Read the project list: no stack lists ${tech}`;
         return `Read the project list and matched ${tech} against ${solutions.length} project${solutions.length === 1 ? '' : 's'}`;
       },
-      compose: ({ solutions, terms, mentions, observed, knowledge: kb }) => {
+      compose: ({ query, solutions, terms, mentions, observed }) => {
+        const records = observed['projects.list']?.projects ?? [];
+        const asked = terms[0] || mentions[0] || '';
         if (solutions.length === 0) {
           // The tool ran, so "no stack lists TypeScript" is a fact about the
           // page, not a shrug. Without the tool result there is nothing to say.
           if (!observed['projects.list']) return '';
-          const asked = terms.join(' or ') || mentions[0];
-          return asked ? `No project stack lists ${asked}.` : '';
+          return phraseProjectsUsing(query, [], asked);
         }
-        const titles = solutions
-          .map(
-            (solution) =>
-              kb
-                .query('project(?P, ?T)', { assume: [['asked', solution.bindings['?P'] ?? '']] })
-                .find((hit) => hit.bindings['?P'] === solution.bindings['?P'])?.bindings['?T'] ??
-              solution.bindings['?P'],
-          )
-          .filter(Boolean);
-        if (titles.length === 0) return '';
-        const list =
-          titles.length === 1 ? titles[0] : `${titles.slice(0, -1).join(', ')} and ${titles.at(-1)}`;
-        return `${list} ${titles.length === 1 ? 'uses' : 'use'} it.`;
+        const matched = solutions
+          .map((solution) => {
+            const slug = solution.bindings['?P'];
+            const record = records.find(
+              (project) => slugOf(project.title) === slug || shortName(project.title).toLowerCase() === slug,
+            );
+            return record ?? { title: solution.bindings['?T'] ?? slug, stack: [] };
+          })
+          .filter((project) => project?.title);
+        return phraseProjectsUsing(query, matched, asked);
       },
     },
     {
       id: 'projects.list_titles',
       title: 'List the projects',
-      keywords: ['list projects', 'project list', 'which projects', 'what has he built', 'what did he build', 'what has he shipped'],
+      keywords: ['list projects', 'project list', 'which projects', 'what has he built', 'what did he build', 'what has he shipped', 'what did he make', 'what has he made'],
       goal: 'project(?P, ?T)',
       steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
       // Both rules read the same tool, so the join rule must win whenever the
@@ -82,12 +119,12 @@ export function createAssistantKnowledge({ posts }) {
       threshold: 1.1,
       requiresSubject: false,
       explain: ({ solutions }) => `Read the project list: ${solutions.length} projects`,
-      compose: ({ solutions }) => {
+      compose: ({ query, solutions, observed }) => {
         if (solutions.length === 0) return '';
-        const titles = solutions.map((solution) => solution.bindings['?T']).filter(Boolean);
-        return titles.length > 1
-          ? `He has shipped ${titles.length} projects: ${titles.slice(0, -1).join(', ')} and ${titles.at(-1)}.`
-          : `He has shipped one project here: ${titles[0]}.`;
+        const records = observed['projects.list']?.projects?.length
+          ? observed['projects.list'].projects
+          : solutions.map((solution) => ({ title: solution.bindings['?T'] ?? '' }));
+        return phraseProjectList(query, records.filter((project) => project?.title));
       },
     },
     {
@@ -95,8 +132,8 @@ export function createAssistantKnowledge({ posts }) {
       title: 'His email address',
       keywords: ['what is his email', 'his email', 'email address', 'how do i email him', 'how do i reach him'],
       goal: 'email(?V)',
-      compose: ({ bindings, observed }) =>
-        bindings['?V'] ? `His email is ${bindings['?V']}.` : '',
+      compose: ({ query, bindings }) =>
+        bindings['?V'] ? phraseEmail(query, bindings['?V']) : '',
       explain: ({ solutions }) =>
         solutions.length ? 'Read the email address off this page' : 'Looked for an email address on this page',
     },
@@ -105,14 +142,17 @@ export function createAssistantKnowledge({ posts }) {
       title: 'His LinkedIn profile',
       keywords: ['his linkedin', 'what is his linkedin', 'linkedin profile'],
       goal: 'linkedin(?V)',
-      compose: ({ bindings }) => (bindings['?V'] ? `His LinkedIn is ${bindings['?V']}.` : ''),
+      compose: ({ query, bindings }) =>
+        bindings['?V'] ? phraseLinkedin(query, bindings['?V']) : '',
       explain: () => 'Read the LinkedIn link off this page',
     },
     {
       id: 'posts.newest',
       title: 'The newest article',
-      keywords: ['newest post', 'latest post', 'last thing he wrote'],
+      keywords: ['newest post', 'latest post', 'last thing he wrote', 'latest article', 'newest article', 'how much has he written', 'how many posts has he written', 'what has he written'],
       goal: 'post_newest(?T)',
+      // Nothing to look up by name: the tool always runs.
+      requiresSubject: false,
       steps: [
         {
           capabilityId: 'blog.stats',
@@ -126,13 +166,12 @@ export function createAssistantKnowledge({ posts }) {
         const count = observed['blog.stats']?.posts;
         return count ? `Read the log: ${count} posts, took the most recent` : 'Read the log for the newest post';
       },
-      compose: ({ bindings, lookup }) => {
-        const newest = bindings['?T'];
-        const count = lookup('post_count(?N)')[0]?.bindings['?N'];
+      compose: ({ query, bindings, lookup, observed }) => {
+        const stats = observed['blog.stats'] ?? {};
+        const newest = stats.newest ?? bindings['?T'];
+        const count = stats.posts ?? lookup('post_count(?N)')[0]?.bindings['?N'];
         if (!newest) return '';
-        return count
-          ? `${count} posts are published, and the newest is "${newest}".`
-          : `The newest post is "${newest}".`;
+        return phraseNewestPost(query, { count, newest });
       },
     },
   ];

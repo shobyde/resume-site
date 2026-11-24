@@ -81,8 +81,8 @@ const PROBES = [
   ['list the projects', 'projects.list_titles'],
   ['what has he built?', 'projects.list_titles'],
   // knowledge / answer rules
-  ['who is sho?', 'knowledge.about'],
-  ['tell me about him', 'knowledge.about'],
+  ['who is sho?', 'profile.who'],
+  ['tell me about him', 'profile.who'],
   ['what technologies does he use?', 'knowledge.skills'],
   ['what is his stack?', 'knowledge.skills'],
   ['what is his email?', 'contact.email'],

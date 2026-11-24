@@ -6,12 +6,22 @@ visitors get today.
 
 ```
 system        fidelity  similarity  openers  spread  ttr   stable  corpus  frames  follow  ms
-baseline          75%        0.59     0.38     8.6  0.98    100%    1.61      88%       0  25
-A pools          100%        0.52     0.79     5.2  0.99    100%    1.91      71%       0   2
-B grammar        100%        0.55     0.58     6.9  0.99    100%    1.73      71%       1   2
-C voice          100%        0.37     0.58     5.4  0.99    100%    1.60      17%       0   2
-D hybrid         100%        0.49     0.71     6.6  0.98    100%    1.75      67%       1   2
+legacy           100%        1.00     0.25     5.9  1.00    100%    1.66     100%       0   2
+shipped          100%        0.51     0.67     8.3  0.99    100%    1.75      83%       0  26
+A pools          100%        0.39     0.79     5.2  0.99    100%    1.91      71%       0   1
+B grammar        100%        0.48     0.58     6.9  0.99    100%    1.73      71%       1   2
+C voice          100%        0.27     0.58     5.4  0.99    100%    1.60      17%       0   2
+D hybrid         100%        0.39     0.71     6.6  0.98    100%    1.75      67%       1   2
 ```
+
+`legacy` is the composer set the site shipped before this work, fed the same facts; `shipped` is the
+routed system now in `src/agent/phrasing.js`. Similarity is computed with the required facts masked, so it
+measures the words around the answer rather than the answer itself.
+
+Two numbers need care. Legacy's fidelity is 100% *as a composer* — the 75% the routed system used to score
+came from questions that never reached a composer (refusals on "what did he make?", "how much has he
+written?"), and those keywords were fixed in the same pass. Similarity of 1.00 for legacy is the honest
+headline: every phrasing of an intent produced the identical sentence.
 
 ## The question set
 
@@ -39,6 +49,9 @@ claim ("Cutting to it —", "The short version:") scores 1; one that introduces 
 mentions scores 0. The whitelist is a proxy, not a judge.
 
 ## The four approaches
+
+The shipped system is `src/agent/phrasing.js`: intent picks the construction, the question's hash picks the
+realisation, and the rule that named the fact still owns the facts.
 
 **A — phrase pools** (`systems/a-pools.mjs`). Each intent keeps five whole-sentence variants of the same
 claim; a hash of the question picks one. Best opener variety (0.79) and 100% fidelity for two lines of code

@@ -112,6 +112,9 @@ export function initAssistant({ posts = [] } = {}) {
     answers,
     capabilities: manifest.capabilities,
     grounding: { read: (query) => readPage(query) },
+    // Values that arrive with a tool result. Declaring them lets a question
+    // about a technology be recognised before the project list is read.
+    constants: [...new Set(DATA.projects.flatMap((project) => project.stack))],
   });
   const runtime = new AgentRuntime({
     engine,

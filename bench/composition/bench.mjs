@@ -23,6 +23,7 @@ import { poolSystem } from './systems/a-pools.mjs';
 import { grammarSystem } from './systems/b-grammar.mjs';
 import { voiceSystem } from './systems/c-voice.mjs';
 import { hybridSystem } from './systems/d-hybrid.mjs';
+import { legacySystem } from './systems/legacy.mjs';
 
 const facts = await loadFacts();
 
@@ -140,9 +141,14 @@ async function run(system) {
     // same question twice: a real system must not wobble
     const again = await system.answer({ question: probe.questions[0], intent: probe.intent, facts });
     const fidelityHits = answers.filter(({ text }) => must.every((needle) => norm(text).includes(norm(needle))));
+    // Mask the facts themselves: two answers sharing "shobyde@gmail.com" are not
+    // templated, they are correct. What is compared is the words around them.
+    const mask = (text) => must.reduce((out, needle) => out.split(needle).join('{fact}'), text);
     const sims = [];
     for (let i = 0; i < answers.length; i += 1) {
-      for (let j = i + 1; j < answers.length; j += 1) sims.push(jaccard(answers[i].text, answers[j].text));
+      for (let j = i + 1; j < answers.length; j += 1) {
+        sims.push(jaccard(mask(answers[i].text), mask(answers[j].text)));
+      }
     }
     rows.push({
       intent: probe.intent,
@@ -178,7 +184,8 @@ async function run(system) {
 }
 
 const systems = [
-  ['baseline', await baseline(facts)],
+  ['legacy', legacySystem(facts)],
+  ['shipped', await baseline(facts)],
   ['A pools', poolSystem(facts)],
   ['B grammar', grammarSystem(facts)],
   ['C voice', voiceSystem(facts)],

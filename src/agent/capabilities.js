@@ -316,6 +316,7 @@ export const siteCapabilities = [
       projects: DATA.projects.map((project) => ({
         title: project.title,
         stack: project.stack,
+        details: Boolean(project.details),
       })),
     }),
   }),

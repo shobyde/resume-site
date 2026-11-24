@@ -6,6 +6,7 @@
 import manifest from 'client-agent:manifest';
 import { AgentRuntime, registry } from 'client-agent/core';
 import { createRulesEngine } from 'client-agent/rules';
+import { DATA } from '../data.js';
 import { siteCapabilities } from '../agent/capabilities.js';
 import { createAssistantKnowledge } from '../agent/knowledge.js';
 import { describeTrace } from '../agent/trace.js';
@@ -91,6 +92,7 @@ async function boot() {
       capabilities,
       // The page is the corpus: field questions read the text you are looking at.
       grounding: { read: () => document.body.innerText },
+      constants: [...new Set(DATA.projects.flatMap((project) => project.stack))],
     }),
     capabilities,
     registry,

@@ -23,7 +23,12 @@ export async function baseline(facts) {
   const observationsFor = (id) => {
     if (id === 'projects.list') {
       return {
-        projects: facts.projects.map((p) => ({ title: p.title, stack: p.stack, summary: p.summary })),
+        projects: facts.projects.map((p) => ({
+          title: p.title,
+          stack: p.stack,
+          summary: p.summary,
+          details: true,
+        })),
       };
     }
     if (id === 'blog.stats') {
@@ -46,6 +51,9 @@ export async function baseline(facts) {
         answers,
         capabilities: caps,
         grounding: { read: () => page },
+        // Same declaration the site makes, so a technology is recognised before
+        // the project list has been read.
+        constants: [...new Set(facts.projects.flatMap((project) => project.stack))],
       });
       let completion = await engine.complete({ messages: [{ role: 'user', content: question }], tools: [] });
       let observations;

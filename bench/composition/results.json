@@ -1,54 +1,52 @@
 [
   {
-    "name": "baseline",
-    "fidelity": 0.75,
-    "similarity": 0.5949024875154764,
-    "openers": 0.375,
-    "spread": 8.573214099741124,
-    "ttr": 0.9757158046631732,
+    "name": "legacy",
+    "fidelity": 1,
+    "similarity": 1,
+    "openers": 0.25,
+    "spread": 5.94418483337567,
+    "ttr": 1,
     "stable": 1,
-    "style": 1.608690837762592,
-    "offTopic": 0.875,
-    "ms": 24.150781,
+    "style": 1.6646735003796505,
+    "offTopic": 1,
+    "ms": 2.466885,
     "rows": [
       {
         "intent": "list_titles",
         "answers": [
           {
             "question": "what has he built?",
-            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++.",
             "action": false
           },
           {
             "question": "list the projects",
-            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++.",
             "action": false
           },
           {
             "question": "what has he shipped?",
-            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++.",
             "action": false
           },
           {
             "question": "what did he make?",
-            "text": "I can only help with the screens and controls built into this app.",
+            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++.",
             "action": false
           }
         ],
-        "fidelity": 0.75,
-        "missing": [
-          "I can only help with the screens and controls built into this app."
-        ],
-        "similarity": 0.5170068027210883,
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 1,
         "stable": true,
         "lengths": [
-          14,
-          14,
-          14,
-          13
+          11,
+          11,
+          11,
+          11
         ],
         "ttr": 1,
-        "style": 1.5211180713743357,
+        "style": 1.8792710706150342,
         "offTopic": 1
       },
       {
@@ -61,32 +59,32 @@
           },
           {
             "question": "what's built with python?",
-            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "text": "Readback and Groundglass use it.",
             "action": false
           },
           {
             "question": "any projects in python?",
-            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "text": "Readback and Groundglass use it.",
             "action": false
           },
           {
             "question": "does he have python projects?",
-            "text": "He has shipped 5 projects: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "text": "Readback and Groundglass use it.",
             "action": false
           }
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.6060606060606061,
+        "similarity": 1,
         "stable": true,
         "lengths": [
           5,
-          14,
-          14,
-          14
+          5,
+          5,
+          5
         ],
         "ttr": 1,
-        "style": 1.6877847380410023,
+        "style": 1.8633257403189065,
         "offTopic": 1
       },
       {
@@ -99,37 +97,33 @@
           },
           {
             "question": "what's the newest post?",
-            "text": "I'm not sure about that. I can help with: Show the newest article card; Read the newest article; Log statistics.",
+            "text": "58 posts are published, and the newest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
             "action": false
           },
           {
             "question": "how much has he written?",
-            "text": "I can only help with the screens and controls built into this app.",
+            "text": "58 posts are published, and the newest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
             "action": false
           },
           {
             "question": "what's the latest article?",
-            "text": "I'm not sure about that. I can help with: Read the newest article; Show the newest article card.",
+            "text": "58 posts are published, and the newest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
             "action": false
           }
         ],
-        "fidelity": 0.25,
-        "missing": [
-          "I'm not sure about that. I can help with: Show the newest article card",
-          "I can only help with the screens and controls built into this app.",
-          "I'm not sure about that. I can help with: Read the newest article; Sho"
-        ],
-        "similarity": 0.2461424379796975,
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 1,
         "stable": true,
         "lengths": [
           20,
-          21,
-          13,
-          19
+          20,
+          20,
+          20
         ],
-        "ttr": 0.899749373433584,
-        "style": 1.386958997722096,
-        "offTopic": 0.5
+        "ttr": 1,
+        "style": 1.3221336370539105,
+        "offTopic": 1
       },
       {
         "intent": "email",
@@ -174,22 +168,22 @@
         "answers": [
           {
             "question": "his linkedin?",
-            "text": "His LinkedIn is www.linkedin.com/in/sho-byde-556954138.",
+            "text": "His LinkedIn is https://www.linkedin.com/in/sho-byde-556954138/.",
             "action": false
           },
           {
             "question": "what's his linkedin?",
-            "text": "His LinkedIn is www.linkedin.com/in/sho-byde-556954138.",
+            "text": "His LinkedIn is https://www.linkedin.com/in/sho-byde-556954138/.",
             "action": false
           },
           {
             "question": "where can i find him on linkedin?",
-            "text": "His LinkedIn is www.linkedin.com/in/sho-byde-556954138.",
+            "text": "His LinkedIn is https://www.linkedin.com/in/sho-byde-556954138/.",
             "action": false
           },
           {
             "question": "linkedin profile?",
-            "text": "His LinkedIn is www.linkedin.com/in/sho-byde-556954138.",
+            "text": "His LinkedIn is https://www.linkedin.com/in/sho-byde-556954138/.",
             "action": false
           }
         ],
@@ -198,10 +192,10 @@
         "similarity": 1,
         "stable": true,
         "lengths": [
-          4,
-          4,
-          4,
-          4
+          5,
+          5,
+          5,
+          5
         ],
         "ttr": 1,
         "style": 1.9466590736522398,
@@ -212,40 +206,279 @@
         "answers": [
           {
             "question": "who is sho?",
-            "text": "Sho is a software engineer with twelve years of experience building web applications and platforms. He has worked across frontend, backend, and infrastructure, partnering with product and design teams to ship user-facing features.",
+            "text": "Sho is a software engineer with twelve years of experience building web applications and platforms.",
             "action": false
           },
           {
             "question": "what does he do?",
-            "text": "I can only help with the screens and controls built into this app.",
+            "text": "Sho is a software engineer with twelve years of experience building web applications and platforms.",
             "action": false
           },
           {
             "question": "what's his background?",
-            "text": "[action: site.about]",
-            "action": true
+            "text": "Sho is a software engineer with twelve years of experience building web applications and platforms.",
+            "action": false
           },
           {
             "question": "tell me about him",
-            "text": "Sho is a software engineer with twelve years of experience building web applications and platforms. He has worked across frontend, backend, and infrastructure, partnering with product and design teams to ship user-facing features.",
+            "text": "Sho is a software engineer with twelve years of experience building web applications and platforms.",
             "action": false
           }
         ],
-        "fidelity": 0.5,
-        "missing": [
-          "I can only help with the screens and controls built into this app.",
-          "[action: site.about]"
-        ],
-        "similarity": 0.2002050783314658,
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 1,
         "stable": true,
         "lengths": [
-          33,
-          13,
-          2,
-          33
+          15,
+          15,
+          15,
+          15
         ],
-        "ttr": 0.9545454545454546,
-        "style": 1.162965072133637,
+        "ttr": 1,
+        "style": 1.0299924069855733,
+        "offTopic": 1
+      }
+    ]
+  },
+  {
+    "name": "shipped",
+    "fidelity": 1,
+    "similarity": 0.507172240331194,
+    "openers": 0.6666666666666666,
+    "spread": 8.349983366583567,
+    "ttr": 0.9924101307189543,
+    "stable": 1,
+    "style": 1.7481294292584153,
+    "offTopic": 0.8333333333333334,
+    "ms": 25.620653,
+    "rows": [
+      {
+        "intent": "list_titles",
+        "answers": [
+          {
+            "question": "what has he built?",
+            "text": "Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "action": false
+          },
+          {
+            "question": "list the projects",
+            "text": "Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines — 5 of them, every one shipped. Each one has engineering notes behind an expand button.",
+            "action": false
+          },
+          {
+            "question": "what has he shipped?",
+            "text": "Everything he has shipped is public: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines. Each one has engineering notes behind an expand button.",
+            "action": false
+          },
+          {
+            "question": "what did he make?",
+            "text": "Everything he has shipped is public: Hobnob, Readback, Groundglass, shobyde.com and C++ physics simulation engines.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.5015512720430753,
+        "stable": true,
+        "lengths": [
+          9,
+          24,
+          24,
+          15
+        ],
+        "ttr": 0.9791666666666667,
+        "style": 1.5946042141230068,
+        "offTopic": 1
+      },
+      {
+        "intent": "using_python",
+        "answers": [
+          {
+            "question": "which projects use python?",
+            "text": "Readback and Groundglass: 2 projects name Python 3.10+.",
+            "action": false
+          },
+          {
+            "question": "what's built with python?",
+            "text": "Readback and Groundglass — 2 projects on Python 3.10+.",
+            "action": false
+          },
+          {
+            "question": "any projects in python?",
+            "text": "Readback and Groundglass — 2 out of the projects here.",
+            "action": false
+          },
+          {
+            "question": "does he have python projects?",
+            "text": "2 projects use it: Readback and Groundglass.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.45149244997920146,
+        "stable": true,
+        "lengths": [
+          8,
+          8,
+          9,
+          7
+        ],
+        "ttr": 1,
+        "style": 2.064825360668185,
+        "offTopic": 0.25
+      },
+      {
+        "intent": "posts_newest",
+        "answers": [
+          {
+            "question": "how many posts are there?",
+            "text": "58 of them, ending with \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "action": false
+          },
+          {
+            "question": "what's the newest post?",
+            "text": "\"LangChain's Frontend SDK Hands You State, Not a Chat Widget\" is the latest; 58 in all.",
+            "action": false
+          },
+          {
+            "question": "how much has he written?",
+            "text": "That is 58 entries, most recently \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "action": false
+          },
+          {
+            "question": "what's the latest article?",
+            "text": "\"LangChain's Frontend SDK Hands You State, Not a Chat Widget\" — number 58, if you are counting.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.5182991663237492,
+        "stable": true,
+        "lengths": [
+          17,
+          17,
+          18,
+          17
+        ],
+        "ttr": 0.9852941176470589,
+        "style": 1.6103834472285499,
+        "offTopic": 1
+      },
+      {
+        "intent": "email",
+        "answers": [
+          {
+            "question": "what is his email?",
+            "text": "One address: shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "how do i email him?",
+            "text": "Mail goes to shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "his email address?",
+            "text": "Mail goes to shobyde@gmail.com.",
+            "action": false
+          },
+          {
+            "question": "can i get his email?",
+            "text": "shobyde@gmail.com.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.2805555555555555,
+        "stable": true,
+        "lengths": [
+          3,
+          4,
+          4,
+          1
+        ],
+        "ttr": 1,
+        "style": 2.0299924069855733,
+        "offTopic": 1
+      },
+      {
+        "intent": "linkedin",
+        "answers": [
+          {
+            "question": "his linkedin?",
+            "text": "www.linkedin.com/in/sho-byde-556954138.",
+            "action": false
+          },
+          {
+            "question": "what's his linkedin?",
+            "text": "He is at www.linkedin.com/in/sho-byde-556954138.",
+            "action": false
+          },
+          {
+            "question": "where can i find him on linkedin?",
+            "text": "www.linkedin.com/in/sho-byde-556954138.",
+            "action": false
+          },
+          {
+            "question": "linkedin profile?",
+            "text": "www.linkedin.com/in/sho-byde-556954138.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.8500000000000001,
+        "stable": true,
+        "lengths": [
+          1,
+          4,
+          1,
+          1
+        ],
+        "ttr": 1,
+        "style": 2.13415907365224,
+        "offTopic": 1
+      },
+      {
+        "intent": "summary",
+        "answers": [
+          {
+            "question": "who is sho?",
+            "text": "An engineering manager who still ships: 12+ years across APIs, cloud systems and applications people actually use. He has been at Conversica since Jul 2021.",
+            "action": false
+          },
+          {
+            "question": "what does he do?",
+            "text": "12+ years of software, now managing engineers and still writing code. He has been at Conversica since Jul 2021.",
+            "action": false
+          },
+          {
+            "question": "what's his background?",
+            "text": "Sho is an engineering manager and hands-on IC: 12+ years of APIs, cloud systems and client-facing apps. He has been at Conversica since Jul 2021.",
+            "action": false
+          },
+          {
+            "question": "tell me about him",
+            "text": "Manager and individual contributor, 12+ years in, still writing the code. He has been at Conversica since Jul 2021.",
+            "action": false
+          }
+        ],
+        "fidelity": 1,
+        "missing": [],
+        "similarity": 0.44113499808558254,
+        "stable": true,
+        "lengths": [
+          25,
+          19,
+          25,
+          19
+        ],
+        "ttr": 0.99,
+        "style": 1.0548120728929384,
         "offTopic": 0.75
       }
     ]
@@ -253,14 +486,14 @@
   {
     "name": "A pools",
     "fidelity": 1,
-    "similarity": 0.5195429335414198,
+    "similarity": 0.3920728028690535,
     "openers": 0.7916666666666666,
     "spread": 5.211998710241164,
     "ttr": 0.9899288662833555,
     "stable": 1,
     "style": 1.9104419767147556,
     "offTopic": 0.7083333333333334,
-    "ms": 2.024529,
+    "ms": 1.259401,
     "rows": [
       {
         "intent": "list_titles",
@@ -288,7 +521,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.5701465873452665,
+        "similarity": 0.3261490388505129,
         "stable": true,
         "lengths": [
           12,
@@ -326,7 +559,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.5744550054381236,
+        "similarity": 0.4345029239766081,
         "stable": true,
         "lengths": [
           7,
@@ -364,7 +597,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.6183864117454726,
+        "similarity": 0.5750900609260089,
         "stable": true,
         "lengths": [
           17,
@@ -402,7 +635,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.39004224941724946,
+        "similarity": 0.12388167388167388,
         "stable": true,
         "lengths": [
           3,
@@ -440,7 +673,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.6924242424242424,
+        "similarity": 0.6060012040585584,
         "stable": true,
         "lengths": [
           6,
@@ -478,7 +711,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.2718031048781644,
+        "similarity": 0.2868119155209589,
         "stable": true,
         "lengths": [
           14,
@@ -495,14 +728,14 @@
   {
     "name": "B grammar",
     "fidelity": 1,
-    "similarity": 0.5513666535484252,
+    "similarity": 0.4793555868477895,
     "openers": 0.5833333333333334,
     "spread": 6.940220937885671,
     "ttr": 0.9862914862914863,
     "stable": 1,
     "style": 1.7316225322703112,
     "offTopic": 0.7083333333333334,
-    "ms": 2.1088,
+    "ms": 1.977733,
     "rows": [
       {
         "intent": "list_titles",
@@ -530,7 +763,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.47895380443795754,
+        "similarity": 0.27365196542537723,
         "stable": true,
         "lengths": [
           11,
@@ -568,7 +801,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.540266644306557,
+        "similarity": 0.4518216038179741,
         "stable": true,
         "lengths": [
           7,
@@ -606,7 +839,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.7058823529411765,
+        "similarity": 0.6779026217228464,
         "stable": true,
         "lengths": [
           17,
@@ -644,7 +877,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.591549295774648,
+        "similarity": 0.5161290322580645,
         "stable": true,
         "lengths": [
           1,
@@ -682,7 +915,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.6603743582754077,
+        "similarity": 0.6156118143459915,
         "stable": true,
         "lengths": [
           9,
@@ -720,7 +953,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.33117346555480426,
+        "similarity": 0.3410164835164835,
         "stable": true,
         "lengths": [
           24,
@@ -737,14 +970,14 @@
   {
     "name": "C voice",
     "fidelity": 1,
-    "similarity": 0.36846920529199734,
+    "similarity": 0.27040998376016817,
     "openers": 0.5833333333333334,
     "spread": 5.441449714919729,
     "ttr": 0.9917328487459057,
     "stable": 1,
     "style": 1.5972696785623892,
     "offTopic": 0.16666666666666666,
-    "ms": 1.788905,
+    "ms": 1.754121,
     "rows": [
       {
         "intent": "list_titles",
@@ -772,7 +1005,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.4783762988601909,
+        "similarity": 0.2801612067058291,
         "stable": true,
         "lengths": [
           17,
@@ -810,7 +1043,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.30715315345399496,
+        "similarity": 0.17522587831127212,
         "stable": true,
         "lengths": [
           5,
@@ -848,7 +1081,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.49908708006300045,
+        "similarity": 0.43802146324704877,
         "stable": true,
         "lengths": [
           23,
@@ -886,7 +1119,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.24257280354054547,
+        "similarity": 0.0961908942278933,
         "stable": true,
         "lengths": [
           6,
@@ -924,7 +1157,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.3824942893345454,
+        "similarity": 0.32074388325575803,
         "stable": true,
         "lengths": [
           7,
@@ -962,7 +1195,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.30113160649970694,
+        "similarity": 0.3121165768132075,
         "stable": true,
         "lengths": [
           14,
@@ -979,14 +1212,14 @@
   {
     "name": "D hybrid",
     "fidelity": 1,
-    "similarity": 0.48740376878230146,
+    "similarity": 0.38936010239647634,
     "openers": 0.7083333333333334,
     "spread": 6.563657305361259,
     "ttr": 0.9796149519604896,
     "stable": 1,
     "style": 1.748983643381422,
     "offTopic": 0.6666666666666666,
-    "ms": 1.633468,
+    "ms": 1.568066,
     "rows": [
       {
         "intent": "list_titles",
@@ -1014,7 +1247,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.46847699583620717,
+        "similarity": 0.19899224222205925,
         "stable": true,
         "lengths": [
           12,
@@ -1052,7 +1285,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.502388660334348,
+        "similarity": 0.4358514274806107,
         "stable": true,
         "lengths": [
           19,
@@ -1090,7 +1323,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.5801815021424529,
+        "similarity": 0.5339306070105443,
         "stable": true,
         "lengths": [
           25,
@@ -1128,7 +1361,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.3850058412607587,
+        "similarity": 0.22564102564102562,
         "stable": true,
         "lengths": [
           3,
@@ -1166,7 +1399,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.5952382335963801,
+        "similarity": 0.5380746237889095,
         "stable": true,
         "lengths": [
           9,
@@ -1204,7 +1437,7 @@
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.3931313795236622,
+        "similarity": 0.403670688235709,
         "stable": true,
         "lengths": [
           9,
