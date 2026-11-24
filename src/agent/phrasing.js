@@ -9,6 +9,7 @@
 //
 // Every realisation carries the same facts, and the bench in bench/composition
 // fails a system that drops one (npm run bench:composition).
+import { withCommas } from './projectSize.js';
 
 const hash = (text) => {
   let h = 0x811c9dc5;
@@ -391,7 +392,9 @@ export function phraseProjectStack(query, name, stack, { register = 'normal' } =
   return pick(forms, query)(list);
 }
 
-/** A project described from its own pitch, tags stripped, one sentence of it. */
+/**
+ * A project described from its own pitch, tags stripped, one sentence of it.
+ */
 export function phraseProjectAbout(query, project, { register = 'normal', stack = [] } = {}) {
   const name = shortName(project.title);
   const plain = String(project.summary ?? '')
@@ -410,4 +413,46 @@ export function phraseProjectAbout(query, project, { register = 'normal', stack 
   const said = pick(forms, query)();
   if (said) return said;
   return st.length ? `${name} runs on ${join(st)}.` : '';
+}
+
+/**
+ * "Which one is bigger", answered with a measurement rather than a judgement.
+ *
+ * Two projects get a comparison and the metric is named, because "bigger" on a
+ * portfolio page is ambiguous: more code is not more valuable, and a sentence
+ * that hides the measure reads like an opinion. One project gets its own count.
+ */
+export function phraseProjectSize(query, sized, { register = 'normal', metric = '' } = {}) {
+  if (!sized.length) return '';
+  const say = (entry) => `${entry.name}: ${withCommas(entry.lines)} source lines`;
+  if (sized.length === 1) {
+    const [only] = sized;
+    if (register === 'terse') return `${say(only)}.`;
+    const forms = [
+      `${only.name} carries ${withCommas(only.lines)} non-blank source lines across ${count(only.files, 'file')}.`,
+      `${only.name} is ${withCommas(only.lines)} source lines over ${count(only.files, 'file')}.`,
+    ];
+    const claim = pick(forms, query);
+    if (register === 'explanatory') return `${claim} That counts tests and leaves out stylesheets and markup.`;
+    return claim;
+  }
+
+  const [first, second] = [...sized].sort((a, b) => b.lines - a.lines);
+  const even = first.lines === second.lines;
+  // In terse mode the numbers are the answer; the metric is one clause so the
+  // comparison cannot be read as a ranking of the work itself.
+  if (register === 'terse') {
+    if (even) return `${first.name} and ${second.name} are both ${withCommas(first.lines)} source lines.`;
+    return `${first.name} is bigger: ${withCommas(first.lines)} source lines to ${second.name}'s ${withCommas(second.lines)}.`;
+  }
+  const forms = [
+    `${first.name} is bigger by the code count: ${withCommas(first.lines)} non-blank source lines against ${second.name}'s ${withCommas(second.lines)}.`,
+    `Measured in source lines, ${first.name} leads at ${withCommas(first.lines)} to ${second.name}'s ${withCommas(second.lines)}.`,
+    `${first.name} carries ${withCommas(first.lines)} source lines and ${second.name} ${withCommas(second.lines)}, so ${first.name} is the larger codebase.`,
+  ];
+  const claim = even
+    ? `${first.name} and ${second.name} come out even at ${withCommas(first.lines)} source lines each.`
+    : pick(forms, query);
+  if (register !== 'explanatory') return claim;
+  return `${claim} Those are ${metric || 'non-blank source lines, tests included and styles excluded'}, read from each repository at its current commit.`;
 }

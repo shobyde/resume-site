@@ -191,6 +191,22 @@
     {
       "question": "does he have python projects?",
       "expect": "projects.using"
+    },
+    {
+      "question": "compare hobnob and readback by size",
+      "expect": "projects.size"
+    },
+    {
+      "question": "which project has more code, hobnob or readback",
+      "expect": "projects.size"
+    },
+    {
+      "question": "how big is readback",
+      "expect": "projects.size"
+    },
+    {
+      "question": "which is the biggest project",
+      "expect": "projects.size"
     }
   ]
 }

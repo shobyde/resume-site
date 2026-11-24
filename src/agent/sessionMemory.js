@@ -56,6 +56,9 @@ function summaryLast(memory) {
   return turns[turns.length - 1];
 }
 
+/** Project names keyed by the lowercase form a pointer arrives in. */
+const projectsByName = new Map(DATA.projects.map((project) => [shortTitle(project).toLowerCase(), shortTitle(project)]));
+
 /** Descriptions a visitor uses instead of a name, matched to the project they mean. */
 const DESCRIPTIONS = [
   [/reading|books|kid/, 'Readback'],
@@ -99,6 +102,32 @@ export function resolvePointer(memory, query) {
       return {
         query: analysis.slots.attribute ? `what is ${target}'s ${analysis.slots.attribute}?` : `tell me about ${target}`,
         subject: target,
+        rewritten: true,
+      };
+    }
+  }
+
+  // "Which one is bigger?" after a comparison is a question about the two
+  // things the previous answer put side by side, not about the page. The page
+  // holds a measured code count for each project, so the rewrite names both and
+  // the size rule reports the numbers. Two candidates only: with a longer list
+  // "which one" has no referent, and answering anyway would be a guess.
+  const asksSize =
+    /\b(which (one|of them|project)?\s*(is )?(bigger|larger|smaller)|which is (bigger|larger|smaller)|which one has more code|how (big|large) is it)\b/i.test(
+      text,
+    );
+  if (asksSize) {
+    const last = summaryLast(memory);
+    const byLower = new Map();
+    for (const name of [...(last?.items ?? []), ...listed]) {
+      const key = String(name).toLowerCase();
+      if (!byLower.has(key) && projectsByName.has(key)) byLower.set(key, projectsByName.get(key));
+    }
+    const candidates = [...byLower.values()];
+    if (candidates.length === 2) {
+      return {
+        query: `compare ${candidates[0]} and ${candidates[1]} by size`,
+        subject: candidates[0],
         rewritten: true,
       };
     }

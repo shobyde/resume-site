@@ -1,9 +1,9 @@
 {
-  "generated": "2026-11-24T21:50:23.794Z",
+  "generated": "2026-11-24T22:41:03.072Z",
   "library": "0.8.2",
   "threads": {
     "memory": {
-      "passed": 28,
+      "passed": 29,
       "total": 30,
       "kinds": {
         "knowledge": {
@@ -11,7 +11,7 @@
           "total": 11
         },
         "context": {
-          "passed": 15,
+          "passed": 16,
           "total": 17
         },
         "tool": {
@@ -310,7 +310,7 @@
             "rewritten": true,
             "routed": "tell me about Groundglass",
             "text": "Groundglass: Agents now assemble interfaces at runtime.",
-            "baselineText": "I'm not sure about that. I can help with: Pick points from these sentences; Show a project card; Selected projects.",
+            "baselineText": "Only his email and LinkedIn are published here. For a phone number or anything else, email him and he will send it.",
             "calls": [
               "projects.list"
             ],
@@ -464,10 +464,10 @@
             "baseline": false,
             "rewritten": false,
             "routed": "why not both?",
-            "text": "I'm not sure about that. I can help with: Selected projects; Pick points from these sentences; Engineering log.",
-            "baselineText": "I'm not sure about that. I can help with: Selected projects; Pick points from these sentences; Engineering log.",
+            "text": "Only his email and LinkedIn are published here. For a phone number or anything else, email him and he will send it.",
+            "baselineText": "Only his email and LinkedIn are published here. For a phone number or anything else, email him and he will send it.",
             "calls": [],
-            "flesch": 80,
+            "flesch": 76,
             "missing": [
               "groundglass"
             ]
@@ -496,17 +496,17 @@
           {
             "ask": "which one is bigger?",
             "kind": "context",
-            "pass": false,
+            "pass": true,
             "baseline": false,
-            "rewritten": false,
-            "routed": "which one is bigger?",
-            "text": "I'm not sure about that. I can help with: Log statistics; Open the printable resume; Summarise the blog.",
-            "baselineText": "I'm not sure about that. I can help with: Log statistics; Open the printable resume; Summarise the blog.",
-            "calls": [],
-            "flesch": 71,
-            "missing": [
-              "hobnob"
-            ]
+            "rewritten": true,
+            "routed": "compare Hobnob and Readback by size",
+            "text": "Hobnob carries 8,142 source lines and Readback 7,315, so Hobnob is the larger codebase.",
+            "baselineText": "shobyde.com is 12,317 source lines over 72 files.",
+            "calls": [
+              "projects.list"
+            ],
+            "flesch": 66,
+            "missing": []
           }
         ]
       },
@@ -938,7 +938,7 @@
     }
   ],
   "kb": {
-    "generated": "2026-11-24T21:50:39.940Z",
+    "generated": "2026-11-24T22:41:05.396Z",
     "facts": 170,
     "documents": 170,
     "threads": 40,

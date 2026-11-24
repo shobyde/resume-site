@@ -4,6 +4,7 @@
 import fs from 'node:fs';
 import { createRulesEngine } from '@shobyde/boaz/rules';
 import { createAssistantKnowledge } from '../src/agent/knowledge.js';
+import { PROJECT_SIZE } from '../src/agent/projectSize.js';
 import { DATA } from '../src/data.js';
 
 const manifest = JSON.parse(fs.readFileSync(new URL('../dist/agent-manifest.json', import.meta.url), 'utf8'));
@@ -28,6 +29,7 @@ const handlers = {
       summary: project.summary,
       stack: project.stack,
       details: Boolean(project.details),
+      size: PROJECT_SIZE[String(project.title).split(':')[0].trim()] ?? null,
     })),
   }),
   'blog.stats': async () => ({

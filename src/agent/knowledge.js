@@ -3,6 +3,7 @@
 import { KnowledgeBase, fact } from '@shobyde/boaz/rules';
 import { DATA } from '../data.js';
 import { answerRegister } from './register.js';
+import { PROJECT_SIZE, SIZE_METRIC } from './projectSize.js';
 import {
   phraseEmail,
   phraseProfile,
@@ -10,6 +11,7 @@ import {
   phraseNewestPost,
   phraseProjectAbout,
   phraseProjectList,
+  phraseProjectSize,
   phraseProjectStack,
   phraseProjectsUsing,
   phraseProjectsUsingAll,
@@ -282,8 +284,12 @@ export function createAssistantKnowledge({ posts }) {
       goal: 'project_named(?P)',
       steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
       // Named projects only: "what is that" belongs to the pointer layer, and
-      // "what is his email" belongs to the grounding rule.
-      match: (question) => PROJECT_NAME.test(question) && /^\s*(what is|tell me about|describe)\b/i.test(question),
+      // "what is his email" belongs to the grounding rule. "More about X" is the
+      // same request; without it the phrase lost to `projects.expand` on score
+      // once a new rule shrank every BM25 score.
+      match: (question) =>
+        PROJECT_NAME.test(question) &&
+        /^\s*(what is|what's|tell me about|describe|more about|anything else about)\b/i.test(question),
       explain: ({ observed }) => (observed['projects.list'] ? 'Read the project list and matched the name' : 'Read the project list'),
       compose: ({ query, solutions, observed }) => {
         const records = observed['projects.list']?.projects ?? [];
@@ -324,7 +330,10 @@ export function createAssistantKnowledge({ posts }) {
       goal: 'project(?P, ?N)',
       steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
       requiresSubject: false,
-      match: (question) => /^\s*compare\b/i.test(question),
+      // "compare X and Y by size" is the size rule's form; without this guard
+      // both rules match outright and the comparison quotes pitches instead of
+      // the measurement the visitor asked for.
+      match: (question) => /^\s*compare\b/i.test(question) && !/\bby size\b/i.test(question),
       explain: ({ query, solutions }) => {
         const named = namedProjects(query, DATA.projects);
         if (named.length >= 2) {
@@ -353,6 +362,58 @@ export function createAssistantKnowledge({ posts }) {
             return `${shortName(project.title)}: ${pitch}${stack ? ` It runs on ${stack}.` : ''}`;
           })
           .join(' ');
+      },
+    },
+    {
+      id: 'projects.size',
+      title: 'Which project carries more code',
+      keywords: ['bigger', 'larger', 'smaller', 'lines of code', 'codebase size', 'how big'],
+      goal: 'project(?P, ?N)',
+      steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
+      // The two sides come from the sentence ("compare hobnob and readback by
+      // size") or from the session ("which one is bigger?" after a comparison,
+      // rewritten by src/agent/sessionMemory.js). Without a name the rule still
+      // answers, with the largest card, so a bare "which project is biggest"
+      // is a measurement rather than a refusal.
+      requiresSubject: false,
+      // Reachable by its own match only: with 13 rules a rare word carries a lot
+      // of IDF, so "source code for readback" scored the title's "code" at 4.12
+      // and "more about groundglass" scored its "more" at 3.69, both above any
+      // sane threshold. A matched-outright hit scores Infinity, so the match
+      // below is the only way in by design.
+      threshold: 100,
+      match: (question) =>
+        /\bby size\b/i.test(question) ||
+        /\b(which|what)\b[^.?!]*\b(biggest|bigger|largest|larger|smallest|smaller|more code)\b/i.test(question) ||
+        /\bhow (big|large)\b[^.?!]*\b(project|codebase|code|it|readback|hobnob|groundglass|boaz)\b/i.test(question) ||
+        /\blines of code\b/i.test(question),
+      explain: ({ query, observed }) => {
+        const records = observed['projects.list']?.projects ?? [];
+        const named = namedProjects(query, records);
+        if (named.length === 2) {
+          return `Measured ${named.map((project) => shortName(project.title)).join(' and ')} in source lines and compared the counts`;
+        }
+        return named.length === 1
+          ? `Measured ${shortName(named[0].title)} in source lines`
+          : 'Compared the measured source lines of every project card';
+      },
+      compose: ({ query, observed }) => {
+        const records = observed['projects.list']?.projects ?? [];
+        const sized = (records.length ? records : DATA.projects)
+          .map((project) => {
+            const name = shortName(project.title);
+            const size = project.size ?? PROJECT_SIZE[name];
+            return size ? { name, lines: size.lines, files: size.files } : null;
+          })
+          .filter(Boolean);
+        if (!sized.length) return '';
+        const named = namedProjects(query, records.length ? records : DATA.projects)
+          .map((project) => shortName(project.title))
+          .filter((name) => sized.some((entry) => entry.name === name));
+        const picked = named.length
+          ? sized.filter((entry) => named.includes(entry.name))
+          : [sized.reduce((a, b) => (b.lines > a.lines ? b : a))];
+        return phraseProjectSize(query, picked, { register: answerRegister(), metric: SIZE_METRIC });
       },
     },
     {

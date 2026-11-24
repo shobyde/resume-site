@@ -12,6 +12,7 @@
    ============================================================ */
 import { defineCapability, defineKnowledge, splitSentences, summarise } from '@shobyde/boaz/core';
 import { DATA } from '../data.js';
+import { PROJECT_SIZE } from './projectSize.js';
 import { articleCard, contactCard, findProject, projectCard } from './surfaces.js';
 import { phraseSummary, rankPosts, summariseDocuments } from './summarise.js';
 
@@ -376,6 +377,9 @@ export const siteCapabilities = [
         summary: project.summary,
         stack: project.stack,
         details: Boolean(project.details),
+        // The measured code count, so a size comparison reads the same payload
+        // the other project questions do instead of a second data source.
+        size: PROJECT_SIZE[String(project.title).split(':')[0].trim()] ?? null,
       })),
     }),
   }),

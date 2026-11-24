@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T21:50:23.761Z",
+  "generated": "2026-11-24T22:41:03.038Z",
   "mode": "stateless",
   "library": "0.8.2",
   "threads": [
@@ -439,12 +439,12 @@
               "readback"
             ]
           },
-          "text": "I'm not sure about that. I can help with: Pick points from these sentences; Show a project card; Selected projects.",
+          "text": "Only his email and LinkedIn are published here. For a phone number or anything else, email him and he will send it.",
           "calls": [],
           "plannedBy": null,
-          "flesch": 91,
+          "flesch": 76,
           "pass": false,
-          "declined": true,
+          "declined": false,
           "missing": [
             "groundglass"
           ],
@@ -669,12 +669,12 @@
               "groundglass"
             ]
           },
-          "text": "I'm not sure about that. I can help with: Selected projects; Pick points from these sentences; Engineering log.",
+          "text": "Only his email and LinkedIn are published here. For a phone number or anything else, email him and he will send it.",
           "calls": [],
           "plannedBy": null,
-          "flesch": 80,
+          "flesch": 76,
           "pass": false,
-          "declined": true,
+          "declined": false,
           "missing": [
             "groundglass"
           ],
@@ -723,12 +723,17 @@
               "hobnob"
             ]
           },
-          "text": "I'm not sure about that. I can help with: Log statistics; Open the printable resume; Summarise the blog.",
-          "calls": [],
-          "plannedBy": null,
-          "flesch": 71,
+          "text": "shobyde.com is 12,317 source lines over 72 files.",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.size",
+          "flesch": 65,
           "pass": false,
-          "declined": true,
+          "declined": false,
           "missing": [
             "hobnob"
           ],
