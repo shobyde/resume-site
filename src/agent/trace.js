@@ -14,7 +14,7 @@ export function describeTrace(step, titleOf) {
     case 'action':
       return `Did this: ${sentence(titleOf(step.capabilityId))}`;
     case 'surface':
-      return `Showed ${sentence(titleOf(step.capabilityId))}`;
+      return `Answered with a card: ${titleOf(step.capabilityId)}`;
     case 'confirmation':
       return step.approved ? 'You confirmed, so I went ahead' : 'You cancelled, so nothing changed';
     case 'error':

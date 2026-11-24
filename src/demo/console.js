@@ -9,6 +9,10 @@ import { createRulesEngine } from 'client-agent/rules';
 import { siteCapabilities } from '../agent/capabilities.js';
 import { createAssistantKnowledge } from '../agent/knowledge.js';
 import { describeTrace } from '../agent/trace.js';
+import { renderA2UI } from '../agent/a2ui.js';
+// The A2UI components are styled by the assistant stylesheet, which is scoped to
+// .agent and .a2ui classes and has no global element selectors.
+import '../styles/agent.css';
 
 const log = document.getElementById('demoLog');
 const form = document.getElementById('demoForm');
@@ -20,8 +24,15 @@ const eventsEl = document.getElementById('demoEvents');
 async function boot() {
   if (!log || !form || !input) return;
   // Read-only capabilities only: this page has no app to navigate or mutate.
+  // The actions kept here answer with a surface, which is the point of the demo.
+  // projects.expand needs a card the SPA has already rendered, so it stays out:
+  // on this page there is no card in the document to expand.
+  const SURFACE_ACTIONS = new Set(['projects.card', 'blog.card', 'contact.card']);
   const capabilities = manifest.capabilities.filter(
-    (capability) => capability.kind === 'query' || capability.kind === 'knowledge',
+    (capability) =>
+      capability.kind === 'query' ||
+      capability.kind === 'knowledge' ||
+      (capability.kind === 'action' && SURFACE_ACTIONS.has(capability.id)),
   );
   const ids = new Set(capabilities.map((capability) => capability.id));
   for (const capability of siteCapabilities) {
@@ -113,6 +124,20 @@ async function boot() {
     },
   });
 
+  /** Paints an A2UI surface with the site's own components, like the panel does. */
+  function renderSurface(capabilityId, messages) {
+    const holder = document.createElement('div');
+    holder.className = 'agent__surface';
+    log.appendChild(holder);
+    renderA2UI(messages, holder, { onAction: () => {} });
+    const note = document.createElement('p');
+    note.className = 'agent__surface-note';
+    note.title = capabilityId;
+    note.textContent = `◇ A2UI · ${titleOf(capabilityId)}`;
+    holder.appendChild(note);
+    log.scrollTop = log.scrollHeight;
+  }
+
   async function ask(text) {
     const question = String(text || '').trim();
     if (!question || busy) return;
@@ -131,6 +156,9 @@ async function boot() {
     try {
       const result = await runtime.send(question);
       // Never render the wire format, whatever a host returned.
+      for (const step of result.steps) {
+        if (step.type === 'surface') renderSurface(step.capabilityId, step.messages);
+      }
       const safe = /^\s*[[{]/.test(result.text)
         ? 'That came back as data rather than a sentence. Try a narrower question.'
         : result.text;

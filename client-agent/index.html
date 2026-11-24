@@ -144,6 +144,8 @@ strong { color: var(--fg); font-weight: 600; }
 .limit b { display: block; color: var(--fg); font-weight: 600; margin-bottom: 0.15rem; }
 
 /* live console */
+.console__note { margin: 0.75rem 0 0; font-size: 0.8rem; line-height: 1.55; color: var(--mute); }
+.console__note code { color: var(--accent-soft); }
 .console { border: 1px solid var(--line); border-radius: 14px; background: var(--panel-2); padding: 1rem; margin-top: 1.2rem; }
 .console__log { display: grid; gap: 0.6rem; min-height: 7rem; max-height: 22rem; overflow-y: auto; padding-right: 0.3rem; }
 .console__empty { color: var(--mute); font-size: 0.9rem; }
@@ -239,7 +241,7 @@ footer a:hover { color: var(--fg); }
   <section id="try">
     <p class="kicker">Live</p>
     <h2>Ask it something. This page is running the engine.</h2>
-    <p class="tight">The same rules and capabilities the site's assistant uses, wired to the text on this page. Nothing is sent anywhere, and every reply shows the steps that produced it.</p>
+    <p class="tight">The same rules and capabilities the site's assistant uses, wired to the text on this page. Nothing is sent anywhere, and every reply shows the steps that produced it. Ask for a card to watch an A2UI surface render with the page's own components.</p>
 
     <div class="console" id="demoConsole">
       <div class="console__log" id="demoLog">
@@ -252,10 +254,13 @@ footer a:hover { color: var(--fg); }
       </form>
       <div class="console__chips" id="demoChips">
         <button type="button">which projects use Python?</button>
+        <button type="button">what has he built?</button>
+        <button type="button">show the Hobnob card</button>
+        <button type="button">show the contact card</button>
         <button type="button">what is his email?</button>
         <button type="button">how many posts are there?</button>
-        <button type="button">what has he built?</button>
       </div>
+      <p class="console__note">Tool call: a question about projects runs <code class="mono">projects.list</code> and reasons over its rows. A2UI: a card question returns a surface, and the renderer paints it here with this page's components.</p>
       <details class="console__events">
         <summary>Watch the event stream</summary>
         <pre id="demoEvents">Waiting for a question.</pre>
