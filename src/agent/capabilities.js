@@ -135,6 +135,16 @@ export const siteCapabilities = [
     },
   }),
   defineCapability({
+    id: 'labs.tools',
+    kind: 'route',
+    title: 'Tools without a model',
+    description:
+      'Opens the lab where the manifest answers JSON-RPC tool calls and the page\'s own buttons are found by role and accessible name, with no model.',
+    keywords: ['tools lab', 'json-rpc', 'mcp', 'accessibility tree', 'no model'],
+    route: '/labs/tools/',
+    requiresConfirmation: true,
+  }),
+  defineCapability({
     id: 'blog.open_archive',
     kind: 'action',
     title: 'Open the full archive',

@@ -22,6 +22,9 @@ export default defineConfig({
         // Labs: the probe generator runs the pure generator from the published
         // package in the browser, so it needs the same treatment.
         'probe-gen': resolve(__dirname, 'labs/probe-gen/index.html'),
+        // The tools lab runs the JSON-RPC server and the accessibility resolver
+        // from the published package against this page's own controls.
+        'tools-lab': resolve(__dirname, 'labs/tools/index.html'),
       },
     },
   },

@@ -28,7 +28,9 @@ const suite = JSON.parse(await readFile(path.join(here, 'browser.json'), 'utf8')
 const manifest = JSON.parse(await readFile(path.join(here, '../../dist/agent-manifest.json'), 'utf8'));
 const before = process.argv.includes('--before');
 const asJson = process.argv.includes('--json');
-const BASE = suite.base;
+// `--base` lets the same suite score the deployed site: npm run smoke:prod.
+const baseFlag = process.argv.indexOf('--base');
+const BASE = baseFlag > -1 ? process.argv[baseFlag + 1] : process.argv.find((a) => a.startsWith('--base='))?.slice(7) ?? suite.base;
 
 /* ---------- the dist directory, served if nothing else is ---------- */
 const DIST = path.join(here, '../../dist');
