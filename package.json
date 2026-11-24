@@ -9,9 +9,10 @@
     "audit:routing": "node node_modules/boaz/dist/cli/index.js audit --probes bench/probes.json --module bench/agent-setup.mjs",
     "bench:composition": "node bench/composition/bench.mjs",
     "preview": "vite preview",
-    "bench:no-llm": "node bench/no-llm/run.mjs && node bench/no-llm/run.mjs --suite negation.json && node bench/no-llm/run.mjs --suite reference.json && node bench/no-llm/run.mjs --suite compound.json && node bench/no-llm/run.mjs --suite synonyms.json && node bench/no-llm/answers.mjs && node bench/no-llm/discourse.mjs && node bench/no-llm/register.mjs && node bench/no-llm/outline.mjs && node bench/no-llm/plan.mjs",
+    "bench:no-llm": "node bench/no-llm/run.mjs && node bench/no-llm/run.mjs --suite negation.json && node bench/no-llm/run.mjs --suite reference.json && node bench/no-llm/run.mjs --suite compound.json && node bench/no-llm/run.mjs --suite synonyms.json && node bench/no-llm/answers.mjs && node bench/no-llm/discourse.mjs && node bench/no-llm/register.mjs && node bench/no-llm/outline.mjs && node bench/no-llm/plan.mjs && node bench/no-llm/execute.mjs",
     "bench:outline": "node bench/no-llm/outline.mjs",
-    "bench:plan": "node bench/no-llm/plan.mjs",
+    "bench:plan": "node bench/no-llm/plan.mjs && node bench/no-llm/execute.mjs",
+    "bench:execute": "node bench/no-llm/execute.mjs",
     "bench:register": "node bench/no-llm/register.mjs",
     "bench:summarise": "node bench/no-llm/summarise.mjs"
   },
@@ -19,7 +20,7 @@
     "vite": "^6.0.0"
   },
   "dependencies": {
-    "boaz": "https://github.com/shobyde/boaz/releases/download/v0.7.6/boaz-0.7.6.tgz",
+    "boaz": "https://github.com/shobyde/boaz/releases/download/v0.7.7/boaz-0.7.7.tgz",
     "lenis": "^1.3.26",
     "three": "^0.170.0"
   }

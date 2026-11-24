@@ -14,7 +14,7 @@
    components.
    ============================================================ */
 import manifest from 'boaz:manifest';
-import { AgentRuntime, registry } from 'boaz/core';
+import { AgentRuntime, executePlan, planRequest, registry } from 'boaz/core';
 import { createRulesEngine } from 'boaz/rules';
 import { createDomContextReader } from 'boaz/dom';
 import { createAssistantKnowledge } from './knowledge.js';
@@ -377,6 +377,28 @@ export function initAssistant({ posts = [] } = {}) {
         return;
       }
       state.query = register.cleaned || question;
+      // One sentence can ask for two things. A plan naming more than one
+      // capability runs both, in order, through the same capability path the
+      // single-request case uses, so confirmation and navigation still apply.
+      const plan = planRequest(state.query, { capabilities: manifest.capabilities });
+      if (plan.steps.length > 1) {
+        const execution = await executePlan(plan, {
+          currentRoute: () => activeSection(),
+          run: async (step) => {
+            live = null;
+            state.query = step.text;
+            const turn = await runtime.send(step.text);
+            for (const part of turn.steps) {
+              if (part.type === 'surface') addSurface(part.capabilityId, part.messages);
+            }
+            return turn.text;
+          },
+        });
+        // A step that ran already said its own sentence. The executor's report
+        // is only worth showing when it refused or failed something.
+        if (!execution.ok && execution.summary) addBubble('assistant', execution.summary);
+        return;
+      }
       const result = await runtime.send(state.query);
       const streamed = live;
       // A host bug must not put JSON on screen: the visitor asked a question.

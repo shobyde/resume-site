@@ -1,0 +1,24 @@
+{
+  "class": "execute",
+  "note": "A plan is only worth making if something runs it. Each task names the effects (capability ids, in order) a host must observe. Baseline is the engine the panel shipped before this rung: one call per sentence, so a two-request sentence produces one effect. 'plan' tasks must produce every effect in order AND a report that names both steps; 'single' tasks must produce exactly one effect and no plan; 'refusal' tasks must produce the effects it can and a sentence naming the step it refused.",
+  "tasks": [
+    { "kind": "plan", "q": "open the archive and copy his email", "effects": ["blog.open_archive", "contact.copy_email"] },
+    { "kind": "plan", "q": "take me to the blog then read the newest post", "effects": ["site.blog", "blog.open_newest"] },
+    { "kind": "plan", "q": "show me the projects and then expand hobnob", "effects": ["site.projects", "projects.expand"] },
+    { "kind": "plan", "q": "open the archive, then show the newest article card", "effects": ["blog.open_archive", "blog.card"] },
+    { "kind": "plan", "q": "print the resume and copy his email", "effects": ["resume.print", "contact.copy_email"] },
+    { "kind": "plan", "q": "go to the contact page and open linkedin", "effects": ["site.contact", "contact.open_linkedin"] },
+    { "kind": "plan", "q": "show me the skills then open linkedin", "effects": ["site.skills", "contact.open_linkedin"] },
+    { "kind": "plan", "q": "read the newest post and then print the resume", "effects": ["blog.open_newest", "resume.print"] },
+    { "kind": "plan", "q": "open the archive and go to the blog", "effects": ["blog.open_archive", "site.blog"] },
+    { "kind": "single", "q": "open the archive", "effects": ["blog.open_archive"] },
+    { "kind": "single", "q": "copy his email", "effects": ["contact.copy_email"] },
+    { "kind": "single", "q": "show me the projects and the blog", "effects": ["site.projects"] },
+    {
+      "kind": "refusal",
+      "q": "open the archive and expand the card",
+      "effects": ["blog.open_archive"],
+      "refused": "expand a project card"
+    }
+  ]
+}
