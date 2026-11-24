@@ -343,7 +343,9 @@ if (data.kb && arenaTable) {
 
   const note = document.querySelector('#arena-note');
   const fresh = kbdata.systems.map((s) => s.fresh?.passed ?? 0);
-  const best = kbdata.systems.reduce((top, s) => (s.fitted.passed > top.fitted.passed ? s : top));
+  // The hybrid is the approach the site ships; quote it rather than whichever
+  // row happens to sort first with the same fitted score.
+  const best = kbdata.systems.find((s) => s.id === 'hybrid') ?? kbdata.systems.reduce((top, s) => (s.fitted.passed > top.fitted.passed ? s : top));
   note.innerHTML =
     `The fitted suite is not the interesting number. <b>${best.label}</b> answers ${best.fitted.passed}/${best.fitted.total} of it, ` +
     `and ${best.fresh?.passed ?? 0}/${best.fresh?.total ?? 0} of a fresh paraphrase set, because a phrase table only knows the words it was given. ` +
