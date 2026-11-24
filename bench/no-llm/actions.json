@@ -1,0 +1,31 @@
+{
+  "about": "Rung 16: click/fill/scroll by role and accessible name, resolved without a model. The fixture is the accessibility tree of the built site with the assistant panel open (Chromium Accessibility.getFullAXTree, 73 nodes, captured 2026-11-24). Expectations are ground truth read off that tree, not off the resolver: a name with six identical buttons is a refusal, and a section the site never names in a heading is a refusal too.",
+  "tree": "site-tree.json",
+  "tasks": [
+    { "id": "a01", "say": "click the projects link", "expect": { "ok": true, "role": "link", "name": "Projects" } },
+    { "id": "a02", "say": "click the contact link", "expect": { "ok": true, "role": "link", "name": "Contact" } },
+    { "id": "a03", "say": "press the send button", "expect": { "ok": false, "reason": "disabled" }, "note": "the panel's SEND is aria-disabled until the input has text, so a click-only DSL must report it, not click it" },
+    { "id": "a04", "say": "click the close button in the ask about sho dialog", "expect": { "ok": true, "role": "button", "name": "Close the assistant" } },
+    { "id": "a05", "say": "fill the ask about sho box with which projects use typescript", "expect": { "ok": true, "role": "textbox", "name": "Ask about Sho", "text": "which projects use typescript" } },
+    { "id": "a06", "say": "type hello into the ask about sho field", "expect": { "ok": true, "role": "textbox", "name": "Ask about Sho", "text": "hello" } },
+    { "id": "a07", "say": "click the first engineering detail button", "expect": { "ok": true, "role": "button", "name": "Engineering detail", "nth": 1 } },
+    { "id": "a08", "say": "click the third engineering detail button", "expect": { "ok": true, "role": "button", "name": "Engineering detail", "nth": 3 } },
+    { "id": "a09", "say": "click visit hobnob.info", "expect": { "ok": true, "role": "link", "name": "Visit hobnob.info" } },
+    { "id": "a10", "say": "click download résumé", "expect": { "ok": true, "role": "button", "name": "Download résumé" } },
+    { "id": "a11", "say": "click the email me link", "expect": { "ok": true, "role": "link", "name": "Email me" } },
+    { "id": "a12", "say": "click the second source on github link", "expect": { "ok": true, "role": "link", "name": "Source on GitHub", "nth": 2 } },
+    { "id": "a13", "say": "click read the product page", "expect": { "ok": true, "role": "link", "name": "Read the product page" } },
+    { "id": "a14", "say": "click the linkedin link", "expect": { "ok": true, "role": "link", "name": "LinkedIn" } },
+    { "id": "a15", "say": "click the skip to content link", "expect": { "ok": true, "role": "link", "name": "Skip to content" } },
+    { "id": "a16", "say": "scroll to tools of the trade", "expect": { "ok": true, "role": "heading", "name": "Tools of the trade" } },
+    { "id": "a17", "say": "click ask about sho", "expect": { "ok": true, "role": "button", "name": "ASK ABOUT SHO" } },
+
+    { "id": "a18", "say": "click engineering detail", "expect": { "ok": false, "reason": "ambiguous" }, "note": "six buttons share this name" },
+    { "id": "a19", "say": "click the source on github link", "expect": { "ok": false, "reason": "ambiguous" }, "note": "two cards link to the same repository" },
+    { "id": "a20", "say": "click the missing button", "expect": { "ok": false, "reason": "name-mismatch" } },
+    { "id": "a21", "say": "click the terms checkbox", "expect": { "ok": false, "reason": "role-mismatch" } },
+    { "id": "a22", "say": "scroll to experience", "expect": { "ok": false, "reason": "name-mismatch" }, "note": "ceiling: the section headings are marketing lines, so no accessible name says Experience" },
+    { "id": "a23", "say": "which projects use typescript", "expect": { "ok": false, "reason": "no-verb" }, "note": "control: a question is not an action" },
+    { "id": "a24", "say": "fill the search box with typescript", "expect": { "ok": false, "reason": "role-mismatch" }, "note": "ceiling: the page has one textbox and it is the chat input, so the role-only request resolves to the wrong control" }
+  ]
+}

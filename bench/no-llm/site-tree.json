@@ -1,0 +1,400 @@
+[
+{
+"role": "link",
+"name": "Skip to content",
+"scopes": []
+},
+{
+"role": "button",
+"name": "ASK ABOUT SHO",
+"scopes": []
+},
+{
+"role": "link",
+"name": "About",
+"scopes": [
+"Primary"
+]
+},
+{
+"role": "link",
+"name": "Projects",
+"scopes": [
+"Primary"
+]
+},
+{
+"role": "link",
+"name": "Experience",
+"scopes": [
+"Primary"
+]
+},
+{
+"role": "link",
+"name": "Skills",
+"scopes": [
+"Primary"
+]
+},
+{
+"role": "link",
+"name": "Log",
+"scopes": [
+"Primary"
+]
+},
+{
+"role": "link",
+"name": "Contact",
+"scopes": [
+"Primary"
+]
+},
+{
+"role": "heading",
+"name": "I build software that solves real problems.",
+"scopes": []
+},
+{
+"role": "link",
+"name": "Explore my work \u2192",
+"scopes": []
+},
+{
+"role": "button",
+"name": "Download r\u00e9sum\u00e9",
+"scopes": []
+},
+{
+"role": "link",
+"name": "Get in touch",
+"scopes": []
+},
+{
+"role": "button",
+"name": "Dismiss new article notice",
+"scopes": [
+"A manifest already knows what to test"
+]
+},
+{
+"role": "link",
+"name": "A manifest already knows what to test",
+"scopes": [
+"A manifest already knows what to test"
+]
+},
+{
+"role": "heading",
+"name": "Where code meets culture",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "Proof, not adjectives",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "Twelve years, one throughline: build and ship useful things",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "Tools of the trade",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "Written by the machine, curated by me",
+"scopes": []
+},
+{
+"role": "link",
+"name": "All writing \u2192",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "Let's build something.",
+"scopes": []
+},
+{
+"role": "link",
+"name": "Email me",
+"scopes": []
+},
+{
+"role": "link",
+"name": "LinkedIn",
+"scopes": []
+},
+{
+"role": "link",
+"name": "shobyde@gmail.com",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "Ask about Sho",
+"scopes": [
+"Ask about Sho"
+]
+},
+{
+"role": "button",
+"name": "Close the assistant",
+"scopes": [
+"Ask about Sho"
+]
+},
+{
+"role": "button",
+"name": "What does Sho work on?",
+"scopes": [
+"Ask about Sho"
+]
+},
+{
+"role": "button",
+"name": "Show me the Hobnob card",
+"scopes": [
+"Ask about Sho"
+]
+},
+{
+"role": "button",
+"name": "Which projects use TypeScript?",
+"scopes": [
+"Ask about Sho"
+]
+},
+{
+"role": "textbox",
+"name": "Ask about Sho",
+"scopes": [
+"Ask about Sho"
+]
+},
+{
+"role": "button",
+"name": "SEND",
+"scopes": [
+"Ask about Sho"
+],
+"disabled": true
+},
+{
+"role": "link",
+"name": "How this works",
+"scopes": [
+"Ask about Sho"
+]
+},
+{
+"role": "heading",
+"name": "Hobnob: private meeting notes, no cloud",
+"scopes": []
+},
+{
+"role": "link",
+"name": "Visit hobnob.info",
+"scopes": []
+},
+{
+"role": "link",
+"name": "Source & releases",
+"scopes": []
+},
+{
+"role": "button",
+"name": "Engineering detail",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "Readback: self-hosted reading for families",
+"scopes": []
+},
+{
+"role": "link",
+"name": "Source on GitHub",
+"scopes": []
+},
+{
+"role": "link",
+"name": "Release notes for 0.2.0",
+"scopes": []
+},
+{
+"role": "button",
+"name": "Engineering detail",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "Groundglass: conformance tests for agent-generated UI",
+"scopes": []
+},
+{
+"role": "link",
+"name": "Source on GitHub",
+"scopes": []
+},
+{
+"role": "link",
+"name": "Why this matters beyond the code",
+"scopes": []
+},
+{
+"role": "button",
+"name": "Engineering detail",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "Boaz: an in-browser assistant with no model",
+"scopes": []
+},
+{
+"role": "link",
+"name": "Read the product page",
+"scopes": []
+},
+{
+"role": "link",
+"name": "Source & releases",
+"scopes": []
+},
+{
+"role": "button",
+"name": "Engineering detail",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "shobyde.com: resume + daily engineering log",
+"scopes": []
+},
+{
+"role": "link",
+"name": "Visit site",
+"scopes": []
+},
+{
+"role": "link",
+"name": "Case study: how it was built",
+"scopes": []
+},
+{
+"role": "button",
+"name": "Engineering detail",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "C++ physics simulation engines",
+"scopes": []
+},
+{
+"role": "button",
+"name": "Engineering detail",
+"scopes": []
+},
+{
+"role": "link",
+"name": "2026-11-24 \u00b7 dev A manifest already knows what to test client-agent turned this site's manifest into 113 questions and found four phrases two capabilities still fight over. Read \u2192",
+"scopes": []
+},
+{
+"role": "link",
+"name": "2026-11-23 \u00b7 ui-direction LangChain's Frontend SDK Hands You State, Not a Chat Widget LangChain's new frontend SDK hands you durable thread state, tool-call lifecycle, interrupts, and checkpoint history instead of a chat widget, which is the right layer for agent UI to live at. Read \u2192",
+"scopes": []
+},
+{
+"role": "link",
+"name": "2026-11-23 \u00b7 project An On-Device Assistant That Never Touches the DOM An on-device assistant that never touches the DOM, and the two engines it falls back through. Read \u2192",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "Software Development Engineer 1\u20133 / Engineering Manager (IC)",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "Volunteer Teacher: Intro to Computer Science",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "Software Developer",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "Game Developer",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "ARCHITECTURE",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "ENGINEERING DECISIONS",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "ARCHITECTURE",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "ENGINEERING DECISIONS",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "ARCHITECTURE",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "ENGINEERING DECISIONS",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "ARCHITECTURE",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "ENGINEERING DECISIONS",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "ARCHITECTURE",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "ENGINEERING DECISIONS",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "ARCHITECTURE",
+"scopes": []
+},
+{
+"role": "heading",
+"name": "ENGINEERING DECISIONS",
+"scopes": []
+}
+]
