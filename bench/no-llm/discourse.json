@@ -1,0 +1,33 @@
+{
+  "class": "discourse",
+  "note": "Rung 6: does the answer say more than the name? The claim must still carry every required fact (fidelity), and the extra sentences must be read off the page's own records (a stack entry, a project name, a count), never an adjective. Pass needs fidelity, 2-3 sentences, every sentence past the first grounded in the data vocabulary, no evaluative filler, Flesch reading ease >= 50, mean words per sentence <= 22, and the same question twice giving the same text.",
+  "intents": {
+    "projects.using": [
+      { "q": "which projects use python", "must": ["Readback", "Groundglass"], "minSentences": 2, "kind": "set" },
+      { "q": "what is built with python", "must": ["Readback", "Groundglass"], "minSentences": 2, "kind": "set" },
+      { "q": "which projects use typescript", "must": ["Boaz"], "minSentences": 2, "kind": "single" },
+      { "q": "which projects use vite", "must": ["Boaz", "shobyde.com"], "minSentences": 2, "kind": "set" },
+      { "q": "which projects use a2ui", "must": ["Boaz", "Groundglass"], "minSentences": 2, "kind": "set" },
+      { "q": "which projects use sqlite", "must": ["Readback"], "minSentences": 2, "kind": "single" },
+      { "q": "which projects use docker", "must": ["Readback"], "minSentences": 2, "kind": "single" },
+      { "q": "which projects use c++", "must": ["C++ physics simulation engines"], "minSentences": 2, "kind": "single" },
+      { "q": "which projects use kubernetes", "must": [], "says": "no project", "minSentences": 1, "kind": "none" },
+      { "q": "which projects use rust", "must": [], "says": "no project", "minSentences": 1, "kind": "none" }
+    ],
+    "projects.list": [
+      { "q": "what has he built", "must": ["Hobnob", "Readback", "Groundglass", "Boaz"], "minSentences": 2, "kind": "set" },
+      { "q": "list the projects", "must": ["Hobnob", "Readback", "Groundglass", "Boaz"], "minSentences": 2, "kind": "set" },
+      { "q": "what has he shipped", "must": ["Hobnob", "Readback", "Groundglass", "Boaz"], "minSentences": 2, "kind": "set" },
+      { "q": "how many projects has he built", "must": ["6"], "minSentences": 2, "kind": "set" }
+    ],
+    "compound": [
+      { "q": "which projects use python and sqlite", "must": ["Readback"], "minSentences": 2, "kind": "single" },
+      { "q": "which projects use python or typescript", "must": ["Readback", "Groundglass", "Boaz"], "minSentences": 2, "kind": "set" },
+      { "q": "which projects use python and kubernetes", "must": [], "says": "no project", "minSentences": 1, "kind": "none" }
+    ],
+    "profile": [
+      { "q": "who is he", "must": ["engineering manager"], "minSentences": 2, "kind": "single" },
+      { "q": "what does he do", "must": ["manager"], "minSentences": 2, "kind": "single" }
+    ]
+  }
+}

@@ -131,13 +131,13 @@ export function createAssistantKnowledge({ posts }) {
         // against the tool result the rule already holds.
         if (combine?.op === 'all' && terms.length >= 2 && records.length > 0) {
           const both = records.filter((project) => terms.every((term) => stackHas(project, term)) && !notWanted(project));
-          return phraseProjectsUsingAll(query, both, terms);
+          return phraseProjectsUsingAll(query, both, terms, { records });
         }
         if (solutions.length === 0) {
           // The tool ran, so "no stack lists TypeScript" is a fact about the
           // page, not a shrug. Without the tool result there is nothing to say.
           if (!observed['projects.list']) return '';
-          return phraseProjectsUsing(query, [], asked);
+          return phraseProjectsUsing(query, [], asked, { records });
         }
         const matched = solutions
           .map((solution) => {
@@ -148,7 +148,7 @@ export function createAssistantKnowledge({ posts }) {
             return record ?? { title: solution.bindings['?T'] ?? slug, stack: [] };
           })
           .filter((project) => project?.title && !notWanted(project));
-        return phraseProjectsUsing(query, matched, asked);
+        return phraseProjectsUsing(query, matched, asked, { records });
       },
     },
     {

@@ -9,7 +9,7 @@
     "audit:routing": "node node_modules/boaz/dist/cli/index.js audit --probes bench/probes.json --module bench/agent-setup.mjs",
     "bench:composition": "node bench/composition/bench.mjs",
     "preview": "vite preview",
-    "bench:no-llm": "node bench/no-llm/run.mjs && node bench/no-llm/run.mjs --suite negation.json && node bench/no-llm/run.mjs --suite reference.json && node bench/no-llm/run.mjs --suite compound.json && node bench/no-llm/run.mjs --suite synonyms.json && node bench/no-llm/answers.mjs"
+    "bench:no-llm": "node bench/no-llm/run.mjs && node bench/no-llm/run.mjs --suite negation.json && node bench/no-llm/run.mjs --suite reference.json && node bench/no-llm/run.mjs --suite compound.json && node bench/no-llm/run.mjs --suite synonyms.json && node bench/no-llm/answers.mjs && node bench/no-llm/discourse.mjs"
   },
   "devDependencies": {
     "vite": "^6.0.0"

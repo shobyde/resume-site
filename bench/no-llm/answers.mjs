@@ -25,6 +25,11 @@ const argValue = (flag) => {
 
 const shortName = (title) => String(title).split(':')[0].trim();
 const PROJECTS = new Set(DATA.projects.map((project) => shortName(project.title)));
+const sentencesOf = (text) =>
+  String(text)
+    .split(/(?<=[.!?])\s+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
 
 /** One turn, with the tool call the rule plans actually run. */
 async function ask(engine, question) {
@@ -49,9 +54,13 @@ const rows = [];
 for (const task of suite.tasks) {
   if (!task.members) continue;
   const answer = await ask(engine, task.q);
-  // Every project the answer names, so a union is visible even when the
+  // The claim is the first sentence: that is where the answered set lives. A
+  // later sentence may name a project that does not match, on purpose (the
+  // contrast rung 6 adds), and discourse.mjs is what checks those are grounded.
+  const claim = sentencesOf(answer)[0] ?? answer;
+  // Every project the claim names, so a union is visible even when the
   // expected set is a subset of it.
-  const named = [...PROJECTS].filter((name) => new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i').test(answer));
+  const named = [...PROJECTS].filter((name) => new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i').test(claim));
   const want = [...task.members].sort();
   const got = named.sort();
   const ok = want.length === got.length && want.every((name, i) => name === got[i]);
