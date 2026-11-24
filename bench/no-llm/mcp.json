@@ -1,0 +1,37 @@
+{
+  "name": "mcp-bridge",
+  "rung": 17,
+  "note": "Same handlers, two bridges. naive = ids as tool names, no schema, no validation, throws on anything unexpected. bridge = createToolServer + createToolClient + planToolCall.",
+  "tasks": [
+    { "id": "p01-initialize", "kind": "init" },
+    { "id": "p02-list-count", "kind": "list" },
+    { "id": "p03-tool-names", "kind": "list", "names": true },
+    { "id": "p04-schema-required", "kind": "schema", "tool": "projects_card", "required": ["project"] },
+    { "id": "p05-call-query", "kind": "call", "tool": "blog_stats", "args": {}, "text": "posts", "structured": { "posts": 1 } },
+    { "id": "p06-call-list", "kind": "call", "tool": "projects_list", "args": {}, "text": "Hobnob", "structured": { "projects": "list" } },
+    { "id": "p07-call-action", "kind": "call", "tool": "contact_open_linkedin", "args": {}, "text": "linkedin.com/in/sho-byde", "structured": { "opened": "url" } },
+    { "id": "p08-missing-arg", "kind": "invalid", "tool": "projects_card", "args": {}, "text": "needs the argument \"project\"", "notRun": true },
+    { "id": "p09-extra-arg", "kind": "invalid", "tool": "blog_stats", "args": { "verbose": true }, "text": "has no argument", "notRun": true },
+    { "id": "p10-enum-value", "kind": "invalid", "tool": "projects_card", "args": { "project": "Cobol" }, "text": "is not one of", "notRun": true },
+    { "id": "p11-unknown-tool", "kind": "unknown-tool", "recovers": true },
+    { "id": "p12-unknown-method", "kind": "unknown-method" },
+    { "id": "p13-notification", "kind": "notification" },
+    { "id": "p14-id-echo", "kind": "id", "id": "bench-17" },
+    { "id": "p15-arguments-type", "kind": "invalid-rpc", "code": -32602, "message": { "jsonrpc": "2.0", "id": 41, "method": "tools/call", "params": { "name": "blog_stats", "arguments": "{}" } } },
+    { "id": "p16-batch", "kind": "invalid-rpc", "code": -32600, "message": [{ "jsonrpc": "2.0", "id": 42, "method": "tools/list" }] },
+    { "id": "p17-nested-arg", "kind": "invalid", "tool": "projects_card", "args": { "project": { "name": "Hobnob" } }, "text": "is not one of", "notRun": true },
+
+    { "id": "l01-question-count", "kind": "plan", "q": "how many posts has he written", "expect": ["blog.stats"] },
+    { "id": "l02-question-stack", "kind": "plan", "q": "which projects use python", "expect": ["projects.list"] },
+    { "id": "l03-single-action", "kind": "plan", "q": "show the hobnob project card", "expect": ["projects.card"], "args": { "project": "hobnob" } },
+    { "id": "l04-route", "kind": "plan", "q": "take me to the blog", "expect": ["site.blog"] },
+    { "id": "l05-two-requests", "kind": "plan", "q": "open the archive and copy his email", "expect": ["blog.open_archive", "contact.copy_email"] },
+    { "id": "l06-two-actions", "kind": "plan", "q": "open the archive and show the hobnob project card", "expect": ["blog.open_archive", "projects.card"] },
+    { "id": "l07-blocked-arg", "kind": "plan-blocked", "q": "show me a project card", "reason": "args" },
+    { "id": "l08-blocked-arg-2", "kind": "plan-blocked", "q": "open the readback project link", "reason": "args" },
+    { "id": "l09-declined", "kind": "plan-declined", "q": "book me a flight to portland" },
+    { "id": "l10-newest-post", "kind": "plan", "q": "read the newest post", "expect": ["blog.open_newest"] },
+    { "id": "l11-possessive", "kind": "plan", "q": "show hobnob's card", "expect": ["projects.card"], "args": { "project": "hobnob" } },
+    { "id": "l12-route-then-act", "kind": "plan-route-blocked", "q": "open the skills page and print his resume", "count": 2, "index": 1 }
+  ]
+}
