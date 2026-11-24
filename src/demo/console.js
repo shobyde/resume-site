@@ -9,6 +9,7 @@ import { createRulesEngine } from 'boaz/rules';
 import { DATA } from '../data.js';
 import { siteCapabilities } from '../agent/capabilities.js';
 import { createAssistantKnowledge } from '../agent/knowledge.js';
+import { readRegister, endTurn } from '../agent/register.js';
 import { describeTrace } from '../agent/trace.js';
 import { renderA2UI } from '../agent/a2ui.js';
 // The A2UI components are styled by the assistant stylesheet, which is scoped to
@@ -156,7 +157,13 @@ async function boot() {
     log.scrollTop = log.scrollHeight;
 
     try {
-      const result = await runtime.send(question);
+      // A length cue is not part of the question: strip it before routing.
+      const register = readRegister(question);
+      if (register.preference) {
+        ensureBubble().body.textContent = register.reply;
+        return;
+      }
+      const result = await runtime.send(register.cleaned || question);
       // Never render the wire format, whatever a host returned.
       for (const step of result.steps) {
         if (step.type === 'surface') renderSurface(step.capabilityId, step.messages);
@@ -172,6 +179,7 @@ async function boot() {
     } catch (error) {
       ensureBubble().body.textContent = `That did not work: ${error.message}`;
     } finally {
+      endTurn();
       live = null;
       busy = false;
       send.disabled = false;

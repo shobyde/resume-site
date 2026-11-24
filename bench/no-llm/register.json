@@ -1,0 +1,35 @@
+{
+  "class": "register",
+  "note": "Rung 8: the same facts at three lengths. Each task asks for a register and states the sentence count the answer must have plus the facts it must still carry. A terse answer that drops a name is not a pass; a long answer to a terse request is not a pass either. `session` holds utterances sent first, which is how a stated preference is measured.",
+  "tasks": [
+    { "q": "which projects use python, in one line", "register": "terse", "sentences": [1, 1], "must": ["Readback", "Groundglass"] },
+    { "q": "which projects use python and sqlite, in one line", "register": "terse", "sentences": [1, 1], "must": ["Readback"] },
+    { "q": "what has he built, briefly", "register": "terse", "sentences": [1, 1], "must": ["Hobnob", "Boaz"] },
+    { "q": "which projects use cobol, in one sentence", "register": "terse", "sentences": [1, 1], "must": ["No project"] },
+    { "q": "who is sho, briefly", "register": "terse", "sentences": [1, 1], "must": ["managing"] },
+    { "q": "how many posts has he written, just the list", "register": "terse", "sentences": [1, 1], "must": ["newest"] },
+    { "q": "which projects use typescript, briefly", "register": "terse", "sentences": [1, 1], "must": ["Boaz"] },
+
+    { "q": "which projects use python", "register": "normal", "sentences": [2, 3], "must": ["Readback", "Groundglass"] },
+    { "q": "which projects use python and sqlite", "register": "normal", "sentences": [2, 3], "must": ["Readback"] },
+    { "q": "what has he built", "register": "normal", "sentences": [2, 3], "must": ["Hobnob", "Boaz"] },
+    { "q": "which projects use cobol", "register": "normal", "sentences": [2, 3], "must": ["No project"] },
+    { "q": "who is sho", "register": "normal", "sentences": [2, 3], "must": ["Conversica"] },
+    { "q": "how many posts has he written", "register": "normal", "sentences": [1, 2], "must": ["newest"] },
+    { "q": "which projects use typescript", "register": "normal", "sentences": [2, 3], "must": ["Boaz"] },
+
+    { "q": "which projects use python, in more detail", "register": "explanatory", "sentences": [3, 4], "must": ["Readback", "Groundglass", "of 6"] },
+    { "q": "which projects use python and sqlite, in more detail", "register": "explanatory", "sentences": [3, 4], "must": ["Readback", "of 6"] },
+    { "q": "what has he built, in more detail", "register": "explanatory", "sentences": [3, 4], "must": ["entries", "widest"] },
+    { "q": "who is sho, in more detail", "register": "explanatory", "sentences": [3, 4], "must": ["Conversica", "Engineering Manager"] },
+    { "q": "which projects use cobol, in more detail", "register": "explanatory", "sentences": [2, 3], "must": ["No project"] },
+    { "q": "how many posts has he written, in more detail", "register": "explanatory", "sentences": [2, 3], "must": ["archive"] },
+    { "q": "which projects use typescript, in more detail", "register": "explanatory", "sentences": [3, 4], "must": ["Boaz", "of 6"] },
+
+    { "q": "which projects use python", "session": ["keep it short"], "register": "terse", "sentences": [1, 1], "must": ["Readback"] },
+    { "q": "what has he built", "session": ["fuller answers"], "register": "explanatory", "sentences": [3, 4], "must": ["Hobnob"] },
+    { "q": "who is sho", "session": ["keep it short", "normal answers"], "register": "normal", "sentences": [2, 3], "must": ["Conversica"] },
+    { "q": "which projects use typescript, and keep it short from now on", "register": "terse", "sentences": [1, 1], "must": ["Boaz"] },
+    { "q": "which projects use typescript", "session": ["which projects use typescript, and keep it short from now on"], "register": "terse", "sentences": [1, 1], "must": ["Boaz"] }
+  ]
+}

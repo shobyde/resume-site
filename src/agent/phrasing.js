@@ -40,7 +40,7 @@ const hasNotes = (projects) => projects.filter((project) => project?.details).le
  * `projects` is the page's own records, so the extra sentence is a fact about
  * the page rather than a claim about the work.
  */
-export function phraseProjectList(query, projectRecords) {
+export function phraseProjectList(query, projectRecords, { register = 'normal' } = {}) {
   const titles = projectRecords.map((project) => shortName(project.title));
   const n = titles.length;
   if (n === 0) return '';
@@ -58,29 +58,41 @@ export function phraseProjectList(query, projectRecords) {
     query,
   );
 
-  if (n === 1) return `${titles[0]} is the only project on this page. ${support}`;
+  const claim = n === 1
+    ? `${titles[0]} is the only project on this page.`
+    : COUNT_QUESTION.test(query)
+      ? pick(
+          [
+            `${count(n, 'project')}: ${join(titles)}.`,
+            `${n} of them, most recently shipped last: ${join(titles)}.`,
+            `That makes ${n}: ${join(titles)}.`,
+          ],
+          query,
+        )
+      : pick(
+          [
+            `${join(titles)}, ${n} of them, every one shipped.`,
+            `${join(titles)}, which is the public list.`,
+            `Everything he has shipped is public: ${join(titles)}.`,
+            `${join(titles)}.`,
+          ],
+          query,
+        );
 
-  if (COUNT_QUESTION.test(query)) {
-    const claim = pick(
-      [
-        `${count(n, 'project')}: ${join(titles)}.`,
-        `${n} of them, most recently shipped last: ${join(titles)}.`,
-        `That makes ${n}: ${join(titles)}.`,
-      ],
-      query,
-    );
-    return `${claim} ${support}`;
-  }
-  const claim = pick(
-    [
-      `${join(titles)}, ${n} of them, every one shipped.`,
-      `${join(titles)}, which is the public list.`,
-      `Everything he has shipped is public: ${join(titles)}.`,
-      `${join(titles)}.`,
-    ],
-    query,
-  );
-  return `${claim} ${support}`;
+  if (register === 'terse') return claim;
+  const body = `${claim} ${support}`;
+  if (register === 'normal') return body;
+  // Explanatory: the widest stack and the narrowest, both read off the records.
+  const widths = projectRecords
+    .map((project) => ({ name: shortName(project.title), n: (project.stack ?? []).length }))
+    .sort((a, b) => b.n - a.n);
+  if (widths.length === 0) return body;
+  const widest = widths[0];
+  const narrowest = widths.at(-1);
+  const extra = widths.length === 1
+    ? `${widest.name} lists ${widest.n} stack entries.`
+    : `The widest stack is ${widest.name} at ${widest.n} entries, the narrowest ${narrowest.name} at ${narrowest.n}.`;
+  return `${body} ${extra}`;
 }
 
 /**
@@ -93,11 +105,12 @@ export function phraseProjectList(query, projectRecords) {
  * and which project comes closest without having it. Both are read off the
  * stacks, so the extra sentences cannot turn into adjectives.
  */
-export function phraseProjectsUsing(query, matches, term, { records = [] } = {}) {
+export function phraseProjectsUsing(query, matches, term, { records = [], register = 'normal' } = {}) {
   const names = matches.map((match) => shortName(match.title));
   if (names.length === 0) {
     const asked = String(term || '').trim();
     if (!asked) return '';
+    if (register === 'terse') return `No project on this page lists ${asked}.`;
     const total = records.length;
     const tail = total
       ? pick(
@@ -140,7 +153,25 @@ export function phraseProjectsUsing(query, matches, term, { records = [] } = {})
           query,
         );
 
-  return claim + supportSentence(query, matches, term, records) + contrastSentence(query, matches, term, records);
+  if (register === 'terse') return claim;
+  const body = claim + supportSentence(query, matches, term, records) + contrastSentence(query, matches, term, records);
+  return register === 'explanatory' ? body + coverageSentence(matches, term, records) : body;
+}
+
+/**
+ * Explanatory only: how much of the page answers this, and how wide the
+ * matching stacks are. Counted, never described.
+ */
+function coverageSentence(matches, term, records) {
+  if (matches.length === 0) return '';
+  const total = (records ?? []).length;
+  if (!total) return '';
+  const widths = matches.map((project) => (project.stack ?? []).length);
+  const lo = Math.min(...widths);
+  const hi = Math.max(...widths);
+  const band = lo === hi ? `each ${lo} entries` : `from ${lo} to ${hi} entries`;
+  const verb = matches.length === 1 ? 'lists' : 'list';
+  return ` ${matches.length} of ${total} projects ${verb} ${String(term || 'it')}, with stacks running ${band}.`;
 }
 
 /** Stack entries written as words, so "Python 3.10+" answers "python". */
@@ -251,11 +282,12 @@ function contrastSentence(query, matches, term, records) {
  * hold, and says which one is missing when they do not, because "no project
  * lists both" is the useful half of the answer.
  */
-export function phraseProjectsUsingAll(query, matches, terms, { records = [] } = {}) {
+export function phraseProjectsUsingAll(query, matches, terms, { records = [], register = 'normal' } = {}) {
   const names = matches.map((match) => shortName(match.title));
   const pair = join(terms.map((term) => String(term).trim()));
   if (names.length === 0) {
     const asked = String(terms[0] ?? '').trim();
+    if (register === 'terse') return `No project on this page lists both ${pair}.`;
     const overlap = (records ?? []).filter((project) => (project.stack ?? []).some((entry) => new RegExp(asked, 'i').test(entry)));
     const only = overlap.map((project) => shortName(project.title));
     const tail = only.length
@@ -272,7 +304,9 @@ export function phraseProjectsUsingAll(query, matches, terms, { records = [] } =
       ],
       query,
     );
-    return claim + supportSentence(query, matches, terms.join(' '), records);
+    if (register === 'terse') return claim;
+    const body = claim + supportSentence(query, matches, terms.join(' '), records);
+    return register === 'explanatory' ? body + coverageSentence(matches, terms.join(' and '), records) : body;
   }
   const claim = pick(
     [
@@ -282,34 +316,37 @@ export function phraseProjectsUsingAll(query, matches, terms, { records = [] } =
     ],
     query,
   );
-  return claim + supportSentence(query, matches, terms.join(' '), records) + contrastSentence(query, matches, terms.join(' '), records);
+  if (register === 'terse') return claim;
+  const body = claim + supportSentence(query, matches, terms.join(' '), records) + contrastSentence(query, matches, terms.join(' '), records);
+  return register === 'explanatory' ? body + coverageSentence(matches, terms.join(' and '), records) : body;
 }
 
 /** "How many posts" / "what is the newest post". */
-export function phraseNewestPost(query, { count: total, newest }) {
+export function phraseNewestPost(query, { count: total, newest, register = 'normal' }) {
   const n = Number(total) || 0;
   const title = String(newest || '').trim();
   if (!title) return n ? `${n} posts are published.` : '';
   if (!n) return `The newest post is "${title}".`;
 
-  if (COUNT_QUESTION.test(query)) {
-    return pick(
-      [
-        `${n} posts so far; the newest is "${title}".`,
-        `${n} of them, ending with "${title}".`,
-        `That is ${n} entries, most recently "${title}".`,
-      ],
-      query,
-    );
-  }
-  return pick(
-    [
-      `The newest is "${title}", one of ${n}.`,
-      `"${title}", number ${n} if you are counting.`,
-      `"${title}" is the latest; ${n} in all.`,
-    ],
-    query,
-  );
+  const claim = COUNT_QUESTION.test(query)
+    ? pick(
+        [
+          `${n} posts so far; the newest is "${title}".`,
+          `${n} of them, ending with "${title}".`,
+          `That is ${n} entries, most recently "${title}".`,
+        ],
+        query,
+      )
+    : pick(
+        [
+          `The newest is "${title}", one of ${n}.`,
+          `"${title}", number ${n} if you are counting.`,
+          `"${title}" is the latest; ${n} in all.`,
+        ],
+        query,
+      );
+  if (register !== 'explanatory' || !n) return claim;
+  return `${claim} The archive lists all ${n} by date.`;
 }
 
 /** Email and LinkedIn: the value is the answer, so it leads. */
@@ -322,16 +359,20 @@ export function phraseLinkedin(query, url) {
 }
 
 /** "Who is he": the role, the years, and what he actually does. */
-export function phraseProfile(query, { name, years, org, since }) {
+export function phraseProfile(query, { name, years, org, since, role, register = 'normal' }) {
   const first = String(name || 'He').split(' ')[0];
   const detail = org && since ? ` He has been at ${org} since ${since}.` : org ? ` He works at ${org}.` : '';
-  return pick(
+  const claim = pick(
     [
-      `${first} is an engineering manager and hands-on IC: ${years}+ years of APIs, cloud systems and client-facing apps.${detail}`,
-      `${years}+ years of software, now managing engineers and still writing code.${detail}`,
-      `An engineering manager who still ships: ${years}+ years across APIs, cloud systems and applications people actually use.${detail}`,
-      `Manager and individual contributor, ${years}+ years in, still writing the code.${detail}`,
+      `${first} is an engineering manager and hands-on IC: ${years}+ years of APIs, cloud systems and client-facing apps.`,
+      `${years}+ years of software, now managing engineers and still writing code.`,
+      `An engineering manager who still ships: ${years}+ years across APIs, cloud systems and applications people actually use.`,
+      `Manager and individual contributor, ${years}+ years in, still writing the code.`,
     ],
     query,
   );
+  if (register === 'terse') return claim;
+  const body = `${claim}${detail}`;
+  if (register !== 'explanatory' || !role) return body;
+  return `${body} The current title on the page reads "${role}".`;
 }

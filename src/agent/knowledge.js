@@ -2,6 +2,7 @@
 // panel (src/agent/assistant.js) and the live console on /boaz/.
 import { KnowledgeBase, fact } from 'boaz/rules';
 import { DATA } from '../data.js';
+import { answerRegister } from './register.js';
 import {
   phraseEmail,
   phraseProfile,
@@ -95,6 +96,8 @@ export function createAssistantKnowledge({ posts }) {
           years,
           org: current?.org,
           since,
+          role: current?.role,
+          register: answerRegister(),
         });
       },
     },
@@ -131,13 +134,13 @@ export function createAssistantKnowledge({ posts }) {
         // against the tool result the rule already holds.
         if (combine?.op === 'all' && terms.length >= 2 && records.length > 0) {
           const both = records.filter((project) => terms.every((term) => stackHas(project, term)) && !notWanted(project));
-          return phraseProjectsUsingAll(query, both, terms, { records });
+          return phraseProjectsUsingAll(query, both, terms, { records, register: answerRegister() });
         }
         if (solutions.length === 0) {
           // The tool ran, so "no stack lists TypeScript" is a fact about the
           // page, not a shrug. Without the tool result there is nothing to say.
           if (!observed['projects.list']) return '';
-          return phraseProjectsUsing(query, [], asked, { records });
+          return phraseProjectsUsing(query, [], asked, { records, register: answerRegister() });
         }
         const matched = solutions
           .map((solution) => {
@@ -148,7 +151,7 @@ export function createAssistantKnowledge({ posts }) {
             return record ?? { title: solution.bindings['?T'] ?? slug, stack: [] };
           })
           .filter((project) => project?.title && !notWanted(project));
-        return phraseProjectsUsing(query, matched, asked, { records });
+        return phraseProjectsUsing(query, matched, asked, { records, register: answerRegister() });
       },
     },
     {
@@ -167,7 +170,7 @@ export function createAssistantKnowledge({ posts }) {
         const records = observed['projects.list']?.projects?.length
           ? observed['projects.list'].projects
           : solutions.map((solution) => ({ title: solution.bindings['?T'] ?? '' }));
-        return phraseProjectList(query, records.filter((project) => project?.title));
+        return phraseProjectList(query, records.filter((project) => project?.title), { register: answerRegister() });
       },
     },
     {
@@ -214,7 +217,7 @@ export function createAssistantKnowledge({ posts }) {
         const newest = stats.newest ?? bindings['?T'];
         const count = stats.posts ?? lookup('post_count(?N)')[0]?.bindings['?N'];
         if (!newest) return '';
-        return phraseNewestPost(query, { count, newest });
+        return phraseNewestPost(query, { count, newest, register: answerRegister() });
       },
     },
   ];

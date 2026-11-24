@@ -18,6 +18,7 @@ import { AgentRuntime, registry } from 'boaz/core';
 import { createRulesEngine } from 'boaz/rules';
 import { createDomContextReader } from 'boaz/dom';
 import { createAssistantKnowledge } from './knowledge.js';
+import { readRegister, endTurn } from './register.js';
 import { describeTrace } from './trace.js';
 import { siteCapabilities } from './capabilities.js';
 import { renderA2UI } from './a2ui.js';
@@ -367,8 +368,16 @@ export function initAssistant({ posts = [] } = {}) {
     try {
       // The summarise capability reads the question from the snapshot, the same
       // way blog.stats reads the post count.
-      state.query = question;
-      const result = await runtime.send(question);
+      // "in one line" / "keep it short" is a request about the answer, not a
+      // word in the question: strip it so routing sees the question alone.
+      const register = readRegister(question);
+      if (register.preference) {
+        state.query = question;
+        addBubble('assistant', register.reply);
+        return;
+      }
+      state.query = register.cleaned || question;
+      const result = await runtime.send(state.query);
       const streamed = live;
       // A host bug must not put JSON on screen: the visitor asked a question.
       const safeReply = /^\s*[[{]/.test(result.text)
@@ -400,6 +409,7 @@ export function initAssistant({ posts = [] } = {}) {
     } catch (error) {
       addBubble('assistant', `That did not work: ${error.message}`);
     } finally {
+      endTurn();
       live = null;
       setBusy(false);
       input.value = '';
