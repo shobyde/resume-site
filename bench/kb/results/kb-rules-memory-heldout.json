@@ -1,0 +1,336 @@
+{
+  "system": "rules+memory",
+  "passed": 22,
+  "total": 23,
+  "byKind": {
+    "knowledge": {
+      "passed": 8,
+      "total": 8
+    },
+    "context": {
+      "passed": 11,
+      "total": 12
+    },
+    "tool": {
+      "passed": 2,
+      "total": 2
+    },
+    "planning": {
+      "passed": 0,
+      "total": 0
+    },
+    "readability": {
+      "passed": 1,
+      "total": 1
+    }
+  },
+  "turns": [
+    {
+      "thread": "h-owner-paraphrase",
+      "ask": "whose team owns Beacon?",
+      "kind": "knowledge",
+      "text": "Beacon: Growth.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-owner-paraphrase",
+      "ask": "and what does it run on?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Postgres"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-uptime",
+      "ask": "what is the uptime on Delta?",
+      "kind": "knowledge",
+      "text": "Delta: 99.99%.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-uptime",
+      "ask": "and its region?",
+      "kind": "context",
+      "text": "Delta: us-west.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-describe",
+      "ask": "tell me about Ember",
+      "kind": "readability",
+      "text": "Ember is owned by Platform, written in Go, holding a 99.9% SLA.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-missing",
+      "ask": "who reports to Maya Chen?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": true
+    },
+    {
+      "thread": "h-database",
+      "ask": "what database is behind Beacon?",
+      "kind": "knowledge",
+      "text": "Beacon: Postgres.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-database",
+      "ask": "which tier is that?",
+      "kind": "context",
+      "text": "Beacon: tier 2.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-runtime-list",
+      "ask": "which services run Go?",
+      "kind": "knowledge",
+      "text": "ingest-api, ingest-worker, query-cache, notify-fanout.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-runtime-list",
+      "ask": "how many is that?",
+      "kind": "context",
+      "text": "4.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-ticket",
+      "ask": "open a ticket for the atlas ingest worker",
+      "kind": "tool",
+      "text": "{\"tool\":\"create_ticket\",\"arguments\":{\"title\":\"Atlas\"}}",
+      "calls": [
+        "create_ticket"
+      ],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-ticket",
+      "ask": "who is on call for that?",
+      "kind": "context",
+      "text": "Platform: Ada Ferreira is on call.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-deploy-paraphrase",
+      "ask": "ship it for ledger-api",
+      "kind": "tool",
+      "text": "{\"tool\":\"deploy\",\"arguments\":{\"service\":\"ledger-api\"}}",
+      "calls": [
+        "deploy"
+      ],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-deploy-paraphrase",
+      "ask": "and roll it back",
+      "kind": "context",
+      "text": "{\"tool\":\"rollback\",\"arguments\":{\"service\":\"ledger-api\"}}",
+      "calls": [
+        "rollback"
+      ],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-no-context",
+      "ask": "did the deploy work?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": true
+    },
+    {
+      "thread": "h-policy-owner",
+      "ask": "what does the access review policy say?",
+      "kind": "knowledge",
+      "text": "Access review: Production access is reviewed quarterly. Any access unused for 90 days is revoked automatically..",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-policy-owner",
+      "ask": "who owns that?",
+      "kind": "context",
+      "text": "Access review: Platform.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-second",
+      "ask": "which products are tier 1?",
+      "kind": "knowledge",
+      "text": "Atlas, Delta, Flint.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-second",
+      "ask": "the second one?",
+      "kind": "context",
+      "text": "Delta: owner Payments, language Rust.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-second",
+      "ask": "and its database?",
+      "kind": "context",
+      "text": "Delta: Postgres.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-person-team",
+      "ask": "what is Noa Levi's role?",
+      "kind": "knowledge",
+      "text": "Noa Levi: SRE.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-person-team",
+      "ask": "what team is that?",
+      "kind": "context",
+      "text": "Noa Levi: team is Payments.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h-person-team",
+      "ask": "and who leads it?",
+      "kind": "context",
+      "text": "Payments: Lena Ortiz.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    }
+  ]
+}

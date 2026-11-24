@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T17:39:40.793Z",
+  "generated": "2026-11-24T17:53:21.701Z",
   "library": "0.7.14",
   "threads": {
     "memory": {
@@ -947,5 +947,473 @@
       "suites_at_90": 15,
       "note": "mcp, browser"
     }
-  ]
+  ],
+  "kb": {
+    "generated": "2026-11-24T17:54:37.234Z",
+    "facts": 170,
+    "documents": 170,
+    "threads": 40,
+    "turns": 91,
+    "heldoutTurns": 23,
+    "freshTurns": 14,
+    "systems": [
+      {
+        "id": "templates",
+        "label": "Phrase table",
+        "blurb": "A regex per question shape, a flat lookup, no reasoning over facts.",
+        "fitted": {
+          "passed": 30,
+          "total": 91,
+          "byKind": {
+            "knowledge": {
+              "passed": 21,
+              "total": 24
+            },
+            "context": {
+              "passed": 0,
+              "total": 46
+            },
+            "tool": {
+              "passed": 9,
+              "total": 14
+            },
+            "planning": {
+              "passed": 0,
+              "total": 3
+            },
+            "readability": {
+              "passed": 0,
+              "total": 4
+            }
+          }
+        },
+        "dev": {
+          "passed": 8,
+          "total": 23,
+          "byKind": {
+            "knowledge": {
+              "passed": 5,
+              "total": 8
+            },
+            "context": {
+              "passed": 1,
+              "total": 12
+            },
+            "tool": {
+              "passed": 2,
+              "total": 2
+            },
+            "planning": {
+              "passed": 0,
+              "total": 0
+            },
+            "readability": {
+              "passed": 0,
+              "total": 1
+            }
+          }
+        },
+        "fresh": {
+          "passed": 3,
+          "total": 14,
+          "byKind": {
+            "knowledge": {
+              "passed": 2,
+              "total": 8
+            },
+            "context": {
+              "passed": 0,
+              "total": 4
+            },
+            "tool": {
+              "passed": 0,
+              "total": 0
+            },
+            "planning": {
+              "passed": 1,
+              "total": 1
+            },
+            "readability": {
+              "passed": 0,
+              "total": 1
+            }
+          }
+        },
+        "devFirst": null
+      },
+      {
+        "id": "bm25",
+        "label": "BM25 retrieval",
+        "blurb": "Retrieve the best fact sentence and quote it. No rules, no memory.",
+        "fitted": {
+          "passed": 23,
+          "total": 91,
+          "byKind": {
+            "knowledge": {
+              "passed": 9,
+              "total": 24
+            },
+            "context": {
+              "passed": 5,
+              "total": 46
+            },
+            "tool": {
+              "passed": 9,
+              "total": 14
+            },
+            "planning": {
+              "passed": 0,
+              "total": 3
+            },
+            "readability": {
+              "passed": 0,
+              "total": 4
+            }
+          }
+        },
+        "dev": {
+          "passed": 6,
+          "total": 23,
+          "byKind": {
+            "knowledge": {
+              "passed": 3,
+              "total": 8
+            },
+            "context": {
+              "passed": 1,
+              "total": 12
+            },
+            "tool": {
+              "passed": 2,
+              "total": 2
+            },
+            "planning": {
+              "passed": 0,
+              "total": 0
+            },
+            "readability": {
+              "passed": 0,
+              "total": 1
+            }
+          }
+        },
+        "fresh": {
+          "passed": 6,
+          "total": 14,
+          "byKind": {
+            "knowledge": {
+              "passed": 3,
+              "total": 8
+            },
+            "context": {
+              "passed": 2,
+              "total": 4
+            },
+            "tool": {
+              "passed": 0,
+              "total": 0
+            },
+            "planning": {
+              "passed": 1,
+              "total": 1
+            },
+            "readability": {
+              "passed": 0,
+              "total": 1
+            }
+          }
+        },
+        "devFirst": null
+      },
+      {
+        "id": "rules",
+        "label": "Rules",
+        "blurb": "Join the question to the fact table by entity and attribute.",
+        "fitted": {
+          "passed": 33,
+          "total": 91,
+          "byKind": {
+            "knowledge": {
+              "passed": 24,
+              "total": 24
+            },
+            "context": {
+              "passed": 0,
+              "total": 46
+            },
+            "tool": {
+              "passed": 9,
+              "total": 14
+            },
+            "planning": {
+              "passed": 0,
+              "total": 3
+            },
+            "readability": {
+              "passed": 0,
+              "total": 4
+            }
+          }
+        },
+        "dev": {
+          "passed": 11,
+          "total": 23,
+          "byKind": {
+            "knowledge": {
+              "passed": 8,
+              "total": 8
+            },
+            "context": {
+              "passed": 1,
+              "total": 12
+            },
+            "tool": {
+              "passed": 2,
+              "total": 2
+            },
+            "planning": {
+              "passed": 0,
+              "total": 0
+            },
+            "readability": {
+              "passed": 0,
+              "total": 1
+            }
+          }
+        },
+        "fresh": {
+          "passed": 3,
+          "total": 14,
+          "byKind": {
+            "knowledge": {
+              "passed": 2,
+              "total": 8
+            },
+            "context": {
+              "passed": 0,
+              "total": 4
+            },
+            "tool": {
+              "passed": 0,
+              "total": 0
+            },
+            "planning": {
+              "passed": 1,
+              "total": 1
+            },
+            "readability": {
+              "passed": 0,
+              "total": 1
+            }
+          }
+        },
+        "devFirst": null
+      },
+      {
+        "id": "rules-memory",
+        "label": "Rules + session",
+        "blurb": "Rules plus a session that carries the subject, the list and the last action.",
+        "fitted": {
+          "passed": 91,
+          "total": 91,
+          "byKind": {
+            "knowledge": {
+              "passed": 24,
+              "total": 24
+            },
+            "context": {
+              "passed": 46,
+              "total": 46
+            },
+            "tool": {
+              "passed": 14,
+              "total": 14
+            },
+            "planning": {
+              "passed": 3,
+              "total": 3
+            },
+            "readability": {
+              "passed": 4,
+              "total": 4
+            }
+          }
+        },
+        "dev": {
+          "passed": 22,
+          "total": 23,
+          "byKind": {
+            "knowledge": {
+              "passed": 8,
+              "total": 8
+            },
+            "context": {
+              "passed": 11,
+              "total": 12
+            },
+            "tool": {
+              "passed": 2,
+              "total": 2
+            },
+            "planning": {
+              "passed": 0,
+              "total": 0
+            },
+            "readability": {
+              "passed": 1,
+              "total": 1
+            }
+          }
+        },
+        "fresh": {
+          "passed": 3,
+          "total": 14,
+          "byKind": {
+            "knowledge": {
+              "passed": 2,
+              "total": 8
+            },
+            "context": {
+              "passed": 0,
+              "total": 4
+            },
+            "tool": {
+              "passed": 0,
+              "total": 0
+            },
+            "planning": {
+              "passed": 1,
+              "total": 1
+            },
+            "readability": {
+              "passed": 0,
+              "total": 1
+            }
+          }
+        },
+        "devFirst": null
+      },
+      {
+        "id": "hybrid",
+        "label": "Rules + session + retrieval",
+        "blurb": "Rules + session, with retrieval as the fallback when the rules decline.",
+        "fitted": {
+          "passed": 91,
+          "total": 91,
+          "byKind": {
+            "knowledge": {
+              "passed": 24,
+              "total": 24
+            },
+            "context": {
+              "passed": 46,
+              "total": 46
+            },
+            "tool": {
+              "passed": 14,
+              "total": 14
+            },
+            "planning": {
+              "passed": 3,
+              "total": 3
+            },
+            "readability": {
+              "passed": 4,
+              "total": 4
+            }
+          }
+        },
+        "dev": {
+          "passed": 21,
+          "total": 23,
+          "byKind": {
+            "knowledge": {
+              "passed": 7,
+              "total": 8
+            },
+            "context": {
+              "passed": 11,
+              "total": 12
+            },
+            "tool": {
+              "passed": 2,
+              "total": 2
+            },
+            "planning": {
+              "passed": 0,
+              "total": 0
+            },
+            "readability": {
+              "passed": 1,
+              "total": 1
+            }
+          }
+        },
+        "fresh": {
+          "passed": 4,
+          "total": 14,
+          "byKind": {
+            "knowledge": {
+              "passed": 3,
+              "total": 8
+            },
+            "context": {
+              "passed": 0,
+              "total": 4
+            },
+            "tool": {
+              "passed": 0,
+              "total": 0
+            },
+            "planning": {
+              "passed": 1,
+              "total": 1
+            },
+            "readability": {
+              "passed": 0,
+              "total": 1
+            }
+          }
+        },
+        "devFirst": 15
+      }
+    ],
+    "freshMiss": {
+      "ask": "which product has the highest SLA?",
+      "text": "I'm not sure about that."
+    },
+    "judge": {
+      "model": "minimax-m3.1-flash",
+      "system": "hybrid",
+      "turns": 14,
+      "answered": 4,
+      "readability": 4.6,
+      "baseline": {
+        "system": "templates",
+        "answered": 2,
+        "turns": 14,
+        "readability": 4.9
+      },
+      "examples": [
+        {
+          "ask": "who is responsible for Cinder?",
+          "answered": 1,
+          "readability": 4,
+          "why": "It identifies Data as Cinder’s responsible owner; the phrasing is clear."
+        },
+        {
+          "ask": "what language is it in?",
+          "answered": 0,
+          "readability": 5,
+          "why": "It did not identify the language; no tool was needed."
+        },
+        {
+          "ask": "what language is Gauge written in?",
+          "answered": 1,
+          "readability": 5,
+          "why": "Gauge is written in Go, not Python."
+        }
+      ]
+    }
+  }
 }

@@ -1,0 +1,285 @@
+{
+  "note": "Held out: written after the systems were tuned, with paraphrases and one question whose answer is not in the KB. If a system scores 100% here too, the suite is measuring itself.",
+  "threads": [
+    {
+      "id": "h-owner-paraphrase",
+      "title": "Owner, asked two other ways",
+      "turns": [
+        {
+          "ask": "whose team owns Beacon?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Growth"
+            ]
+          }
+        },
+        {
+          "ask": "and what does it run on?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Postgres"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "h-uptime",
+      "title": "SLA by another name",
+      "turns": [
+        {
+          "ask": "what is the uptime on Delta?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "99.99%"
+            ]
+          }
+        },
+        {
+          "ask": "and its region?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "us-west"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "h-describe",
+      "title": "Describe, not summarise",
+      "turns": [
+        {
+          "ask": "tell me about Ember",
+          "kind": "readability",
+          "expect": {
+            "include": [
+              "Platform",
+              "Go"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "h-missing",
+      "title": "A question the handbook cannot answer",
+      "turns": [
+        {
+          "ask": "who reports to Maya Chen?",
+          "kind": "knowledge",
+          "expect": {
+            "exclude": [
+              "Atlas",
+              "Beacon"
+            ],
+            "decline": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "h-database",
+      "title": "Database behind a product, then its tier",
+      "turns": [
+        {
+          "ask": "what database is behind Beacon?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Postgres"
+            ]
+          }
+        },
+        {
+          "ask": "which tier is that?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "tier 2"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "h-runtime-list",
+      "title": "Services by runtime",
+      "turns": [
+        {
+          "ask": "which services run Go?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "ingest-api",
+              "notify-fanout"
+            ]
+          }
+        },
+        {
+          "ask": "how many is that?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "4"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "h-ticket",
+      "title": "A ticket with a target",
+      "turns": [
+        {
+          "ask": "open a ticket for the atlas ingest worker",
+          "kind": "tool",
+          "expect": {
+            "tool": "create_ticket"
+          }
+        },
+        {
+          "ask": "who is on call for that?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Ada Ferreira"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "h-deploy-paraphrase",
+      "title": "Ship it",
+      "turns": [
+        {
+          "ask": "ship it for ledger-api",
+          "kind": "tool",
+          "expect": {
+            "tool": "deploy"
+          }
+        },
+        {
+          "ask": "and roll it back",
+          "kind": "context",
+          "expect": {
+            "tool": "rollback"
+          }
+        }
+      ]
+    },
+    {
+      "id": "h-no-context",
+      "title": "A follow-up with nothing in play",
+      "turns": [
+        {
+          "ask": "did the deploy work?",
+          "kind": "context",
+          "expect": {
+            "exclude": [
+              "deployed",
+              "started"
+            ],
+            "decline": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "h-policy-owner",
+      "title": "Policy text, then its owner",
+      "turns": [
+        {
+          "ask": "what does the access review policy say?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Production access"
+            ]
+          }
+        },
+        {
+          "ask": "who owns that?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Platform"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "h-second",
+      "title": "Pick from a list by position",
+      "turns": [
+        {
+          "ask": "which products are tier 1?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Atlas",
+              "Delta"
+            ]
+          }
+        },
+        {
+          "ask": "the second one?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Delta"
+            ]
+          }
+        },
+        {
+          "ask": "and its database?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Postgres"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "h-person-team",
+      "title": "Person, team, and the lead above them",
+      "turns": [
+        {
+          "ask": "what is Noa Levi's role?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "SRE"
+            ]
+          }
+        },
+        {
+          "ask": "what team is that?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Payments"
+            ]
+          }
+        },
+        {
+          "ask": "and who leads it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Lena Ortiz"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

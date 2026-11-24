@@ -1,0 +1,235 @@
+{
+  "system": "templates",
+  "passed": 3,
+  "total": 14,
+  "byKind": {
+    "knowledge": {
+      "passed": 2,
+      "total": 8
+    },
+    "context": {
+      "passed": 0,
+      "total": 4
+    },
+    "tool": {
+      "passed": 0,
+      "total": 0
+    },
+    "planning": {
+      "passed": 1,
+      "total": 1
+    },
+    "readability": {
+      "passed": 0,
+      "total": 1
+    }
+  },
+  "turns": [
+    {
+      "thread": "h2-responsible",
+      "ask": "who is responsible for Cinder?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Data"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h2-responsible",
+      "ask": "what language is it in?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Python"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h2-language",
+      "ask": "what language is Gauge written in?",
+      "kind": "knowledge",
+      "text": "Gauge: Python.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h2-highest",
+      "ask": "which product has the highest SLA?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Delta"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h2-team-owner",
+      "ask": "tell me the team that owns Delta",
+      "kind": "knowledge",
+      "text": "Delta: Payments.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h2-team-owner",
+      "ask": "and their lead?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Lena Ortiz"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h2-two-tools",
+      "ask": "page Search's oncall and file a ticket",
+      "kind": "planning",
+      "text": "{\"tool\":\"page_oncall\",\"arguments\":{\"team\":\"Search\"}}",
+      "calls": [
+        "page_oncall"
+      ],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h2-sev1",
+      "ask": "what happens during a sev 1?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "paged"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h2-retention",
+      "ask": "how long are audit logs kept?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "400"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h2-retention",
+      "ask": "and customer records?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "30"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h2-services",
+      "ask": "which services belong to Beacon?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "signup-web"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h2-person",
+      "ask": "who is Ada Ferreira?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "SRE"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h2-person",
+      "ask": "which team?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Platform"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "h2-summary",
+      "ask": "summarise the payments stack in one sentence",
+      "kind": "readability",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Payments"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    }
+  ]
+}

@@ -1,0 +1,1357 @@
+{
+  "system": "bm25",
+  "passed": 23,
+  "total": 91,
+  "byKind": {
+    "knowledge": {
+      "passed": 9,
+      "total": 24
+    },
+    "context": {
+      "passed": 5,
+      "total": 46
+    },
+    "tool": {
+      "passed": 9,
+      "total": 14
+    },
+    "planning": {
+      "passed": 0,
+      "total": 3
+    },
+    "readability": {
+      "passed": 0,
+      "total": 4
+    }
+  },
+  "turns": [
+    {
+      "thread": "product-atlas",
+      "ask": "who owns Atlas?",
+      "kind": "knowledge",
+      "text": "Atlas: owner is Platform.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-atlas",
+      "ask": "and what is it written in?",
+      "kind": "context",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Go"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-atlas",
+      "ask": "what is its SLA?",
+      "kind": "context",
+      "text": "Beacon: sla is 99.9%.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "99.95%"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-beacon",
+      "ask": "who owns Beacon?",
+      "kind": "knowledge",
+      "text": "Beacon: owner is Growth.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-beacon",
+      "ask": "and what is it written in?",
+      "kind": "context",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "TypeScript"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-beacon",
+      "ask": "what is its SLA?",
+      "kind": "context",
+      "text": "Beacon: sla is 99.9%.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-cinder",
+      "ask": "who owns Cinder?",
+      "kind": "knowledge",
+      "text": "Cinder: owner is Data.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-cinder",
+      "ask": "and what is it written in?",
+      "kind": "context",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Python"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-cinder",
+      "ask": "what is its SLA?",
+      "kind": "context",
+      "text": "Beacon: sla is 99.9%.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "99.5%"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-delta",
+      "ask": "who owns Delta?",
+      "kind": "knowledge",
+      "text": "Delta: owner is Payments.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-delta",
+      "ask": "and what is it written in?",
+      "kind": "context",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Rust"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-delta",
+      "ask": "what is its SLA?",
+      "kind": "context",
+      "text": "Beacon: sla is 99.9%.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "99.99%"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-ember",
+      "ask": "who owns Ember?",
+      "kind": "knowledge",
+      "text": "Ember: owner is Platform.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-ember",
+      "ask": "and what is it written in?",
+      "kind": "context",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Go"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-ember",
+      "ask": "what is its SLA?",
+      "kind": "context",
+      "text": "Beacon: sla is 99.9%.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-flint",
+      "ask": "who owns Flint?",
+      "kind": "knowledge",
+      "text": "Flint: owner is Search.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-flint",
+      "ask": "and what is it written in?",
+      "kind": "context",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Java"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-flint",
+      "ask": "what is its SLA?",
+      "kind": "context",
+      "text": "Beacon: sla is 99.9%.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-gauge",
+      "ask": "who owns Gauge?",
+      "kind": "knowledge",
+      "text": "Gauge: owner is Data.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-gauge",
+      "ask": "and what is it written in?",
+      "kind": "context",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Python"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-gauge",
+      "ask": "what is its SLA?",
+      "kind": "context",
+      "text": "Beacon: sla is 99.9%.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "99.0%"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-harbor",
+      "ask": "who owns Harbor?",
+      "kind": "knowledge",
+      "text": "Harbor: owner is Growth.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-harbor",
+      "ask": "and what is it written in?",
+      "kind": "context",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "TypeScript"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "product-harbor",
+      "ask": "what is its SLA?",
+      "kind": "context",
+      "text": "Beacon: sla is 99.9%.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "99.5%"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "database-list",
+      "ask": "which products use Postgres?",
+      "kind": "knowledge",
+      "text": "Atlas: database is Postgres.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Beacon",
+        "Delta",
+        "Harbor"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "database-list",
+      "ask": "which of those are tier 1?",
+      "kind": "context",
+      "text": "Data retention: text is Application logs are kept 30 days. Audit logs are kept 400 days. Customer records are deleted within 30 days of a verified request..",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Atlas",
+        "Delta"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "database-list",
+      "ask": "the first one?",
+      "kind": "context",
+      "text": "Deploy freeze: text is No production deploys during the last two business days of the quarter, except for Sev 1 fixes approved by the owning team lead..",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Atlas"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "team-oncall",
+      "ask": "who is on call for Search?",
+      "kind": "knowledge",
+      "text": "Search: channel is #search.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Ravi Shah"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "team-oncall",
+      "ask": "who leads that team?",
+      "kind": "context",
+      "text": "Maya Chen: team is Platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Tom Haddad"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "team-oncall",
+      "ask": "how big is it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "4"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "team-platform",
+      "ask": "who leads Platform?",
+      "kind": "knowledge",
+      "text": "Platform: channel is #platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Maya Chen"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "team-platform",
+      "ask": "and which channel?",
+      "kind": "context",
+      "text": "Platform: channel is #platform.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "team-growth",
+      "ask": "who leads Growth?",
+      "kind": "knowledge",
+      "text": "Growth: channel is #growth.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Ivan Okafor"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "team-growth",
+      "ask": "and which channel?",
+      "kind": "context",
+      "text": "Platform: channel is #platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "#growth"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "team-data",
+      "ask": "who leads Data?",
+      "kind": "knowledge",
+      "text": "Data: channel is #data.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Priya Raman"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "team-data",
+      "ask": "and which channel?",
+      "kind": "context",
+      "text": "Platform: channel is #platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "#data"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "team-payments",
+      "ask": "who leads Payments?",
+      "kind": "knowledge",
+      "text": "Payments: channel is #payments.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Lena Ortiz"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "team-payments",
+      "ask": "and which channel?",
+      "kind": "context",
+      "text": "Platform: channel is #platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "#payments"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "team-search",
+      "ask": "who leads Search?",
+      "kind": "knowledge",
+      "text": "Search: channel is #search.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Tom Haddad"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "team-search",
+      "ask": "and which channel?",
+      "kind": "context",
+      "text": "Platform: channel is #platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "#search"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-maya",
+      "ask": "what does Maya Chen do?",
+      "kind": "knowledge",
+      "text": "Platform: lead is Maya Chen.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Staff engineer"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-maya",
+      "ask": "which team?",
+      "kind": "context",
+      "text": "Maya Chen: team is Platform.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-maya",
+      "ask": "who leads it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Maya Chen"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-ivan",
+      "ask": "what does Ivan Okafor do?",
+      "kind": "knowledge",
+      "text": "Growth: lead is Ivan Okafor.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Engineering manager"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-ivan",
+      "ask": "which team?",
+      "kind": "context",
+      "text": "Maya Chen: team is Platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "growth"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-ivan",
+      "ask": "who leads it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Ivan Okafor"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-priya",
+      "ask": "what does Priya Raman do?",
+      "kind": "knowledge",
+      "text": "Data: lead is Priya Raman.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Staff engineer"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-priya",
+      "ask": "which team?",
+      "kind": "context",
+      "text": "Maya Chen: team is Platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "data"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-priya",
+      "ask": "who leads it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Priya Raman"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-lena",
+      "ask": "what does Lena Ortiz do?",
+      "kind": "knowledge",
+      "text": "Payments: lead is Lena Ortiz.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Principal engineer"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-lena",
+      "ask": "which team?",
+      "kind": "context",
+      "text": "Maya Chen: team is Platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "payments"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-lena",
+      "ask": "who leads it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Lena Ortiz"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-tom",
+      "ask": "what does Tom Haddad do?",
+      "kind": "knowledge",
+      "text": "Search: lead is Tom Haddad.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Senior engineer"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-tom",
+      "ask": "which team?",
+      "kind": "context",
+      "text": "Maya Chen: team is Platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "search"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "person-tom",
+      "ask": "who leads it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Tom Haddad"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "page-platform",
+      "ask": "page the oncall for Platform",
+      "kind": "tool",
+      "text": "{\"tool\":\"page_oncall\",\"arguments\":{\"team\":\"Platform\"}}",
+      "calls": [
+        "page_oncall"
+      ],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "page-platform",
+      "ask": "and open a ticket for it",
+      "kind": "tool",
+      "text": "Cost guardrail: text is Any service above 2,000 dollars a month in compute needs a named owner and a monthly review..",
+      "calls": [],
+      "pass": false,
+      "missing": [],
+      "leaked": [],
+      "toolOk": false,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "page-growth",
+      "ask": "page the oncall for Growth",
+      "kind": "tool",
+      "text": "{\"tool\":\"page_oncall\",\"arguments\":{\"team\":\"Growth\"}}",
+      "calls": [
+        "page_oncall"
+      ],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "page-growth",
+      "ask": "and open a ticket for it",
+      "kind": "tool",
+      "text": "Cost guardrail: text is Any service above 2,000 dollars a month in compute needs a named owner and a monthly review..",
+      "calls": [],
+      "pass": false,
+      "missing": [],
+      "leaked": [],
+      "toolOk": false,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "page-data",
+      "ask": "page the oncall for Data",
+      "kind": "tool",
+      "text": "{\"tool\":\"page_oncall\",\"arguments\":{\"team\":\"Data\"}}",
+      "calls": [
+        "page_oncall"
+      ],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "page-data",
+      "ask": "and open a ticket for it",
+      "kind": "tool",
+      "text": "Cost guardrail: text is Any service above 2,000 dollars a month in compute needs a named owner and a monthly review..",
+      "calls": [],
+      "pass": false,
+      "missing": [],
+      "leaked": [],
+      "toolOk": false,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "page-payments",
+      "ask": "page the oncall for Payments",
+      "kind": "tool",
+      "text": "{\"tool\":\"page_oncall\",\"arguments\":{\"team\":\"Payments\"}}",
+      "calls": [
+        "page_oncall"
+      ],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "page-payments",
+      "ask": "and open a ticket for it",
+      "kind": "tool",
+      "text": "Cost guardrail: text is Any service above 2,000 dollars a month in compute needs a named owner and a monthly review..",
+      "calls": [],
+      "pass": false,
+      "missing": [],
+      "leaked": [],
+      "toolOk": false,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "page-search",
+      "ask": "page the oncall for Search",
+      "kind": "tool",
+      "text": "{\"tool\":\"page_oncall\",\"arguments\":{\"team\":\"Search\"}}",
+      "calls": [
+        "page_oncall"
+      ],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "page-search",
+      "ask": "and open a ticket for it",
+      "kind": "tool",
+      "text": "Cost guardrail: text is Any service above 2,000 dollars a month in compute needs a named owner and a monthly review..",
+      "calls": [],
+      "pass": false,
+      "missing": [],
+      "leaked": [],
+      "toolOk": false,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "deploy-atlas",
+      "ask": "deploy Atlas",
+      "kind": "tool",
+      "text": "{\"tool\":\"deploy\",\"arguments\":{\"service\":\"Atlas\"}}",
+      "calls": [
+        "deploy"
+      ],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "deploy-atlas",
+      "ask": "roll it back",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [],
+      "leaked": [],
+      "toolOk": false,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "deploy-beacon",
+      "ask": "deploy Beacon",
+      "kind": "tool",
+      "text": "{\"tool\":\"deploy\",\"arguments\":{\"service\":\"Beacon\"}}",
+      "calls": [
+        "deploy"
+      ],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "deploy-beacon",
+      "ask": "roll it back",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [],
+      "leaked": [],
+      "toolOk": false,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "deploy-cinder",
+      "ask": "deploy Cinder",
+      "kind": "tool",
+      "text": "{\"tool\":\"deploy\",\"arguments\":{\"service\":\"Cinder\"}}",
+      "calls": [
+        "deploy"
+      ],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "deploy-cinder",
+      "ask": "roll it back",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [],
+      "leaked": [],
+      "toolOk": false,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "deploy-delta",
+      "ask": "deploy Delta",
+      "kind": "tool",
+      "text": "{\"tool\":\"deploy\",\"arguments\":{\"service\":\"Delta\"}}",
+      "calls": [
+        "deploy"
+      ],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "deploy-delta",
+      "ask": "roll it back",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [],
+      "leaked": [],
+      "toolOk": false,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "plan-atlas",
+      "ask": "check the SLA for Atlas and page its owner",
+      "kind": "planning",
+      "text": "{\"tool\":\"page_oncall\",\"arguments\":{\"team\":\"Atlas\"}}",
+      "calls": [
+        "page_oncall"
+      ],
+      "pass": false,
+      "missing": [
+        "99.95%"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "plan-atlas",
+      "ask": "summarise what we just did",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "page"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "plan-beacon",
+      "ask": "check the SLA for Beacon and page its owner",
+      "kind": "planning",
+      "text": "{\"tool\":\"page_oncall\",\"arguments\":{\"team\":\"Beacon\"}}",
+      "calls": [
+        "page_oncall"
+      ],
+      "pass": false,
+      "missing": [
+        "99.9%"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "plan-beacon",
+      "ask": "summarise what we just did",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "page"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "plan-cinder",
+      "ask": "check the SLA for Cinder and page its owner",
+      "kind": "planning",
+      "text": "{\"tool\":\"page_oncall\",\"arguments\":{\"team\":\"Cinder\"}}",
+      "calls": [
+        "page_oncall"
+      ],
+      "pass": false,
+      "missing": [
+        "99.5%"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "plan-cinder",
+      "ask": "summarise what we just did",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "page"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "read-atlas",
+      "ask": "summarise Atlas",
+      "kind": "readability",
+      "text": "Atlas: owner is Platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Go"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "read-beacon",
+      "ask": "summarise Beacon",
+      "kind": "readability",
+      "text": "Beacon: owner is Growth.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "TypeScript"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "read-cinder",
+      "ask": "summarise Cinder",
+      "kind": "readability",
+      "text": "Cinder: owner is Data.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Python"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "read-delta",
+      "ask": "summarise Delta",
+      "kind": "readability",
+      "text": "Delta: owner is Payments.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Rust"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "policy-p1",
+      "ask": "what is the Incident severity policy?",
+      "kind": "knowledge",
+      "text": "Incident severity: owner is Platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Sev 1 is"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "policy-p1",
+      "ask": "who owns it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Platform"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "policy-p2",
+      "ask": "what is the Deploy freeze policy?",
+      "kind": "knowledge",
+      "text": "Deploy freeze: owner is Platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "No production deploys"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "policy-p2",
+      "ask": "who owns it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Platform"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "policy-p3",
+      "ask": "what is the Data retention policy?",
+      "kind": "knowledge",
+      "text": "Data retention: owner is Data.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Application logs are"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "policy-p3",
+      "ask": "who owns it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Data"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "policy-p4",
+      "ask": "what is the Oncall handoff policy?",
+      "kind": "knowledge",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "policy-p4",
+      "ask": "who owns it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Platform"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    }
+  ]
+}

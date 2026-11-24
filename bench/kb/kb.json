@@ -1,0 +1,2585 @@
+{
+  "note": "Synthetic operations handbook for bench/kb. Every entity is invented.",
+  "products": [
+    {
+      "id": "atlas",
+      "name": "Atlas",
+      "owner": "Platform",
+      "language": "Go",
+      "sla": "99.95%",
+      "database": "Postgres",
+      "region": "us-east",
+      "tier": 1
+    },
+    {
+      "id": "beacon",
+      "name": "Beacon",
+      "owner": "Growth",
+      "language": "TypeScript",
+      "sla": "99.9%",
+      "database": "Postgres",
+      "region": "us-east",
+      "tier": 2
+    },
+    {
+      "id": "cinder",
+      "name": "Cinder",
+      "owner": "Data",
+      "language": "Python",
+      "sla": "99.5%",
+      "database": "ClickHouse",
+      "region": "eu-west",
+      "tier": 2
+    },
+    {
+      "id": "delta",
+      "name": "Delta",
+      "owner": "Payments",
+      "language": "Rust",
+      "sla": "99.99%",
+      "database": "Postgres",
+      "region": "us-west",
+      "tier": 1
+    },
+    {
+      "id": "ember",
+      "name": "Ember",
+      "owner": "Platform",
+      "language": "Go",
+      "sla": "99.9%",
+      "database": "Redis",
+      "region": "us-east",
+      "tier": 2
+    },
+    {
+      "id": "flint",
+      "name": "Flint",
+      "owner": "Search",
+      "language": "Java",
+      "sla": "99.9%",
+      "database": "Elasticsearch",
+      "region": "us-west",
+      "tier": 1
+    },
+    {
+      "id": "gauge",
+      "name": "Gauge",
+      "owner": "Data",
+      "language": "Python",
+      "sla": "99.0%",
+      "database": "ClickHouse",
+      "region": "eu-west",
+      "tier": 3
+    },
+    {
+      "id": "harbor",
+      "name": "Harbor",
+      "owner": "Growth",
+      "language": "TypeScript",
+      "sla": "99.5%",
+      "database": "Postgres",
+      "region": "ap-south",
+      "tier": 3
+    }
+  ],
+  "services": [
+    {
+      "id": "ingest-api",
+      "product": "atlas",
+      "runtime": "Go",
+      "replicas": 12,
+      "oncall": "Platform"
+    },
+    {
+      "id": "ingest-worker",
+      "product": "atlas",
+      "runtime": "Go",
+      "replicas": 30,
+      "oncall": "Platform"
+    },
+    {
+      "id": "signup-web",
+      "product": "beacon",
+      "runtime": "TypeScript",
+      "replicas": 6,
+      "oncall": "Growth"
+    },
+    {
+      "id": "experiment-api",
+      "product": "beacon",
+      "runtime": "TypeScript",
+      "replicas": 4,
+      "oncall": "Growth"
+    },
+    {
+      "id": "pipeline-runner",
+      "product": "cinder",
+      "runtime": "Python",
+      "replicas": 8,
+      "oncall": "Data"
+    },
+    {
+      "id": "query-cache",
+      "product": "cinder",
+      "runtime": "Go",
+      "replicas": 3,
+      "oncall": "Data"
+    },
+    {
+      "id": "ledger-api",
+      "product": "delta",
+      "runtime": "Rust",
+      "replicas": 10,
+      "oncall": "Payments"
+    },
+    {
+      "id": "settlement-worker",
+      "product": "delta",
+      "runtime": "Rust",
+      "replicas": 5,
+      "oncall": "Payments"
+    },
+    {
+      "id": "notify-fanout",
+      "product": "ember",
+      "runtime": "Go",
+      "replicas": 9,
+      "oncall": "Platform"
+    },
+    {
+      "id": "search-index",
+      "product": "flint",
+      "runtime": "Java",
+      "replicas": 14,
+      "oncall": "Search"
+    },
+    {
+      "id": "search-suggest",
+      "product": "flint",
+      "runtime": "Java",
+      "replicas": 6,
+      "oncall": "Search"
+    },
+    {
+      "id": "metrics-rollup",
+      "product": "gauge",
+      "runtime": "Python",
+      "replicas": 4,
+      "oncall": "Data"
+    },
+    {
+      "id": "marketing-site",
+      "product": "harbor",
+      "runtime": "TypeScript",
+      "replicas": 2,
+      "oncall": "Growth"
+    },
+    {
+      "id": "docs-portal",
+      "product": "harbor",
+      "runtime": "TypeScript",
+      "replicas": 2,
+      "oncall": "Growth"
+    }
+  ],
+  "teams": [
+    {
+      "id": "platform",
+      "name": "Platform",
+      "lead": "Maya Chen",
+      "headcount": 9,
+      "channel": "#platform"
+    },
+    {
+      "id": "growth",
+      "name": "Growth",
+      "lead": "Ivan Okafor",
+      "headcount": 6,
+      "channel": "#growth"
+    },
+    {
+      "id": "data",
+      "name": "Data",
+      "lead": "Priya Raman",
+      "headcount": 7,
+      "channel": "#data"
+    },
+    {
+      "id": "payments",
+      "name": "Payments",
+      "lead": "Lena Ortiz",
+      "headcount": 5,
+      "channel": "#payments"
+    },
+    {
+      "id": "search",
+      "name": "Search",
+      "lead": "Tom Haddad",
+      "headcount": 4,
+      "channel": "#search"
+    }
+  ],
+  "people": [
+    {
+      "id": "maya",
+      "name": "Maya Chen",
+      "team": "platform",
+      "role": "Staff engineer",
+      "timezone": "PT"
+    },
+    {
+      "id": "ivan",
+      "name": "Ivan Okafor",
+      "team": "growth",
+      "role": "Engineering manager",
+      "timezone": "ET"
+    },
+    {
+      "id": "priya",
+      "name": "Priya Raman",
+      "team": "data",
+      "role": "Staff engineer",
+      "timezone": "IST"
+    },
+    {
+      "id": "lena",
+      "name": "Lena Ortiz",
+      "team": "payments",
+      "role": "Principal engineer",
+      "timezone": "CET"
+    },
+    {
+      "id": "tom",
+      "name": "Tom Haddad",
+      "team": "search",
+      "role": "Senior engineer",
+      "timezone": "ET"
+    },
+    {
+      "id": "ada",
+      "name": "Ada Ferreira",
+      "team": "platform",
+      "role": "SRE",
+      "timezone": "PT"
+    },
+    {
+      "id": "ben",
+      "name": "Ben Yamada",
+      "team": "growth",
+      "role": "Product engineer",
+      "timezone": "PT"
+    },
+    {
+      "id": "cy",
+      "name": "Cy Mensah",
+      "team": "data",
+      "role": "Analytics engineer",
+      "timezone": "ET"
+    },
+    {
+      "id": "noa",
+      "name": "Noa Levi",
+      "team": "payments",
+      "role": "SRE",
+      "timezone": "CET"
+    },
+    {
+      "id": "ravi",
+      "name": "Ravi Shah",
+      "team": "search",
+      "role": "Search engineer",
+      "timezone": "IST"
+    }
+  ],
+  "oncall": [
+    {
+      "team": "platform",
+      "person": "Ada Ferreira",
+      "week": "2026-W48"
+    },
+    {
+      "team": "growth",
+      "person": "Ben Yamada",
+      "week": "2026-W48"
+    },
+    {
+      "team": "data",
+      "person": "Cy Mensah",
+      "week": "2026-W48"
+    },
+    {
+      "team": "payments",
+      "person": "Noa Levi",
+      "week": "2026-W48"
+    },
+    {
+      "team": "search",
+      "person": "Ravi Shah",
+      "week": "2026-W48"
+    }
+  ],
+  "policies": [
+    {
+      "id": "p1",
+      "name": "Incident severity",
+      "text": "Sev 1 is customer-visible downtime, paged immediately to the owning team. Sev 2 is degraded service, acknowledged within 30 minutes. Sev 3 is cosmetic and handled in business hours.",
+      "owner": "Platform"
+    },
+    {
+      "id": "p2",
+      "name": "Deploy freeze",
+      "text": "No production deploys during the last two business days of the quarter, except for Sev 1 fixes approved by the owning team lead.",
+      "owner": "Platform"
+    },
+    {
+      "id": "p3",
+      "name": "Data retention",
+      "text": "Application logs are kept 30 days. Audit logs are kept 400 days. Customer records are deleted within 30 days of a verified request.",
+      "owner": "Data"
+    },
+    {
+      "id": "p4",
+      "name": "Oncall handoff",
+      "text": "Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel.",
+      "owner": "Platform"
+    },
+    {
+      "id": "p5",
+      "name": "Access review",
+      "text": "Production access is reviewed quarterly. Any access unused for 90 days is revoked automatically.",
+      "owner": "Platform"
+    },
+    {
+      "id": "p6",
+      "name": "Cost guardrail",
+      "text": "Any service above 2,000 dollars a month in compute needs a named owner and a monthly review.",
+      "owner": "Data"
+    },
+    {
+      "id": "p7",
+      "name": "Search relevance",
+      "text": "Every relevance change ships behind a traffic split of at least 5%, held for 72 hours before full rollout.",
+      "owner": "Search"
+    },
+    {
+      "id": "p8",
+      "name": "Payment retries",
+      "text": "Failed charges retry three times over 48 hours with exponential backoff, then settle to manual review.",
+      "owner": "Payments"
+    }
+  ],
+  "facts": [
+    [
+      "product",
+      "Atlas",
+      "owner",
+      "Platform"
+    ],
+    [
+      "product",
+      "Atlas",
+      "language",
+      "Go"
+    ],
+    [
+      "product",
+      "Atlas",
+      "sla",
+      "99.95%"
+    ],
+    [
+      "product",
+      "Atlas",
+      "database",
+      "Postgres"
+    ],
+    [
+      "product",
+      "Atlas",
+      "region",
+      "us-east"
+    ],
+    [
+      "product",
+      "Atlas",
+      "tier",
+      "tier 1"
+    ],
+    [
+      "product",
+      "Beacon",
+      "owner",
+      "Growth"
+    ],
+    [
+      "product",
+      "Beacon",
+      "language",
+      "TypeScript"
+    ],
+    [
+      "product",
+      "Beacon",
+      "sla",
+      "99.9%"
+    ],
+    [
+      "product",
+      "Beacon",
+      "database",
+      "Postgres"
+    ],
+    [
+      "product",
+      "Beacon",
+      "region",
+      "us-east"
+    ],
+    [
+      "product",
+      "Beacon",
+      "tier",
+      "tier 2"
+    ],
+    [
+      "product",
+      "Cinder",
+      "owner",
+      "Data"
+    ],
+    [
+      "product",
+      "Cinder",
+      "language",
+      "Python"
+    ],
+    [
+      "product",
+      "Cinder",
+      "sla",
+      "99.5%"
+    ],
+    [
+      "product",
+      "Cinder",
+      "database",
+      "ClickHouse"
+    ],
+    [
+      "product",
+      "Cinder",
+      "region",
+      "eu-west"
+    ],
+    [
+      "product",
+      "Cinder",
+      "tier",
+      "tier 2"
+    ],
+    [
+      "product",
+      "Delta",
+      "owner",
+      "Payments"
+    ],
+    [
+      "product",
+      "Delta",
+      "language",
+      "Rust"
+    ],
+    [
+      "product",
+      "Delta",
+      "sla",
+      "99.99%"
+    ],
+    [
+      "product",
+      "Delta",
+      "database",
+      "Postgres"
+    ],
+    [
+      "product",
+      "Delta",
+      "region",
+      "us-west"
+    ],
+    [
+      "product",
+      "Delta",
+      "tier",
+      "tier 1"
+    ],
+    [
+      "product",
+      "Ember",
+      "owner",
+      "Platform"
+    ],
+    [
+      "product",
+      "Ember",
+      "language",
+      "Go"
+    ],
+    [
+      "product",
+      "Ember",
+      "sla",
+      "99.9%"
+    ],
+    [
+      "product",
+      "Ember",
+      "database",
+      "Redis"
+    ],
+    [
+      "product",
+      "Ember",
+      "region",
+      "us-east"
+    ],
+    [
+      "product",
+      "Ember",
+      "tier",
+      "tier 2"
+    ],
+    [
+      "product",
+      "Flint",
+      "owner",
+      "Search"
+    ],
+    [
+      "product",
+      "Flint",
+      "language",
+      "Java"
+    ],
+    [
+      "product",
+      "Flint",
+      "sla",
+      "99.9%"
+    ],
+    [
+      "product",
+      "Flint",
+      "database",
+      "Elasticsearch"
+    ],
+    [
+      "product",
+      "Flint",
+      "region",
+      "us-west"
+    ],
+    [
+      "product",
+      "Flint",
+      "tier",
+      "tier 1"
+    ],
+    [
+      "product",
+      "Gauge",
+      "owner",
+      "Data"
+    ],
+    [
+      "product",
+      "Gauge",
+      "language",
+      "Python"
+    ],
+    [
+      "product",
+      "Gauge",
+      "sla",
+      "99.0%"
+    ],
+    [
+      "product",
+      "Gauge",
+      "database",
+      "ClickHouse"
+    ],
+    [
+      "product",
+      "Gauge",
+      "region",
+      "eu-west"
+    ],
+    [
+      "product",
+      "Gauge",
+      "tier",
+      "tier 3"
+    ],
+    [
+      "product",
+      "Harbor",
+      "owner",
+      "Growth"
+    ],
+    [
+      "product",
+      "Harbor",
+      "language",
+      "TypeScript"
+    ],
+    [
+      "product",
+      "Harbor",
+      "sla",
+      "99.5%"
+    ],
+    [
+      "product",
+      "Harbor",
+      "database",
+      "Postgres"
+    ],
+    [
+      "product",
+      "Harbor",
+      "region",
+      "ap-south"
+    ],
+    [
+      "product",
+      "Harbor",
+      "tier",
+      "tier 3"
+    ],
+    [
+      "service",
+      "ingest-api",
+      "product",
+      "Atlas"
+    ],
+    [
+      "service",
+      "ingest-api",
+      "runtime",
+      "Go"
+    ],
+    [
+      "service",
+      "ingest-api",
+      "replicas",
+      "12"
+    ],
+    [
+      "service",
+      "ingest-api",
+      "oncall",
+      "Platform"
+    ],
+    [
+      "service",
+      "ingest-worker",
+      "product",
+      "Atlas"
+    ],
+    [
+      "service",
+      "ingest-worker",
+      "runtime",
+      "Go"
+    ],
+    [
+      "service",
+      "ingest-worker",
+      "replicas",
+      "30"
+    ],
+    [
+      "service",
+      "ingest-worker",
+      "oncall",
+      "Platform"
+    ],
+    [
+      "service",
+      "signup-web",
+      "product",
+      "Beacon"
+    ],
+    [
+      "service",
+      "signup-web",
+      "runtime",
+      "TypeScript"
+    ],
+    [
+      "service",
+      "signup-web",
+      "replicas",
+      "6"
+    ],
+    [
+      "service",
+      "signup-web",
+      "oncall",
+      "Growth"
+    ],
+    [
+      "service",
+      "experiment-api",
+      "product",
+      "Beacon"
+    ],
+    [
+      "service",
+      "experiment-api",
+      "runtime",
+      "TypeScript"
+    ],
+    [
+      "service",
+      "experiment-api",
+      "replicas",
+      "4"
+    ],
+    [
+      "service",
+      "experiment-api",
+      "oncall",
+      "Growth"
+    ],
+    [
+      "service",
+      "pipeline-runner",
+      "product",
+      "Cinder"
+    ],
+    [
+      "service",
+      "pipeline-runner",
+      "runtime",
+      "Python"
+    ],
+    [
+      "service",
+      "pipeline-runner",
+      "replicas",
+      "8"
+    ],
+    [
+      "service",
+      "pipeline-runner",
+      "oncall",
+      "Data"
+    ],
+    [
+      "service",
+      "query-cache",
+      "product",
+      "Cinder"
+    ],
+    [
+      "service",
+      "query-cache",
+      "runtime",
+      "Go"
+    ],
+    [
+      "service",
+      "query-cache",
+      "replicas",
+      "3"
+    ],
+    [
+      "service",
+      "query-cache",
+      "oncall",
+      "Data"
+    ],
+    [
+      "service",
+      "ledger-api",
+      "product",
+      "Delta"
+    ],
+    [
+      "service",
+      "ledger-api",
+      "runtime",
+      "Rust"
+    ],
+    [
+      "service",
+      "ledger-api",
+      "replicas",
+      "10"
+    ],
+    [
+      "service",
+      "ledger-api",
+      "oncall",
+      "Payments"
+    ],
+    [
+      "service",
+      "settlement-worker",
+      "product",
+      "Delta"
+    ],
+    [
+      "service",
+      "settlement-worker",
+      "runtime",
+      "Rust"
+    ],
+    [
+      "service",
+      "settlement-worker",
+      "replicas",
+      "5"
+    ],
+    [
+      "service",
+      "settlement-worker",
+      "oncall",
+      "Payments"
+    ],
+    [
+      "service",
+      "notify-fanout",
+      "product",
+      "Ember"
+    ],
+    [
+      "service",
+      "notify-fanout",
+      "runtime",
+      "Go"
+    ],
+    [
+      "service",
+      "notify-fanout",
+      "replicas",
+      "9"
+    ],
+    [
+      "service",
+      "notify-fanout",
+      "oncall",
+      "Platform"
+    ],
+    [
+      "service",
+      "search-index",
+      "product",
+      "Flint"
+    ],
+    [
+      "service",
+      "search-index",
+      "runtime",
+      "Java"
+    ],
+    [
+      "service",
+      "search-index",
+      "replicas",
+      "14"
+    ],
+    [
+      "service",
+      "search-index",
+      "oncall",
+      "Search"
+    ],
+    [
+      "service",
+      "search-suggest",
+      "product",
+      "Flint"
+    ],
+    [
+      "service",
+      "search-suggest",
+      "runtime",
+      "Java"
+    ],
+    [
+      "service",
+      "search-suggest",
+      "replicas",
+      "6"
+    ],
+    [
+      "service",
+      "search-suggest",
+      "oncall",
+      "Search"
+    ],
+    [
+      "service",
+      "metrics-rollup",
+      "product",
+      "Gauge"
+    ],
+    [
+      "service",
+      "metrics-rollup",
+      "runtime",
+      "Python"
+    ],
+    [
+      "service",
+      "metrics-rollup",
+      "replicas",
+      "4"
+    ],
+    [
+      "service",
+      "metrics-rollup",
+      "oncall",
+      "Data"
+    ],
+    [
+      "service",
+      "marketing-site",
+      "product",
+      "Harbor"
+    ],
+    [
+      "service",
+      "marketing-site",
+      "runtime",
+      "TypeScript"
+    ],
+    [
+      "service",
+      "marketing-site",
+      "replicas",
+      "2"
+    ],
+    [
+      "service",
+      "marketing-site",
+      "oncall",
+      "Growth"
+    ],
+    [
+      "service",
+      "docs-portal",
+      "product",
+      "Harbor"
+    ],
+    [
+      "service",
+      "docs-portal",
+      "runtime",
+      "TypeScript"
+    ],
+    [
+      "service",
+      "docs-portal",
+      "replicas",
+      "2"
+    ],
+    [
+      "service",
+      "docs-portal",
+      "oncall",
+      "Growth"
+    ],
+    [
+      "team",
+      "Platform",
+      "lead",
+      "Maya Chen"
+    ],
+    [
+      "team",
+      "Platform",
+      "headcount",
+      "9"
+    ],
+    [
+      "team",
+      "Platform",
+      "channel",
+      "#platform"
+    ],
+    [
+      "team",
+      "Growth",
+      "lead",
+      "Ivan Okafor"
+    ],
+    [
+      "team",
+      "Growth",
+      "headcount",
+      "6"
+    ],
+    [
+      "team",
+      "Growth",
+      "channel",
+      "#growth"
+    ],
+    [
+      "team",
+      "Data",
+      "lead",
+      "Priya Raman"
+    ],
+    [
+      "team",
+      "Data",
+      "headcount",
+      "7"
+    ],
+    [
+      "team",
+      "Data",
+      "channel",
+      "#data"
+    ],
+    [
+      "team",
+      "Payments",
+      "lead",
+      "Lena Ortiz"
+    ],
+    [
+      "team",
+      "Payments",
+      "headcount",
+      "5"
+    ],
+    [
+      "team",
+      "Payments",
+      "channel",
+      "#payments"
+    ],
+    [
+      "team",
+      "Search",
+      "lead",
+      "Tom Haddad"
+    ],
+    [
+      "team",
+      "Search",
+      "headcount",
+      "4"
+    ],
+    [
+      "team",
+      "Search",
+      "channel",
+      "#search"
+    ],
+    [
+      "person",
+      "Maya Chen",
+      "team",
+      "Platform"
+    ],
+    [
+      "person",
+      "Maya Chen",
+      "role",
+      "Staff engineer"
+    ],
+    [
+      "person",
+      "Maya Chen",
+      "timezone",
+      "PT"
+    ],
+    [
+      "person",
+      "Ivan Okafor",
+      "team",
+      "Growth"
+    ],
+    [
+      "person",
+      "Ivan Okafor",
+      "role",
+      "Engineering manager"
+    ],
+    [
+      "person",
+      "Ivan Okafor",
+      "timezone",
+      "ET"
+    ],
+    [
+      "person",
+      "Priya Raman",
+      "team",
+      "Data"
+    ],
+    [
+      "person",
+      "Priya Raman",
+      "role",
+      "Staff engineer"
+    ],
+    [
+      "person",
+      "Priya Raman",
+      "timezone",
+      "IST"
+    ],
+    [
+      "person",
+      "Lena Ortiz",
+      "team",
+      "Payments"
+    ],
+    [
+      "person",
+      "Lena Ortiz",
+      "role",
+      "Principal engineer"
+    ],
+    [
+      "person",
+      "Lena Ortiz",
+      "timezone",
+      "CET"
+    ],
+    [
+      "person",
+      "Tom Haddad",
+      "team",
+      "Search"
+    ],
+    [
+      "person",
+      "Tom Haddad",
+      "role",
+      "Senior engineer"
+    ],
+    [
+      "person",
+      "Tom Haddad",
+      "timezone",
+      "ET"
+    ],
+    [
+      "person",
+      "Ada Ferreira",
+      "team",
+      "Platform"
+    ],
+    [
+      "person",
+      "Ada Ferreira",
+      "role",
+      "SRE"
+    ],
+    [
+      "person",
+      "Ada Ferreira",
+      "timezone",
+      "PT"
+    ],
+    [
+      "person",
+      "Ben Yamada",
+      "team",
+      "Growth"
+    ],
+    [
+      "person",
+      "Ben Yamada",
+      "role",
+      "Product engineer"
+    ],
+    [
+      "person",
+      "Ben Yamada",
+      "timezone",
+      "PT"
+    ],
+    [
+      "person",
+      "Cy Mensah",
+      "team",
+      "Data"
+    ],
+    [
+      "person",
+      "Cy Mensah",
+      "role",
+      "Analytics engineer"
+    ],
+    [
+      "person",
+      "Cy Mensah",
+      "timezone",
+      "ET"
+    ],
+    [
+      "person",
+      "Noa Levi",
+      "team",
+      "Payments"
+    ],
+    [
+      "person",
+      "Noa Levi",
+      "role",
+      "SRE"
+    ],
+    [
+      "person",
+      "Noa Levi",
+      "timezone",
+      "CET"
+    ],
+    [
+      "person",
+      "Ravi Shah",
+      "team",
+      "Search"
+    ],
+    [
+      "person",
+      "Ravi Shah",
+      "role",
+      "Search engineer"
+    ],
+    [
+      "person",
+      "Ravi Shah",
+      "timezone",
+      "IST"
+    ],
+    [
+      "oncall",
+      "platform",
+      "person",
+      "Ada Ferreira"
+    ],
+    [
+      "oncall",
+      "growth",
+      "person",
+      "Ben Yamada"
+    ],
+    [
+      "oncall",
+      "data",
+      "person",
+      "Cy Mensah"
+    ],
+    [
+      "oncall",
+      "payments",
+      "person",
+      "Noa Levi"
+    ],
+    [
+      "oncall",
+      "search",
+      "person",
+      "Ravi Shah"
+    ],
+    [
+      "policy",
+      "Incident severity",
+      "owner",
+      "Platform"
+    ],
+    [
+      "policy",
+      "Incident severity",
+      "text",
+      "Sev 1 is customer-visible downtime, paged immediately to the owning team. Sev 2 is degraded service, acknowledged within 30 minutes. Sev 3 is cosmetic and handled in business hours."
+    ],
+    [
+      "policy",
+      "Deploy freeze",
+      "owner",
+      "Platform"
+    ],
+    [
+      "policy",
+      "Deploy freeze",
+      "text",
+      "No production deploys during the last two business days of the quarter, except for Sev 1 fixes approved by the owning team lead."
+    ],
+    [
+      "policy",
+      "Data retention",
+      "owner",
+      "Data"
+    ],
+    [
+      "policy",
+      "Data retention",
+      "text",
+      "Application logs are kept 30 days. Audit logs are kept 400 days. Customer records are deleted within 30 days of a verified request."
+    ],
+    [
+      "policy",
+      "Oncall handoff",
+      "owner",
+      "Platform"
+    ],
+    [
+      "policy",
+      "Oncall handoff",
+      "text",
+      "Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel."
+    ],
+    [
+      "policy",
+      "Access review",
+      "owner",
+      "Platform"
+    ],
+    [
+      "policy",
+      "Access review",
+      "text",
+      "Production access is reviewed quarterly. Any access unused for 90 days is revoked automatically."
+    ],
+    [
+      "policy",
+      "Cost guardrail",
+      "owner",
+      "Data"
+    ],
+    [
+      "policy",
+      "Cost guardrail",
+      "text",
+      "Any service above 2,000 dollars a month in compute needs a named owner and a monthly review."
+    ],
+    [
+      "policy",
+      "Search relevance",
+      "owner",
+      "Search"
+    ],
+    [
+      "policy",
+      "Search relevance",
+      "text",
+      "Every relevance change ships behind a traffic split of at least 5%, held for 72 hours before full rollout."
+    ],
+    [
+      "policy",
+      "Payment retries",
+      "owner",
+      "Payments"
+    ],
+    [
+      "policy",
+      "Payment retries",
+      "text",
+      "Failed charges retry three times over 48 hours with exponential backoff, then settle to manual review."
+    ]
+  ],
+  "docs": [
+    {
+      "id": "product:Atlas:owner",
+      "kind": "product",
+      "subject": "Atlas",
+      "attribute": "owner",
+      "text": "Atlas: owner is Platform."
+    },
+    {
+      "id": "product:Atlas:language",
+      "kind": "product",
+      "subject": "Atlas",
+      "attribute": "language",
+      "text": "Atlas: language is Go."
+    },
+    {
+      "id": "product:Atlas:sla",
+      "kind": "product",
+      "subject": "Atlas",
+      "attribute": "sla",
+      "text": "Atlas: sla is 99.95%."
+    },
+    {
+      "id": "product:Atlas:database",
+      "kind": "product",
+      "subject": "Atlas",
+      "attribute": "database",
+      "text": "Atlas: database is Postgres."
+    },
+    {
+      "id": "product:Atlas:region",
+      "kind": "product",
+      "subject": "Atlas",
+      "attribute": "region",
+      "text": "Atlas: region is us-east."
+    },
+    {
+      "id": "product:Atlas:tier",
+      "kind": "product",
+      "subject": "Atlas",
+      "attribute": "tier",
+      "text": "Atlas: tier is tier 1."
+    },
+    {
+      "id": "product:Beacon:owner",
+      "kind": "product",
+      "subject": "Beacon",
+      "attribute": "owner",
+      "text": "Beacon: owner is Growth."
+    },
+    {
+      "id": "product:Beacon:language",
+      "kind": "product",
+      "subject": "Beacon",
+      "attribute": "language",
+      "text": "Beacon: language is TypeScript."
+    },
+    {
+      "id": "product:Beacon:sla",
+      "kind": "product",
+      "subject": "Beacon",
+      "attribute": "sla",
+      "text": "Beacon: sla is 99.9%."
+    },
+    {
+      "id": "product:Beacon:database",
+      "kind": "product",
+      "subject": "Beacon",
+      "attribute": "database",
+      "text": "Beacon: database is Postgres."
+    },
+    {
+      "id": "product:Beacon:region",
+      "kind": "product",
+      "subject": "Beacon",
+      "attribute": "region",
+      "text": "Beacon: region is us-east."
+    },
+    {
+      "id": "product:Beacon:tier",
+      "kind": "product",
+      "subject": "Beacon",
+      "attribute": "tier",
+      "text": "Beacon: tier is tier 2."
+    },
+    {
+      "id": "product:Cinder:owner",
+      "kind": "product",
+      "subject": "Cinder",
+      "attribute": "owner",
+      "text": "Cinder: owner is Data."
+    },
+    {
+      "id": "product:Cinder:language",
+      "kind": "product",
+      "subject": "Cinder",
+      "attribute": "language",
+      "text": "Cinder: language is Python."
+    },
+    {
+      "id": "product:Cinder:sla",
+      "kind": "product",
+      "subject": "Cinder",
+      "attribute": "sla",
+      "text": "Cinder: sla is 99.5%."
+    },
+    {
+      "id": "product:Cinder:database",
+      "kind": "product",
+      "subject": "Cinder",
+      "attribute": "database",
+      "text": "Cinder: database is ClickHouse."
+    },
+    {
+      "id": "product:Cinder:region",
+      "kind": "product",
+      "subject": "Cinder",
+      "attribute": "region",
+      "text": "Cinder: region is eu-west."
+    },
+    {
+      "id": "product:Cinder:tier",
+      "kind": "product",
+      "subject": "Cinder",
+      "attribute": "tier",
+      "text": "Cinder: tier is tier 2."
+    },
+    {
+      "id": "product:Delta:owner",
+      "kind": "product",
+      "subject": "Delta",
+      "attribute": "owner",
+      "text": "Delta: owner is Payments."
+    },
+    {
+      "id": "product:Delta:language",
+      "kind": "product",
+      "subject": "Delta",
+      "attribute": "language",
+      "text": "Delta: language is Rust."
+    },
+    {
+      "id": "product:Delta:sla",
+      "kind": "product",
+      "subject": "Delta",
+      "attribute": "sla",
+      "text": "Delta: sla is 99.99%."
+    },
+    {
+      "id": "product:Delta:database",
+      "kind": "product",
+      "subject": "Delta",
+      "attribute": "database",
+      "text": "Delta: database is Postgres."
+    },
+    {
+      "id": "product:Delta:region",
+      "kind": "product",
+      "subject": "Delta",
+      "attribute": "region",
+      "text": "Delta: region is us-west."
+    },
+    {
+      "id": "product:Delta:tier",
+      "kind": "product",
+      "subject": "Delta",
+      "attribute": "tier",
+      "text": "Delta: tier is tier 1."
+    },
+    {
+      "id": "product:Ember:owner",
+      "kind": "product",
+      "subject": "Ember",
+      "attribute": "owner",
+      "text": "Ember: owner is Platform."
+    },
+    {
+      "id": "product:Ember:language",
+      "kind": "product",
+      "subject": "Ember",
+      "attribute": "language",
+      "text": "Ember: language is Go."
+    },
+    {
+      "id": "product:Ember:sla",
+      "kind": "product",
+      "subject": "Ember",
+      "attribute": "sla",
+      "text": "Ember: sla is 99.9%."
+    },
+    {
+      "id": "product:Ember:database",
+      "kind": "product",
+      "subject": "Ember",
+      "attribute": "database",
+      "text": "Ember: database is Redis."
+    },
+    {
+      "id": "product:Ember:region",
+      "kind": "product",
+      "subject": "Ember",
+      "attribute": "region",
+      "text": "Ember: region is us-east."
+    },
+    {
+      "id": "product:Ember:tier",
+      "kind": "product",
+      "subject": "Ember",
+      "attribute": "tier",
+      "text": "Ember: tier is tier 2."
+    },
+    {
+      "id": "product:Flint:owner",
+      "kind": "product",
+      "subject": "Flint",
+      "attribute": "owner",
+      "text": "Flint: owner is Search."
+    },
+    {
+      "id": "product:Flint:language",
+      "kind": "product",
+      "subject": "Flint",
+      "attribute": "language",
+      "text": "Flint: language is Java."
+    },
+    {
+      "id": "product:Flint:sla",
+      "kind": "product",
+      "subject": "Flint",
+      "attribute": "sla",
+      "text": "Flint: sla is 99.9%."
+    },
+    {
+      "id": "product:Flint:database",
+      "kind": "product",
+      "subject": "Flint",
+      "attribute": "database",
+      "text": "Flint: database is Elasticsearch."
+    },
+    {
+      "id": "product:Flint:region",
+      "kind": "product",
+      "subject": "Flint",
+      "attribute": "region",
+      "text": "Flint: region is us-west."
+    },
+    {
+      "id": "product:Flint:tier",
+      "kind": "product",
+      "subject": "Flint",
+      "attribute": "tier",
+      "text": "Flint: tier is tier 1."
+    },
+    {
+      "id": "product:Gauge:owner",
+      "kind": "product",
+      "subject": "Gauge",
+      "attribute": "owner",
+      "text": "Gauge: owner is Data."
+    },
+    {
+      "id": "product:Gauge:language",
+      "kind": "product",
+      "subject": "Gauge",
+      "attribute": "language",
+      "text": "Gauge: language is Python."
+    },
+    {
+      "id": "product:Gauge:sla",
+      "kind": "product",
+      "subject": "Gauge",
+      "attribute": "sla",
+      "text": "Gauge: sla is 99.0%."
+    },
+    {
+      "id": "product:Gauge:database",
+      "kind": "product",
+      "subject": "Gauge",
+      "attribute": "database",
+      "text": "Gauge: database is ClickHouse."
+    },
+    {
+      "id": "product:Gauge:region",
+      "kind": "product",
+      "subject": "Gauge",
+      "attribute": "region",
+      "text": "Gauge: region is eu-west."
+    },
+    {
+      "id": "product:Gauge:tier",
+      "kind": "product",
+      "subject": "Gauge",
+      "attribute": "tier",
+      "text": "Gauge: tier is tier 3."
+    },
+    {
+      "id": "product:Harbor:owner",
+      "kind": "product",
+      "subject": "Harbor",
+      "attribute": "owner",
+      "text": "Harbor: owner is Growth."
+    },
+    {
+      "id": "product:Harbor:language",
+      "kind": "product",
+      "subject": "Harbor",
+      "attribute": "language",
+      "text": "Harbor: language is TypeScript."
+    },
+    {
+      "id": "product:Harbor:sla",
+      "kind": "product",
+      "subject": "Harbor",
+      "attribute": "sla",
+      "text": "Harbor: sla is 99.5%."
+    },
+    {
+      "id": "product:Harbor:database",
+      "kind": "product",
+      "subject": "Harbor",
+      "attribute": "database",
+      "text": "Harbor: database is Postgres."
+    },
+    {
+      "id": "product:Harbor:region",
+      "kind": "product",
+      "subject": "Harbor",
+      "attribute": "region",
+      "text": "Harbor: region is ap-south."
+    },
+    {
+      "id": "product:Harbor:tier",
+      "kind": "product",
+      "subject": "Harbor",
+      "attribute": "tier",
+      "text": "Harbor: tier is tier 3."
+    },
+    {
+      "id": "service:ingest-api:product",
+      "kind": "service",
+      "subject": "ingest-api",
+      "attribute": "product",
+      "text": "ingest-api: product is Atlas."
+    },
+    {
+      "id": "service:ingest-api:runtime",
+      "kind": "service",
+      "subject": "ingest-api",
+      "attribute": "runtime",
+      "text": "ingest-api: runtime is Go."
+    },
+    {
+      "id": "service:ingest-api:replicas",
+      "kind": "service",
+      "subject": "ingest-api",
+      "attribute": "replicas",
+      "text": "ingest-api: replicas is 12."
+    },
+    {
+      "id": "service:ingest-api:oncall",
+      "kind": "service",
+      "subject": "ingest-api",
+      "attribute": "oncall",
+      "text": "ingest-api: oncall is Platform."
+    },
+    {
+      "id": "service:ingest-worker:product",
+      "kind": "service",
+      "subject": "ingest-worker",
+      "attribute": "product",
+      "text": "ingest-worker: product is Atlas."
+    },
+    {
+      "id": "service:ingest-worker:runtime",
+      "kind": "service",
+      "subject": "ingest-worker",
+      "attribute": "runtime",
+      "text": "ingest-worker: runtime is Go."
+    },
+    {
+      "id": "service:ingest-worker:replicas",
+      "kind": "service",
+      "subject": "ingest-worker",
+      "attribute": "replicas",
+      "text": "ingest-worker: replicas is 30."
+    },
+    {
+      "id": "service:ingest-worker:oncall",
+      "kind": "service",
+      "subject": "ingest-worker",
+      "attribute": "oncall",
+      "text": "ingest-worker: oncall is Platform."
+    },
+    {
+      "id": "service:signup-web:product",
+      "kind": "service",
+      "subject": "signup-web",
+      "attribute": "product",
+      "text": "signup-web: product is Beacon."
+    },
+    {
+      "id": "service:signup-web:runtime",
+      "kind": "service",
+      "subject": "signup-web",
+      "attribute": "runtime",
+      "text": "signup-web: runtime is TypeScript."
+    },
+    {
+      "id": "service:signup-web:replicas",
+      "kind": "service",
+      "subject": "signup-web",
+      "attribute": "replicas",
+      "text": "signup-web: replicas is 6."
+    },
+    {
+      "id": "service:signup-web:oncall",
+      "kind": "service",
+      "subject": "signup-web",
+      "attribute": "oncall",
+      "text": "signup-web: oncall is Growth."
+    },
+    {
+      "id": "service:experiment-api:product",
+      "kind": "service",
+      "subject": "experiment-api",
+      "attribute": "product",
+      "text": "experiment-api: product is Beacon."
+    },
+    {
+      "id": "service:experiment-api:runtime",
+      "kind": "service",
+      "subject": "experiment-api",
+      "attribute": "runtime",
+      "text": "experiment-api: runtime is TypeScript."
+    },
+    {
+      "id": "service:experiment-api:replicas",
+      "kind": "service",
+      "subject": "experiment-api",
+      "attribute": "replicas",
+      "text": "experiment-api: replicas is 4."
+    },
+    {
+      "id": "service:experiment-api:oncall",
+      "kind": "service",
+      "subject": "experiment-api",
+      "attribute": "oncall",
+      "text": "experiment-api: oncall is Growth."
+    },
+    {
+      "id": "service:pipeline-runner:product",
+      "kind": "service",
+      "subject": "pipeline-runner",
+      "attribute": "product",
+      "text": "pipeline-runner: product is Cinder."
+    },
+    {
+      "id": "service:pipeline-runner:runtime",
+      "kind": "service",
+      "subject": "pipeline-runner",
+      "attribute": "runtime",
+      "text": "pipeline-runner: runtime is Python."
+    },
+    {
+      "id": "service:pipeline-runner:replicas",
+      "kind": "service",
+      "subject": "pipeline-runner",
+      "attribute": "replicas",
+      "text": "pipeline-runner: replicas is 8."
+    },
+    {
+      "id": "service:pipeline-runner:oncall",
+      "kind": "service",
+      "subject": "pipeline-runner",
+      "attribute": "oncall",
+      "text": "pipeline-runner: oncall is Data."
+    },
+    {
+      "id": "service:query-cache:product",
+      "kind": "service",
+      "subject": "query-cache",
+      "attribute": "product",
+      "text": "query-cache: product is Cinder."
+    },
+    {
+      "id": "service:query-cache:runtime",
+      "kind": "service",
+      "subject": "query-cache",
+      "attribute": "runtime",
+      "text": "query-cache: runtime is Go."
+    },
+    {
+      "id": "service:query-cache:replicas",
+      "kind": "service",
+      "subject": "query-cache",
+      "attribute": "replicas",
+      "text": "query-cache: replicas is 3."
+    },
+    {
+      "id": "service:query-cache:oncall",
+      "kind": "service",
+      "subject": "query-cache",
+      "attribute": "oncall",
+      "text": "query-cache: oncall is Data."
+    },
+    {
+      "id": "service:ledger-api:product",
+      "kind": "service",
+      "subject": "ledger-api",
+      "attribute": "product",
+      "text": "ledger-api: product is Delta."
+    },
+    {
+      "id": "service:ledger-api:runtime",
+      "kind": "service",
+      "subject": "ledger-api",
+      "attribute": "runtime",
+      "text": "ledger-api: runtime is Rust."
+    },
+    {
+      "id": "service:ledger-api:replicas",
+      "kind": "service",
+      "subject": "ledger-api",
+      "attribute": "replicas",
+      "text": "ledger-api: replicas is 10."
+    },
+    {
+      "id": "service:ledger-api:oncall",
+      "kind": "service",
+      "subject": "ledger-api",
+      "attribute": "oncall",
+      "text": "ledger-api: oncall is Payments."
+    },
+    {
+      "id": "service:settlement-worker:product",
+      "kind": "service",
+      "subject": "settlement-worker",
+      "attribute": "product",
+      "text": "settlement-worker: product is Delta."
+    },
+    {
+      "id": "service:settlement-worker:runtime",
+      "kind": "service",
+      "subject": "settlement-worker",
+      "attribute": "runtime",
+      "text": "settlement-worker: runtime is Rust."
+    },
+    {
+      "id": "service:settlement-worker:replicas",
+      "kind": "service",
+      "subject": "settlement-worker",
+      "attribute": "replicas",
+      "text": "settlement-worker: replicas is 5."
+    },
+    {
+      "id": "service:settlement-worker:oncall",
+      "kind": "service",
+      "subject": "settlement-worker",
+      "attribute": "oncall",
+      "text": "settlement-worker: oncall is Payments."
+    },
+    {
+      "id": "service:notify-fanout:product",
+      "kind": "service",
+      "subject": "notify-fanout",
+      "attribute": "product",
+      "text": "notify-fanout: product is Ember."
+    },
+    {
+      "id": "service:notify-fanout:runtime",
+      "kind": "service",
+      "subject": "notify-fanout",
+      "attribute": "runtime",
+      "text": "notify-fanout: runtime is Go."
+    },
+    {
+      "id": "service:notify-fanout:replicas",
+      "kind": "service",
+      "subject": "notify-fanout",
+      "attribute": "replicas",
+      "text": "notify-fanout: replicas is 9."
+    },
+    {
+      "id": "service:notify-fanout:oncall",
+      "kind": "service",
+      "subject": "notify-fanout",
+      "attribute": "oncall",
+      "text": "notify-fanout: oncall is Platform."
+    },
+    {
+      "id": "service:search-index:product",
+      "kind": "service",
+      "subject": "search-index",
+      "attribute": "product",
+      "text": "search-index: product is Flint."
+    },
+    {
+      "id": "service:search-index:runtime",
+      "kind": "service",
+      "subject": "search-index",
+      "attribute": "runtime",
+      "text": "search-index: runtime is Java."
+    },
+    {
+      "id": "service:search-index:replicas",
+      "kind": "service",
+      "subject": "search-index",
+      "attribute": "replicas",
+      "text": "search-index: replicas is 14."
+    },
+    {
+      "id": "service:search-index:oncall",
+      "kind": "service",
+      "subject": "search-index",
+      "attribute": "oncall",
+      "text": "search-index: oncall is Search."
+    },
+    {
+      "id": "service:search-suggest:product",
+      "kind": "service",
+      "subject": "search-suggest",
+      "attribute": "product",
+      "text": "search-suggest: product is Flint."
+    },
+    {
+      "id": "service:search-suggest:runtime",
+      "kind": "service",
+      "subject": "search-suggest",
+      "attribute": "runtime",
+      "text": "search-suggest: runtime is Java."
+    },
+    {
+      "id": "service:search-suggest:replicas",
+      "kind": "service",
+      "subject": "search-suggest",
+      "attribute": "replicas",
+      "text": "search-suggest: replicas is 6."
+    },
+    {
+      "id": "service:search-suggest:oncall",
+      "kind": "service",
+      "subject": "search-suggest",
+      "attribute": "oncall",
+      "text": "search-suggest: oncall is Search."
+    },
+    {
+      "id": "service:metrics-rollup:product",
+      "kind": "service",
+      "subject": "metrics-rollup",
+      "attribute": "product",
+      "text": "metrics-rollup: product is Gauge."
+    },
+    {
+      "id": "service:metrics-rollup:runtime",
+      "kind": "service",
+      "subject": "metrics-rollup",
+      "attribute": "runtime",
+      "text": "metrics-rollup: runtime is Python."
+    },
+    {
+      "id": "service:metrics-rollup:replicas",
+      "kind": "service",
+      "subject": "metrics-rollup",
+      "attribute": "replicas",
+      "text": "metrics-rollup: replicas is 4."
+    },
+    {
+      "id": "service:metrics-rollup:oncall",
+      "kind": "service",
+      "subject": "metrics-rollup",
+      "attribute": "oncall",
+      "text": "metrics-rollup: oncall is Data."
+    },
+    {
+      "id": "service:marketing-site:product",
+      "kind": "service",
+      "subject": "marketing-site",
+      "attribute": "product",
+      "text": "marketing-site: product is Harbor."
+    },
+    {
+      "id": "service:marketing-site:runtime",
+      "kind": "service",
+      "subject": "marketing-site",
+      "attribute": "runtime",
+      "text": "marketing-site: runtime is TypeScript."
+    },
+    {
+      "id": "service:marketing-site:replicas",
+      "kind": "service",
+      "subject": "marketing-site",
+      "attribute": "replicas",
+      "text": "marketing-site: replicas is 2."
+    },
+    {
+      "id": "service:marketing-site:oncall",
+      "kind": "service",
+      "subject": "marketing-site",
+      "attribute": "oncall",
+      "text": "marketing-site: oncall is Growth."
+    },
+    {
+      "id": "service:docs-portal:product",
+      "kind": "service",
+      "subject": "docs-portal",
+      "attribute": "product",
+      "text": "docs-portal: product is Harbor."
+    },
+    {
+      "id": "service:docs-portal:runtime",
+      "kind": "service",
+      "subject": "docs-portal",
+      "attribute": "runtime",
+      "text": "docs-portal: runtime is TypeScript."
+    },
+    {
+      "id": "service:docs-portal:replicas",
+      "kind": "service",
+      "subject": "docs-portal",
+      "attribute": "replicas",
+      "text": "docs-portal: replicas is 2."
+    },
+    {
+      "id": "service:docs-portal:oncall",
+      "kind": "service",
+      "subject": "docs-portal",
+      "attribute": "oncall",
+      "text": "docs-portal: oncall is Growth."
+    },
+    {
+      "id": "team:Platform:lead",
+      "kind": "team",
+      "subject": "Platform",
+      "attribute": "lead",
+      "text": "Platform: lead is Maya Chen."
+    },
+    {
+      "id": "team:Platform:headcount",
+      "kind": "team",
+      "subject": "Platform",
+      "attribute": "headcount",
+      "text": "Platform: headcount is 9."
+    },
+    {
+      "id": "team:Platform:channel",
+      "kind": "team",
+      "subject": "Platform",
+      "attribute": "channel",
+      "text": "Platform: channel is #platform."
+    },
+    {
+      "id": "team:Growth:lead",
+      "kind": "team",
+      "subject": "Growth",
+      "attribute": "lead",
+      "text": "Growth: lead is Ivan Okafor."
+    },
+    {
+      "id": "team:Growth:headcount",
+      "kind": "team",
+      "subject": "Growth",
+      "attribute": "headcount",
+      "text": "Growth: headcount is 6."
+    },
+    {
+      "id": "team:Growth:channel",
+      "kind": "team",
+      "subject": "Growth",
+      "attribute": "channel",
+      "text": "Growth: channel is #growth."
+    },
+    {
+      "id": "team:Data:lead",
+      "kind": "team",
+      "subject": "Data",
+      "attribute": "lead",
+      "text": "Data: lead is Priya Raman."
+    },
+    {
+      "id": "team:Data:headcount",
+      "kind": "team",
+      "subject": "Data",
+      "attribute": "headcount",
+      "text": "Data: headcount is 7."
+    },
+    {
+      "id": "team:Data:channel",
+      "kind": "team",
+      "subject": "Data",
+      "attribute": "channel",
+      "text": "Data: channel is #data."
+    },
+    {
+      "id": "team:Payments:lead",
+      "kind": "team",
+      "subject": "Payments",
+      "attribute": "lead",
+      "text": "Payments: lead is Lena Ortiz."
+    },
+    {
+      "id": "team:Payments:headcount",
+      "kind": "team",
+      "subject": "Payments",
+      "attribute": "headcount",
+      "text": "Payments: headcount is 5."
+    },
+    {
+      "id": "team:Payments:channel",
+      "kind": "team",
+      "subject": "Payments",
+      "attribute": "channel",
+      "text": "Payments: channel is #payments."
+    },
+    {
+      "id": "team:Search:lead",
+      "kind": "team",
+      "subject": "Search",
+      "attribute": "lead",
+      "text": "Search: lead is Tom Haddad."
+    },
+    {
+      "id": "team:Search:headcount",
+      "kind": "team",
+      "subject": "Search",
+      "attribute": "headcount",
+      "text": "Search: headcount is 4."
+    },
+    {
+      "id": "team:Search:channel",
+      "kind": "team",
+      "subject": "Search",
+      "attribute": "channel",
+      "text": "Search: channel is #search."
+    },
+    {
+      "id": "person:Maya Chen:team",
+      "kind": "person",
+      "subject": "Maya Chen",
+      "attribute": "team",
+      "text": "Maya Chen: team is Platform."
+    },
+    {
+      "id": "person:Maya Chen:role",
+      "kind": "person",
+      "subject": "Maya Chen",
+      "attribute": "role",
+      "text": "Maya Chen: role is Staff engineer."
+    },
+    {
+      "id": "person:Maya Chen:timezone",
+      "kind": "person",
+      "subject": "Maya Chen",
+      "attribute": "timezone",
+      "text": "Maya Chen: timezone is PT."
+    },
+    {
+      "id": "person:Ivan Okafor:team",
+      "kind": "person",
+      "subject": "Ivan Okafor",
+      "attribute": "team",
+      "text": "Ivan Okafor: team is Growth."
+    },
+    {
+      "id": "person:Ivan Okafor:role",
+      "kind": "person",
+      "subject": "Ivan Okafor",
+      "attribute": "role",
+      "text": "Ivan Okafor: role is Engineering manager."
+    },
+    {
+      "id": "person:Ivan Okafor:timezone",
+      "kind": "person",
+      "subject": "Ivan Okafor",
+      "attribute": "timezone",
+      "text": "Ivan Okafor: timezone is ET."
+    },
+    {
+      "id": "person:Priya Raman:team",
+      "kind": "person",
+      "subject": "Priya Raman",
+      "attribute": "team",
+      "text": "Priya Raman: team is Data."
+    },
+    {
+      "id": "person:Priya Raman:role",
+      "kind": "person",
+      "subject": "Priya Raman",
+      "attribute": "role",
+      "text": "Priya Raman: role is Staff engineer."
+    },
+    {
+      "id": "person:Priya Raman:timezone",
+      "kind": "person",
+      "subject": "Priya Raman",
+      "attribute": "timezone",
+      "text": "Priya Raman: timezone is IST."
+    },
+    {
+      "id": "person:Lena Ortiz:team",
+      "kind": "person",
+      "subject": "Lena Ortiz",
+      "attribute": "team",
+      "text": "Lena Ortiz: team is Payments."
+    },
+    {
+      "id": "person:Lena Ortiz:role",
+      "kind": "person",
+      "subject": "Lena Ortiz",
+      "attribute": "role",
+      "text": "Lena Ortiz: role is Principal engineer."
+    },
+    {
+      "id": "person:Lena Ortiz:timezone",
+      "kind": "person",
+      "subject": "Lena Ortiz",
+      "attribute": "timezone",
+      "text": "Lena Ortiz: timezone is CET."
+    },
+    {
+      "id": "person:Tom Haddad:team",
+      "kind": "person",
+      "subject": "Tom Haddad",
+      "attribute": "team",
+      "text": "Tom Haddad: team is Search."
+    },
+    {
+      "id": "person:Tom Haddad:role",
+      "kind": "person",
+      "subject": "Tom Haddad",
+      "attribute": "role",
+      "text": "Tom Haddad: role is Senior engineer."
+    },
+    {
+      "id": "person:Tom Haddad:timezone",
+      "kind": "person",
+      "subject": "Tom Haddad",
+      "attribute": "timezone",
+      "text": "Tom Haddad: timezone is ET."
+    },
+    {
+      "id": "person:Ada Ferreira:team",
+      "kind": "person",
+      "subject": "Ada Ferreira",
+      "attribute": "team",
+      "text": "Ada Ferreira: team is Platform."
+    },
+    {
+      "id": "person:Ada Ferreira:role",
+      "kind": "person",
+      "subject": "Ada Ferreira",
+      "attribute": "role",
+      "text": "Ada Ferreira: role is SRE."
+    },
+    {
+      "id": "person:Ada Ferreira:timezone",
+      "kind": "person",
+      "subject": "Ada Ferreira",
+      "attribute": "timezone",
+      "text": "Ada Ferreira: timezone is PT."
+    },
+    {
+      "id": "person:Ben Yamada:team",
+      "kind": "person",
+      "subject": "Ben Yamada",
+      "attribute": "team",
+      "text": "Ben Yamada: team is Growth."
+    },
+    {
+      "id": "person:Ben Yamada:role",
+      "kind": "person",
+      "subject": "Ben Yamada",
+      "attribute": "role",
+      "text": "Ben Yamada: role is Product engineer."
+    },
+    {
+      "id": "person:Ben Yamada:timezone",
+      "kind": "person",
+      "subject": "Ben Yamada",
+      "attribute": "timezone",
+      "text": "Ben Yamada: timezone is PT."
+    },
+    {
+      "id": "person:Cy Mensah:team",
+      "kind": "person",
+      "subject": "Cy Mensah",
+      "attribute": "team",
+      "text": "Cy Mensah: team is Data."
+    },
+    {
+      "id": "person:Cy Mensah:role",
+      "kind": "person",
+      "subject": "Cy Mensah",
+      "attribute": "role",
+      "text": "Cy Mensah: role is Analytics engineer."
+    },
+    {
+      "id": "person:Cy Mensah:timezone",
+      "kind": "person",
+      "subject": "Cy Mensah",
+      "attribute": "timezone",
+      "text": "Cy Mensah: timezone is ET."
+    },
+    {
+      "id": "person:Noa Levi:team",
+      "kind": "person",
+      "subject": "Noa Levi",
+      "attribute": "team",
+      "text": "Noa Levi: team is Payments."
+    },
+    {
+      "id": "person:Noa Levi:role",
+      "kind": "person",
+      "subject": "Noa Levi",
+      "attribute": "role",
+      "text": "Noa Levi: role is SRE."
+    },
+    {
+      "id": "person:Noa Levi:timezone",
+      "kind": "person",
+      "subject": "Noa Levi",
+      "attribute": "timezone",
+      "text": "Noa Levi: timezone is CET."
+    },
+    {
+      "id": "person:Ravi Shah:team",
+      "kind": "person",
+      "subject": "Ravi Shah",
+      "attribute": "team",
+      "text": "Ravi Shah: team is Search."
+    },
+    {
+      "id": "person:Ravi Shah:role",
+      "kind": "person",
+      "subject": "Ravi Shah",
+      "attribute": "role",
+      "text": "Ravi Shah: role is Search engineer."
+    },
+    {
+      "id": "person:Ravi Shah:timezone",
+      "kind": "person",
+      "subject": "Ravi Shah",
+      "attribute": "timezone",
+      "text": "Ravi Shah: timezone is IST."
+    },
+    {
+      "id": "oncall:platform:person",
+      "kind": "oncall",
+      "subject": "platform",
+      "attribute": "person",
+      "text": "platform: person is Ada Ferreira."
+    },
+    {
+      "id": "oncall:growth:person",
+      "kind": "oncall",
+      "subject": "growth",
+      "attribute": "person",
+      "text": "growth: person is Ben Yamada."
+    },
+    {
+      "id": "oncall:data:person",
+      "kind": "oncall",
+      "subject": "data",
+      "attribute": "person",
+      "text": "data: person is Cy Mensah."
+    },
+    {
+      "id": "oncall:payments:person",
+      "kind": "oncall",
+      "subject": "payments",
+      "attribute": "person",
+      "text": "payments: person is Noa Levi."
+    },
+    {
+      "id": "oncall:search:person",
+      "kind": "oncall",
+      "subject": "search",
+      "attribute": "person",
+      "text": "search: person is Ravi Shah."
+    },
+    {
+      "id": "policy:Incident severity:owner",
+      "kind": "policy",
+      "subject": "Incident severity",
+      "attribute": "owner",
+      "text": "Incident severity: owner is Platform."
+    },
+    {
+      "id": "policy:Incident severity:text",
+      "kind": "policy",
+      "subject": "Incident severity",
+      "attribute": "text",
+      "text": "Incident severity: text is Sev 1 is customer-visible downtime, paged immediately to the owning team. Sev 2 is degraded service, acknowledged within 30 minutes. Sev 3 is cosmetic and handled in business hours.."
+    },
+    {
+      "id": "policy:Deploy freeze:owner",
+      "kind": "policy",
+      "subject": "Deploy freeze",
+      "attribute": "owner",
+      "text": "Deploy freeze: owner is Platform."
+    },
+    {
+      "id": "policy:Deploy freeze:text",
+      "kind": "policy",
+      "subject": "Deploy freeze",
+      "attribute": "text",
+      "text": "Deploy freeze: text is No production deploys during the last two business days of the quarter, except for Sev 1 fixes approved by the owning team lead.."
+    },
+    {
+      "id": "policy:Data retention:owner",
+      "kind": "policy",
+      "subject": "Data retention",
+      "attribute": "owner",
+      "text": "Data retention: owner is Data."
+    },
+    {
+      "id": "policy:Data retention:text",
+      "kind": "policy",
+      "subject": "Data retention",
+      "attribute": "text",
+      "text": "Data retention: text is Application logs are kept 30 days. Audit logs are kept 400 days. Customer records are deleted within 30 days of a verified request.."
+    },
+    {
+      "id": "policy:Oncall handoff:owner",
+      "kind": "policy",
+      "subject": "Oncall handoff",
+      "attribute": "owner",
+      "text": "Oncall handoff: owner is Platform."
+    },
+    {
+      "id": "policy:Oncall handoff:text",
+      "kind": "policy",
+      "subject": "Oncall handoff",
+      "attribute": "text",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel.."
+    },
+    {
+      "id": "policy:Access review:owner",
+      "kind": "policy",
+      "subject": "Access review",
+      "attribute": "owner",
+      "text": "Access review: owner is Platform."
+    },
+    {
+      "id": "policy:Access review:text",
+      "kind": "policy",
+      "subject": "Access review",
+      "attribute": "text",
+      "text": "Access review: text is Production access is reviewed quarterly. Any access unused for 90 days is revoked automatically.."
+    },
+    {
+      "id": "policy:Cost guardrail:owner",
+      "kind": "policy",
+      "subject": "Cost guardrail",
+      "attribute": "owner",
+      "text": "Cost guardrail: owner is Data."
+    },
+    {
+      "id": "policy:Cost guardrail:text",
+      "kind": "policy",
+      "subject": "Cost guardrail",
+      "attribute": "text",
+      "text": "Cost guardrail: text is Any service above 2,000 dollars a month in compute needs a named owner and a monthly review.."
+    },
+    {
+      "id": "policy:Search relevance:owner",
+      "kind": "policy",
+      "subject": "Search relevance",
+      "attribute": "owner",
+      "text": "Search relevance: owner is Search."
+    },
+    {
+      "id": "policy:Search relevance:text",
+      "kind": "policy",
+      "subject": "Search relevance",
+      "attribute": "text",
+      "text": "Search relevance: text is Every relevance change ships behind a traffic split of at least 5%, held for 72 hours before full rollout.."
+    },
+    {
+      "id": "policy:Payment retries:owner",
+      "kind": "policy",
+      "subject": "Payment retries",
+      "attribute": "owner",
+      "text": "Payment retries: owner is Payments."
+    },
+    {
+      "id": "policy:Payment retries:text",
+      "kind": "policy",
+      "subject": "Payment retries",
+      "attribute": "text",
+      "text": "Payment retries: text is Failed charges retry three times over 48 hours with exponential backoff, then settle to manual review.."
+    }
+  ]
+}

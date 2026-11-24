@@ -293,3 +293,104 @@ if (!data.judge) {
   }
   judge.append(bars, verdicts);
 }
+
+/* ------------------------------------------------------------- handbook */
+const arenaTable = document.querySelector('#arena-table');
+if (data.kb && arenaTable) {
+  const kbdata = data.kb;
+  const rows = [['Approach', 'knowledge', 'context', 'tools', 'planning', 'read', 'all']];
+  for (const system of kbdata.systems) {
+    rows.push([
+      system.label,
+      cell(system.fitted.byKind.knowledge),
+      cell(system.fitted.byKind.context),
+      cell(system.fitted.byKind.tool),
+      cell(system.fitted.byKind.planning),
+      cell(system.fitted.byKind.readability),
+      `${system.fitted.passed}/${system.fitted.total}`,
+    ]);
+  }
+  for (const [index, row] of rows.entries()) {
+    const line = text('div', `row${index === 0 ? ' head' : ''}`);
+    for (const [column, value] of row.entries()) {
+      if (column === 0) {
+        const name = text('div', 'name');
+        if (index > 0) {
+          name.appendChild(text('b', '', value));
+          name.appendChild(text('span', '', kbdata.systems[index - 1].blurb));
+        } else {
+          name.appendChild(text('span', '', value));
+        }
+        line.appendChild(name);
+        continue;
+      }
+      const cellNode = text('span', 'kcell');
+      if (index > 0 && column < 6) {
+        const system = kbdata.systems[index - 1];
+        const key = ['knowledge', 'context', 'tool', 'planning', 'readability'][column - 1];
+        const stat = system.fitted.byKind[key];
+        const rate = stat.total ? stat.passed / stat.total : 0;
+        cellNode.style.background = `rgba(0, 217, 184, ${0.08 + rate * 0.42})`;
+        cellNode.style.color = rate > 0.75 ? '#0b0b0f' : 'var(--fg)';
+        cellNode.textContent = `${stat.passed}/${stat.total}`;
+      } else {
+        cellNode.textContent = value;
+      }
+      line.appendChild(cellNode);
+    }
+    arenaTable.appendChild(line);
+  }
+
+  const note = document.querySelector('#arena-note');
+  const fresh = kbdata.systems.map((s) => s.fresh?.passed ?? 0);
+  const best = kbdata.systems.reduce((top, s) => (s.fitted.passed > top.fitted.passed ? s : top));
+  note.innerHTML =
+    `The fitted suite is not the interesting number. <b>${best.label}</b> answers ${best.fitted.passed}/${best.fitted.total} of it, ` +
+    `and ${best.fresh?.passed ?? 0}/${best.fresh?.total ?? 0} of a fresh paraphrase set, because a phrase table only knows the words it was given. ` +
+    (kbdata.freshMiss ? `“${escapeHtml(kbdata.freshMiss.ask)}” gets “${escapeHtml(clip(kbdata.freshMiss.text, 70))}”.` : '');
+
+  if (kbdata.judge) {
+    const judgeLine = text('p', 'sub');
+    judgeLine.style.margin = '0.8rem 0 0';
+    const base = kbdata.judge.baseline;
+    judgeLine.innerHTML =
+      `<b>Judge on the fresh set</b>: ${escapeHtml(kbdata.judge.system)} answered ${kbdata.judge.answered}/${kbdata.judge.turns} ` +
+      `(readability ${kbdata.judge.readability}/5)` +
+      (base ? `, the phrase table ${base.answered}/${base.turns} (${base.readability}/5)` : '') +
+      `. Judge: ${escapeHtml(kbdata.judge.model)}.`;
+    note.after(judgeLine);
+  }
+
+  // Three bars per approach: fitted, paraphrase set, fresh.
+  const chart = document.querySelector('#arena-bars');
+  const width = 980;
+  const rowH = 52;
+  const top = 26;
+  const left = 210;
+  const right = width - 90;
+  const height = top + kbdata.systems.length * rowH + 10;
+  chart.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  const series = [
+    ['fitted', 'var(--accent2)'],
+    ['dev', 'var(--accent)'],
+    ['fresh', 'var(--warn)'],
+  ];
+  for (const [index, system] of kbdata.systems.entries()) {
+    const y = top + index * rowH;
+    chart.appendChild(
+      svg('text', { x: left - 14, y: y + 18, 'text-anchor': 'end', 'font-family': 'var(--sans)', 'font-size': 11.5, fill: 'var(--fg)' }),
+    ).textContent = system.label;
+    for (const [row, [key, color]] of series.entries()) {
+      const stat = system[key];
+      if (!stat) continue;
+      const rate = stat.passed / stat.total;
+      const barY = y + row * 13;
+      chart.appendChild(svg('rect', { x: left, y: barY, width: (right - left) * rate, height: 9, rx: 3, fill: color, 'fill-opacity': 0.85 }));
+      label(chart, left + (right - left) * rate + 8, barY + 8.5, `${stat.passed}/${stat.total}`, { 'font-size': 9, fill: 'var(--dim)' });
+    }
+  }
+}
+
+function cell(stat) {
+  return `${stat.passed}/${stat.total}`;
+}

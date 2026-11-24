@@ -25,7 +25,9 @@
     "smoke:prod": "node bench/no-llm/browser-agent.mjs --base https://shobyde.com/",
     "prebuild": "python3 scripts/check_posts.py",
     "bench:threads": "node bench/threads/run.mjs && node bench/threads/run.mjs --baseline && node bench/threads/compile.mjs",
-    "judge:threads": "python3 bench/threads/judge.py && python3 bench/threads/judge.py --stateless && node bench/threads/compile.mjs"
+    "judge:threads": "python3 bench/threads/judge.py && python3 bench/threads/judge.py --stateless && node bench/threads/compile.mjs",
+    "bench:kb": "node bench/kb/run.mjs && node bench/kb/run.mjs --heldout && node bench/kb/run.mjs --heldout2 && node bench/kb/compile.mjs",
+    "judge:kb": "python3 bench/kb/judge.py bench/kb/results/kb-hybrid-heldout2.json && python3 bench/kb/judge.py bench/kb/results/kb-templates-heldout2.json && node bench/kb/compile.mjs"
   },
   "devDependencies": {
     "vite": "^6.0.0"

@@ -1,0 +1,1042 @@
+{
+  "note": "Generated from kb.json by suite.mjs. Thirty-eight threads over a synthetic handbook.",
+  "threads": [
+    {
+      "id": "product-atlas",
+      "title": "Atlas: owner, then attributes",
+      "turns": [
+        {
+          "ask": "who owns Atlas?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Platform"
+            ]
+          }
+        },
+        {
+          "ask": "and what is it written in?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Go"
+            ]
+          }
+        },
+        {
+          "ask": "what is its SLA?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "99.95%"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "product-beacon",
+      "title": "Beacon: owner, then attributes",
+      "turns": [
+        {
+          "ask": "who owns Beacon?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Growth"
+            ]
+          }
+        },
+        {
+          "ask": "and what is it written in?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "TypeScript"
+            ]
+          }
+        },
+        {
+          "ask": "what is its SLA?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "99.9%"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "product-cinder",
+      "title": "Cinder: owner, then attributes",
+      "turns": [
+        {
+          "ask": "who owns Cinder?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Data"
+            ]
+          }
+        },
+        {
+          "ask": "and what is it written in?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Python"
+            ]
+          }
+        },
+        {
+          "ask": "what is its SLA?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "99.5%"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "product-delta",
+      "title": "Delta: owner, then attributes",
+      "turns": [
+        {
+          "ask": "who owns Delta?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Payments"
+            ]
+          }
+        },
+        {
+          "ask": "and what is it written in?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Rust"
+            ]
+          }
+        },
+        {
+          "ask": "what is its SLA?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "99.99%"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "product-ember",
+      "title": "Ember: owner, then attributes",
+      "turns": [
+        {
+          "ask": "who owns Ember?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Platform"
+            ]
+          }
+        },
+        {
+          "ask": "and what is it written in?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Go"
+            ]
+          }
+        },
+        {
+          "ask": "what is its SLA?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "99.9%"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "product-flint",
+      "title": "Flint: owner, then attributes",
+      "turns": [
+        {
+          "ask": "who owns Flint?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Search"
+            ]
+          }
+        },
+        {
+          "ask": "and what is it written in?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Java"
+            ]
+          }
+        },
+        {
+          "ask": "what is its SLA?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "99.9%"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "product-gauge",
+      "title": "Gauge: owner, then attributes",
+      "turns": [
+        {
+          "ask": "who owns Gauge?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Data"
+            ]
+          }
+        },
+        {
+          "ask": "and what is it written in?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Python"
+            ]
+          }
+        },
+        {
+          "ask": "what is its SLA?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "99.0%"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "product-harbor",
+      "title": "Harbor: owner, then attributes",
+      "turns": [
+        {
+          "ask": "who owns Harbor?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Growth"
+            ]
+          }
+        },
+        {
+          "ask": "and what is it written in?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "TypeScript"
+            ]
+          }
+        },
+        {
+          "ask": "what is its SLA?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "99.5%"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "database-list",
+      "title": "Which products use Postgres, then narrow it",
+      "turns": [
+        {
+          "ask": "which products use Postgres?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Atlas",
+              "Beacon",
+              "Delta",
+              "Harbor"
+            ]
+          }
+        },
+        {
+          "ask": "which of those are tier 1?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Atlas",
+              "Delta"
+            ],
+            "exclude": [
+              "Beacon"
+            ]
+          }
+        },
+        {
+          "ask": "the first one?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Atlas"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "team-oncall",
+      "title": "Oncall, then the team behind it",
+      "turns": [
+        {
+          "ask": "who is on call for Search?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Ravi Shah"
+            ]
+          }
+        },
+        {
+          "ask": "who leads that team?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Tom Haddad"
+            ]
+          }
+        },
+        {
+          "ask": "how big is it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "4"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "team-platform",
+      "title": "Platform: lead and channel",
+      "turns": [
+        {
+          "ask": "who leads Platform?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Maya Chen"
+            ]
+          }
+        },
+        {
+          "ask": "and which channel?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "#platform"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "team-growth",
+      "title": "Growth: lead and channel",
+      "turns": [
+        {
+          "ask": "who leads Growth?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Ivan Okafor"
+            ]
+          }
+        },
+        {
+          "ask": "and which channel?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "#growth"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "team-data",
+      "title": "Data: lead and channel",
+      "turns": [
+        {
+          "ask": "who leads Data?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Priya Raman"
+            ]
+          }
+        },
+        {
+          "ask": "and which channel?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "#data"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "team-payments",
+      "title": "Payments: lead and channel",
+      "turns": [
+        {
+          "ask": "who leads Payments?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Lena Ortiz"
+            ]
+          }
+        },
+        {
+          "ask": "and which channel?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "#payments"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "team-search",
+      "title": "Search: lead and channel",
+      "turns": [
+        {
+          "ask": "who leads Search?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Tom Haddad"
+            ]
+          }
+        },
+        {
+          "ask": "and which channel?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "#search"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "person-maya",
+      "title": "Maya Chen: role and team",
+      "turns": [
+        {
+          "ask": "what does Maya Chen do?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Staff engineer"
+            ]
+          }
+        },
+        {
+          "ask": "which team?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "platform"
+            ]
+          }
+        },
+        {
+          "ask": "who leads it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Maya Chen"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "person-ivan",
+      "title": "Ivan Okafor: role and team",
+      "turns": [
+        {
+          "ask": "what does Ivan Okafor do?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Engineering manager"
+            ]
+          }
+        },
+        {
+          "ask": "which team?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "growth"
+            ]
+          }
+        },
+        {
+          "ask": "who leads it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Ivan Okafor"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "person-priya",
+      "title": "Priya Raman: role and team",
+      "turns": [
+        {
+          "ask": "what does Priya Raman do?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Staff engineer"
+            ]
+          }
+        },
+        {
+          "ask": "which team?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "data"
+            ]
+          }
+        },
+        {
+          "ask": "who leads it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Priya Raman"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "person-lena",
+      "title": "Lena Ortiz: role and team",
+      "turns": [
+        {
+          "ask": "what does Lena Ortiz do?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Principal engineer"
+            ]
+          }
+        },
+        {
+          "ask": "which team?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "payments"
+            ]
+          }
+        },
+        {
+          "ask": "who leads it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Lena Ortiz"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "person-tom",
+      "title": "Tom Haddad: role and team",
+      "turns": [
+        {
+          "ask": "what does Tom Haddad do?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Senior engineer"
+            ]
+          }
+        },
+        {
+          "ask": "which team?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "search"
+            ]
+          }
+        },
+        {
+          "ask": "who leads it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Tom Haddad"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "page-platform",
+      "title": "Page Platform oncall",
+      "turns": [
+        {
+          "ask": "page the oncall for Platform",
+          "kind": "tool",
+          "expect": {
+            "tool": "page_oncall"
+          }
+        },
+        {
+          "ask": "and open a ticket for it",
+          "kind": "tool",
+          "expect": {
+            "tool": "create_ticket"
+          }
+        }
+      ]
+    },
+    {
+      "id": "page-growth",
+      "title": "Page Growth oncall",
+      "turns": [
+        {
+          "ask": "page the oncall for Growth",
+          "kind": "tool",
+          "expect": {
+            "tool": "page_oncall"
+          }
+        },
+        {
+          "ask": "and open a ticket for it",
+          "kind": "tool",
+          "expect": {
+            "tool": "create_ticket"
+          }
+        }
+      ]
+    },
+    {
+      "id": "page-data",
+      "title": "Page Data oncall",
+      "turns": [
+        {
+          "ask": "page the oncall for Data",
+          "kind": "tool",
+          "expect": {
+            "tool": "page_oncall"
+          }
+        },
+        {
+          "ask": "and open a ticket for it",
+          "kind": "tool",
+          "expect": {
+            "tool": "create_ticket"
+          }
+        }
+      ]
+    },
+    {
+      "id": "page-payments",
+      "title": "Page Payments oncall",
+      "turns": [
+        {
+          "ask": "page the oncall for Payments",
+          "kind": "tool",
+          "expect": {
+            "tool": "page_oncall"
+          }
+        },
+        {
+          "ask": "and open a ticket for it",
+          "kind": "tool",
+          "expect": {
+            "tool": "create_ticket"
+          }
+        }
+      ]
+    },
+    {
+      "id": "page-search",
+      "title": "Page Search oncall",
+      "turns": [
+        {
+          "ask": "page the oncall for Search",
+          "kind": "tool",
+          "expect": {
+            "tool": "page_oncall"
+          }
+        },
+        {
+          "ask": "and open a ticket for it",
+          "kind": "tool",
+          "expect": {
+            "tool": "create_ticket"
+          }
+        }
+      ]
+    },
+    {
+      "id": "deploy-atlas",
+      "title": "Deploy and roll back Atlas",
+      "turns": [
+        {
+          "ask": "deploy Atlas",
+          "kind": "tool",
+          "expect": {
+            "tool": "deploy"
+          }
+        },
+        {
+          "ask": "roll it back",
+          "kind": "context",
+          "expect": {
+            "tool": "rollback"
+          }
+        }
+      ]
+    },
+    {
+      "id": "deploy-beacon",
+      "title": "Deploy and roll back Beacon",
+      "turns": [
+        {
+          "ask": "deploy Beacon",
+          "kind": "tool",
+          "expect": {
+            "tool": "deploy"
+          }
+        },
+        {
+          "ask": "roll it back",
+          "kind": "context",
+          "expect": {
+            "tool": "rollback"
+          }
+        }
+      ]
+    },
+    {
+      "id": "deploy-cinder",
+      "title": "Deploy and roll back Cinder",
+      "turns": [
+        {
+          "ask": "deploy Cinder",
+          "kind": "tool",
+          "expect": {
+            "tool": "deploy"
+          }
+        },
+        {
+          "ask": "roll it back",
+          "kind": "context",
+          "expect": {
+            "tool": "rollback"
+          }
+        }
+      ]
+    },
+    {
+      "id": "deploy-delta",
+      "title": "Deploy and roll back Delta",
+      "turns": [
+        {
+          "ask": "deploy Delta",
+          "kind": "tool",
+          "expect": {
+            "tool": "deploy"
+          }
+        },
+        {
+          "ask": "roll it back",
+          "kind": "context",
+          "expect": {
+            "tool": "rollback"
+          }
+        }
+      ]
+    },
+    {
+      "id": "plan-atlas",
+      "title": "Check and page for Atlas",
+      "turns": [
+        {
+          "ask": "check the SLA for Atlas and page its owner",
+          "kind": "planning",
+          "expect": {
+            "tool": "page_oncall",
+            "include": [
+              "99.95%"
+            ]
+          }
+        },
+        {
+          "ask": "summarise what we just did",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "page"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "plan-beacon",
+      "title": "Check and page for Beacon",
+      "turns": [
+        {
+          "ask": "check the SLA for Beacon and page its owner",
+          "kind": "planning",
+          "expect": {
+            "tool": "page_oncall",
+            "include": [
+              "99.9%"
+            ]
+          }
+        },
+        {
+          "ask": "summarise what we just did",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "page"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "plan-cinder",
+      "title": "Check and page for Cinder",
+      "turns": [
+        {
+          "ask": "check the SLA for Cinder and page its owner",
+          "kind": "planning",
+          "expect": {
+            "tool": "page_oncall",
+            "include": [
+              "99.5%"
+            ]
+          }
+        },
+        {
+          "ask": "summarise what we just did",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "page"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "read-atlas",
+      "title": "Summarise Atlas",
+      "turns": [
+        {
+          "ask": "summarise Atlas",
+          "kind": "readability",
+          "expect": {
+            "include": [
+              "Platform",
+              "Go"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "read-beacon",
+      "title": "Summarise Beacon",
+      "turns": [
+        {
+          "ask": "summarise Beacon",
+          "kind": "readability",
+          "expect": {
+            "include": [
+              "Growth",
+              "TypeScript"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "read-cinder",
+      "title": "Summarise Cinder",
+      "turns": [
+        {
+          "ask": "summarise Cinder",
+          "kind": "readability",
+          "expect": {
+            "include": [
+              "Data",
+              "Python"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "read-delta",
+      "title": "Summarise Delta",
+      "turns": [
+        {
+          "ask": "summarise Delta",
+          "kind": "readability",
+          "expect": {
+            "include": [
+              "Payments",
+              "Rust"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "policy-p1",
+      "title": "Policy: Incident severity",
+      "turns": [
+        {
+          "ask": "what is the Incident severity policy?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Sev 1 is"
+            ]
+          }
+        },
+        {
+          "ask": "who owns it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Platform"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "policy-p2",
+      "title": "Policy: Deploy freeze",
+      "turns": [
+        {
+          "ask": "what is the Deploy freeze policy?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "No production deploys"
+            ]
+          }
+        },
+        {
+          "ask": "who owns it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Platform"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "policy-p3",
+      "title": "Policy: Data retention",
+      "turns": [
+        {
+          "ask": "what is the Data retention policy?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Application logs are"
+            ]
+          }
+        },
+        {
+          "ask": "who owns it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Data"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "policy-p4",
+      "title": "Policy: Oncall handoff",
+      "turns": [
+        {
+          "ask": "what is the Oncall handoff policy?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Oncall rotates weekly"
+            ]
+          }
+        },
+        {
+          "ask": "who owns it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Platform"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

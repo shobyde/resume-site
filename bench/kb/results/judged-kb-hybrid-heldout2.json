@@ -1,0 +1,178 @@
+{
+  "judged": "2026-11-24T09:53:37",
+  "model": "minimax-m3.1-flash",
+  "source": "kb-hybrid-heldout2.json",
+  "system": "hybrid",
+  "turns": [
+    {
+      "thread": "h2-responsible",
+      "ask": "who is responsible for Cinder?",
+      "kind": "knowledge",
+      "pass": true,
+      "calls": [],
+      "answered": 1,
+      "tool_ok": -1,
+      "grounded": 2,
+      "readability": 4,
+      "why": "It identifies Data as Cinder\u2019s responsible owner; the phrasing is clear."
+    },
+    {
+      "thread": "h2-responsible",
+      "ask": "what language is it in?",
+      "kind": "context",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": -1,
+      "grounded": 1,
+      "readability": 5,
+      "why": "It did not identify the language; no tool was needed."
+    },
+    {
+      "thread": "h2-language",
+      "ask": "what language is Gauge written in?",
+      "kind": "knowledge",
+      "pass": true,
+      "calls": [],
+      "answered": 1,
+      "tool_ok": -1,
+      "grounded": 0,
+      "readability": 5,
+      "why": "Gauge is written in Go, not Python."
+    },
+    {
+      "thread": "h2-highest",
+      "ask": "which product has the highest SLA?",
+      "kind": "knowledge",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": 0,
+      "grounded": 0,
+      "readability": 5,
+      "why": "No product identified; required information was not checked."
+    },
+    {
+      "thread": "h2-team-owner",
+      "ask": "tell me the team that owns Delta",
+      "kind": "knowledge",
+      "pass": true,
+      "calls": [],
+      "answered": 1,
+      "tool_ok": -1,
+      "grounded": 2,
+      "readability": 4,
+      "why": "Directly identifies Payments as the team owning Delta."
+    },
+    {
+      "thread": "h2-team-owner",
+      "ask": "and their lead?",
+      "kind": "context",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": -1,
+      "grounded": 2,
+      "readability": 5,
+      "why": "It failed to identify the lead, though no tool was needed."
+    },
+    {
+      "thread": "h2-two-tools",
+      "ask": "page Search's oncall and file a ticket",
+      "kind": "planning",
+      "pass": true,
+      "calls": [
+        "page_oncall"
+      ],
+      "answered": 0,
+      "tool_ok": 1,
+      "grounded": 2,
+      "readability": 4,
+      "why": "Paged Search oncall, but did not file the requested ticket."
+    },
+    {
+      "thread": "h2-sev1",
+      "ask": "what happens during a sev 1?",
+      "kind": "knowledge",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": -1,
+      "grounded": 2,
+      "readability": 5,
+      "why": "No explanation of what happens during a SEV 1."
+    },
+    {
+      "thread": "h2-retention",
+      "ask": "how long are audit logs kept?",
+      "kind": "knowledge",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": -1,
+      "grounded": 2,
+      "readability": 5,
+      "why": "No retention period was provided; response is clear but nonresponsive."
+    },
+    {
+      "thread": "h2-retention",
+      "ask": "and customer records?",
+      "kind": "context",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": -1,
+      "grounded": 2,
+      "readability": 5,
+      "why": "Uncertain non-answer; no tool was needed."
+    },
+    {
+      "thread": "h2-services",
+      "ask": "which services belong to Beacon?",
+      "kind": "knowledge",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": -1,
+      "grounded": 0,
+      "readability": 4,
+      "why": "States an owner, not which services belong to Beacon."
+    },
+    {
+      "thread": "h2-person",
+      "ask": "who is Ada Ferreira?",
+      "kind": "knowledge",
+      "pass": false,
+      "calls": [],
+      "answered": 1,
+      "tool_ok": -1,
+      "grounded": 0,
+      "readability": 4,
+      "why": "States a team but provides no supporting context or identification."
+    },
+    {
+      "thread": "h2-person",
+      "ask": "which team?",
+      "kind": "context",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": -1,
+      "grounded": 0,
+      "readability": 5,
+      "why": "Failed to state the supported answer: Platform."
+    },
+    {
+      "thread": "h2-summary",
+      "ask": "summarise the payments stack in one sentence",
+      "kind": "readability",
+      "pass": false,
+      "calls": [],
+      "answered": 0,
+      "tool_ok": -1,
+      "grounded": 0,
+      "readability": 5,
+      "why": "Did not summarize the payments stack."
+    }
+  ]
+}

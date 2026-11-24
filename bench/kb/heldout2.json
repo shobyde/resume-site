@@ -1,0 +1,79 @@
+{
+  "note": "A second held-out set, written after the first one had been used to fix vocabulary gaps. Nothing in these turns was targeted by an implementation change, so this is the number to quote for generalization.",
+  "threads": [
+    {
+      "id": "h2-responsible",
+      "title": "Responsibility, phrased as a person would",
+      "turns": [
+        { "ask": "who is responsible for Cinder?", "kind": "knowledge", "expect": { "include": ["Data"] } },
+        { "ask": "what language is it in?", "kind": "context", "expect": { "include": ["Python"] } }
+      ]
+    },
+    {
+      "id": "h2-language",
+      "title": "Language, named directly",
+      "turns": [
+        { "ask": "what language is Gauge written in?", "kind": "knowledge", "expect": { "include": ["Python"] } }
+      ]
+    },
+    {
+      "id": "h2-highest",
+      "title": "A comparison the handbook does not precompute",
+      "turns": [
+        { "ask": "which product has the highest SLA?", "kind": "knowledge", "expect": { "include": ["Delta"] } }
+      ]
+    },
+    {
+      "id": "h2-team-owner",
+      "title": "Team behind a product",
+      "turns": [
+        { "ask": "tell me the team that owns Delta", "kind": "knowledge", "expect": { "include": ["Payments"] } },
+        { "ask": "and their lead?", "kind": "context", "expect": { "include": ["Lena Ortiz"] } }
+      ]
+    },
+    {
+      "id": "h2-two-tools",
+      "title": "Two actions, one sentence",
+      "turns": [
+        { "ask": "page Search's oncall and file a ticket", "kind": "planning", "expect": { "tool": "page_oncall" } }
+      ]
+    },
+    {
+      "id": "h2-sev1",
+      "title": "Policy prose, retrieved",
+      "turns": [
+        { "ask": "what happens during a sev 1?", "kind": "knowledge", "expect": { "include": ["paged"] } }
+      ]
+    },
+    {
+      "id": "h2-retention",
+      "title": "Numbers inside a policy",
+      "turns": [
+        { "ask": "how long are audit logs kept?", "kind": "knowledge", "expect": { "include": ["400"] } },
+        { "ask": "and customer records?", "kind": "context", "expect": { "include": ["30"] } }
+      ]
+    },
+    {
+      "id": "h2-services",
+      "title": "Services under a product",
+      "turns": [
+        { "ask": "which services belong to Beacon?", "kind": "knowledge", "expect": { "include": ["signup-web"] } }
+      ]
+    },
+    {
+      "id": "h2-person",
+      "title": "A person, by name",
+      "turns": [
+        { "ask": "who is Ada Ferreira?", "kind": "knowledge", "expect": { "include": ["SRE"] } },
+        { "ask": "which team?", "kind": "context", "expect": { "include": ["Platform"] } }
+      ]
+    },
+    {
+      "id": "h2-summary",
+      "title": "A summary with a length constraint",
+      "turns": [
+        { "ask": "summarise the payments stack in one sentence", "kind": "readability", "expect": { "include": ["Payments"] } }
+      ]
+    }
+  ]
+}
