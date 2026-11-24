@@ -1,6 +1,6 @@
 {
   "system": "hybrid",
-  "passed": 21,
+  "passed": 20,
   "total": 23,
   "byKind": {
     "knowledge": {
@@ -8,7 +8,7 @@
       "total": 8
     },
     "context": {
-      "passed": 11,
+      "passed": 10,
       "total": 12
     },
     "tool": {
@@ -219,13 +219,13 @@
       "thread": "h-no-context",
       "ask": "did the deploy work?",
       "kind": "context",
-      "text": "I'm not sure about that.",
+      "text": "Deploy freeze: owner is Platform.",
       "calls": [],
-      "pass": true,
+      "pass": false,
       "missing": [],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": true
     },
     {

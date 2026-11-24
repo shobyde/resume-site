@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T21:14:18.331Z",
+  "generated": "2026-11-24T21:50:23.794Z",
   "library": "0.8.2",
   "threads": {
     "memory": {
@@ -938,7 +938,7 @@
     }
   ],
   "kb": {
-    "generated": "2026-11-24T21:14:45.526Z",
+    "generated": "2026-11-24T21:50:39.940Z",
     "facts": 170,
     "documents": 170,
     "threads": 40,
@@ -1418,7 +1418,7 @@
           }
         },
         "dev": {
-          "passed": 21,
+          "passed": 20,
           "total": 23,
           "byKind": {
             "knowledge": {
@@ -1426,7 +1426,7 @@
               "total": 8
             },
             "context": {
-              "passed": 11,
+              "passed": 10,
               "total": 12
             },
             "tool": {

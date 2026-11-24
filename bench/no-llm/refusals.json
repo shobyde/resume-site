@@ -1,0 +1,62 @@
+{
+  "note": "Phrasings the panel refused while a rule already held the answer. Each task is a single turn scored on 'did the visitor get a sentence' plus what the sentence must name. `decline` tasks assert the refusal is still correct where the page genuinely has no answer.",
+  "tasks": [
+    {
+      "q": "which projects",
+      "kind": "answer",
+      "include": [
+        "hobnob",
+        "readback"
+      ]
+    },
+    {
+      "q": "years of experience",
+      "kind": "answer",
+      "include": [
+        "years"
+      ]
+    },
+    {
+      "q": "how many years",
+      "kind": "answer",
+      "include": [
+        "years"
+      ]
+    },
+    {
+      "q": "list projects",
+      "kind": "answer",
+      "include": [
+        "hobnob"
+      ]
+    },
+    {
+      "q": "project names",
+      "kind": "answer",
+      "include": [
+        "readback"
+      ]
+    },
+    {
+      "q": "what has he built",
+      "kind": "answer",
+      "include": [
+        "groundglass"
+      ]
+    },
+    {
+      "q": "which projects use python",
+      "kind": "answer",
+      "include": [
+        "readback"
+      ]
+    },
+    {
+      "q": "what is his email",
+      "kind": "answer",
+      "include": [
+        "@"
+      ]
+    }
+  ]
+}

@@ -100,7 +100,11 @@ export function createAssistantKnowledge({ posts }) {
       requiresSubject: false,
       // "What does he do?" has no content words at all.
       match: (question) =>
-        /^\s*(what does he do|what is his job|who is (sho|he)|tell me (about|who) (him|sho))/i.test(question),
+        /^\s*(what does he do|what is his job|who is (sho|he)|tell me (about|who) (him|sho))/i.test(question) ||
+        // "how many years of experience" is a profile question, and the keyword
+        // engine refused it: "years" ties between this and the experience list.
+        // "how long has he been working" stays with profile.summary, which owns it.
+        /\b(years of experience|how many years)\b/i.test(question),
       explain: () => 'Read the profile from this page',
       compose: ({ query }) => {
         const current = DATA.experience?.[0];
@@ -145,7 +149,10 @@ export function createAssistantKnowledge({ posts }) {
       // because no project is named. Match order in this file decides.
       match: (question) =>
         /\b(built|written|shipped|made|powered|runs)\s+(with|in|on|by)\b/i.test(question) ||
-        /^\s*which projects\b/i.test(question) ||
+        // "which projects" alone is a list question; it needs content after the
+        // noun (a technology) to be a join. Bare, it used to reach this rule and
+        // compose a refusal, because the join had nothing to bind.
+        /^\s*which projects\b\s*\S{3,}/i.test(question) ||
         /\b(any|some) projects\b/i.test(question) ||
         /\bprojects (that|which) (use|are|list)\b/i.test(question) ||
         /\bdoes (he|she) have\b[^?]*\bprojects\b/i.test(question),

@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-24T18:54:17.645Z",
+  "generated": "2026-11-24T21:50:23.761Z",
   "mode": "stateless",
-  "library": "0.8.0",
+  "library": "0.8.2",
   "threads": [
     {
       "id": "portfolio-stack",
