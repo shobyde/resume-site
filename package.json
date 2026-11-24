@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "audit:routing": "node scripts/audit-routing.mjs",
+    "audit:routing": "node node_modules/client-agent/dist/cli/index.js audit --probes bench/probes.json --module bench/agent-setup.mjs",
     "bench:composition": "node bench/composition/bench.mjs",
     "preview": "vite preview"
   },
@@ -14,7 +14,7 @@
     "vite": "^6.0.0"
   },
   "dependencies": {
-    "client-agent": "https://github.com/shobyde/client-agent/releases/download/v0.6.5/client-agent-0.6.5.tgz",
+    "client-agent": "https://github.com/shobyde/client-agent/releases/download/v0.6.6/client-agent-0.6.6.tgz",
     "lenis": "^1.3.26",
     "three": "^0.170.0"
   }

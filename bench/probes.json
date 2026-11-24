@@ -1,0 +1,176 @@
+{
+  "questions": [
+    {
+      "question": "go to the about section",
+      "expect": "site.about"
+    },
+    {
+      "question": "take me to about",
+      "expect": "site.about"
+    },
+    {
+      "question": "show me the blog",
+      "expect": "site.blog"
+    },
+    {
+      "question": "take me to the log",
+      "expect": "site.blog"
+    },
+    {
+      "question": "take me to contact",
+      "expect": "site.contact"
+    },
+    {
+      "question": "take me to his experience",
+      "expect": "site.experience"
+    },
+    {
+      "question": "take me to the projects",
+      "expect": "site.projects"
+    },
+    {
+      "question": "show me the projects",
+      "expect": "site.projects"
+    },
+    {
+      "question": "take me to skills",
+      "expect": "site.skills"
+    },
+    {
+      "question": "back to the top",
+      "expect": "site.top"
+    },
+    {
+      "question": "show the newest article card",
+      "expect": "blog.card"
+    },
+    {
+      "question": "open the archive",
+      "expect": "blog.open_archive"
+    },
+    {
+      "question": "go to the archive",
+      "expect": "blog.open_archive"
+    },
+    {
+      "question": "see all the posts",
+      "expect": "blog.open_archive"
+    },
+    {
+      "question": "read the newest article",
+      "expect": "blog.open_newest"
+    },
+    {
+      "question": "show the contact card",
+      "expect": "contact.card"
+    },
+    {
+      "question": "copy his email",
+      "expect": "contact.copy_email"
+    },
+    {
+      "question": "copy the email address",
+      "expect": "contact.copy_email"
+    },
+    {
+      "question": "open linkedin",
+      "expect": "contact.open_linkedin"
+    },
+    {
+      "question": "open his linkedin",
+      "expect": "contact.open_linkedin"
+    },
+    {
+      "question": "show the hobnob card",
+      "expect": "projects.card"
+    },
+    {
+      "question": "what is readback?",
+      "expect": "projects.card"
+    },
+    {
+      "question": "expand the hobnob card",
+      "expect": "projects.expand"
+    },
+    {
+      "question": "more about groundglass",
+      "expect": "projects.expand"
+    },
+    {
+      "question": "open the hobnob site",
+      "expect": "projects.open"
+    },
+    {
+      "question": "source code for readback",
+      "expect": "projects.open"
+    },
+    {
+      "question": "open the printable resume",
+      "expect": "resume.print"
+    },
+    {
+      "question": "download the resume",
+      "expect": "resume.print"
+    },
+    {
+      "question": "print the resume",
+      "expect": "resume.print"
+    },
+    {
+      "question": "how many posts are there?",
+      "expect": "posts.newest"
+    },
+    {
+      "question": "what is his current role?",
+      "expect": "profile.summary"
+    },
+    {
+      "question": "where is he based?",
+      "expect": "profile.summary"
+    },
+    {
+      "question": "how long has he been working?",
+      "expect": "profile.summary"
+    },
+    {
+      "question": "list the projects",
+      "expect": "projects.list_titles"
+    },
+    {
+      "question": "what has he built?",
+      "expect": "projects.list_titles"
+    },
+    {
+      "question": "who is sho?",
+      "expect": "profile.who"
+    },
+    {
+      "question": "tell me about him",
+      "expect": "profile.who"
+    },
+    {
+      "question": "what technologies does he use?",
+      "expect": "knowledge.skills"
+    },
+    {
+      "question": "what is his stack?",
+      "expect": "knowledge.skills"
+    },
+    {
+      "question": "what is his email?",
+      "expect": "contact.email"
+    },
+    {
+      "question": "his linkedin?",
+      "expect": "contact.linkedin"
+    },
+    {
+      "question": "which projects use python?",
+      "expect": "projects.using"
+    },
+    {
+      "question": "which projects use typescript?",
+      "expect": "projects.using"
+    }
+  ]
+}
