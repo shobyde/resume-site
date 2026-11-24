@@ -1,0 +1,199 @@
+{
+  "note": "The registry for the no-model scorecard. One entry per task class. `file` is the suite in this directory, `container` says where the task list lives inside it, `input` names the field that carries the visitor's words (null when the tasks are assertions rather than utterances). `key` names the field that identifies a task when there is no utterance; `discriminator` lists the fields that legitimately make two tasks with the same sentence different tasks (a register, a session, a page, a fault). `live` means /labs/no-llm/ can grade this class in the tab with grade.mjs; every other class is recorded from its own harness. Adding a class means adding an entry here plus a scorecard row, and `node bench/no-llm/lint-tasks.mjs` (wired into prebuild) is what checks both halves agree.",
+  "entries": [
+    {
+      "class": "taxonomy",
+      "rung": 1,
+      "file": "tasks.json",
+      "container": "tasks",
+      "input": "q",
+      "runner": "run.mjs",
+      "live": true
+    },
+    {
+      "class": "negation",
+      "rung": 2,
+      "file": "negation.json",
+      "container": "tasks",
+      "input": "q",
+      "runner": "run.mjs --suite negation.json",
+      "live": true
+    },
+    {
+      "class": "reference",
+      "rung": 3,
+      "file": "reference.json",
+      "container": "tasks",
+      "input": "q",
+      "runner": "run.mjs --suite reference.json",
+      "live": true
+    },
+    {
+      "class": "compound",
+      "rung": 4,
+      "file": "compound.json",
+      "container": "tasks",
+      "input": "q",
+      "runner": "run.mjs --suite compound.json",
+      "live": true
+    },
+    {
+      "class": "synonyms",
+      "rung": 5,
+      "file": "synonyms.json",
+      "container": "tasks",
+      "input": "q",
+      "runner": "run.mjs --suite synonyms.json",
+      "live": true
+    },
+    {
+      "class": "answers",
+      "rung": 4,
+      "file": "compound.json",
+      "container": "tasks",
+      "input": "q",
+      "runner": "answers.mjs",
+      "live": false,
+      "note": "The engine's answer set over the compound suite, not a separate task file. Same tasks, different claim."
+    },
+    {
+      "class": "discourse",
+      "rung": 6,
+      "file": "discourse.json",
+      "container": "intents",
+      "input": "q",
+      "runner": "discourse.mjs",
+      "live": false
+    },
+    {
+      "class": "summarise",
+      "rung": 7,
+      "file": "summarise.json",
+      "container": "tasks",
+      "input": "query",
+      "runner": "summarise.mjs",
+      "live": false
+    },
+    {
+      "class": "register",
+      "rung": 8,
+      "file": "register.json",
+      "container": "tasks",
+      "input": "q",
+      "discriminator": [
+        "register",
+        "session"
+      ],
+      "runner": "register.mjs",
+      "live": false
+    },
+    {
+      "class": "outline",
+      "rung": 9,
+      "file": "outline.json",
+      "container": "tasks",
+      "input": null,
+      "key": "at",
+      "runner": "outline.mjs",
+      "live": false,
+      "note": "One task per ledger entry, keyed by its heading timestamp in `at`, not by an utterance."
+    },
+    {
+      "class": "plan",
+      "rung": 10,
+      "file": "plan.json",
+      "container": "tasks",
+      "input": "q",
+      "runner": "plan.mjs",
+      "live": false
+    },
+    {
+      "class": "execute",
+      "rung": 11,
+      "file": "execute.json",
+      "container": "tasks",
+      "input": "q",
+      "runner": "execute.mjs",
+      "live": false
+    },
+    {
+      "class": "recover",
+      "rung": 12,
+      "file": "recover.json",
+      "container": "tasks",
+      "input": "q",
+      "discriminator": [
+        "kind",
+        "faults"
+      ],
+      "runner": "recover.mjs",
+      "live": false,
+      "note": "The same sentence is run against four different injected failures; the fault is the task."
+    },
+    {
+      "class": "skills",
+      "rung": 13,
+      "file": "skills.json",
+      "container": "tasks",
+      "input": "text",
+      "discriminator": [
+        "page"
+      ],
+      "runner": "skills.mjs",
+      "live": false
+    },
+    {
+      "class": "memory",
+      "rung": 14,
+      "file": "memory.json",
+      "container": "conversations",
+      "input": null,
+      "key": "id",
+      "runner": "memory.mjs",
+      "live": false,
+      "note": "Tasks live inside a scripted conversation; each one asserts a turn's answer, so the input is the conversation above it."
+    },
+    {
+      "class": "preferences",
+      "rung": 15,
+      "file": "preferences.json",
+      "container": "tasks",
+      "input": "q",
+      "discriminator": [
+        "session",
+        "expect"
+      ],
+      "runner": "preferences.mjs",
+      "live": false
+    },
+    {
+      "class": "actions",
+      "rung": 16,
+      "file": "actions.json",
+      "container": "tasks",
+      "input": "say",
+      "runner": "actions.mjs",
+      "live": false
+    },
+    {
+      "class": "mcp",
+      "rung": 17,
+      "file": "mcp.json",
+      "container": "tasks",
+      "input": null,
+      "key": "id",
+      "runner": "mcp.mjs --before",
+      "live": false,
+      "note": "Protocol tasks: JSON-RPC frames, not sentences. Every task needs an id because that is the only thing naming it."
+    },
+    {
+      "class": "browser",
+      "rung": 18,
+      "file": "browser.json",
+      "container": "tasks",
+      "input": "say",
+      "runner": "browser-agent.mjs",
+      "live": false
+    }
+  ]
+}

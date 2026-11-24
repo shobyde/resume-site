@@ -1,0 +1,31 @@
+name: no-llm suites
+
+# The task files behind /labs/no-llm/ are the evidence for every number the page
+# publishes. This job checks the part that can be checked on a bare checkout: that
+# each suite still parses, that every task still carries its input, and that the
+# published task count matches the file. Full pass rates need a built dist and
+# Chromium, so they stay a local `npm run bench:no-llm` and `npm run scorecard`.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'bench/no-llm/**'
+      - 'labs/no-llm/**'
+      - '.github/workflows/no-llm.yml'
+  pull_request:
+    paths:
+      - 'bench/no-llm/**'
+      - 'labs/no-llm/**'
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Suites match the scorecard
+        run: node bench/no-llm/lint-tasks.mjs
