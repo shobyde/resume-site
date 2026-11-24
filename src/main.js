@@ -98,6 +98,28 @@ function buildPage() {
     <div class="hero__scroll" id="heroScroll"><span>Scroll</span><div class="hero__scroll-line"></div></div>
   </header>
 
+  <!-- FEATURED WORK: the assistant on this page is the product; say so above the fold -->
+  <aside class="featured container" aria-labelledby="featuredTitle">
+    <div class="featured__card">
+      <div class="featured__copy">
+        <p class="featured__eyebrow"><span class="featured__pulse" aria-hidden="true"></span>Featured work <span class="featured__year">2026</span></p>
+        <h2 class="featured__title" id="featuredTitle"><a href="/boaz/">boaz</a><span class="featured__version">v0.7.14</span></h2>
+        <p class="featured__lede">The assistant on this page runs on it: 26 capabilities, a declarative planner, session memory and a skill runner, with no model and no network.</p>
+        <ul class="featured__links">
+          <li><a href="/boaz/">How it works</a></li>
+          <li><a href="/labs/tools/">Tools lab</a></li>
+          <li><a href="https://github.com/shobyde/boaz/releases">Source &amp; releases</a></li>
+        </ul>
+      </div>
+      <div class="featured__flow" aria-hidden="true">
+        <span class="featured__node">ask</span><span class="featured__wire"></span>
+        <span class="featured__node">plan</span><span class="featured__wire"></span>
+        <span class="featured__node">tool</span><span class="featured__wire"></span>
+        <span class="featured__node featured__node--end">answer</span>
+      </div>
+    </div>
+  </aside>
+
   <div class="progress" id="progress" aria-hidden="true"></div>
 
   <main class="container" id="main-content" tabindex="-1">

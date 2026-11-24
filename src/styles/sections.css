@@ -649,3 +649,150 @@
 @media (prefers-reduced-motion: reduce) {
   .new-post { transition: none; transform: none; }
 }
+
+/* ============================================================
+   Featured work. One card, above the fold, for the thing this
+   page actually runs on. Edge-lit rather than filled, so it
+   reads as a plate on the page, not another rounded tile.
+   ============================================================ */
+.featured {
+  margin-top: clamp(-2.5rem, -4vh, -1rem);
+  position: relative;
+  z-index: 2;
+}
+.featured__card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+  padding: clamp(1.3rem, 3vw, 1.9rem) clamp(1.2rem, 3vw, 2rem);
+  border: 1px solid var(--border-strong);
+  border-radius: 18px;
+  background:
+    radial-gradient(120% 160% at 0% 0%, rgba(124, 108, 255, 0.16), transparent 55%),
+    radial-gradient(120% 160% at 100% 100%, rgba(0, 217, 184, 0.10), transparent 55%),
+    rgba(16, 16, 24, 0.86);
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+}
+.featured__card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+  opacity: 0.7;
+}
+.featured__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent2);
+}
+.featured__year { color: var(--fg-mute); letter-spacing: 0.12em; }
+.featured__pulse {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent2);
+  box-shadow: 0 0 0 0 rgba(0, 217, 184, 0.55);
+  animation: featured-pulse 2.6s var(--ease-out) infinite;
+}
+@keyframes featured-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 217, 184, 0.45); }
+  70% { box-shadow: 0 0 0 8px rgba(0, 217, 184, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 217, 184, 0); }
+}
+.featured__title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.featured__title a { color: var(--fg); text-decoration: none; }
+.featured__title a:hover, .featured__title a:focus-visible { color: var(--accent); }
+.featured__title a::after { content: ''; position: absolute; inset: 0; }
+.featured__version {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  color: var(--fg-mute);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 0.18rem 0.5rem;
+}
+.featured__lede {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--fg-dim);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.featured__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.95rem 0 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+  z-index: 1;
+}
+.featured__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.34rem 0.7rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--fg-dim);
+  text-decoration: none;
+  transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out);
+}
+.featured__links a:hover,
+.featured__links a:focus-visible { color: var(--fg); border-color: var(--accent); }
+.featured__flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+}
+.featured__node {
+  padding: 0.32rem 0.5rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: rgba(11, 11, 15, 0.6);
+}
+.featured__node--end {
+  color: var(--accent2);
+  border-color: rgba(0, 217, 184, 0.45);
+  background: rgba(0, 217, 184, 0.08);
+}
+.featured__wire {
+  width: clamp(14px, 3vw, 30px);
+  height: 1px;
+  background: linear-gradient(90deg, var(--border-strong), rgba(124, 108, 255, 0.6));
+}
+@media (max-width: 860px) {
+  .featured__card { grid-template-columns: minmax(0, 1fr); }
+  .featured__flow { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .featured__pulse { animation: none; }
+}

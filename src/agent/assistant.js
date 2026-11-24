@@ -189,21 +189,35 @@ export function initAssistant({ posts = [] } = {}) {
       }),
   });
 
+  // Diagnostics are a developer tool, not a customer-facing panel: keep the
+  // report behind ?agentDebug=1 so the opened assistant stays a conversation.
+  const debug = new URLSearchParams(location.search).has('agentDebug');
+  const AVATAR = `<svg viewBox="0 0 32 32" width="100%" height="100%" focusable="false">
+        <circle cx="16" cy="16" r="9.2" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.9"/>
+        <circle cx="16" cy="16" r="3.1" fill="currentColor"/>
+        <ellipse cx="16" cy="16" rx="13" ry="5.4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.45" transform="rotate(-24 16 16)"/>
+        <circle cx="27" cy="9.6" r="1.7" fill="currentColor"/>
+      </svg>`;
+
   const root = document.createElement('div');
   root.id = 'agentRoot';
   root.className = 'agent';
   root.innerHTML = `
     <button class="agent__launcher" id="agentLauncher" type="button" aria-expanded="false" aria-controls="agentPanel">
-      <span class="agent__glyph" aria-hidden="true">&#9096;</span>
-      <span>Ask about Sho</span>
+      <span class="agent__avatar" aria-hidden="true">${AVATAR}</span>
+      <span class="agent__launcher-copy">
+        <span class="agent__launcher-label">Ask about Sho</span>
+        <span class="agent__launcher-sub">powered by boaz</span>
+      </span>
     </button>
     <div class="agent__scrim" id="agentScrim" hidden></div>
     <section class="agent__panel" id="agentPanel" aria-label="Ask about Sho" hidden>
       <header class="agent__head">
-        <div>
-          <p class="agent__eyebrow">Site assistant</p>
+        <span class="agent__avatar agent__avatar--head" aria-hidden="true">${AVATAR}</span>
+        <div class="agent__head-copy">
+          <p class="agent__eyebrow"><span class="agent__dot" aria-hidden="true"></span>Site assistant <span class="agent__meta-sep">&middot;</span> <a class="agent__powered" href="/boaz/">powered by boaz</a></p>
           <h2 class="agent__title">Ask about Sho</h2>
-          <p class="agent__meta"><span class="agent__dot" aria-hidden="true"></span><span id="agentEngine">Rules over this page</span> <span class="agent__meta-sep">&middot;</span> <span class="agent__meta-count">${manifest.capabilities.length} capabilities</span></p>
+          <p class="agent__meta"><span id="agentEngine">Rules over this page</span> <span class="agent__meta-sep">&middot;</span> <span class="agent__meta-count">${manifest.capabilities.length} capabilities</span></p>
         </div>
         <button class="agent__close" id="agentClose" type="button" aria-label="Close the assistant">&times;</button>
       </header>
@@ -214,12 +228,12 @@ export function initAssistant({ posts = [] } = {}) {
         <input class="agent__input" id="agentInput" type="text" placeholder="Which projects use Python?" />
         <button class="agent__send" type="submit">Send</button>
       </form>
-      <p class="agent__foot">Answers come from the facts on this page. Nothing is downloaded and nothing is sent to a server. <a href="/boaz/">How this works</a></p>
-      <details class="agent__diag" id="agentDiag">
+      <p class="agent__foot">Answers come from the facts on this page. Nothing is downloaded and nothing is sent to a server. <a href="/boaz/">How this works</a>
+      ${debug ? `<details class="agent__diag" id="agentDiag">
         <summary>Diagnostics</summary>
         <p class="agent__diag-line" id="agentDiagOut">Press to check this page.</p>
         <button class="agent__diag-copy" id="agentDiagCopy" type="button">Copy the report</button>
-      </details>
+      </details>` : ''}
     </section>
   `;
   document.body.appendChild(root);
@@ -591,13 +605,13 @@ export function initAssistant({ posts = [] } = {}) {
     return parts.join(' ');
   }
 
-  diag.addEventListener('toggle', () => {
-    if (!diag.open) return;
+  diag?.addEventListener('toggle', () => {
+    if (!diag.open || !diagOut) return;
     diagOut.textContent = collectDiagnostics();
   });
 
-  diagCopy.addEventListener('click', async () => {
-    const text = diagOut.textContent || '';
+  diagCopy?.addEventListener('click', async () => {
+    const text = diagOut?.textContent || '';
     try {
       await navigator.clipboard.writeText(text);
       diagCopy.textContent = 'Copied';
