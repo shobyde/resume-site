@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A manifest already knows what to test - Sho Byde</title>
+<meta name="description" content="client-agent turned this site&#x27;s manifest into 113 questions and found four phrases two capabilities still fight over." />
+<link rel="canonical" href="https://shobyde.com/posts/2026-11-24-a-manifest-already-knows-what-to-test/" />
+<meta name="author" content="Sho Byde" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="A manifest already knows what to test" />
+<meta property="og:description" content="client-agent turned this site&#x27;s manifest into 113 questions and found four phrases two capabilities still fight over." />
+<meta property="og:url" content="https://shobyde.com/posts/2026-11-24-a-manifest-already-knows-what-to-test/" />
+<meta property="og:site_name" content="shobyde.com" />
+<meta property="article:published_time" content="2026-11-24T08:00:00-07:00" />
+<meta property="article:author" content="Sho Byde" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="A manifest already knows what to test" />
+<meta name="twitter:description" content="client-agent turned this site&#x27;s manifest into 113 questions and found four phrases two capabilities still fight over." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "A manifest already knows what to test",
+  "description": "client-agent turned this site&#x27;s manifest into 113 questions and found four phrases two capabilities still fight over.",
+  "url": "https://shobyde.com/posts/2026-11-24-a-manifest-already-knows-what-to-test/",
+  "datePublished": "2026-11-24T08:00:00-07:00",
+  "author": {"@type": "Person", "name": "Sho Byde", "url": "https://shobyde.com/"},
+  "keywords": "dev"
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; margin: .2rem 0 .6rem; text-wrap: balance; }
+  h2 { margin-top: 1.8rem; }
+  a { color: #9ecbff; }
+  /* Post figures are wider than the column: a 880px SVG must scale to the
+     measure instead of pushing the page sideways on a phone. */
+  img, svg { max-width: 100%; height: auto; }
+  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>A manifest already knows what to test</h1>
+  <div class="meta">2026-11-24 &middot; dev &middot; by Sho Byde</div>
+  <p>I added a command this morning that writes test coverage out of a manifest, because the old workflow had a hole in it. <code>audit</code> and <code>bench</code> shipped in 0.6.6 and both need a probe file. A new app never has one. The first thing anyone did was hand write twenty questions, get a few wrong because they guessed at the phrasing, and stop.</p>
+<p>A manifest already carries the two things a probe needs. <code>capabilities[].title</code> says what the capability does. <code>capabilities[].keywords</code> says how a visitor asks for it. So <code>client-agent probes --generate --manifest dist/agent-manifest.json</code> emits <code>probes.generated.json</code>: one question per title and per keyword, each already expecting the id it came from, each grouped under that id as an <code>intent</code> so <code>bench</code> can score the copy once someone adds <code>must</code> facts.</p>
+<p>The interesting part is what it refuses to write down.</p>
+<p>A phrase that two capabilities in the same query class both claim is a coin flip, and a probe that records a coin flip is worse than no probe: it passes or fails depending on tie breaking you did not intend to test. On this site, <code>email</code>, <code>get in touch</code>, <code>hire</code> and <code>linkedin</code> are all claimed by both <code>contact.card</code> and <code>site.contact</code>, so the generator prints them and writes nothing for them. Four phrases, eight capabilities, one real bug in the manifest.</p>
+<p>The second refusal is arguments. <code>projects.open</code> needs a project and a link; <code>projects.expand</code> needs a project. A phrase names what to open, not which one. Those three capabilities come back in the uncovered list with the argument names they need, which is the honest answer, and each needs a hand written probe with an <code>args</code> object.</p>
+<p>Run against this site's own 22 capabilities, the generator produced 113 probes and covered 19 of them. Then I ran the audit on its own output: 73 of 113 passed.</p>
+<p>The forty misses are where the numbers stopped being a scoreboard. Fourteen went to one answer rule, <code>posts.newest</code>. Seven went to <code>profile.who</code>. Nine got answered in prose. That is one finding, not forty: the manifest still lists keywords for phrasings that answer rules took over after the manifest was written. <code>newest post</code> and <code>who is sho</code> belong to those rules, and the keyword entries should go. A generated probe that fails is a claim about the manifest, which is what I wanted from it, though I expected the failures to be more evenly spread.</p>
+<p>One library change fell out of building the page. The generator was exported from <code>client-agent/build</code>, which re-exports the source scanner, and importing that in a browser drags TypeScript into the bundle. The generator itself is a pure function over JSON, so 0.6.8 gives it its own entry, <code>client-agent/probes</code>. The page at <code>/labs/probe-gen/</code> imports that and builds to 5.86 kB, and it does the same work in the tab that the CLI does on disk: paste a manifest, read the probe list, copy the file.</p>
+<p>Try it on your own manifest, or on this site's, at <a href="/labs/probe-gen/">the probe generator</a>. The release is <a href="https://github.com/shobyde/client-agent/releases/tag/v0.6.8">client-agent 0.6.8</a>.</p>
+<p>The open question I have not answered: whether a generator should prefer the title or the keywords when the two disagree about how a visitor talks. Titles here read like UI labels, and keywords read like sentences, and half the misses above come from treating the label as an utterance. Filtering titles out of the default would have hidden the four contested phrases though, since those live in the keyword lists.</p>
+  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a> &middot; <a href="https://shobyde.com/archive/">all writing</a></p>
+</main>
+</body>
+</html>

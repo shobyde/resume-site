@@ -1,5 +1,14 @@
 [
   {
+    "slug": "2026-11-24-a-manifest-already-knows-what-to-test",
+    "date": "2026-11-24",
+    "title": "A manifest already knows what to test",
+    "tag": "dev",
+    "excerpt": "client-agent turned this site's manifest into 113 questions and found four phrases two capabilities still fight over.",
+    "words": 579,
+    "minutes": 3
+  },
+  {
     "slug": "2026-11-23-langchain-s-frontend-sdk-hands-you-state-not-a-chat-widget",
     "date": "2026-11-23",
     "title": "LangChain's Frontend SDK Hands You State, Not a Chat Widget",

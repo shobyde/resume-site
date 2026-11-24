@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Probe generator · client-agent</title>
+<meta name="description" content="Paste a client-agent manifest and get a probe file: one question per capability title and keyword, plus the phrases two capabilities both claim." />
+<link rel="canonical" href="https://shobyde.com/labs/probe-gen/" />
+<meta name="theme-color" content="#0b0b0f" />
+<meta property="og:title" content="Probe generator · client-agent" />
+<meta property="og:description" content="A manifest already contains what a probe file needs: the capability titles and the phrases visitors use. This turns one into the other." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shobyde.com/labs/probe-gen/" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+<style>
+:root {
+  --bg: #0b0b0f;
+  --panel: #12121a;
+  --panel-2: #16161f;
+  --fg: #e8e8ee;
+  --dim: #b4b4c0;
+  --mute: #8f8f9e;
+  --accent: #7c6cff;
+  --accent-soft: #a79bff;
+  --accent2: #00d9b8;
+  --warn: #ffb454;
+  --line: rgba(255,255,255,0.08);
+  --line-strong: rgba(255,255,255,0.16);
+  --head: 'Space Grotesk', system-ui, sans-serif;
+  --body: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html { color-scheme: dark; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 40px 24px 96px; }
+.crumb { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+h1 { font-family: var(--head); font-size: clamp(1.9rem, 5vw, 2.9rem); line-height: 1.1; margin: 14px 0 10px; letter-spacing: -0.02em; }
+.lede { color: var(--dim); max-width: 62ch; margin: 0 0 8px; }
+.sub { color: var(--mute); font-size: 14px; max-width: 68ch; }
+.grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 20px; margin-top: 28px; }
+@media (max-width: 880px) { .grid { grid-template-columns: 1fr; } }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; min-width: 0; }
+.card h2 { font-family: var(--head); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); margin: 0 0 10px; font-weight: 500; }
+textarea {
+  width: 100%; min-height: 320px; resize: vertical;
+  background: #0d0d13; color: var(--fg); border: 1px solid var(--line);
+  border-radius: 8px; padding: 12px; font-family: var(--mono); font-size: 12px; line-height: 1.5;
+}
+textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 12px; }
+button {
+  font-family: var(--head); font-size: 14px; font-weight: 500;
+  padding: 10px 18px; border-radius: 8px; border: 1px solid var(--line-strong);
+  background: var(--card, rgba(255,255,255,0.03)); color: var(--fg); cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, transform .12s ease;
+}
+button:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.26); }
+button:active { transform: translateY(1px); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #0b0b0f; font-weight: 600; }
+button.primary:hover { background: var(--accent-soft); }
+button.ghost { background: transparent; }
+.stats { display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 4px; }
+.stat b { display: block; font-family: var(--head); font-size: 24px; line-height: 1.1; }
+.stat span { font-size: 12px; color: var(--mute); font-family: var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+.note { font-size: 13px; color: var(--mute); margin: 10px 0 0; }
+ul.list { list-style: none; padding: 0; margin: 6px 0 0; font-size: 14px; }
+ul.list li { padding: 7px 0; border-top: 1px solid var(--line); display: flex; gap: 10px; justify-content: space-between; align-items: baseline; }
+ul.list li:first-child { border-top: 0; }
+ul.list .q { font-family: var(--mono); font-size: 12.5px; color: var(--fg); word-break: break-word; }
+ul.list .id { font-family: var(--mono); font-size: 11.5px; color: var(--accent2); white-space: nowrap; }
+.warn { color: var(--warn); }
+.pill { display: inline-block; font-family: var(--mono); font-size: 11px; color: var(--mute); border: 1px solid var(--line); border-radius: 999px; padding: 1px 8px; }
+pre.out {
+  margin: 12px 0 0; padding: 12px; background: #0d0d13; border: 1px solid var(--line);
+  border-radius: 8px; font-family: var(--mono); font-size: 11.5px; line-height: 1.5;
+  max-height: 320px; overflow: auto; white-space: pre-wrap; word-break: break-word; color: #cfcfe0;
+}
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px; }
+.tabs button { font-size: 12px; padding: 6px 12px; }
+.tabs button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent-soft); }
+.hint { font-size: 12.5px; color: var(--mute); margin: 8px 0 0; }
+.error { color: #ff8181; font-size: 13px; margin-top: 10px; min-height: 1em; }
+footer { margin-top: 44px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--mute); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb">labs / probe-gen</div>
+  <h1>Turn a manifest into a probe file</h1>
+  <p class="lede">A capability manifest already lists two things a test needs: what each capability does, and the phrases a visitor uses to ask for it. This page turns those into questions, then names the ones it will not decide for you.</p>
+  <p class="sub">The generator runs in this tab, on the JSON below. Nothing is sent anywhere. Edit the manifest in the box and press generate to try your own.</p>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Manifest</h2>
+      <textarea id="manifest" spellcheck="false" aria-label="Manifest JSON"></textarea>
+      <div class="row">
+        <button class="primary" id="run">Generate probes</button>
+        <button class="ghost" id="site">Load this site's manifest</button>
+      </div>
+      <div class="error" id="error" role="alert"></div>
+      <p class="hint">Want a file, not a page? <code>npx client-agent probes --generate --manifest dist/agent-manifest.json</code></p>
+    </section>
+
+    <section class="card">
+      <h2>Result</h2>
+      <div class="stats" id="stats"></div>
+      <div class="tabs" id="tabs" hidden>
+        <button data-view="probes" aria-pressed="true">Probes <span class="pill" id="countProbes">0</span></button>
+        <button data-view="collisions" aria-pressed="false">Contested phrases <span class="pill" id="countCollisions">0</span></button>
+        <button data-view="uncovered" aria-pressed="false">No probe <span class="pill" id="countGaps">0</span></button>
+        <button data-view="json" aria-pressed="false">JSON</button>
+      </div>
+      <div id="view"></div>
+      <div class="row" id="actions" hidden>
+        <button class="ghost" id="copy">Copy probe file</button>
+        <button class="ghost" id="download">Download</button>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <span>client-agent 0.6.8, generated in the browser from the published tarball.</span>
+    <span><a href="/client-agent/">the library page</a> · <a href="/">back to the site</a></span>
+  </footer>
+</div>
+
+<script type="module">
+import { generateProbes, serializeProbes } from 'client-agent/probes';
+
+const $ = (id) => document.getElementById(id);
+const box = $('manifest');
+const view = $('view');
+let current = null;
+let currentView = 'probes';
+
+const esc = (text) => String(text).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function render() {
+  if (!current) return;
+  const { questions, collisions, uncovered, capabilities } = current;
+  $('countProbes').textContent = questions.length;
+  $('countCollisions').textContent = collisions.length;
+  $('countGaps').textContent = uncovered.length;
+  $('stats').innerHTML =
+    `<div class="stat"><b>${questions.length}</b><span>probes</span></div>` +
+    `<div class="stat"><b>${capabilities - uncovered.length}/${capabilities}</b><span>capabilities asked</span></div>` +
+    `<div class="stat"><b class="${collisions.length ? 'warn' : ''}">${collisions.length}</b><span>contested phrases</span></div>`;
+
+  const tabs = $('tabs');
+  tabs.hidden = false;
+  $('actions').hidden = currentView !== 'json' && currentView !== 'probes';
+  for (const button of tabs.querySelectorAll('button')) {
+    button.setAttribute('aria-pressed', String(button.dataset.view === currentView));
+  }
+
+  if (currentView === 'probes') {
+    view.innerHTML = `<ul class="list">${questions
+      .map((probe) => `<li><span class="q">${esc(probe.question)}</span><span class="id">${esc(probe.expect)}</span></li>`)
+      .join('')}</ul>`;
+  } else if (currentView === 'collisions') {
+    view.innerHTML = collisions.length
+      ? `<ul class="list">${collisions
+          .map(
+            (collision) =>
+              `<li><span class="q">${esc(collision.phrase)}<br /><span class="pill">${collision.source}</span></span><span class="id">${esc(collision.claimants.join(' / '))}</span></li>`,
+          )
+          .join('')}</ul>
+         <p class="note">Two capabilities answering the same kind of question with one phrase. Whichever one answers, a probe would be recording a coin flip, so none is written. Give one of them a phrase of its own.</p>`
+      : '<p class="note">No contested phrases. Every title and keyword belongs to one capability.</p>';
+  } else if (currentView === 'uncovered') {
+    view.innerHTML = uncovered.length
+      ? `<ul class="list">${uncovered
+          .map(
+            (gap) =>
+              `<li><span class="q">${esc(gap.reason)}</span><span class="id">${esc(gap.id)}</span></li>`,
+          )
+          .join('')}</ul>
+         <p class="note">A phrase names what to open, not which one. A capability with required arguments needs a probe written by hand, with an <code>args</code> object.</p>`
+      : '<p class="note">Every capability has at least one probe.</p>';
+  } else {
+    view.innerHTML = `<pre class="out">${esc(serializeProbes(current))}</pre>`;
+  }
+}
+
+function run() {
+  $('error').textContent = '';
+  let manifest;
+  try {
+    manifest = JSON.parse(box.value);
+  } catch (error) {
+    $('error').textContent = `That is not JSON: ${error.message}`;
+    return;
+  }
+  if (!Array.isArray(manifest?.capabilities) || manifest.capabilities.length === 0) {
+    $('error').textContent = 'Expected an object with a "capabilities" array.';
+    return;
+  }
+  const result = generateProbes(manifest);
+  current = Object.assign({}, result, { capabilities: manifest.capabilities.length });
+  // Keep the manifest around for the download button.
+  current.manifest = manifest;
+  render();
+}
+
+async function loadSite() {
+  $('error').textContent = '';
+  const response = await fetch(`/agent-manifest.json?v=${Date.now()}`);
+  if (!response.ok) {
+    $('error').textContent = `Could not load the site manifest (${response.status}).`;
+    return;
+  }
+  const text = await response.text();
+  box.value = text;
+  run();
+}
+
+$('run').addEventListener('click', run);
+$('site').addEventListener('click', () => { loadSite(); });
+$('tabs').addEventListener('click', (event) => {
+  const button = event.target.closest('button[data-view]');
+  if (!button) return;
+  currentView = button.dataset.view;
+  render();
+});
+$('copy').addEventListener('click', async () => {
+  if (!current) return;
+  const text = serializeProbes(current);
+  try {
+    await navigator.clipboard.writeText(text);
+    $('copy').textContent = 'Copied';
+    setTimeout(() => { $('copy').textContent = 'Copy probe file'; }, 1400);
+  } catch {
+    $('error').textContent = 'The clipboard is not available here. Use the JSON tab and copy by hand.';
+  }
+});
+$('download').addEventListener('click', () => {
+  if (!current) return;
+  const blob = new Blob([serializeProbes(current)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'probes.generated.json';
+  link.click();
+  URL.revokeObjectURL(url);
+});
+
+loadSite().catch(() => {
+  box.value = '{\n  "version": 1,\n  "capabilities": []\n}';
+});
+</script>
+</body>
+</html>

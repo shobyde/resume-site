@@ -19,6 +19,9 @@ export default defineConfig({
         // The client-agent page runs the engine live, so it is a Vite entry
         // rather than a static file in public/.
         clientAgent: resolve(__dirname, 'client-agent/index.html'),
+        // Labs: the probe generator runs the pure generator from the published
+        // package in the browser, so it needs the same treatment.
+        'probe-gen': resolve(__dirname, 'labs/probe-gen/index.html'),
       },
     },
   },

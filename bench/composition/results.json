@@ -4,12 +4,12 @@
     "fidelity": 1,
     "similarity": 1,
     "openers": 0.25,
-    "spread": 5.94418483337567,
+    "spread": 4.9216076867444665,
     "ttr": 1,
     "stable": 1,
-    "style": 1.6646735003796505,
+    "style": 1.5353075170842825,
     "offTopic": 1,
-    "ms": 2.551336,
+    "ms": 2.544126,
     "rows": [
       {
         "intent": "list_titles",
@@ -92,22 +92,22 @@
         "answers": [
           {
             "question": "how many posts are there?",
-            "text": "58 posts are published, and the newest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "text": "59 posts are published, and the newest is \"A manifest already knows what to test\".",
             "action": false
           },
           {
             "question": "what's the newest post?",
-            "text": "58 posts are published, and the newest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "text": "59 posts are published, and the newest is \"A manifest already knows what to test\".",
             "action": false
           },
           {
             "question": "how much has he written?",
-            "text": "58 posts are published, and the newest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "text": "59 posts are published, and the newest is \"A manifest already knows what to test\".",
             "action": false
           },
           {
             "question": "what's the latest article?",
-            "text": "58 posts are published, and the newest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "text": "59 posts are published, and the newest is \"A manifest already knows what to test\".",
             "action": false
           }
         ],
@@ -116,13 +116,13 @@
         "similarity": 1,
         "stable": true,
         "lengths": [
-          20,
-          20,
-          20,
-          20
+          16,
+          16,
+          16,
+          16
         ],
         "ttr": 1,
-        "style": 1.3221336370539105,
+        "style": 0.5459377372817007,
         "offTopic": 1
       },
       {
@@ -244,14 +244,14 @@
   {
     "name": "shipped",
     "fidelity": 1,
-    "similarity": 0.507172240331194,
+    "similarity": 0.4805321986641418,
     "openers": 0.6666666666666666,
-    "spread": 8.349983366583567,
-    "ttr": 0.9924101307189543,
+    "spread": 8.031189202104505,
+    "ttr": 0.9948611111111112,
     "stable": 1,
-    "style": 1.7481294292584153,
-    "offTopic": 0.8333333333333334,
-    "ms": 26.951131,
+    "style": 1.659765723867375,
+    "offTopic": 0.7916666666666666,
+    "ms": 26.614963,
     "rows": [
       {
         "intent": "list_titles",
@@ -334,38 +334,38 @@
         "answers": [
           {
             "question": "how many posts are there?",
-            "text": "58 of them, ending with \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "text": "59 of them, ending with \"A manifest already knows what to test\".",
             "action": false
           },
           {
             "question": "what's the newest post?",
-            "text": "\"LangChain's Frontend SDK Hands You State, Not a Chat Widget\" is the latest; 58 in all.",
+            "text": "\"A manifest already knows what to test\" is the latest; 59 in all.",
             "action": false
           },
           {
             "question": "how much has he written?",
-            "text": "That is 58 entries, most recently \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "text": "That is 59 entries, most recently \"A manifest already knows what to test\".",
             "action": false
           },
           {
             "question": "what's the latest article?",
-            "text": "\"LangChain's Frontend SDK Hands You State, Not a Chat Widget\" — number 58, if you are counting.",
+            "text": "\"A manifest already knows what to test\" — number 59, if you are counting.",
             "action": false
           }
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.5182991663237492,
+        "similarity": 0.35845891632143617,
         "stable": true,
         "lengths": [
-          17,
-          17,
-          18,
-          17
+          13,
+          13,
+          14,
+          13
         ],
-        "ttr": 0.9852941176470589,
-        "style": 1.6103834472285499,
-        "offTopic": 1
+        "ttr": 1,
+        "style": 1.0802012148823081,
+        "offTopic": 0.75
       },
       {
         "intent": "email",
@@ -486,14 +486,14 @@
   {
     "name": "A pools",
     "fidelity": 1,
-    "similarity": 0.3920728028690535,
+    "similarity": 0.3696233673217813,
     "openers": 0.7916666666666666,
-    "spread": 5.211998710241164,
-    "ttr": 0.9899288662833555,
+    "spread": 4.24243607952894,
+    "ttr": 0.9942460317460317,
     "stable": 1,
-    "style": 1.9104419767147556,
-    "offTopic": 0.7083333333333334,
-    "ms": 1.347571,
+    "style": 1.8220782713237151,
+    "offTopic": 0.625,
+    "ms": 1.20827,
     "rows": [
       {
         "intent": "list_titles",
@@ -576,38 +576,38 @@
         "answers": [
           {
             "question": "how many posts are there?",
-            "text": "\"LangChain's Frontend SDK Hands You State, Not a Chat Widget\" — number 58, if you are counting.",
+            "text": "\"A manifest already knows what to test\" — number 59, if you are counting.",
             "action": false
           },
           {
             "question": "what's the newest post?",
-            "text": "\"LangChain's Frontend SDK Hands You State, Not a Chat Widget\" — number 58, if you are counting.",
+            "text": "\"A manifest already knows what to test\" — number 59, if you are counting.",
             "action": false
           },
           {
             "question": "how much has he written?",
-            "text": "That is 58 entries; the latest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "text": "That is 59 entries; the latest is \"A manifest already knows what to test\".",
             "action": false
           },
           {
             "question": "what's the latest article?",
-            "text": "The log has 58 posts, ending with \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "text": "The log has 59 posts, ending with \"A manifest already knows what to test\".",
             "action": false
           }
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.5750900609260089,
+        "similarity": 0.44039344764237603,
         "stable": true,
         "lengths": [
-          17,
-          17,
-          19,
-          19
+          13,
+          13,
+          15,
+          15
         ],
-        "ttr": 0.9574303405572755,
-        "style": 1.7736332574031892,
-        "offTopic": 1
+        "ttr": 0.9833333333333334,
+        "style": 1.2434510250569475,
+        "offTopic": 0.5
       },
       {
         "intent": "email",
@@ -728,14 +728,14 @@
   {
     "name": "B grammar",
     "fidelity": 1,
-    "similarity": 0.4793555868477895,
+    "similarity": 0.46233141252024446,
     "openers": 0.5833333333333334,
-    "spread": 6.940220937885671,
+    "spread": 6.712343521867422,
     "ttr": 0.9862914862914863,
     "stable": 1,
-    "style": 1.7316225322703112,
-    "offTopic": 0.7083333333333334,
-    "ms": 3.099115,
+    "style": 1.6842611047835987,
+    "offTopic": 0.625,
+    "ms": 2.023693,
     "rows": [
       {
         "intent": "list_titles",
@@ -818,38 +818,38 @@
         "answers": [
           {
             "question": "how many posts are there?",
-            "text": "58 posts; the newest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "text": "59 posts; the newest is \"A manifest already knows what to test\".",
             "action": false
           },
           {
             "question": "what's the newest post?",
-            "text": "\"LangChain's Frontend SDK Hands You State, Not a Chat Widget\" — number 58, most recent first.",
+            "text": "\"A manifest already knows what to test\" — number 59, most recent first.",
             "action": false
           },
           {
             "question": "how much has he written?",
-            "text": "\"LangChain's Frontend SDK Hands You State, Not a Chat Widget\" — number 58, most recent first.",
+            "text": "\"A manifest already knows what to test\" — number 59, most recent first.",
             "action": false
           },
           {
             "question": "what's the latest article?",
-            "text": "58 posts; the newest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "text": "59 posts; the newest is \"A manifest already knows what to test\".",
             "action": false
           }
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.6779026217228464,
+        "similarity": 0.5757575757575758,
         "stable": true,
         "lengths": [
-          17,
-          16,
-          16,
-          17
+          13,
+          12,
+          12,
+          13
         ],
         "ttr": 1,
-        "style": 1.7736332574031892,
-        "offTopic": 1
+        "style": 1.4894646924829156,
+        "offTopic": 0.5
       },
       {
         "intent": "email",
@@ -970,14 +970,14 @@
   {
     "name": "C voice",
     "fidelity": 1,
-    "similarity": 0.27040998376016817,
+    "similarity": 0.24996589476454933,
     "openers": 0.5833333333333334,
-    "spread": 5.441449714919729,
-    "ttr": 0.9917328487459057,
+    "spread": 4.582386265788699,
+    "ttr": 0.9903852769177847,
     "stable": 1,
-    "style": 1.5972696785623892,
+    "style": 1.4815553024550747,
     "offTopic": 0.16666666666666666,
-    "ms": 2.787921,
+    "ms": 1.715919,
     "rows": [
       {
         "intent": "list_titles",
@@ -1060,37 +1060,37 @@
         "answers": [
           {
             "question": "how many posts are there?",
-            "text": "The unsolved layer is controls: 58 of them; the newest is \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "text": "The unsolved layer is controls: 59 of them; the newest is \"A manifest already knows what to test\".",
             "action": false
           },
           {
             "question": "what's the newest post?",
-            "text": "The broader lesson: \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\", one of 58.",
+            "text": "The broader lesson: \"A manifest already knows what to test\", one of 59.",
             "action": false
           },
           {
             "question": "how much has he written?",
-            "text": "This Week in Agents: 58 posts, the most recent being \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "text": "This Week in Agents: 59 posts, the most recent being \"A manifest already knows what to test\".",
             "action": false
           },
           {
             "question": "what's the latest article?",
-            "text": "That is a real boundary: \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\", one of 58.",
+            "text": "That is a real boundary: \"A manifest already knows what to test\", one of 59.",
             "action": false
           }
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.43802146324704877,
+        "similarity": 0.315356929273336,
         "stable": true,
         "lengths": [
-          23,
-          17,
-          22,
-          19
+          19,
+          13,
+          18,
+          15
         ],
-        "ttr": 0.9651029748283753,
-        "style": 1.2987376613515567,
+        "ttr": 0.9570175438596491,
+        "style": 0.6044514047076688,
         "offTopic": 0.25
       },
       {
@@ -1212,14 +1212,14 @@
   {
     "name": "D hybrid",
     "fidelity": 1,
-    "similarity": 0.38936010239647634,
+    "similarity": 0.37007885833933485,
     "openers": 0.7083333333333334,
-    "spread": 6.563657305361259,
-    "ttr": 0.9796149519604896,
+    "spread": 5.794963090669536,
+    "ttr": 0.9789800313255691,
     "stable": 1,
-    "style": 1.748983643381422,
+    "style": 1.7530411604657046,
     "offTopic": 0.6666666666666666,
-    "ms": 2.436956,
+    "ms": 1.73217,
     "rows": [
       {
         "intent": "list_titles",
@@ -1302,37 +1302,37 @@
         "answers": [
           {
             "question": "how many posts are there?",
-            "text": "58 of them, ending with \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\". Roughly one a day since the log started.",
+            "text": "59 of them, ending with \"A manifest already knows what to test\". Roughly one a day since the log started.",
             "action": false
           },
           {
             "question": "what's the newest post?",
-            "text": "\"LangChain's Frontend SDK Hands You State, Not a Chat Widget\" is the latest; 58 in all.",
+            "text": "\"A manifest already knows what to test\" is the latest; 59 in all.",
             "action": false
           },
           {
             "question": "how much has he written?",
-            "text": "That is 58 entries, most recently \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\".",
+            "text": "That is 59 entries, most recently \"A manifest already knows what to test\".",
             "action": false
           },
           {
             "question": "what's the latest article?",
-            "text": "58 of them, ending with \"LangChain's Frontend SDK Hands You State, Not a Chat Widget\". Roughly one a day since the log started.",
+            "text": "59 of them, ending with \"A manifest already knows what to test\". Roughly one a day since the log started.",
             "action": false
           }
         ],
         "fidelity": 1,
         "missing": [],
-        "similarity": 0.5339306070105443,
+        "similarity": 0.41824314266769513,
         "stable": true,
         "lengths": [
-          25,
-          17,
-          18,
-          25
+          21,
+          13,
+          14,
+          21
         ],
-        "ttr": 0.98,
-        "style": 1.051300303720577,
+        "ttr": 0.9761904761904763,
+        "style": 1.075645406226272,
         "offTopic": 1
       },
       {
