@@ -74,6 +74,17 @@ function showNewPostNotice(posts) {
       window.setTimeout(reveal, 700);
     }, { threshold: 0.15 });
     io.observe(blog);
+
+    // The contact section follows the log. Get out of its way instead of
+    // sitting over the closing headline for the rest of the auto-dismiss.
+    const hideForContact = () => {
+      const contact = document.getElementById('contact');
+      if (!contact) return;
+      if (contact.getBoundingClientRect().top >= window.innerHeight * 0.8) return;
+      hide(true);
+      window.removeEventListener('scroll', hideForContact);
+    };
+    window.addEventListener('scroll', hideForContact, { passive: true });
   } else {
     window.addEventListener('scroll', () => {
       if (window.scrollY >= window.innerHeight * 0.6) reveal();
