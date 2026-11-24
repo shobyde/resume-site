@@ -9,6 +9,3 @@ I think the right framing is that this is a request/response cycle with a human 
 The trade-off is complexity in the client. A stateful queue is more code than an optimistic append, and it will show up in edge cases: retries, partial failures, and the user navigating away mid-approval. But the alternative is the bug class that already ships in every agent chat I have used, where two messages cross and the transcript stops matching reality.
 
 Source: https://ag-ui.ai
----
-file_path">
-/tmp/body.md

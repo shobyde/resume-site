@@ -21,7 +21,8 @@
     "bench:preferences": "node bench/no-llm/preferences.mjs && node bench/no-llm/actions.mjs",
     "bench:mcp": "node bench/no-llm/mcp.mjs --before",
     "bench:browser": "node bench/no-llm/browser-agent.mjs && node bench/no-llm/browser-agent.mjs --before",
-    "smoke:prod": "node bench/no-llm/browser-agent.mjs --base https://shobyde.com/"
+    "smoke:prod": "node bench/no-llm/browser-agent.mjs --base https://shobyde.com/",
+    "prebuild": "python3 scripts/check_posts.py"
   },
   "devDependencies": {
     "vite": "^6.0.0"

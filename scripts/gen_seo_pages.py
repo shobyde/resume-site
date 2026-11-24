@@ -37,7 +37,17 @@ def md_to_html(md: str) -> str:
 
 
 def _md_to_html(md: str) -> str:
-    md = re.sub(r"^[\s\S]*?^---\s*$", "", md, count=1, flags=re.M)
+    """Render a post body. It is already the body: do not strip again.
+
+    The old strip removed everything up to the first "---" LINE, which is right
+    for a whole file and wrong for a body containing a horizontal rule. A post
+    whose body had a "---" survived as its trailing lines only (2026-11-24
+    queued-chat post rendered as "file_path"> /tmp/body.md"). Strip only when the
+    text really starts with front matter.
+    """
+    head = re.match(r"^\s*(#[^\n]*\n)?[^\n]*(Tag|Subtitle):[^\n]*\n[\s\S]*?^---\s*$", md, re.M)
+    if head:
+        md = md[head.end():]
 
     def esc(s):
         return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")

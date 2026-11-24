@@ -48,8 +48,10 @@
 <main>
   <h1>A Queued Chat Is a State Problem, Not a Buffer Problem</h1>
   <div class="meta">2026-11-24 &middot; ui-direction &middot; by Sho Byde</div>
-  <p>file_path"&gt;</p>
-<p>/tmp/body.md</p>
+  <p>In most agent UIs the chat is treated as one stream: user message in, assistant message out. The moment a tool call needs approval, that model breaks. The user can type another message, the model might still be streaming, and the approval can fire out of order. The SDK's fix is to make the queue stateful rather than just buffered: options survive an approval-first send, and the queue halts while an async decision is in flight.</p>
+<p>I think the right framing is that this is a request/response cycle with a human in the loop. The approval is not a UI affordance. It is a suspension point in the conversation state, and everything else, including the user's next message, has to be ordered relative to it. Treating it as a buffer problem means messages get dropped or reordered silently. Treating it as state means you can reason about what the user saw and when.</p>
+<p>The trade-off is complexity in the client. A stateful queue is more code than an optimistic append, and it will show up in edge cases: retries, partial failures, and the user navigating away mid-approval. But the alternative is the bug class that already ships in every agent chat I have used, where two messages cross and the transcript stops matching reality.</p>
+<p>Source: https://ag-ui.ai</p>
   <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a> &middot; <a href="https://shobyde.com/archive/">all writing</a></p>
 </main>
 </body>

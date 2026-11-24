@@ -108,6 +108,21 @@ def main():
         subtitle = lines[0].strip()
         body = "\n".join(lines[1:]).strip()
 
+    # A body can arrive with tool-call debris from however it was written: a
+    # stray `---`, a path, a fragment of an XML parameter. Strip it rather than
+    # publish it; scripts/check_posts.py is the backstop at build time.
+    cleaned = []
+    for line in body.splitlines():
+        stripped = line.strip()
+        if re.match(r'^(file_path">|</?parameter\b|/tmp/\S+)$', stripped):
+            continue
+        cleaned.append(line)
+    while cleaned and cleaned[-1].strip() in ('', '---'):
+        cleaned.pop()
+    body = '\n'.join(cleaned).strip()
+    if len(body) < 40:
+        raise SystemExit('refusing to write a post with an empty body')
+
     slug = f"{args.date}-{slugify(args.title)}"
     path = POSTS / f"{slug}.md"
     path.write_text(
