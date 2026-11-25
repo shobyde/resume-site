@@ -1,6 +1,6 @@
 {
-  "generated": "2026-11-25T03:26:25.246Z",
-  "library": "0.8.5",
+  "generated": "2026-11-25T04:48:07.539Z",
+  "library": "0.9.0",
   "threads": {
     "memory": {
       "passed": 32,
@@ -970,11 +970,11 @@
     }
   ],
   "kb": {
-    "generated": "2026-11-25T03:26:31.056Z",
-    "facts": 170,
-    "documents": 170,
-    "threads": 40,
-    "turns": 91,
+    "generated": "2026-11-25T04:48:11.273Z",
+    "facts": 520,
+    "documents": 520,
+    "threads": 53,
+    "turns": 117,
     "heldoutTurns": 23,
     "freshTurns": 14,
     "fresh2Turns": 13,
@@ -984,20 +984,20 @@
         "label": "Phrase table",
         "blurb": "A regex per question shape, a flat lookup, no reasoning over facts.",
         "fitted": {
-          "passed": 30,
-          "total": 91,
+          "passed": 29,
+          "total": 117,
           "byKind": {
             "knowledge": {
               "passed": 21,
-              "total": 24
+              "total": 38
             },
             "context": {
               "passed": 0,
-              "total": 46
+              "total": 60
             },
             "tool": {
-              "passed": 9,
-              "total": 14
+              "passed": 8,
+              "total": 12
             },
             "planning": {
               "passed": 0,
@@ -1094,20 +1094,20 @@
         "label": "BM25 retrieval",
         "blurb": "Retrieve the best fact sentence and quote it. No rules, no memory.",
         "fitted": {
-          "passed": 20,
-          "total": 91,
+          "passed": 24,
+          "total": 117,
           "byKind": {
             "knowledge": {
-              "passed": 8,
-              "total": 24
+              "passed": 11,
+              "total": 38
             },
             "context": {
-              "passed": 3,
-              "total": 46
+              "passed": 5,
+              "total": 60
             },
             "tool": {
-              "passed": 9,
-              "total": 14
+              "passed": 8,
+              "total": 12
             },
             "planning": {
               "passed": 0,
@@ -1204,20 +1204,20 @@
         "label": "Rules",
         "blurb": "Join the question to the fact table by entity and attribute.",
         "fitted": {
-          "passed": 33,
-          "total": 91,
+          "passed": 32,
+          "total": 117,
           "byKind": {
             "knowledge": {
               "passed": 24,
-              "total": 24
+              "total": 38
             },
             "context": {
               "passed": 0,
-              "total": 46
+              "total": 60
             },
             "tool": {
-              "passed": 9,
-              "total": 14
+              "passed": 8,
+              "total": 12
             },
             "planning": {
               "passed": 0,
@@ -1314,20 +1314,20 @@
         "label": "Rules + session",
         "blurb": "Rules plus a session that carries the subject, the list and the last action.",
         "fitted": {
-          "passed": 91,
-          "total": 91,
+          "passed": 89,
+          "total": 117,
           "byKind": {
             "knowledge": {
               "passed": 24,
-              "total": 24
+              "total": 38
             },
             "context": {
               "passed": 46,
-              "total": 46
+              "total": 60
             },
             "tool": {
-              "passed": 14,
-              "total": 14
+              "passed": 12,
+              "total": 12
             },
             "planning": {
               "passed": 3,
@@ -1424,20 +1424,20 @@
         "label": "Rules + session + retrieval",
         "blurb": "Rules + session, with retrieval as the fallback when the rules decline.",
         "fitted": {
-          "passed": 91,
-          "total": 91,
+          "passed": 103,
+          "total": 117,
           "byKind": {
             "knowledge": {
-              "passed": 24,
-              "total": 24
+              "passed": 35,
+              "total": 38
             },
             "context": {
-              "passed": 46,
-              "total": 46
+              "passed": 49,
+              "total": 60
             },
             "tool": {
-              "passed": 14,
-              "total": 14
+              "passed": 12,
+              "total": 12
             },
             "planning": {
               "passed": 3,
