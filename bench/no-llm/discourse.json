@@ -11,6 +11,7 @@
       { "q": "which projects use sqlite", "must": ["Readback"], "minSentences": 2, "kind": "single" },
       { "q": "which projects use docker", "must": ["Readback"], "minSentences": 2, "kind": "single" },
       { "q": "which projects use c++", "must": ["C++ physics simulation engines"], "minSentences": 2, "kind": "single" },
+      { "q": "what is built with c++", "must": ["C++ physics simulation engines"], "minSentences": 2, "kind": "single" },
       { "q": "which projects use kubernetes", "must": [], "says": "no project", "minSentences": 1, "kind": "none" },
       { "q": "which projects use rust", "must": [], "says": "no project", "minSentences": 1, "kind": "none" }
     ],

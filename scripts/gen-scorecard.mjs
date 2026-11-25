@@ -75,7 +75,7 @@ const CLASSES = [
     id: 'discourse', rung: 6, name: 'Discourse plans from the record set', suite: 'discourse.json',
     cmd: ['bench/no-llm/discourse.mjs'],
     after: /^discourse: [\d.]+% \((?<p>\d+)\/(?<t>\d+)\)/m, before: null,
-    ceiling: 'a declared constant is unreachable by its first word ("a2ui"), a punctuated subject never reaches a rule ("c++"), and an unknown second name drops combine',
+    ceiling: 'an unknown second name drops combine, and a name that is a whole sentence ("C++ physics simulation engines") cannot be pointed at by its first word',
   },
   {
     id: 'property', rung: 26, name: 'A property the cards describe', suite: 'property.json',
