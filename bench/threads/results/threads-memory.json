@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-25T00:12:34.552Z",
+  "generated": "2026-11-25T00:53:56.737Z",
   "mode": "memory",
   "library": "0.8.3",
   "threads": [
@@ -657,7 +657,7 @@
               "readback"
             ]
           },
-          "text": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. Boaz takes the other route: TypeScript and Vite.",
+          "text": "Readback and Groundglass: 2 projects name Python 3.10+. No project lists \"web interface\", so that half is unchecked.",
           "calls": [
             {
               "id": "projects.list",
@@ -665,7 +665,7 @@
             }
           ],
           "plannedBy": "projects.using",
-          "flesch": 85,
+          "flesch": 79,
           "pass": true,
           "declined": false,
           "missing": [],

@@ -10,6 +10,7 @@
 // voice.
 import { analyzeQuestion, createWorkingMemory, isCoverageQuery } from '@shobyde/boaz';
 import { DATA } from '../data.js';
+import { isStackValue, unresolvedCondition } from './conditions.js';
 
 /**
  * A card title carries its pitch ("Hobnob: private meeting notes, no cloud").
@@ -249,38 +250,14 @@ export function rememberSetAnswer(memory, steps, question = '') {
   // the turn answers the half it has. "Why not both?" then needs to know the
   // other half existed, or it routes the words somewhere unrelated.
   const [only] = [...groups.keys()];
-  const unresolved = only ? unresolvedCondition(question, only) : null;
-  if (groups.size === 1 && unresolved) {
+  // The same reading the answering turn used (src/agent/conditions.js), so the
+  // note and the sentence cannot disagree about which condition went unchecked.
+  const unresolved = only ? unresolvedCondition(question, only, { minWords: 1 }) : null;
+  if (groups.size === 1 && unresolved && !isStackValue(unresolved)) {
     return memory.note({ groups: [...groups.values()], unresolved, turn });
   }
   return null;
 }
-
-/**
- * The phrase a question named after a connective that no stack value accounts
- * for. Closed: it reads the words after the first "and"/"or"/"with" that are
- * not the resolved term, filler, or the question's own frame ("which projects
- * use"), and gives up rather than guessing when nothing is left.
- */
-function unresolvedCondition(question, term) {
-  const words = String(question ?? '').toLowerCase().split(/[^a-z0-9+.#]+/).filter(Boolean);
-  const connective = words.findIndex((word) => CONNECTIVES.has(word));
-  if (connective < 0) return null;
-  const termWords = new Set(String(term).toLowerCase().split(/[^a-z0-9+.#]+/).filter(Boolean));
-  const rest = words
-    .slice(connective + 1)
-    .filter((word) => !termWords.has(word) && !FILLER.has(word));
-  // A single word is not a condition ("and packages", "and tests"): the phrase
-  // has to carry at least two words to be worth answering on a follow-up.
-  return rest.length >= 2 ? rest.join(' ') : null;
-}
-
-const CONNECTIVES = new Set(['and', 'or', 'with', 'plus']);
-const FILLER = new Set([
-  'a', 'an', 'the', 'have', 'has', 'that', 'which', 'uses', 'use', 'using', 'is', 'are', 'be',
-  'its', 'it', 'they', 'them', 'their', 'also', 'both', 'either', 'on', 'in', 'for', 'of', 'to',
-  'project', 'projects', 'he', 'his', 'him', 'built', 'build', 'shipped', 'ship', 'some', 'any',
-]);
 
 /** The answer to "why not both?", read from the split the last set answer kept. */
 export function exclusionAnswer(memory, question, register = 'normal') {

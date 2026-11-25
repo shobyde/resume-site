@@ -3,6 +3,7 @@
 import { KnowledgeBase, fact } from '@shobyde/boaz/rules';
 import { DATA } from '../data.js';
 import { answerRegister } from './register.js';
+import { isStackValue, stackHas, stackWords, unresolvedCondition } from './conditions.js';
 import { PROJECT_SIZE, SIZE_METRIC } from './projectSize.js';
 import {
   phraseEmail,
@@ -77,21 +78,6 @@ const groupByTerm = (solutions, records) => {
   return [...groups.values()];
 };
 
-const stackWords = (value) =>
-  String(value)
-    .toLowerCase()
-    .replace(/[^a-z0-9+#]+/g, ' ')
-    .split(' ')
-    .filter((word) => word && !/^[0-9]+$/.test(word));
-
-const stackHas = (project, term) => {
-  const want = stackWords(term);
-  if (want.length === 0) return false;
-  return (project.stack ?? []).some((entry) => {
-    const have = stackWords(entry);
-    return want.every((word) => have.includes(word));
-  });
-};
 
 export function createAssistantKnowledge({ posts }) {
   const knowledge = new KnowledgeBase({
@@ -254,6 +240,18 @@ export function createAssistantKnowledge({ posts }) {
           }
           return phraseProjectsUsingAll(query, both, terms, { records, register: answerRegister() });
         }
+        // One side of a two-condition ask can name something no stack lists
+        // ("python and kubernetes"). Say so on the turn that answers, instead of
+        // leaving it for the follow-up: the visitor asked for an intersection
+        // and is being handed a set. The claim is only worth making when the
+        // tool ran and no stack on the page carries the phrase.
+        const unchecked = terms.length < 2 && asked && records.length
+          ? (() => {
+              const phrase = unresolvedCondition(query, asked, { minWords: 1, projects: records });
+              if (!phrase || isStackValue(phrase, records)) return null;
+              return phrase;
+            })()
+          : null;
         if (groups.length > 1) {
           return phraseProjectsSplit(query, groups, {
             both: [],
@@ -277,7 +275,7 @@ export function createAssistantKnowledge({ posts }) {
             return record ?? { title: solution.bindings['?T'] ?? slug, stack: [] };
           })
           .filter((project) => project?.title && !notWanted(project));
-        return phraseProjectsUsing(query, matched, asked, { records, register: answerRegister() });
+        return phraseProjectsUsing(query, matched, asked, { records, register: answerRegister(), unchecked });
       },
     },
     {

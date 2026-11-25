@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-25T00:12:34.714Z",
+  "generated": "2026-11-25T00:53:56.895Z",
   "library": "0.8.3",
   "threads": {
     "memory": {
@@ -449,12 +449,12 @@
             "baseline": true,
             "rewritten": false,
             "routed": "which projects use python and have a web interface?",
-            "text": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. Boaz takes the other route: TypeScript and Vite.",
-            "baselineText": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. Boaz takes the other route: TypeScript and Vite.",
+            "text": "Readback and Groundglass: 2 projects name Python 3.10+. No project lists \"web interface\", so that half is unchecked.",
+            "baselineText": "Readback and Groundglass: 2 projects name Python 3.10+. No project lists \"web interface\", so that half is unchecked.",
             "calls": [
               "projects.list"
             ],
-            "flesch": 85,
+            "flesch": 79,
             "missing": []
           },
           {
@@ -970,7 +970,7 @@
     }
   ],
   "kb": {
-    "generated": "2026-11-25T00:12:37.468Z",
+    "generated": "2026-11-25T00:54:02.453Z",
     "facts": 170,
     "documents": 170,
     "threads": 40,

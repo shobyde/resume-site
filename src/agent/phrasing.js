@@ -106,7 +106,7 @@ export function phraseProjectList(query, projectRecords, { register = 'normal' }
  * and which project comes closest without having it. Both are read off the
  * stacks, so the extra sentences cannot turn into adjectives.
  */
-export function phraseProjectsUsing(query, matches, term, { records = [], register = 'normal' } = {}) {
+export function phraseProjectsUsing(query, matches, term, { records = [], register = 'normal', unchecked = null } = {}) {
   const names = matches.map((match) => shortName(match.title));
   if (names.length === 0) {
     const asked = String(term || '').trim();
@@ -155,6 +155,13 @@ export function phraseProjectsUsing(query, matches, term, { records = [], regist
         );
 
   if (register === 'terse') return claim;
+  // The other half of a two-condition ask names something no stack lists. The
+  // claim leads because it is the answer; the caveat follows, and nothing else
+  // does: support plus contrast would make four sentences, and the useful half
+  // of a narrowed answer is which side was checked.
+  if (unchecked) {
+    return `${claim} No project lists "${unchecked}", so that half is unchecked.`;
+  }
   const body = claim + supportSentence(query, matches, term, records) + contrastSentence(query, matches, term, records);
   return register === 'explanatory' ? body + coverageSentence(matches, term, records) : body;
 }
