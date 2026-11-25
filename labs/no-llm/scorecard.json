@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-25T02:46:13.437Z",
+  "generated": "2026-11-25T03:28:53.288Z",
   "library": "@shobyde/boaz 0.8.5",
   "note": "Every number here was parsed from the harness output in the same run that wrote this file. The five slot-filling classes are also graded live in the browser by /labs/no-llm/, through bench/no-llm/grade.mjs, which is the module the Node harness uses.",
   "classes": [
@@ -147,20 +147,20 @@
       "rung": 6,
       "name": "Discourse plans from the record set",
       "suite": "discourse.json",
-      "tasks": 20,
+      "tasks": 22,
       "before": null,
       "after": {
-        "passed": 20,
-        "total": 20
+        "passed": 22,
+        "total": 22
       },
       "beforePct": null,
       "afterPct": null,
       "headline": [
-        "discourse: 100% (20/20)",
+        "discourse: 100% (22/22)",
         "  template compound: max paraphrase similarity 0.36 (want < 0.95)"
       ],
       "ceiling": "an unknown second name drops combine, and a name that is a whole sentence (\"C++ physics simulation engines\") cannot be pointed at by its first word",
-      "report": "discourse: 100% (20/20)\n  fidelity 20/20  sentences 20/20  grounded 20/20  clean 20/20  plain 20/20  stable 20/20\n  readability: flesch 73.4, words per sentence 9.4\n  template projects.using: max paraphrase similarity 1.00 (want < 0.95)\n  template projects.list: max paraphrase similarity 0.76 (want < 0.95)\n  template compound: max paraphrase similarity 0.36 (want < 0.95)\n  template profile: max paraphrase similarity 1.00 (want < 0.95)"
+      "report": "discourse: 100% (22/22)\n  fidelity 22/22  sentences 22/22  grounded 22/22  clean 22/22  plain 22/22  stable 22/22\n  readability: flesch 78.0, words per sentence 9.4\n  template projects.using: max paraphrase similarity 1.00 (want < 0.95)\n  template projects.list: max paraphrase similarity 0.76 (want < 0.95)\n  template compound: max paraphrase similarity 0.36 (want < 0.95)\n  template profile: max paraphrase similarity 1.00 (want < 0.95)"
     },
     {
       "id": "property",

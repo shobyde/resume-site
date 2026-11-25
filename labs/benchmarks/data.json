@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-25T02:47:06.239Z",
+  "generated": "2026-11-25T03:26:25.246Z",
   "library": "0.8.5",
   "threads": {
     "memory": {
@@ -81,7 +81,7 @@
             "rewritten": true,
             "routed": "what is Readback's stack?",
             "text": "Readback is built with Python 3.10+, Flask 3, Jinja (no JS), SQLite, OpenAI-compatible LLMs, httpx, Docker and pytest.",
-            "baselineText": "No project on this page lists reading. All 6 stacks are on the page.",
+            "baselineText": "No project on this page lists reading. All 6 project stacks are on the page, and none of them lists it.",
             "calls": [
               "projects.list"
             ],
@@ -599,7 +599,7 @@
         "thread": "Build list, then filter it",
         "ask": "and what does the reading one use?",
         "routed": "what is Readback's stack?",
-        "before": "No project on this page lists reading. All 6 stacks are on the page.",
+        "before": "No project on this page lists reading. All 6 project stacks are on the page, and none of them lists it.",
         "after": "Readback is built with Python 3.10+, Flask 3, Jinja (no JS), SQLite, OpenAI-compatible LLMs, httpx, Docker and pytest."
       },
       {
@@ -970,7 +970,7 @@
     }
   ],
   "kb": {
-    "generated": "2026-11-25T02:47:09.785Z",
+    "generated": "2026-11-25T03:26:31.056Z",
     "facts": 170,
     "documents": 170,
     "threads": 40,

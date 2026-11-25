@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-25T02:47:06.197Z",
+  "generated": "2026-11-25T03:26:25.210Z",
   "mode": "stateless",
   "library": "0.8.5",
   "threads": [
@@ -70,7 +70,7 @@
               "flask"
             ]
           },
-          "text": "No project on this page lists reading. All 6 stacks are on the page.",
+          "text": "No project on this page lists reading. All 6 project stacks are on the page, and none of them lists it.",
           "calls": [
             {
               "id": "projects.list",
@@ -78,7 +78,7 @@
             }
           ],
           "plannedBy": "projects.using",
-          "flesch": 103,
+          "flesch": 99,
           "pass": false,
           "declined": true,
           "missing": [

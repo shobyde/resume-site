@@ -12,8 +12,10 @@
       { "q": "which projects use docker", "must": ["Readback"], "minSentences": 2, "kind": "single" },
       { "q": "which projects use c++", "must": ["C++ physics simulation engines"], "minSentences": 2, "kind": "single" },
       { "q": "what is built with c++", "must": ["C++ physics simulation engines"], "minSentences": 2, "kind": "single" },
-      { "q": "which projects use kubernetes", "must": [], "says": "no project", "minSentences": 1, "kind": "none" },
-      { "q": "which projects use rust", "must": [], "says": "no project", "minSentences": 1, "kind": "none" }
+      { "q": "which projects use kubernetes", "must": [], "says": "^No project on this page lists kubernetes", "minSentences": 2, "kind": "none", "forbids": ["\\bthe other \\d+ projects?\\b", "\\bonly to\\b"] },
+      { "q": "which projects use rust", "must": [], "says": "^No project on this page lists rust", "minSentences": 2, "kind": "none", "forbids": ["\\bthe other \\d+ projects?\\b", "\\bonly to\\b"] },
+      { "q": "which projects use c#", "must": [], "says": "^No project on this page lists c#", "minSentences": 2, "kind": "none", "forbids": ["\\bthe other \\d+ projects?\\b", "\\bonly to\\b"] },
+      { "q": "which projects use cobol", "must": [], "says": "^No project on this page lists cobol", "minSentences": 2, "kind": "none", "forbids": ["\\bthe other \\d+ projects?\\b", "\\bonly to\\b"] }
     ],
     "projects.list": [
       { "q": "what has he built", "must": ["Hobnob", "Readback", "Groundglass", "Boaz"], "minSentences": 2, "kind": "set" },

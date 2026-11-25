@@ -67,6 +67,14 @@ const ALIAS = {
 /** A sentence that names the property in order to reject it is not evidence. */
 const REJECT = /\b(not to|rather than|instead of|reasons? not to|avoid|don't need|do not need|both are gone|never (send|upload|leave))/i;
 const NEGATION = /\b(no|not|never|without|nothing|nobody|none|n't)\b/i;
+/**
+ * A sentence that says nothing on the page carries the word. A card documenting
+ * the refusal it gives ("no project stack lists Cobol") names the word without
+ * claiming it and without rejecting it either, so it is not evidence in either
+ * direction. Without this, the Boaz card quoting our own refusal copy made
+ * "which projects use cobol" answer that Boaz names cobol only to avoid it.
+ */
+const ABSENT = /\bno\s+(?:project|projects|card|cards|stack|stacks|entry|entries|page)\b/i;
 
 const plain = (text) =>
   String(text ?? '')
@@ -129,6 +137,31 @@ function claimsOf(project) {
     out.push({ sentence: sentence.trim(), rank: 0 });
   }
   cache.set(project, out);
+  return out;
+}
+
+/**
+ * Whole-word mention of the phrase, never a substring: "trustworthy" is not
+ * evidence for "rust", which is how a card about the blog made "which projects
+ * use rust" answer that the blog names rust only to reject it.
+ */
+function mentions(sentence, alias) {
+  const clean = normalize(sentence);
+  const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`(^|[^a-z0-9+#])${escaped}([^a-z0-9+#]|$)`, 'i').test(clean);
+}
+
+/** Every sentence a card writes about itself, in reading order. */
+const proseCache = new WeakMap();
+function proseOf(project) {
+  if (proseCache.has(project)) return proseCache.get(project);
+  const text = [
+    subtitleOf(project),
+    plain(project.summary),
+    plain([project.details?.architecture, ...(project.details?.decisions ?? [])].filter(Boolean).join(' ')),
+  ].join(' ');
+  const out = text.split(/(?<=[.!?])\s+/).map((sentence) => sentence.trim()).filter(Boolean);
+  proseCache.set(project, out);
   return out;
 }
 
@@ -195,9 +228,17 @@ export function surfaceOf(question) {
   const tail = raw.match(
     /^(?:can you |could you |and |please )?(?:which|what|who)(?:\s+(?:one|ones|project|projects|of them|of these))?\s+(.*)$/i,
   )?.[1] ?? raw;
-  return tail
-    .replace(/^(is|are|was|were|does|do|did|can|could|needs?|requires?|have|has|had|supports?|offers?|works?|runs?)\s+/i, '')
-    .trim();
+  // The frame is the verb, not part of the property: "which projects use a GPU"
+  // asks about the GPU. Stripping it in a loop is what makes "are built with"
+  // read as "built with" rather than leaving the verb in the quoted phrase.
+  const VERB = /^(?:(?:is|are|was|were|does|do|did|can|could|needs?|requires?|have|has|had|supports?|offers?|works?|runs?|uses?|using|utilises?|utilizes?|built|written|made|powered|listed|lists?)\b)(?:\s+(?:with|in|on|by))?\s*/i;
+  let out = tail;
+  for (let pass = 0; pass < 4; pass += 1) {
+    const next = out.replace(VERB, '');
+    if (next === out) break;
+    out = next;
+  }
+  return out.trim();
 }
 
 const candidatesFor = (word) => ALIAS[word] ?? ALIAS[word.replace(/s$/, '')] ?? [word];
@@ -248,7 +289,7 @@ export function propertyMatches(question, projects = DATA.projects) {
       candidatesFor(word).some(
         (alias) =>
           !sentences.some((entry) => claims(entry.sentence, alias)) &&
-          normalize([subtitleOf(project), plain(project.summary), plain([project.details?.architecture, ...(project.details?.decisions ?? [])].filter(Boolean).join(' '))].join(' ')).includes(alias),
+          proseOf(project).some((sentence) => mentions(sentence, alias) && !ABSENT.test(sentence)),
       ),
     );
     if (denied) mentionedOnly.push(project);

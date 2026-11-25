@@ -117,11 +117,14 @@ export function phraseProjectsUsing(query, matches, term, { records = [], regist
     if (!asked) return '';
     if (register === 'terse') return `No project on this page lists ${asked}.`;
     const total = records.length;
+    // The support sentence describes the page, never "the other N": a question
+    // with no match has no match set, so "the other 6 projects list something
+    // else" counted projects that were never named. Rung 28.
     const tail = total
       ? pick(
           [
-            ` All ${total} stacks are on the page.`,
-            ` The other ${total} projects list something else.`,
+            ` All ${total} project stacks are on the page, and none of them lists it.`,
+            ` None of the ${total} stacks listed here names it.`,
           ],
           query,
         )

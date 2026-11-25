@@ -133,6 +133,10 @@ for (const [intent, tasks] of Object.entries(suite.intents)) {
 
     const fidelity = task.must.every((needle) => containsWord(answer, needle));
     const says = !task.says || new RegExp(task.says, 'i').test(answer);
+    // Copy a task names as wrong, whatever else the answer gets right: a
+    // zero-match answer that counts "the other N projects" is inventing a match
+    // set, and a property refusal claims a card names the word (rung 28).
+    const allowed = (task.forbids ?? []).every((pattern) => !new RegExp(pattern, 'i').test(answer));
     const sentenceCount = sent.length >= task.minSentences && sent.length <= (task.minSentences === 1 ? 2 : 3);
     const grounded = extra.every(groundedSentence);
     const clean = !BANNED.test(answer);
@@ -145,9 +149,9 @@ for (const [intent, tasks] of Object.entries(suite.intents)) {
     // the point where a sentence has stopped parsing at all.
     const plain = flesch >= 30;
     const stable = answer === again;
-    const ok = fidelity && says && sentenceCount && grounded && clean && readable && plain && stable;
+    const ok = fidelity && says && allowed && sentenceCount && grounded && clean && readable && plain && stable;
 
-    rows.push({ intent, q: task.q, answer, sent, must: task.must, fidelity, says, sentenceCount, grounded, clean, readable, flesch, plain, stable, ok });
+    rows.push({ intent, q: task.q, answer, sent, must: task.must, fidelity, says, allowed, sentenceCount, grounded, clean, readable, flesch, plain, stable, ok });
   }
 }
 
@@ -177,6 +181,7 @@ for (const row of rows.filter((r) => !r.ok || verbose)) {
   const why = [
     !row.fidelity && `missing ${row.must.filter((m) => !containsWord(row.answer, m)).join(', ')}`,
     !row.says && 'did not give the expected answer',
+    !row.allowed && 'said the copy a task rejects',
     !row.sentenceCount && `${row.sent.length} sentences`,
     !row.grounded && 'ungrounded sentence',
     !row.clean && 'banned word or em dash',
