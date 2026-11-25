@@ -7,6 +7,7 @@ import { registry } from '@shobyde/boaz/core';
 import { DATA } from './data.js';
 import { initReveals, initProgress } from './motion.js';
 import { initBlog } from './blog.js';
+import { initViewportInsets } from './viewport.js';
 import { renderA2UI } from './agent/a2ui.js';
 import { articleCard, contactCard, projectCard } from './agent/surfaces.js';
 import { pageSurface, questionsFor } from './page/pageSurface.js';
@@ -552,6 +553,7 @@ function initHomeAsk() {
 
 /* ---------- boot ---------- */
 async function boot() {
+  initViewportInsets();
   initReveals();
   initProgress();
   initProjectToggles();

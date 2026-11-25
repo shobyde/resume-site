@@ -8,6 +8,7 @@ import manifest from 'boaz:manifest';
 import { createConversation } from '@shobyde/boaz/conversation';
 import { DATA } from './data.js';
 import { initBlog } from './blog.js';
+import { initViewportInsets } from './viewport.js';
 import { initProgress } from './motion.js';
 import { motionPrefs } from './motionPrefs.js';
 import { createAssistantKnowledge } from './agent/knowledge.js';
@@ -806,6 +807,7 @@ document.getElementById('agentLauncher')?.addEventListener('submit', (event) => 
 });
 
 async function boot() {
+  initViewportInsets();
   const state = await initBlog();
   posts = state?.posts || [];
 

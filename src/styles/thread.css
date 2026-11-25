@@ -617,3 +617,14 @@ html { scroll-padding-top: 5rem; }
 .thread-call__state { margin-left: auto; color: var(--cobalt); }
 .thread-call.is-done .thread-call__state { color: var(--mute); }
 .thread-call.is-failed .thread-call__state { color: #a32929; }
+
+@media (max-width: 600px) {
+  .thread-turn--answer .thread-turn__body > p {
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--ink-2);
+  }
+  .thread-turn--user p { font-size: 1.02rem; }
+  .thread-call { font-size: 0.58rem; }
+  .thread-call code { font-size: 0.56rem; }
+}

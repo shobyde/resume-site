@@ -659,3 +659,23 @@ small.a2ui-text {
   .agent__trace li { opacity: 1; animation: none; }
   .agent__close, .agent__send, .a2ui-button, .agent__chip { transition: none; }
 }
+
+/* Phones: readable controls and lift above the virtual keyboard. */
+@media (max-width: 980px) {
+  .agent__launcher { bottom: var(--keyboard-inset, 0px); }
+  .agent__launcher-suggest { gap: 0.4rem; padding: 0.55rem 0.8rem 0.5rem; }
+  .agent__launcher-suggest button {
+    min-height: 38px;
+    padding: 0.38rem 0.55rem;
+    font-size: 0.68rem;
+    color: #d7dfe8;
+  }
+  .agent__launcher-row {
+    min-height: 56px;
+    padding: 0.35rem 0.8rem calc(0.35rem + env(safe-area-inset-bottom, 0px));
+  }
+  .agent__launcher-input { font-size: 1rem; line-height: 1.4; }
+  .agent__launcher-input::placeholder { color: #b8c3cf; }
+  .agent__launcher-power { padding: 0 0.6rem; font-size: 0.56rem; }
+  .agent__launcher-busy { font-size: 0.54rem; }
+}
