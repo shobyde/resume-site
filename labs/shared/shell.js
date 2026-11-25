@@ -413,7 +413,7 @@ export function mountChat(options) {
       0,
     );
 
-    // The how line already claims the reasoning; this line is evidence only.
+    // The how line already claims the deduction; this line is evidence only.
     // The how line already names what was drawn; this line adds the row count
     // and any in-place writes, or stays empty.
     if (surfaces.length > 0) {

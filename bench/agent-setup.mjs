@@ -22,6 +22,14 @@ export { answers };
 export const capabilities = manifest.capabilities;
 export const knowledgeBase = knowledge;
 
+const GITHUB_FIXTURES = {
+  boaz: { repo: 'shobyde/boaz', label: 'Boaz', commits: 81, releases: 67, stars: 0 },
+  hobnob: { repo: 'emberscribe/hobnob', label: 'Hobnob', commits: 42, releases: 6, stars: 0 },
+  readback: { repo: 'shobyde/readback', label: 'Readback', commits: 10, releases: 1, stars: 0 },
+  groundglass: { repo: 'shobyde/groundglass', label: 'Groundglass', commits: 3, releases: 0, stars: 0 },
+  shobyde: { repo: 'shobyde/resume-site', label: 'shobyde.com', commits: 205, releases: 0, stars: 0 },
+};
+
 const handlers = {
   'projects.list': async () => ({
     projects: DATA.projects.map((project) => ({
@@ -32,12 +40,33 @@ const handlers = {
       size: PROJECT_SIZE[String(project.title).split(':')[0].trim()] ?? null,
     })),
   }),
+  'projects.card': async (args = {}) => {
+    const key = String(args.project || '').toLowerCase();
+    const project = DATA.projects.find((entry) =>
+      String(entry.title).toLowerCase().includes(key),
+    );
+    return {
+      answer: project ? `${project.title}. ${project.summary}` : 'No project on this page matches that.',
+      project: project?.title ?? null,
+    };
+  },
   'blog.stats': async () => ({
     posts: postList.length,
     newest: postList.slice().sort((a, b) => String(b.date).localeCompare(String(a.date)))[0]?.title,
   }),
   'contact.copy_email': async () => ({ copied: 'shobyde@gmail.com' }),
   'contact.open_linkedin': async () => ({ opened: 'https://www.linkedin.com/in/sho-byde-556954138/' }),
+  'github.activity': async (args = {}) => {
+    const requested = args.repo || 'all';
+    const keys = requested === 'all' ? Object.keys(GITHUB_FIXTURES) : [requested];
+    const repos = keys.map((key) => GITHUB_FIXTURES[key]).filter(Boolean);
+    return {
+      answer: repos.length
+        ? `${repos.map((repo) => `${repo.label}: ${repo.commits} commits, ${repo.releases} releases, ${repo.stars} stars`).join('; ')}.`
+        : 'GitHub did not return public data for that project.',
+      github: { repos, requested, live: repos.length },
+    };
+  },
   'resume.print': async () => ({ printed: true }),
 };
 

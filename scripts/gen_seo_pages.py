@@ -23,6 +23,8 @@ POSTS = ROOT / "content" / "posts"
 OUT = ROOT / "public"
 SITE = "https://shobyde.com"
 
+from reading_theme import head  # noqa: E402  (sibling module, run as a script)
+
 
 def fmt_dt(date):
     try:
@@ -111,15 +113,17 @@ def build_page(slug: str, meta: dict, body_html: str) -> str:
     url = f"{SITE}/posts/{slug}/"
     date = slug[:10]
     author = "Sho Byde"
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>{title} - Sho Byde</title>
-<meta name="description" content="{desc}" />
-<link rel="canonical" href="{url}" />
-<meta name="author" content="{author}" />
+    post_css = """
+.post-head { padding-bottom: 1.35rem; border-bottom: 1.5px solid var(--ink); margin-bottom: 1.6rem; }
+.post-meta { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cobalt); margin-bottom: 0.65rem; }
+.post-title { font-size: clamp(2.15rem, 5vw, 4rem); line-height: 0.9; letter-spacing: -0.05em; max-width: 24ch; }
+.post-lede { margin-top: 0.8rem; max-width: 60ch; color: var(--dim); font-size: 0.98rem; line-height: 1.6; }
+.post-foot { margin-top: 2.4rem; padding-top: 1rem; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.6rem 1.4rem; font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.05em; text-transform: uppercase; }
+.post-foot a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--cobalt); }
+.post-foot a:hover { color: var(--cobalt); }
+@media (max-width: 620px) { .post-title { font-size: clamp(2rem, 10vw, 3rem); } }
+"""
+    extra_head = f"""<meta name="author" content="{author}" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="{title}" />
 <meta property="og:description" content="{desc}" />
@@ -142,32 +146,35 @@ def build_page(slug: str, meta: dict, body_html: str) -> str:
   "keywords": {json.dumps(meta["tag"])}
 }}
 </script>
-<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="{SITE}/rss.xml" />
-<style>
-  body {{ font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }}
-  main {{ max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }}
-  h1 {{ font-size: 2rem; margin: .2rem 0 .6rem; text-wrap: balance; }}
-  h2 {{ margin-top: 1.8rem; }}
-  a {{ color: #9ecbff; }}
-  /* Post figures are wider than the column: a 880px SVG must scale to the
-     measure instead of pushing the page sideways on a phone. */
-  img, svg {{ max-width: 100%; height: auto; }}
-  pre {{ background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }}
-  code {{ font-family: ui-monospace, 'JetBrains Mono', monospace; }}
-  .meta {{ color: #888; font-size: .85rem; margin-bottom: 2rem; }}
-</style>
-</head>
+<link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="{SITE}/rss.xml" />"""
+    lede = esc(meta["subtitle"]) if meta.get("subtitle") else ""
+    return f"""{head(f"{title} - Sho Byde", desc, url, extra_css=post_css, extra_head=extra_head)}
 <body>
-<main>
-  <h1>{title}</h1>
-  <div class="meta">{date} &middot; {esc(meta["tag"])} &middot; by {author}</div>
-  {body_html}
-  <p><a href="{SITE}/">&larr; back to shobyde.com</a> &middot; <a href="{SITE}/archive/">all writing</a></p>
-</main>
+<div class="wrap">
+  <nav class="top" aria-label="Site">
+    <a class="back" href="/">&larr; shobyde.com</a>
+    <a class="brand" href="/">Sho Byde</a>
+  </nav>
+  <main>
+  <article>
+    <header class="post-head">
+      <p class="post-meta">{date} / {esc(meta["tag"])} / by {author}</p>
+      <h1 class="post-title">{title}</h1>
+      {f'<p class="post-lede">{lede}</p>' if lede else ''}
+    </header>
+    <div class="prose">
+      {body_html}
+    </div>
+    <footer class="post-foot">
+      <a href="/">&larr; Back to shobyde.com</a>
+      <a href="/archive/">All writing</a>
+    </footer>
+  </article>
+  </main>
+</div>
 </body>
 </html>
 """
-
 
 def main() -> None:
     index = json.loads((POSTS / "index.json").read_text())

@@ -42,7 +42,7 @@ export function createSessionMemory(options = {}) {
   return memory;
 }
 
-/** The slug a project is bound by in an inference solution. */
+/** The slug a project is bound by in a rule solution. */
 const slugOfTitle = (title) =>
   String(title)
     .split(':')[0]
@@ -222,15 +222,15 @@ export function resolvePointer(memory, query) {
  */
 export function rememberSetAnswer(memory, steps, question = '') {
   if (typeof memory?.note !== 'function') return null;
-  const inference = (steps ?? []).find(
+  const ruleStep = (steps ?? []).find(
     (step) =>
       step?.type === 'inference' &&
       (step.solutions ?? []).some((solution) => (solution.bindings ?? solution)?.['?1_T']),
   );
-  if (!inference) return null;
+  if (!ruleStep) return null;
   const bySlug = new Map(DATA.projects.map((project) => [slugOfTitle(project.title), shortTitle(project)]));
   const groups = new Map();
-  for (const solution of inference.solutions ?? []) {
+  for (const solution of ruleStep.solutions ?? []) {
     // A step event carries the bindings flat; a compose receives them under
     // `bindings`. Accept both, so the note reads the same step either way.
     const bindings = solution.bindings ?? solution;

@@ -1,205 +1,437 @@
 /* ============================================================
-   Main - assembles DOM, wires everything up
+   Main - assembles the working record and wires its instruments.
    ============================================================ */
 import boazPackage from '@shobyde/boaz/package.json';
+import manifest from 'boaz:manifest';
+import { registry } from '@shobyde/boaz/core';
 import { DATA } from './data.js';
-import { initBackground } from './background.js';
-import { initSmoothScroll, initReveals, initMagnetic, initProgress } from './motion.js';
-import { initStreamText, initScrollStream } from './streamText.js';
+import { initReveals, initProgress } from './motion.js';
 import { initBlog } from './blog.js';
-import { initAssistant } from './agent/assistant.js';
-import { motionPrefs } from './motionPrefs.js';
+import { renderA2UI } from './agent/a2ui.js';
+import { articleCard, contactCard, projectCard } from './agent/surfaces.js';
+import { pageSurface, questionsFor } from './page/pageSurface.js';
 import './styles/main.css';
 import './styles/sections.css';
+import './styles/agent.css';
 import './styles/print.css';
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const capCount = manifest.capabilities.length;
+let currentPageSurface = pageSurface({ view: 'home' });
+const PROJECT_ORDER = [];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-document.getElementById('app').innerHTML = buildPage();
+function shortDate(iso) {
+  const [y, m, d] = String(iso).split('-').map(Number);
+  if (!y || !m || !d) return String(iso);
+  return `${MONTHS[m - 1]} ${String(d).padStart(2, '0')}, ${y}`;
+}
 
-/* ---------- helpers ---------- */
-function buildPage() {
-  const exp = DATA.experience.map((item) => `
-    <div class="tl-item">
-      <div class="tl-item__period mono">${item.period}</div>
-      <h3 class="tl-item__role">${item.role}</h3>
-      <div class="tl-item__org">${item.org} <em>· ${item.loc || 'remote'}</em></div>
-      <ul class="tl-item__bullets">${item.bullets.map((b) => `<li>${b}</li>`).join('')}</ul>
-    </div>
-  `).join('');
+const CAREER_START = 2012;
+const CAREER_END = 2026;
 
-  const skills = DATA.skills.map((s) => `
-    <div class="skill-group">
-      <div class="skill-group__title">${s.group}</div>
-      <div class="skill-tags">${s.tags.map((t) => `<span class="tag">${t}</span>`).join('')}</div>
-    </div>
-  `).join('');
+function yearsIn(period) {
+  const years = String(period).match(/\d{4}/g) || [];
+  const start = Number(years[0]) || CAREER_START;
+  const end = /present/i.test(period) ? CAREER_END : Number(years[1]) || start;
+  return { start, end };
+}
 
-  const stats = DATA.stats.map((s) => `
-    <div class="stat reveal">
-      ${s.text
-        ? `<div class="stat__num">${s.text}</div>`
-        : `<div class="stat__num" data-count="${s.num}" data-suffix="${s.suffix}">0${s.suffix}</div>`}
-      <div class="stat__label">${s.label}</div>
-    </div>
-  `).join('');
-
-  const projects = DATA.projects.map((p, i) => `
-    <article class="project-card reveal" style="transition-delay:${i * 80}ms">
-      <div class="project-card__top">
-        <div class="project-card__meta">${p.meta.map((m) => `<span>${esc(m)}</span>`).join('')}</div>
-        ${p.details ? `<button class="project-card__toggle" type="button" aria-expanded="false" aria-controls="proj-details-${i}" aria-label="Engineering detail for ${esc(p.title)}" title="Architecture and engineering decisions">Details</button>` : ''}
-      </div>
-      <h3 class="project-card__title">${p.title}</h3>
-      <p class="project-card__summary">${p.summary}</p>
-      <div class="project-card__stack">${p.stack.map((t) => `<span class="tag">${t}</span>`).join('')}</div>
-      <div class="project-card__actions">
-        ${p.links.map((l) => `<a class="project-card__link" href="${l.url}"${l.url.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${l.label}</a>`).join('')}
-      </div>
-      ${p.details ? `
-      <div class="project-card__details" id="proj-details-${i}">
-        <div>
-          <h4>Architecture</h4>
-          <p>${p.details.architecture}</p>
-          <h4>Engineering decisions</h4>
-          <ul>${p.details.decisions.map((d) => `<li>${d}</li>`).join('')}</ul>
-          ${p.details.diagram ? `<div class="project-card__diagram"><img src="${p.details.diagram.src}" alt="${p.details.diagram.alt}" width="800" height="450" loading="lazy" /></div>` : ''}
+function chartRows() {
+  return DATA.experience.map((item) => {
+    const { start, end } = yearsIn(item.period);
+    const offset = ((start - CAREER_START) / (CAREER_END - CAREER_START + 1)) * 100;
+    const span = (Math.max(1, end - start + 1) / (CAREER_END - CAREER_START + 1)) * 100;
+    const isCivic = /volunteer|teacher/i.test(`${item.role} ${item.org}`);
+    const isCurrent = /present/i.test(item.period);
+    const label = isCivic ? 'High school' : item.org;
+    return `
+      <div class="career-chart__row">
+        <span class="career-chart__label">${esc(label)}</span>
+        <div class="career-chart__lane" title="${esc(item.org)} · ${esc(item.period)}">
+          <span class="career-chart__bar${isCurrent ? ' career-chart__bar--current' : isCivic ? ' career-chart__bar--civic' : ''}" style="--start:${offset.toFixed(3)}%;--span:${span.toFixed(3)}%"></span>
         </div>
-      </div>` : ''}
-    </article>
-  `).join('');
+      </div>`;
+  }).join('');
+}
+
+function buildPage() {
+  const starters = questionsFor({ view: 'home' }).slice(0, 5)
+    .map((question) => `<button type="button" data-home-ask="${esc(question)}">${esc(question)}</button>`)
+    .join('');
+  const projects = DATA.projects.map((p, i) => {
+    const index = String(i + 1).padStart(2, '0');
+    const meta = p.meta.map((m) => `<span>${esc(m)}</span>`).join('');
+    const stack = p.stack.map((t) => `<span class="tag">${esc(t)}</span>`).join('');
+    const links = p.links
+      .map((l) => `<a class="project-card__link" href="${l.url}"${l.url.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${esc(l.label)}</a>`)
+      .join('');
+    const details = p.details
+      ? `
+        <div class="project-card__details" id="proj-details-${i}" aria-hidden="true" inert>
+          <div>
+            <div class="project-card__details-inner">
+              <div>
+                <h4>Architecture</h4>
+                <p>${p.details.architecture}</p>
+                ${p.details.diagram ? `<div class="project-card__diagram"><img src="${p.details.diagram.src}" alt="${esc(p.details.diagram.alt)}" width="800" height="450" loading="lazy" /></div>` : ''}
+              </div>
+              <div>
+                <h4>Engineering decisions</h4>
+                <ul>${p.details.decisions.map((d) => `<li>${d}</li>`).join('')}</ul>
+              </div>
+            </div>
+          </div>
+        </div>`
+      : '';
+    const toggle = p.details
+      ? `<button class="project-card__toggle" type="button" aria-expanded="false" aria-controls="proj-details-${i}" aria-label="Architecture and engineering decisions for ${esc(p.title)}">Architecture <span aria-hidden="true">+</span></button>`
+      : '';
+    return `
+      <li class="project-card${i === 0 ? ' project-card--lead' : ''}" data-project="${esc(p.title.split(':')[0])}" data-key="${slug(p.title.split(':')[0])}" data-stack="${esc(p.stack.join('|').toLowerCase())}">
+        <div class="project-card__index" aria-hidden="true">P.${index}</div>
+        <div class="project-card__body">
+          <span class="project-card__lead-tag"${i === 0 ? '' : ' hidden'}>Featured</span>
+          <h3 class="project-card__title">${p.title}</h3>
+          <p class="project-card__summary">${p.summary}</p>
+          <div class="project-card__stack">${stack}</div>
+          <div class="project-card__actions">${links}${toggle}</div>
+        </div>
+        <div class="project-card__meta">${meta}</div>
+        ${details}
+      </li>`;
+  }).join('');
+
+  const chart = chartRows();
+  const axis = [2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026].map((y) => `<span>${y}</span>`).join('');
+
+  const timeline = DATA.experience.map((item) => {
+    const isCivic = /volunteer|teacher/i.test(`${item.role} ${item.org}`);
+    const isCurrent = /present/i.test(item.period);
+    const tag = isCurrent
+      ? '<span class="tl-item__tag">Current</span>'
+      : isCivic
+        ? '<span class="tl-item__tag tl-item__tag--civic">Civic</span>'
+        : '';
+    return `
+      <article class="tl-item${isCivic ? ' tl-item--civic' : ''}">
+        <div class="tl-item__when">
+          <span class="tl-item__period">${item.period}</span>
+          ${tag}
+        </div>
+        <div>
+          <h3 class="tl-item__role">${item.role}</h3>
+          <p class="tl-item__org">${item.org}${item.loc ? ` <em>· ${item.loc}</em>` : ''}</p>
+          <ul class="tl-item__bullets">${item.bullets.map((b) => `<li>${b}</li>`).join('')}</ul>
+        </div>
+      </article>`;
+  }).join('');
+
+  const skills = DATA.skills.map((group) => `
+    <div class="spec-row">
+      <h3 class="spec-row__group">${group.group}</h3>
+      <span class="spec-row__count">${String(group.tags.length).padStart(2, '0')}</span>
+      <div class="spec-row__tags">${group.tags.map((t) => `<span>${esc(t)}</span>`).join('')}</div>
+    </div>`).join('');
+
+  const stats = DATA.stats.map((s, i) => {
+    const value = i === DATA.stats.length - 1 ? String(capCount) : s.text ? s.text : `${s.num}${s.suffix || ''}`;
+    return `
+    <div class="hero__stat">
+      <span class="hero__num">${value}</span>
+      <span class="hero__label">${s.label}</span>
+    </div>`;
+  }).join('');
+
+  const manifestRows = manifest.capabilities.slice(0, 8).map((capability, i) => `
+    <div class="manifest__row">
+      <span>${String(i + 1).padStart(2, '0')}</span>
+      <code>${esc(capability.id)}</code>
+      <span>${esc(capability.kind || 'capability')}</span>
+    </div>`).join('');
 
   return `
-  <div class="nav-scrim" aria-hidden="true"></div>
-  <nav class="nav" id="nav" aria-label="Primary">
-    <a href="#about" class="nav__link">About</a>
-    <a href="#projects" class="nav__link">Projects</a>
-    <a href="#experience" class="nav__link">Experience</a>
-    <a href="#skills" class="nav__link">Skills</a>
-    <a href="#blog" class="nav__link">Log</a>
-    <a href="#contact" class="nav__link">Contact</a>
-  </nav>
-
-  <!-- HERO -->
-  <header class="hero" id="hero">
-    <div class="hero__inner">
-      <p class="hero__tag hero__anim hero__anim--1">${DATA.hero.tag}</p>
-      <h1 class="hero__headline hero__anim hero__anim--2" aria-label="${DATA.hero.headlineText}">${DATA.hero.headline}</h1>
-      <p class="hero__role hero__anim hero__anim--3">${DATA.hero.role}</p>
-      <!-- print-only: compact name header + contact line on the résumé PDF -->
-      <p class="print-name">Sho Byde</p>
-      <p class="print-contact">
-        <a href="mailto:${DATA.contact.email}">${DATA.contact.email}</a> ·
-        <a href="${DATA.contact.linkedin}">LinkedIn</a> ·
-        <a href="https://shobyde.com/">shobyde.com</a>
-      </p>
-      <div class="hero__cta hero__anim hero__anim--4">
-        <a href="#projects" class="btn btn--primary">Explore my work →</a>
-        <button class="btn" type="button" id="resumeBtn">Download résumé</button>
-        <a href="#contact" class="btn">Get in touch</a>
-      </div>
-    </div>
-    <div class="hero__scroll" id="heroScroll"><span>Scroll</span><div class="hero__scroll-line"></div></div>
-  </header>
-
-  <!-- FEATURED WORK: the assistant on this page is the product; say so above the fold -->
-  <aside class="featured container" aria-labelledby="featuredTitle">
-    <div class="featured__card">
-      <div class="featured__copy">
-        <p class="featured__eyebrow"><span class="featured__pulse" aria-hidden="true"></span>Featured work <span class="featured__year">2026</span></p>
-        <h2 class="featured__title" id="featuredTitle"><a href="/boaz/">boaz</a><span class="featured__version">v${boazPackage.version}</span></h2>
-        <p class="featured__lede">The assistant on this page runs on it: 26 capabilities, a declarative planner, session memory and a skill runner, with no model and no network.</p>
-        <ul class="featured__links">
-          <li><a href="/boaz/">How it works</a></li>
-          <li><a href="/labs/tools/">Tools lab</a></li>
-          <li><a href="/labs/benchmarks/">Benchmarks</a></li>
-          <li><a href="/labs/no-llm/">Scorecard</a></li>
-          <li><a href="https://github.com/shobyde/boaz/releases">Source &amp; releases</a></li>
-        </ul>
-      </div>
-      <div class="featured__flow" aria-hidden="true">
-        <span class="featured__node">ask</span><span class="featured__wire"></span>
-        <span class="featured__node">plan</span><span class="featured__wire"></span>
-        <span class="featured__node">tool</span><span class="featured__wire"></span>
-        <span class="featured__node featured__node--end">answer</span>
-      </div>
-    </div>
-  </aside>
-
-  <div class="progress" id="progress" aria-hidden="true"></div>
-
-  <main class="container" id="main-content" tabindex="-1">
-    <!-- ABOUT -->
-    <section class="section" id="about">
-      <h2 class="section-title reveal">Where code meets culture</h2>
-      <div class="about__grid">
-        <div class="about__text reveal">
-          <p>${DATA.about.p1}</p>
-          <p>${DATA.about.p2}</p>
-          <p>${DATA.about.p3}</p>
-        </div>
-        <div class="stats">${stats}</div>
-      </div>
-    </section>
-
-    <!-- PROJECTS -->
-    <section class="section" id="projects">
-      <h2 class="section-title reveal">Proof, not adjectives</h2>
-      <p class="section-sub">Selected work with the engineering decisions behind it. Expand a card for architecture and trade-offs.</p>
-      <div class="projects__grid">${projects}</div>
-    </section>
-
-    <!-- EXPERIENCE -->
-    <section class="section" id="experience">
-      <h2 class="section-title reveal">Twelve years, one throughline: build and ship useful things</h2>
-      <div class="timeline">${exp}</div>
-    </section>
-
-    <!-- SKILLS -->
-    <section class="section" id="skills">
-      <h2 class="section-title reveal">Tools of the trade</h2>
-      <div class="skills__grid">${skills}</div>
-    </section>
-
-    <!-- BLOG -->
-    <section class="section" id="blog">
-      <h2 class="section-title reveal">Written by the machine, curated by me</h2>
-      <div class="blog__head">
+  <div class="shell">
+    <aside class="rail" aria-label="Working record">
+      <div class="rail__brand">
+        <span class="rail__mark" aria-hidden="true">SB</span>
         <div>
-          <p class="section-sub">An AI-assisted daily log: news, notes, and build updates, drafted automatically every morning and curated by a human (me).</p>
-          <span class="blog__stats" id="blogStats"></span>
+          <div class="rail__name">Sho<br />Byde</div>
+          <div class="rail__role">Software engineer<br />Engineering manager</div>
         </div>
-        <a class="section-link" href="/archive/">All writing →</a>
       </div>
-      <div class="blog__grid" id="blogGrid"></div>
-    </section>
 
-    <!-- CONTACT -->
-    <section class="section contact" id="contact">
-      <h2 class="section-title reveal">Let's build something.</h2>
-      <p class="section-sub reveal">Open to interesting problems, consulting work, or just a coffee chat about code.</p>
-      <div class="contact__links reveal">
-        <a href="mailto:${DATA.contact.email}" class="btn btn--primary">Email me</a>
-        <a href="${DATA.contact.linkedin}" target="_blank" rel="noopener" class="btn">LinkedIn</a>
+      <nav class="rail__nav" aria-label="Primary">
+        <a class="rail__link nav__link" href="#about" data-section="about">Profile</a>
+        <a class="rail__link nav__link" href="#projects" data-section="projects">Work</a>
+        <a class="rail__link nav__link" href="#register" data-section="register">Register</a>
+        <a class="rail__link nav__link" href="#experience" data-section="experience">History</a>
+        <a class="rail__link nav__link" href="#skills" data-section="skills">Stack</a>
+        <a class="rail__link nav__link" href="#blog" data-section="blog">Log</a>
+        <a class="rail__link nav__link" href="#contact" data-section="contact">Contact</a>
+        <a class="rail__link" href="/thread/">Thread</a>
+        <a class="rail__link rail__link--reset" href="#hero" data-page-reset data-reset-link hidden>Full record</a>
+      </nav>
+
+      <dl class="rail__status">
+        <div class="rail__status-row"><dt>Current</dt><dd>Conversica<br />Engineering Manager (IC)</dd></div>
+        <div class="rail__status-row"><dt>Base</dt><dd>Pacific Northwest</dd></div>
+        <div class="rail__status-row"><dt>Last filed</dt><dd id="railLog">Loading log</dd></div>
+      </dl>
+
+      <a class="rail__ask" href="/thread/">
+        <span>Ask the record</span>
+        <small>${capCount} capabilities · open the thread</small>
+      </a>
+
+      <div class="rail__progress" aria-hidden="true"><span id="progress"></span></div>
+    </aside>
+
+    <div class="page page--home">
+      <main id="main-content" tabindex="-1">
+        <div class="print-header">
+          <h1>Sho Byde</h1>
+          <p>Software engineer / engineering manager · Pacific Northwest</p>
+          <p><a href="mailto:${DATA.contact.email}">${DATA.contact.email}</a> · <a href="${DATA.contact.linkedin}">LinkedIn</a> · <a href="https://shobyde.com/">shobyde.com</a></p>
+        </div>
+        <section class="hero" id="hero">
+          <div class="hero__meta">
+            <span>Portfolio / 2012-2026</span>
+            <span>Software engineer / engineering manager</span>
+            <span>Pacific Northwest</span>
+          </div>
+
+          <div class="hero__grid">
+            <div class="hero__copy">
+              <p class="eyebrow hero__kicker" id="heroKicker">Working record · open to conversations</p>
+              <h1 class="hero__title" id="heroTitle" aria-label="${DATA.hero.headlineText}">I build<br />software<br />that solves<br /><span class="mark">real problems.</span></h1>
+              <p class="hero__lede" id="heroLede">${DATA.hero.role}</p>
+              <div class="hero__actions" id="heroActions">
+                <a class="btn btn--ink" href="#projects">See the work <span class="btn__arrow" aria-hidden="true">→</span></a>
+                <button class="btn btn--ghost" type="button" id="resumeBtn" data-print>Résumé (PDF)</button>
+              </div>
+              <p class="hero__note" id="heroNote">The record is the page. <a href="/thread/">Open the thread</a> to ask a question.</p>
+            </div>
+
+
+          </div>
+
+          <div class="hero__stats" id="heroStats" role="group" aria-label="At a glance">${stats}</div>
+        </section>
+
+        <section class="section" id="about">
+          <div class="section__head">
+            <div>
+              <p class="section__label">Profile</p>
+              <h2 class="section__title">Twelve years of building, and the <span class="mark">people</span> around it.</h2>
+            </div>
+            <p class="section__sub">A working engineer's record: APIs and cloud systems, teams and escalations, and one year spent teaching an intro CS class before work.</p>
+          </div>
+          <div class="about__grid">
+            <div class="about__body reveal">
+              <p>${DATA.about.p1}</p>
+              <p>${DATA.about.p2}</p>
+              <p>${DATA.about.p3}</p>
+            </div>
+            <aside class="about__side reveal">
+              <dl class="side-table">
+                <div class="side-table__row"><dt>Name</dt><dd>Sho Byde</dd></div>
+                <div class="side-table__row"><dt>Role</dt><dd>Engineering Manager (IC), Conversica</dd></div>
+                <div class="side-table__row"><dt>Base</dt><dd>Pacific Northwest</dd></div>
+                <div class="side-table__row"><dt>Focus</dt><dd>APIs, cloud, client-facing systems, agent UI</dd></div>
+                <div class="side-table__row"><dt>Elsewhere</dt><dd><a href="${DATA.contact.linkedin}" target="_blank" rel="noopener">LinkedIn</a> · <a href="mailto:${DATA.contact.email}">Email</a></dd></div>
+              </dl>
+              <div class="about__quote">
+                <p>“I care just as much about the people: fostering positive workplace culture, mentoring, and contributing to team life.”</p>
+                <cite>From the record</cite>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="section" id="projects">
+          <div class="section__head">
+            <div>
+              <p class="section__label">Selected work</p>
+              <h2 class="section__title" id="workTitle">Work that survives contact with <span class="mark">production</span>.</h2>
+            </div>
+            <p class="section__sub" id="workSub">Six projects with the architecture and trade-offs behind each one. Expand a row for the decisions, not the adjectives.</p>
+          </div>
+          <div class="work-result" id="workResult" hidden>
+            <span class="work-result__label">Result</span>
+            <div class="work-result__main"><strong id="workResultCount"></strong><span id="workResultNames"></span></div>
+            <button class="work-result__clear" type="button" data-page-reset>Clear filter</button>
+          </div>
+          <div class="work-table">
+            <div class="work-head" aria-hidden="true"><span>Index</span><span>Project</span><span>Type</span></div>
+            <ol class="work-list" style="list-style:none">${projects}</ol>
+            <p class="work-empty" id="workEmpty" hidden>No project on this page matches that filter. <button class="work-empty__reset" type="button" data-page-reset>Full record</button></p>
+          </div>
+        </section>
+
+        <section class="register" id="register" aria-labelledby="registerTitle">
+          <div class="register__grid">
+            <div>
+              <p class="section__label">Boaz / A2UI 1.0</p>
+              <h2 class="register__title" id="registerTitle">The page is the <span class="mark">demo</span>.</h2>
+              <p class="register__body">The assistant here is <strong>Boaz</strong>, an in-browser engine with no model and no API key. The build scans the app for <code>defineCapability()</code>, publishes a manifest, and the runtime answers from that manifest and the facts beside it. An answer can become a <strong>declarative surface</strong> instead of a paragraph.</p>
+              <div class="register__stats">
+                <div class="register__stat"><b>${capCount}</b><span>capabilities in the manifest</span></div>
+                <div class="register__stat"><b>0</b><span>models downloaded</span></div>
+                <div class="register__stat"><b>0</b><span>network calls to answer</span></div>
+                <div class="register__stat"><b>3 µs</b><span>to rank every capability</span></div>
+              </div>
+              <div class="register__links">
+                <a href="/boaz/">Read the boaz page</a>
+                <a href="https://github.com/shobyde/boaz">Source &amp; releases</a>
+              </div>
+              <blockquote class="register__quote">
+                “Answers come from the record, and changes happen where they can be seen.”
+                <cite>boaz / the contract</cite>
+              </blockquote>
+            </div>
+            <div>
+              <div class="viewer" id="surfaceViewer">
+                <div class="viewer__bar">
+                  <span class="viewer__label"><b>A2UI 1.0</b> / live surface</span>
+                  <div class="viewer__tabs" role="tablist" aria-label="A2UI surface">
+                    <button class="viewer__tab" type="button" role="tab" id="tab-project" aria-controls="surfaceStage" data-surface="project" aria-selected="true">project_card</button>
+                    <button class="viewer__tab" type="button" role="tab" id="tab-contact" aria-controls="surfaceStage" data-surface="contact" aria-selected="false">contact</button>
+                    <button class="viewer__tab" type="button" role="tab" id="tab-article" aria-controls="surfaceStage" data-surface="article" aria-selected="false">newest_article</button>
+                    <button class="viewer__tab" type="button" role="tab" id="tab-page" aria-controls="surfaceStage" data-surface="page" aria-selected="false">page</button>
+                  </div>
+                </div>
+                <div class="viewer__stage" id="surfaceStage" role="tabpanel" aria-live="polite"></div>
+                <details class="viewer__json">
+                  <summary>View the stream</summary>
+                  <pre id="surfaceJson"></pre>
+                </details>
+              </div>
+              <p class="register__caption"><b>A2UI 1.0:</b> createSurface → updateComponents → updateDataModel. The surface names components; this page's own elements render them. The surface buttons are live and run the same capabilities the assistant uses.</p>
+              <div class="manifest" role="group" aria-label="Manifest excerpt">
+                <p class="manifest__label">agent-manifest.json / excerpt</p>
+                ${manifestRows}
+                <p class="manifest__more">+ ${Math.max(0, capCount - 8)} more</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="experience">
+          <div class="section__head">
+            <div>
+              <p class="section__label">History</p>
+              <h2 class="section__title">Roles, not a <span class="mark">highlight reel</span>.</h2>
+            </div>
+            <p class="section__sub">Twelve years across client-facing products, live production systems, and one classroom. The teaching year is here because it changed how I lead.</p>
+          </div>
+          <div class="career-chart" role="img" aria-label="Career timeline, 2012 to 2026">
+            <div class="career-chart__inner">
+              ${chart}
+              <div class="career-chart__years">
+                <span></span>
+                <div class="career-chart__axis">${axis}</div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline">${timeline}</div>
+        </section>
+
+        <section class="section" id="skills">
+          <div class="section__head">
+            <div>
+              <p class="section__label">Stack</p>
+              <h2 class="section__title">The tools, and what I do <span class="mark">with them</span>.</h2>
+            </div>
+            <p class="section__sub">The stack I have shipped in production. The short version: APIs, cloud infrastructure, data, and the front ends that make them usable.</p>
+          </div>
+          <div class="spec-list">
+            <div class="spec-head" aria-hidden="true"><span>Category</span><span>Count</span><span>Items</span></div>
+            ${skills}
+          </div>
+        </section>
+
+        <section class="section" id="blog">
+          <div class="section__head writing__head">
+            <div>
+              <p class="section__label">Log</p>
+              <h2 class="section__title">A daily log, drafted by machine and <span class="mark">signed by a human</span>.</h2>
+            </div>
+            <div>
+              <span class="blog__stats" id="blogStats">Loading the log…</span>
+              <div class="writing__all"><a href="/archive/">All writing <span aria-hidden="true">→</span></a></div>
+            </div>
+          </div>
+          <div class="writing__grid" id="blogGrid">
+            <p class="section__sub">The log is loading. <a href="/archive/">Read the archive</a> if it does not appear.</p>
+          </div>
+        </section>
+
+        <section class="contact" id="contact">
+          <div class="contact__grid">
+            <div>
+              <p class="section__label">Contact</p>
+              <h2 class="contact__title">Let's build something that <span class="mark">lasts</span>.</h2>
+              <a class="contact__mail" href="mailto:${DATA.contact.email}">${DATA.contact.email}</a>
+              <div class="contact__links">
+                <a class="btn btn--ink" href="mailto:${DATA.contact.email}">Email me</a>
+                <a class="btn" href="${DATA.contact.linkedin}" target="_blank" rel="noopener">LinkedIn</a>
+                <button class="btn" type="button" id="resumeBtn2" data-print>Résumé (PDF)</button>
+              </div>
+              <p class="contact__note">The printable version is generated from this page, so everything here is already public. If you need a phone number or a formal PDF with references, email me and I will send it over.</p>
+            </div>
+            <dl class="contact__table" aria-label="Contact details">
+              <div class="contact__row"><dt>Email</dt><dd><a href="mailto:${DATA.contact.email}">${DATA.contact.email}</a></dd></div>
+              <div class="contact__row"><dt>LinkedIn</dt><dd><a href="${DATA.contact.linkedin}" target="_blank" rel="noopener">in/sho-byde</a></dd></div>
+              <div class="contact__row"><dt>Based</dt><dd>Pacific Northwest</dd></div>
+              <div class="contact__row"><dt>Status</dt><dd>Open to conversations</dd></div>
+              <div class="contact__row"><dt>Résumé</dt><dd>Printable from this page</dd></div>
+            </dl>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="footer__grid">
+          <div>
+            <p class="footer__word">Sho Byde</p>
+            <p class="footer__colophon">Set in Archivo and IBM Plex Mono. Built with Vite and deployed to Cloudflare Pages. <a href="/boaz/">Boaz v${esc(boazPackage.version)}</a> runs the thread; no model was downloaded to render this page.</p>
+          </div>
+          <nav class="footer__links" aria-label="Elsewhere">
+            <a href="/boaz/">Boaz</a>
+            <a href="/archive/">Writing archive</a>
+            <a href="/labs/">Labs</a>
+            <a href="/thread/">Thread</a>
+            <a href="https://github.com/shobyde">GitHub</a>
+          </nav>
+          <div class="footer__meta">
+            © ${new Date().getFullYear()} Sho Byde<br />
+            <a href="mailto:${DATA.contact.email}">${DATA.contact.email}</a><br />
+            Pacific Northwest
+          </div>
+        </div>
+      </footer>
+      <div class="agent" id="agentRoot">
+        <form class="agent__launcher" id="homeAsk" autocomplete="off">
+          <div class="agent__launcher-top">
+            <div class="agent__launcher-suggest">${starters}</div>
+            <span class="agent__launcher-power">starts a thread</span>
+          </div>
+          <div class="agent__launcher-row">
+            <span class="agent__launcher-dot" aria-hidden="true"></span>
+            <label class="sr-only" for="homeAskInput">Start a thread</label>
+            <input class="agent__launcher-input" id="homeAskInput" type="text" placeholder="Ask the record" />
+            <button class="agent__launcher-send" type="submit" aria-label="Start a thread">&rarr;</button>
+          </div>
+        </form>
       </div>
-      <p class="contact__note reveal">The printable version is generated right from this page, so everything here is already public. If you need my phone number or a formal PDF résumé with references, just email me and I'll send it over.</p>
-    </section>
-  </main>
-
-  <div class="container"><footer class="footer">
-    <div>© ${new Date().getFullYear()} Sho Byde</div>
-    <div class="footer__labs"><a href="/labs/">Labs</a> · <a href="/labs/benchmarks/">Benchmarks</a> · <a href="/labs/no-llm/">Scorecard</a> · <a href="/labs/tools/">Tools</a> · <a href="/boaz/">boaz</a></div>
-    <div><a href="mailto:${DATA.contact.email}">${DATA.contact.email}</a></div>
-  </footer></div>
-
-  <aside class="new-post" id="newPost" hidden aria-labelledby="newPostTitle">
-    <button class="new-post__close" type="button" id="newPostClose" aria-label="Dismiss new article notice">×</button>
-    <p class="new-post__eyebrow"><span class="new-post__dot" aria-hidden="true"></span> New article</p>
-    <a class="new-post__title" id="newPostTitle" href="/#blog"></a>
-    <p class="new-post__meta" id="newPostMeta"></p>
-  </aside>
-  `;
+    </div>
+  </div>`;
 }
+
+document.getElementById('app').innerHTML = buildPage();
+document.querySelectorAll('.project-card').forEach((row) => PROJECT_ORDER.push(row.dataset.key));
 
 /* ---------- project detail expanders ---------- */
 function initProjectToggles() {
@@ -208,118 +440,146 @@ function initProjectToggles() {
       const panel = document.getElementById(btn.getAttribute('aria-controls'));
       const open = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', String(!open));
-      btn.textContent = open ? 'Details' : 'Close';
-      panel.classList.toggle('is-open', !open);
+      panel?.classList.toggle('is-open', !open);
+      panel?.setAttribute('aria-hidden', String(open));
+      panel?.toggleAttribute('inert', open);
     });
   });
 }
 
-function initResumePrint() {
-  const btn = document.getElementById('resumeBtn');
-  if (btn) btn.addEventListener('click', () => window.print());
+function initPageControls() {
+  document.addEventListener('click', (event) => {
+    const print = event.target.closest('[data-print], #resumeBtn, #resumeBtn2');
+    if (print) {
+      event.preventDefault();
+      window.print();
+    }
+  });
 }
 
-function initCounters() {
-  const els = document.querySelectorAll('.stat__num[data-count]');
-  if (motionPrefs.reduced) {
-    els.forEach((el) => { el.textContent = el.dataset.count + (el.dataset.suffix || ''); });
-    return;
-  }
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) {
-      if (!e.isIntersecting) continue;
-      io.unobserve(e.target);
-      const el = e.target;
-      const target = +el.dataset.count;
-      const suffix = el.dataset.suffix || '';
-      const dur = 1400;
-      const start = performance.now();
-      (function tick(now) {
-        const p = Math.min((now - start) / dur, 1);
-        const eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = Math.round(target * eased) + suffix;
-        if (p < 1) requestAnimationFrame(tick);
-      })(start);
+/* ---------- Live A2UI surface viewer ---------- */
+function initSurfaceViewer(posts = []) {
+  const stage = document.getElementById('surfaceStage');
+  const json = document.getElementById('surfaceJson');
+  const tabs = [...document.querySelectorAll('.viewer__tab')];
+  if (!stage || !tabs.length) return;
+
+  const newest = [...posts].sort((a, b) => String(b.date).localeCompare(String(a.date)))[0];
+  const cases = {
+    project: () => projectCard('hobnob'),
+    contact: () => contactCard(),
+    article: () => (newest ? articleCard(newest) : projectCard('groundglass')),
+  };
+
+  const paint = (key) => {
+    if (key === 'page') {
+      stage.replaceChildren();
+      const pre = document.createElement('pre');
+      pre.className = 'viewer__page-json';
+      pre.textContent = JSON.stringify(currentPageSurface || [], null, 2);
+      stage.appendChild(pre);
+      if (json) json.textContent = pre.textContent;
+    } else {
+      const surface = cases[key]?.();
+      if (!surface) return;
+      stage.replaceChildren();
+      renderA2UI(surface, stage, {
+        onAction: (name, context) => window.__clerk?.run(name, context),
+      });
+      if (json) json.textContent = JSON.stringify(surface, null, 2);
     }
-  }, { threshold: 0.5 });
-  els.forEach((el) => io.observe(el));
+    stage.setAttribute('aria-labelledby', `tab-${key}`);
+    tabs.forEach((tab) => {
+      const selected = tab.dataset.surface === key;
+      tab.setAttribute('aria-selected', String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+    });
+  };
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => paint(tab.dataset.surface));
+    tab.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+      event.preventDefault();
+      const step = event.key === 'ArrowRight' ? 1 : -1;
+      const next = tabs[(i + step + tabs.length) % tabs.length];
+      next.focus();
+      next.click();
+    });
+  });
+  paint('project');
+}
+
+/* ---------- hero + rail wiring ---------- */
+function navSpy() {
+  const links = [...document.querySelectorAll('.rail__link[data-section]')];
+  const sections = links
+    .map((link) => document.querySelector(link.getAttribute('href')))
+    .filter(Boolean);
+  if (!('IntersectionObserver' in window)) return;
+  const spy = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      links.forEach((link) => {
+        const active = link.getAttribute('href') === `#${entry.target.id}`;
+        link.classList.toggle('is-active', active);
+        if (active) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+    }
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach((section) => spy.observe(section));
+}
+
+/* ---------- home thread starter ---------- */
+function initHomeAsk() {
+  const form = document.getElementById('homeAsk');
+  if (!form) return;
+  const input = document.getElementById('homeAskInput');
+  const go = (text) => {
+    const question = String(text || '').trim();
+    if (!question) { input?.focus(); return; }
+    location.assign(`/thread/?q=${encodeURIComponent(question)}`);
+  };
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    go(input?.value);
+  });
+  document.querySelectorAll('[data-home-ask]').forEach((button) => {
+    button.addEventListener('click', () => go(button.getAttribute('data-home-ask')));
+  });
 }
 
 /* ---------- boot ---------- */
 async function boot() {
-  const loader = document.getElementById('loader');
-  const fill = document.getElementById('loaderFill');
-  const pct = document.getElementById('loaderPct');
-
-  // never let fonts/network hang the boot - hard cap at 2.5s
-  const withTimeout = (p, ms) => Promise.race([p, new Promise((r) => setTimeout(r, ms))]);
-
-  // three.js init (independent from DOM)
-  try { initBackground(); } catch (e) { console.warn('WebGL unavailable:', e); }
-
-  // hero entrance is a pure CSS animation (see .hero__anim) - starts on DOM insert,
-  // no JS timing needed; just reveal scroll cue + nav once the loader lifts.
-  document.getElementById('heroScroll').classList.add('is-visible');
-
-  await withTimeout(document.fonts ? document.fonts.ready : Promise.resolve(), 2500);
-
-  initSmoothScroll();
   initReveals();
-  initStreamText();
-  initScrollStream();
-  initMagnetic();
-  initCounters();
   initProgress();
   initProjectToggles();
-  initResumePrint();
-  const blogState = await withTimeout(initBlog(), 3000);
+  initPageControls();
+  initHomeAsk();
+
+  const withTimeout = (promise, ms) =>
+    Promise.race([promise, new Promise((resolve) => setTimeout(() => resolve(null), ms))]);
+
+  const blogState = await withTimeout(initBlog(), 3200);
+
+
+
+  initSurfaceViewer(blogState?.posts || []);
   navSpy();
 
-  // The site assistant is additive: if it fails, the page is unaffected.
-  try {
-    initAssistant({ posts: blogState?.posts || [] });
-  } catch (error) {
-    console.warn('[assistant] unavailable:', error);
+  const railLog = document.getElementById('railLog');
+  if (railLog && blogState?.posts?.length) {
+    const newest = [...blogState.posts].sort((a, b) => String(b.date).localeCompare(String(a.date)))[0];
+    railLog.innerHTML = `${blogState.posts.length} entries<br /><span>${shortDate(newest.date)}</span>`;
+  } else if (railLog) {
+    railLog.textContent = 'No entries';
   }
 
-  // deep-link to a section: anchors can't resolve before the DOM was built
   if (location.hash) {
-    const t = document.querySelector(location.hash);
-    if (t) t.scrollIntoView({ behavior: 'instant', block: 'start' });
+    const target = document.querySelector(location.hash);
+    if (target) target.scrollIntoView({ behavior: 'instant', block: 'start' });
   }
-
-  document.getElementById('nav').classList.add('is-visible');
-  fill.style.width = '100%';
-  pct.textContent = '100%';
-  setTimeout(() => loader.classList.add('is-done'), 150);
 }
-
-function navSpy() {
-  const links = [...document.querySelectorAll('.nav__link')];
-  const sections = links.map((l) => document.querySelector(l.getAttribute('href')));
-  const spy = new IntersectionObserver((entries) => {
-    for (const e of entries) {
-      if (!e.isIntersecting) continue;
-      links.forEach((l) => {
-        const active = l.getAttribute('href') === `#${e.target.id}`;
-        l.classList.toggle('is-active', active);
-        if (active) l.setAttribute('aria-current', 'true');
-        else l.removeAttribute('aria-current');
-      });
-    }
-  }, { rootMargin: '-40% 0px -55% 0px' });
-  sections.forEach((s) => s && spy.observe(s));
-}
-
-// failsafe: never leave the loader spinning - force-close at 4s no matter what
-setTimeout(() => {
-  const l = document.getElementById('loader');
-  if (l && !l.classList.contains('is-done')) {
-    l.classList.add('is-done');
-    const n = document.getElementById('nav');
-    if (n) n.classList.add('is-visible');
-    console.warn('[failsafe] loader force-closed at 4s');
-  }
-}, 4000);
 
 boot();

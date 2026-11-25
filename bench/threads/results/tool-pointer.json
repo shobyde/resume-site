@@ -1,0 +1,379 @@
+{
+  "generated": "2026-11-25T22:53:36.935Z",
+  "strategy": "pointer",
+  "engine": "0.9.4",
+  "memory": "0.9.4",
+  "threads": [
+    {
+      "id": "commit-switch",
+      "title": "Commits for one repo, then another",
+      "turns": [
+        {
+          "ask": "how many commits does Boaz have?",
+          "routed": "how many commits does Boaz have?",
+          "follow": null,
+          "pointer": {
+            "query": "how many commits does Boaz have?",
+            "subject": null,
+            "rewritten": false
+          },
+          "kind": "tool",
+          "expect": {
+            "tool": "github.activity",
+            "args": {
+              "repo": "boaz"
+            },
+            "include": [
+              "81"
+            ]
+          },
+          "text": "Boaz: 81 commits, 67 releases, 0 stars.",
+          "calls": [
+            {
+              "id": "github.activity",
+              "args": {
+                "repo": "boaz"
+              }
+            }
+          ],
+          "plannedBy": null,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true,
+          "argsOk": true
+        },
+        {
+          "ask": "what about Hobnob?",
+          "routed": "what about Hobnob?",
+          "follow": null,
+          "pointer": {
+            "query": "what about Hobnob?",
+            "subject": "Boaz",
+            "rewritten": false
+          },
+          "kind": "context",
+          "expect": {
+            "tool": "github.activity",
+            "args": {
+              "repo": "hobnob"
+            },
+            "include": [
+              "Hobnob"
+            ],
+            "exclude": [
+              "Boaz"
+            ]
+          },
+          "text": "Hobnob. Meeting note-takers ship your conversations to someone else's server.",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.about",
+          "pass": false,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": false,
+          "argsOk": false
+        },
+        {
+          "ask": "and Readback?",
+          "routed": "and Readback?",
+          "follow": null,
+          "pointer": {
+            "query": "and Readback?",
+            "subject": "Hobnob",
+            "rewritten": false
+          },
+          "kind": "context",
+          "expect": {
+            "tool": "github.activity",
+            "args": {
+              "repo": "readback"
+            },
+            "include": [
+              "Readback"
+            ],
+            "exclude": [
+              "Hobnob"
+            ]
+          },
+          "text": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"readback\"}}\n```",
+          "calls": [
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "readback"
+              }
+            },
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "readback"
+              }
+            },
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "readback"
+              }
+            }
+          ],
+          "plannedBy": null,
+          "pass": false,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": false,
+          "argsOk": false
+        }
+      ]
+    },
+    {
+      "id": "chart-switch",
+      "title": "A chart query, then another repo",
+      "turns": [
+        {
+          "ask": "chart commits by week for Boaz",
+          "routed": "chart commits by week for Boaz",
+          "follow": null,
+          "pointer": {
+            "query": "chart commits by week for Boaz",
+            "subject": null,
+            "rewritten": false
+          },
+          "kind": "tool",
+          "expect": {
+            "tool": "github.activity",
+            "args": {
+              "repo": "boaz"
+            },
+            "include": [
+              "81"
+            ]
+          },
+          "text": "Boaz: 81 commits, 67 releases, 0 stars.",
+          "calls": [
+            {
+              "id": "github.activity",
+              "args": {
+                "repo": "boaz"
+              }
+            }
+          ],
+          "plannedBy": null,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true,
+          "argsOk": true
+        },
+        {
+          "ask": "what about Hobnob?",
+          "routed": "what about Hobnob?",
+          "follow": null,
+          "pointer": {
+            "query": "what about Hobnob?",
+            "subject": "Boaz",
+            "rewritten": false
+          },
+          "kind": "context",
+          "expect": {
+            "tool": "github.activity",
+            "args": {
+              "repo": "hobnob"
+            },
+            "include": [
+              "Hobnob"
+            ],
+            "exclude": [
+              "Boaz"
+            ]
+          },
+          "text": "Hobnob. Meeting note-takers ship your conversations to someone else's server.",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.about",
+          "pass": false,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": false,
+          "argsOk": false
+        }
+      ]
+    },
+    {
+      "id": "card-switch",
+      "title": "A project card, then another project",
+      "turns": [
+        {
+          "ask": "show me the Hobnob card",
+          "routed": "show me the Hobnob card",
+          "follow": null,
+          "pointer": {
+            "query": "show me the Hobnob card",
+            "subject": null,
+            "rewritten": false
+          },
+          "kind": "tool",
+          "expect": {
+            "tool": "projects.card",
+            "args": {
+              "project": "hobnob"
+            },
+            "include": [
+              "Hobnob"
+            ]
+          },
+          "text": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"hobnob\"}}\n```",
+          "calls": [
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "hobnob"
+              }
+            },
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "hobnob"
+              }
+            },
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "hobnob"
+              }
+            }
+          ],
+          "plannedBy": null,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true,
+          "argsOk": true
+        },
+        {
+          "ask": "what about Readback?",
+          "routed": "what about Readback?",
+          "follow": null,
+          "pointer": {
+            "query": "what about Readback?",
+            "subject": "Hobnob",
+            "rewritten": false
+          },
+          "kind": "context",
+          "expect": {
+            "tool": "projects.card",
+            "args": {
+              "project": "readback"
+            },
+            "include": [
+              "Readback"
+            ],
+            "exclude": [
+              "Hobnob"
+            ]
+          },
+          "text": "Readback: Reading-comprehension programs are closed systems: the school picks the quizzes, parents never see them, and the reading log lives on someone else's server.",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.about",
+          "pass": false,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": false,
+          "argsOk": false
+        }
+      ]
+    },
+    {
+      "id": "stack-switch",
+      "title": "A stack answer, then another project",
+      "turns": [
+        {
+          "ask": "what stack does Hobnob use?",
+          "routed": "what stack does Hobnob use?",
+          "follow": null,
+          "pointer": {
+            "query": "what stack does Hobnob use?",
+            "subject": null,
+            "rewritten": false
+          },
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Whisper"
+            ]
+          },
+          "text": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.stack",
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true,
+          "argsOk": true
+        },
+        {
+          "ask": "what about Readback?",
+          "routed": "what about Readback?",
+          "follow": null,
+          "pointer": {
+            "query": "what about Readback?",
+            "subject": "Hobnob",
+            "rewritten": false
+          },
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Flask"
+            ],
+            "exclude": [
+              "Whisper"
+            ]
+          },
+          "text": "Readback: Reading-comprehension programs are closed systems: the school picks the quizzes, parents never see them, and the reading log lives on someone else's server.",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.about",
+          "pass": false,
+          "declined": false,
+          "missing": [
+            "Flask"
+          ],
+          "leaked": [],
+          "toolOk": true,
+          "argsOk": true
+        }
+      ]
+    }
+  ]
+}

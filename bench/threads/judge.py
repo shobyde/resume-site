@@ -24,6 +24,9 @@ from hermes_cli.runtime_provider import resolve_runtime_provider  # noqa: E402
 import urllib.request  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
+FILE = None
+if "--file" in sys.argv:
+    FILE = Path(sys.argv[sys.argv.index("--file") + 1])
 MODE = "stateless" if "--stateless" in sys.argv else "memory"
 MODEL = "minimax-m3.1-flash"
 PROVIDER = "opencode-go"
@@ -38,11 +41,12 @@ SYSTEM = (
 
 RUBRIC = """The visitor's earlier turns and the question are below, followed by the answer.
 Return exactly:
-{"answered": 0 or 1, "tool_ok": 0 or 1 or -1, "grounded": 0-2, "readability": 1-5, "why": "<= 14 words"}
+{"answered": 0 or 1, "tool_ok": 0 or 1 or -1, "grounded": 0-2, "readability": 1-5, "continuity": -1 or 0-2, "why": "<= 14 words"}
 answered: 1 if the answer actually answers the question asked (or performs the action asked for).
 tool_ok: 1 if the tools called match what the question needed, 0 if they missed or were irrelevant, -1 if no tool was needed.
 grounded: 2 if every claim is supported by the answer's own facts, 1 if some claim is vague, 0 if it invents something.
 readability: 5 plain and natural, 3 understandable but clumsy, 1 broken or unreadable.
+continuity: only for TURN KIND=context. 2 = keeps the previous turn's operation and applies it to the new subject; 1 = keeps part of it or asks a necessary clarification; 0 = changes operation, repeats the old subject, or substitutes a generic summary. -1 for every non-context turn.
 why: the shortest reason, no restating."""
 
 
@@ -107,26 +111,39 @@ def parse(raw):
         return None
     return {
         "answered": 1 if data.get("answered") in (1, True) else 0,
-        "tool_ok": int(data.get("tool_ok", -1)),
+        "tool_ok": max(-1, min(1, int(data.get("tool_ok", -1)))),
         "grounded": max(0, min(2, int(data.get("grounded", 1)))),
         "readability": max(1, min(5, int(data.get("readability", 3)))),
+        "continuity": max(-1, min(2, int(data.get("continuity", -1)))),
         "why": str(data.get("why", ""))[:90],
     }
 
 
-source = HERE / "results" / f"threads-{MODE}.json"
+source = FILE if FILE else HERE / "results" / f"threads-{MODE}.json"
+if not source.is_absolute():
+    source = HERE / source
 run = json.loads(source.read_text())
+MODE = source.stem if source.stem.startswith("tool-") else source.stem.removeprefix("threads-")
 scored = []
 for thread in run["threads"]:
     prior = []
-    for turn in thread["turns"]:
+    for index, turn in enumerate(thread["turns"]):
         expected_tool = turn.get("expect", {}).get("tool")
+        previous = thread["turns"][index - 1] if index else None
         payload = "\n".join(
             [
                 RUBRIC,
                 "",
                 "EARLIER TURNS:",
                 *([f"- visitor: {q}\n- assistant: {a}" for q, a in zip(prior[::2], prior[1::2])] or ["(none)"]),
+                "",
+                f"TURN KIND: {turn.get('kind', 'knowledge')}",
+                "PREVIOUS TURN:",
+                *(
+                    [f"- visitor: {previous['ask']}\n- assistant: {previous['text']}\n- tools: {[c['id'] for c in previous.get('calls', [])] or 'none'}"]
+                    if previous
+                    else ["(none)"]
+                ),
                 "",
                 f"QUESTION: {turn['ask']}",
                 f"TOOLS CALLED: {[c['id'] for c in turn.get('calls', [])] or 'none'}",
@@ -176,9 +193,16 @@ needed = [t for t in scored if t["tool_ok"] != -1]
 tool = sum(t["tool_ok"] for t in needed)
 read = sum(t["readability"] for t in scored) / len(scored)
 ground = sum(t["grounded"] for t in scored) / (2 * len(scored))
+context = [t for t in scored if t["kind"] == "context"]
+continuity = (
+    sum(t["continuity"] for t in context) / (2 * len(context))
+    if context else 0
+)
 print(f"judged {len(scored)} turns with {MODEL}")
 print(f"  answered   {answered}/{len(scored)}")
 print(f"  tool ok    {tool}/{len(needed)} turns that needed one")
 print(f"  grounded   {ground:.2f}")
 print(f"  readability {read:.2f}/5")
+if context:
+    print(f"  continuity {continuity:.2f} on {len(context)} context turns")
 print(f"  wrote {target.relative_to(HERE.parent.parent)}")

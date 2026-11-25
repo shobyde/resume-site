@@ -6,7 +6,7 @@
 export const DATA = {
   hero: {
     name: 'Sho Byde',
-    tag: 'SHO BYDE // SOFTWARE ENGINEER — PNW',
+    tag: 'SHO BYDE // SOFTWARE ENGINEER - PNW',
     headline: 'I build software that solves <span class="accent">real problems</span>.',
     headlineText: 'I build software that solves real problems.',
     role: `Engineering manager and individual contributor with <strong>12+ years</strong> building APIs, cloud systems, and client-facing applications. I now teach machines and mentor humans.`,
@@ -20,7 +20,7 @@ export const DATA = {
     { num: 12, suffix: '+', label: 'Years in development' },
     { num: 5, suffix: '+', label: 'Languages shipped in production' },
     { num: 1, suffix: '', label: 'Year of volunteer teaching' },
-    { text: '∞', label: 'Tokens spent so you don’t have to' },
+    { num: 32, suffix: '', label: 'Capabilities on this page' },
   ],
   projects: [
     {
@@ -112,23 +112,24 @@ export const DATA = {
       title: 'shobyde.com: resume + daily engineering log',
       summary: `A personal site that publishes like a newsroom: I wanted a résumé that stays alive instead of rotting, so I built an <strong>LLM-assisted publishing loop</strong>. Automated agents draft daily entries and site updates; I review, curate, and merge every change.`,
       contribution: 'Sole engineer: design, architecture, implementation, and deployment.',
-      stack: ['Vite', 'Vanilla JS', 'Three.js (WebGL)', 'Lenis', 'Cloudflare Pages', 'LLM agent tooling'],
+      stack: ['Vite', 'Vanilla JS', 'Boaz + A2UI', 'Cloudflare Pages', 'LLM agent tooling'],
       links: [
         { label: 'Visit site', url: 'https://shobyde.com/' },
         { label: 'Case study: how it was built', url: '/posts/2026-10-13-site-kickoff/' },
       ],
       details: {
-        architecture: 'Static Vite build deployed to Cloudflare Pages. The daily log is a content store (markdown + a generated index.json) that the client fetches at runtime, so writing never requires a redeploy of logic. A WebGL starfield, scroll-reveals, and a streaming-text engine run the page; every animated subsystem is gated on prefers-reduced-motion and the page stays fully readable with JavaScript disabled.',
+        architecture: 'Static Vite build deployed to Cloudflare Pages. The daily log is a content store (markdown + a generated index.json) that the client fetches at runtime, so writing never requires a redeploy of logic. The page is set as a working record: a cold blueprint canvas, an ink navigation rail, hairline index tables, and a persistent Ask control that opens Boaz, the in-browser assistant that answers from this site\'s own manifest and facts. A2UI 1.0 surfaces render through the page\'s native elements.',
         decisions: [
-          'No framework, no animation library: Three.js is the only heavy dependency, justified by the background scene; everything else is CSS transitions + IntersectionObserver.',
+          'No framework and no animation library: the interface is CSS transitions plus IntersectionObserver, and the only runtime dependency is Boaz.',
+          'The assistant is a navigation instrument, not a chat bubble bolted on: it is in the rail, the hero, and the register, and it can hand back a live A2UI surface instead of a paragraph.',
           'Human-in-the-loop publishing: machine-drafted posts only go live after manual curation, so the log stays trustworthy.',
-          'Boot is timeout-capped (fonts 2.5 s, content 3 s, loader failsafe 4 s) so a slow network can never strand the visitor on a loading screen.',
+          'Every animated element has a reduced-motion path, and the generated reading pages stay readable with JavaScript disabled.',
         ],
         diagram: { src: '/assets/diagrams/stack.svg', alt: 'Tech stack diagram: content pipeline, build, and hosting layers of this site' },
       },
     },
     {
-      meta: ['COURSEWORK · DIGIPEN', '2012–2013'],
+      meta: ['COURSEWORK · DIGIPEN', '2012-2013'],
       title: 'C++ physics simulation engines',
       summary: `Built physics-based game engines in C++ as part of the DigiPen game-development program: the ground floor of a year that ended with our cohort taking <strong>3 of the 4 game design awards</strong>.`,
       contribution: 'Engine implementation plus cross-team feedback loops with large groups of developers.',
@@ -145,9 +146,9 @@ export const DATA = {
   ],
   experience: [
     {
-      role: 'Software Development Engineer 1–3 / Engineering Manager (IC)',
+      role: 'Software Development Engineer 1-3 / Engineering Manager (IC)',
       org: 'Conversica',
-      period: 'Jul 2021 – Present',
+      period: 'Jul 2021 - Present',
       bullets: [
         'Collaborated with product teams to distribute tickets and create technical designs for client-facing changes.',
         'Resolved customer escalations on a dedicated team, working directly with customer support and account managers.',
@@ -162,9 +163,9 @@ export const DATA = {
     {
       role: 'Volunteer Teacher: Intro to Computer Science',
       org: 'Local high school',
-      period: 'Sep 2022 – Jun 2023',
+      period: 'Sep 2022 - Jun 2023',
       bullets: [
-        'Taught an introductory CS class first period (7:30–8:25), before my regular workday, for a full school year.',
+        'Taught an introductory CS class first period (7:30-8:25), before my regular workday, for a full school year.',
         'Partnered with IT to install VS Code and configure firewall rules, giving students in a rural community real coding access.',
         'Instructed students with no prior experience in writing programs and planning projects.',
         'Promoted refactoring and upfront consideration of design patterns.',
@@ -175,7 +176,7 @@ export const DATA = {
     {
       role: 'Software Developer',
       org: 'Intuli',
-      period: 'Aug 2014 – Jul 2021',
+      period: 'Aug 2014 - Jul 2021',
       bullets: [
         'Led a small group of junior developers: assigned work packages, ran QA procedures, and stepped in on projects when needed.',
         'Supported multi-million-dollar client accounts, handling service requests and product alterations in live production systems.',
@@ -188,7 +189,7 @@ export const DATA = {
     {
       role: 'Game Developer',
       org: 'DigiPen (Sno-Isle)',
-      period: 'Sep 2012 – Jun 2013',
+      period: 'Sep 2012 - Jun 2013',
       bullets: [
         'Created physics-based engines in C++.',
         'Collaborated with large groups of developers and provided product feedback.',

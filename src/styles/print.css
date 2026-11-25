@@ -1,65 +1,120 @@
 /* ============================================================
-   Print stylesheet - "Download resume" produces a clean
-   black-on-white résumé: contact header + About + Experience
-   + Skills. Projects, the daily log, and marketing chrome are
-   screen-only.
+   Print: one clean, black-on-white résumé.
+   Screen chrome, projects, the register, the log, and contact
+   marketing collapse away. The record remains.
    ============================================================ */
 @media print {
-  :root { --bg: #fff; --fg: #111; --fg-dim: #333; --fg-mute: #555; --accent2: #111; --accent: #111; }
+  @page { margin: 14mm 15mm; }
+
+  :root {
+    --canvas: #fff;
+    --canvas-2: #fff;
+    --surface: #fff;
+    --ink: #111;
+    --ink-2: #222;
+    --dim: #333;
+    --mute: #555;
+    --line: #bbb;
+    --line-strong: #888;
+    --cobalt: #111;
+    --cobalt-deep: #111;
+    --acid: #fff;
+  }
+
   html { scroll-behavior: auto; }
-  body { background: #fff !important; color: #111; font-size: 11pt; }
-
-  /* screen-only chrome */
-  #bg3d, .loader, .nav, .progress, .skip-link, .hero__scroll, .stats,
-  #projects, #blog, #contact, .footer,
-  .modal, .modal-overlay, .grain { display: none !important; }
-
-  /* hero collapses to an identity + contact header */
-  .hero { min-height: 0; padding: 0 0 0.8rem; }
-  .hero__tag, .hero__headline, .hero__role, .hero__cta { display: none !important; }
-  .print-name {
-    display: block; font-size: 24pt; font-weight: 700;
-    margin: 0 0 0.2rem; letter-spacing: 0.01em;
+  body {
+    background: #fff !important;
+    background-image: none !important;
+    color: #111;
+    font-size: 10.5pt;
+    line-height: 1.45;
   }
-  .print-contact {
-    display: block; font-size: 10pt; color: #333; margin: 0 0 0.4rem;
-  }
-  .print-contact a { color: #333; text-decoration: none; }
 
-  .section { padding: 1rem 0; }
-  .container { max-width: none; padding: 0 1.4cm; }
-  .section-title {
-    font-size: 14pt; border-bottom: 1px solid #999; padding-bottom: 0.3rem;
-    margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em;
+  .rail, .hero, #projects, #register, #blog, .contact, .footer,
+  .agent, .skip-link, .hero__meta, .hero__stats, .section__sub,
+  .section__label, .about__quote, .career-chart, .print-header a::after {
+    display: none !important;
   }
-  .section-sub { display: none; }
+
+  /* Printing the résumé always prints the full résumé, whichever page view
+     the clerk has composed on screen. */
+  #about, #experience, #skills { display: block !important; }
+
+  .print-header { display: block; margin-bottom: 1rem; }
+  .print-header h1 {
+    font-family: var(--display);
+    font-stretch: 125%;
+    font-weight: 800;
+    font-size: 24pt;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+  }
+  .print-header p { margin-top: 0.25rem; font-size: 9pt; color: #333; }
+  .print-header a { color: #333; text-decoration: none; }
+
+  .page { margin: 0; }
+  main { display: block; }
+  .section { padding: 0.9rem 0 0.6rem; border-top: 1px solid #bbb; page-break-inside: auto; }
+  .section__head { display: block; margin-bottom: 0.55rem; }
+  .section__title {
+    font-family: var(--display);
+    font-stretch: 120%;
+    font-weight: 700;
+    font-size: 13pt;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    max-width: none;
+  }
+  .section__title .mark { background: none; color: #111; padding: 0; }
+
+  #about .section__title { display: none; }
   .about__grid { display: block; }
-  /* skills keep their boxed grid — borderless text looked broken on paper */
-  .skills__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8pt; }
-  .skill-group {
-    border: 1px solid #bbb; border-radius: 4pt; padding: 8pt 10pt;
-    background: none; page-break-inside: avoid;
-  }
-  .skill-group__title { font-size: 8.5pt; margin-bottom: 5pt; }
-  .tag {
-    border: 1px solid #999; border-radius: 100px;
-    padding: 1.5pt 6pt; font-size: 8.5pt; color: #222;
-  }
-  .tl-item { page-break-inside: avoid; page-break-before: auto; }
-  .tl-item__role { font-size: 12pt; }
-  .tl-item__bullets li { font-size: 10pt; margin-bottom: 0.25rem; }
-  .tl-item + .tl-item { page-break-inside: avoid; }
+  .about__body p { font-size: 9.6pt; line-height: 1.45; margin-bottom: 0.4rem; color: #222; }
+  .about__body p:first-child { font-size: 9.6pt; color: #111; }
+  .about__side { margin-top: 0.5rem; }
+  .side-table { border-top: 1px solid #bbb; }
+  .side-table__row { display: grid; grid-template-columns: 5.5rem 1fr; padding: 0.18rem 0; border-bottom: 1px solid #ddd; }
+  .side-table__row dt { font-size: 7pt; color: #555; }
+  .side-table__row dd { font-size: 8.5pt; }
+  .side-table__row dd a { color: #111; text-decoration: none; }
 
-  /* reveal-on-scroll and stream-text states must not hide content */
-  .reveal, .tl-item, [class*="hero__anim"] {
-    opacity: 1 !important; transform: none !important;
-    transition: none !important; animation: none !important;
+  .career-chart, .tl-item__bullets li::before { display: none; }
+  .timeline { margin-top: 0; border-top: 0; }
+  .tl-item, .tl-item--civic { background: #fff !important; }
+  .tl-item {
+    display: block;
+    padding: 0.45rem 0 0.55rem;
+    border-bottom: 1px solid #ddd;
+    page-break-inside: avoid;
   }
-  .stream-ch, [class*="stream"] {
-    opacity: 1 !important; transform: none !important;
-    animation: none !important;
-  }
+  .tl-item__period { font-size: 8pt; color: #333; }
+  .tl-item__tag { display: none; }
+  .tl-item__role { font-size: 11pt; text-transform: none; letter-spacing: -0.01em; }
+  .tl-item__org { font-size: 8pt; margin-top: 0.1rem; color: #555; }
+  .tl-item__bullets { columns: 1; margin-top: 0.25rem; max-width: none; }
+  .tl-item__bullets li { font-size: 8.8pt; line-height: 1.4; margin-bottom: 0.15rem; padding-left: 0.7rem; color: #222; }
+  .tl-item__bullets li::before { display: block; background: #888; top: 0.62em; }
 
-  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 8pt; color: #555; }
-  .print-contact a::after { content: ""; }
+  .spec-list { border-top: 0; }
+  .spec-head { display: none; }
+  .spec-row {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 0.5rem;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid #eee;
+    page-break-inside: avoid;
+  }
+  .spec-row__group { font-size: 8.5pt; text-transform: none; }
+  .spec-row__count { display: none; }
+  .spec-row__tags { gap: 0.1rem 0.45rem; }
+  .spec-row__tags span { font-size: 7.6pt; white-space: normal; }
+  .spec-row__tags span::before { color: #555; }
+
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; }
+
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 7pt; color: #555; }
+  .print-header a::after, .side-table a::after { content: ""; }
 }

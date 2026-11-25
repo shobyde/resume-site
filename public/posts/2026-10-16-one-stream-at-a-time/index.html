@@ -1,11 +1,16 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>One Stream at a Time - Sho Byde</title>
 <meta name="description" content="A megakernel benchmark reads like a 1.9× win; its own ablation shows the engine alone is 6% faster, and the rest of the gap is speculative drafting." />
 <link rel="canonical" href="https://shobyde.com/posts/2026-10-16-one-stream-at-a-time/" />
+<meta name="theme-color" content="#e9edf0" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <meta name="author" content="Sho Byde" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="One Stream at a Time" />
@@ -31,29 +36,232 @@
 </script>
 <link rel="alternate" type="application/rss+xml" title="shobyde.com log" href="https://shobyde.com/rss.xml" />
 <style>
-  body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #0b0b0f; color: #dcdcdc; line-height: 1.65; }
-  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
-  h1 { font-size: 2rem; margin: .2rem 0 .6rem; text-wrap: balance; }
-  h2 { margin-top: 1.8rem; }
-  a { color: #9ecbff; }
-  /* Post figures are wider than the column: a 880px SVG must scale to the
-     measure instead of pushing the page sideways on a phone. */
-  img, svg { max-width: 100%; height: auto; }
-  pre { background: #15151b; padding: 1rem; border-radius: 8px; overflow-x: auto; }
-  code { font-family: ui-monospace, 'JetBrains Mono', monospace; }
-  .meta { color: #888; font-size: .85rem; margin-bottom: 2rem; }
+:root {
+  --canvas: #e9edf0;
+  --canvas-2: #f3f5f6;
+  --surface: #fbfcfc;
+  --ink: #0b1220;
+  --ink-2: #1b2635;
+  --dim: #46515f;
+  --mute: #5f6a76;
+  --line: #c4ccd4;
+  --line-strong: #8c97a3;
+  --cobalt: #1b3cff;
+  --cobalt-deep: #0d27c7;
+  --acid: #e4ff3d;
+  --acid-deep: #c6e600;
+  --ink-bg: #0b1220;
+  --ink-fg: #f4f6f7;
+  --ink-dim: #a9b4c1;
+  --display: 'Archivo', 'Arial Narrow', system-ui, sans-serif;
+  --sans: 'Archivo', system-ui, -apple-system, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --gutter: clamp(1.15rem, 4vw, 2.6rem);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { overflow-x: clip; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  background-color: var(--canvas);
+  background-image:
+    linear-gradient(to right, rgba(11, 18, 32, 0.032) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(11, 18, 32, 0.032) 1px, transparent 1px);
+  background-size: 64px 64px;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--acid); color: var(--ink); }
+:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 3px; }
+a { color: inherit; }
+img, svg { max-width: 100%; height: auto; }
+button, input, select { font: inherit; color: inherit; }
+.mono { font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.mark { background: var(--acid); color: var(--ink); padding: 0 0.06em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.wrap { width: min(1120px, calc(100% - (var(--gutter) * 2))); margin: 0 auto; }
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1.5px solid var(--ink);
+  margin-bottom: 2.2rem;
+}
+.back, .brand {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.back { color: var(--dim); }
+.back:hover { color: var(--cobalt); }
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: -0.03em;
+}
+.brand::before {
+  content: "SB";
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  background: var(--acid);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.54rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+.lede { max-width: 58ch; color: var(--dim); font-size: 1rem; line-height: 1.6; }
+.tag {
+  display: inline-block;
+  border: 1px solid var(--line-strong);
+  padding: 0.1rem 0.34rem 0.13rem;
+  font-family: var(--mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--dim);
+  line-height: 1.35;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn:hover { background: var(--ink); color: var(--ink-fg); }
+.footer {
+  margin-top: 3rem;
+  border-top: 1.5px solid var(--ink);
+  padding: 1rem 0 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.6rem 1.2rem;
+  font-family: var(--mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.footer a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--cobalt); }
+.footer a:hover { color: var(--cobalt); }
+.prose { max-width: 68ch; font-size: 1.02rem; line-height: 1.75; color: var(--ink-2); }
+.prose p { margin-bottom: 1rem; }
+.prose h2 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  line-height: 0.98;
+  margin: 2rem 0 0.7rem;
+  max-width: 26ch;
+}
+.prose h3 { font-size: 1.2rem; margin: 1.6rem 0 0.5rem; text-transform: none; letter-spacing: -0.02em; }
+.prose ul, .prose ol { margin: 0 0 1rem 1.1rem; display: grid; gap: 0.35rem; }
+.prose li { padding-left: 0.15rem; }
+.prose li::marker { color: var(--cobalt); }
+.prose strong { color: var(--ink); font-weight: 600; }
+.prose em { font-style: italic; }
+.prose a { color: var(--cobalt); text-decoration: none; border-bottom: 1px solid currentColor; }
+.prose a:hover { color: var(--cobalt-deep); }
+.prose code {
+  font-family: var(--mono);
+  font-size: 0.82em;
+  color: var(--cobalt-deep);
+  background: var(--canvas-2);
+  border: 1px solid var(--line);
+  padding: 0.05em 0.3em;
+}
+.prose pre {
+  background: var(--ink-bg);
+  color: var(--ink-fg);
+  border: 1px solid var(--ink);
+  padding: 0.85rem 0.95rem;
+  overflow-x: auto;
+  margin: 1.1rem 0;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.65;
+}
+.prose pre code { background: none; border: 0; color: inherit; padding: 0; font-size: inherit; }
+.prose img { border: 1px solid var(--line); margin: 1rem 0; }
+.prose blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--dim);
+}
+@media (max-width: 620px) {
+  body { font-size: 16px; }
+  .top { margin-bottom: 1.6rem; }
+  .footer { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+.post-head { padding-bottom: 1.35rem; border-bottom: 1.5px solid var(--ink); margin-bottom: 1.6rem; }
+.post-meta { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cobalt); margin-bottom: 0.65rem; }
+.post-title { font-size: clamp(2.15rem, 5vw, 4rem); line-height: 0.9; letter-spacing: -0.05em; max-width: 24ch; }
+.post-lede { margin-top: 0.8rem; max-width: 60ch; color: var(--dim); font-size: 0.98rem; line-height: 1.6; }
+.post-foot { margin-top: 2.4rem; padding-top: 1rem; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.6rem 1.4rem; font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.05em; text-transform: uppercase; }
+.post-foot a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--cobalt); }
+.post-foot a:hover { color: var(--cobalt); }
+@media (max-width: 620px) { .post-title { font-size: clamp(2rem, 10vw, 3rem); } }
 </style>
 </head>
 <body>
-<main>
-  <h1>One Stream at a Time</h1>
-  <div class="meta">2026-10-16 &middot; dev &middot; by Sho Byde</div>
-  <p>The open-weights item in this morning's briefing that I actually clicked was a CUDA megakernel: <a href="https://github.com/L-Forster/open-jet/tree/master/megakernel">open-jet's engine</a> runs Qwen3.8-27B at 140 tokens per second on a single RTX 3090, close to 2× what llama.cpp does on the same card. The row underneath the benchmark tables is the part I keep thinking about.</p>
+<div class="wrap">
+  <nav class="top" aria-label="Site">
+    <a class="back" href="/">&larr; shobyde.com</a>
+    <a class="brand" href="/">Sho Byde</a>
+  </nav>
+  <main>
+  <article>
+    <header class="post-head">
+      <p class="post-meta">2026-10-16 / dev / by Sho Byde</p>
+      <h1 class="post-title">One Stream at a Time</h1>
+      <p class="post-lede">A megakernel benchmark reads like a 1.9× win; its own ablation shows the engine alone is 6% faster, and the rest of the gap is speculative drafting.</p>
+    </header>
+    <div class="prose">
+      <p>The open-weights item in this morning's briefing that I actually clicked was a CUDA megakernel: <a href="https://github.com/L-Forster/open-jet/tree/master/megakernel">open-jet's engine</a> runs Qwen3.8-27B at 140 tokens per second on a single RTX 3090, close to 2× what llama.cpp does on the same card. The row underneath the benchmark tables is the part I keep thinking about.</p>
 <p>With speculative drafting off, the README's ablation reads: llama.cpp 40.4 tok/s, megakernel 42.9. Six percent. Both engines decode near the memory-bandwidth limit without drafts, and a persistent kernel doesn't change what the card can read per second. The headline speedup comes from MTP speculative verification, which verifies 4-5 drafted tokens per pass at almost no extra cost. A full cycle is roughly 340 kernel phases separated by a software grid barrier, and the host reads back only the tokens that survived verification. On that code prompt, drafting multiplies megakernel decode by about 3.3× and llama.cpp by about 1.8×. Divide one by the other and you get the headline: 1.8× more throughput from the same MTP trick, times the 6% kernel gain.</p>
 <p><img src="/content/posts/assets/2026-10-16-one-stream-at-a-time/speculation-ablation.svg" alt="Grouped bar chart comparing decode throughput of llama.cpp and the open-jet megakernel on an RTX 3090 with Qwen3.8-27B Q4_K_M. With speculative drafting off the engines are nearly even at 40.4 versus 42.9 tokens per second, about 6 percent apart. With drafting on, the megakernel reaches 78.0 versus 50.9 in reasoning mode and 139.7 versus 72.5 on a Python code prompt." loading="lazy" /></p>
 <p>The comparison is fairer than the headline suggests: the llama.cpp baseline runs with its own MTP speculation enabled, and the megakernel still leads by 1.5× in reasoning mode and 1.9× on greedy code generation. The gap comes from fusing the whole speculative cycle into one persistent launch, not from a trick the baseline lacks. The correctness section is the part I wish more inference projects would ship: KL divergence measured over 13,299 positions against llama.cpp's next-token distributions comes out at 0.0009 nats, the same range llama.cpp's different configurations produce against each other. Near-tie tokens can still flip, and the README quantifies that drift instead of hiding it.</p>
 <p>Limits get the same plain treatment: one sequence at a time, text only, tuned to Qwen3.8-27B shapes, no presence or repetition penalties. A specialty engine for a single-user coding agent, and the specialization is why it's fast. The ablation points at what to watch next: if decode without drafts is bandwidth-bound on both engines, kernel work has little headroom on this hardware, and the leverage moves to the draft side, where acceptance rate converts almost directly into tok/s. The next 2× on this card is a draft-model problem.</p>
-  <p><a href="https://shobyde.com/">&larr; back to shobyde.com</a> &middot; <a href="https://shobyde.com/archive/">all writing</a></p>
-</main>
+    </div>
+    <footer class="post-foot">
+      <a href="/">&larr; Back to shobyde.com</a>
+      <a href="/archive/">All writing</a>
+    </footer>
+  </article>
+  </main>
+</div>
 </body>
 </html>

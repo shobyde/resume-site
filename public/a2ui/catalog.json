@@ -1,0 +1,28 @@
+{
+  "catalogId": "https://shobyde.com/a2ui/catalog.json",
+  "name": "shobyde.com / working record",
+  "description": "Host-defined A2UI catalog for the shobyde.com front page. The SitePage component is composed by Boaz and rendered by the host's native sections, filters and hero.",
+  "components": {
+    "SitePage": {
+      "description": "A whole-page composition. The host applies the view, sections, filter and hero copy to the prerendered record.",
+      "properties": {
+        "view": {
+          "type": "string",
+          "enum": ["home", "profile", "work", "register", "history", "stack", "log", "contact"]
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["about", "projects", "register", "experience", "skills", "blog", "contact"]
+          }
+        },
+        "filter": { "type": "string" },
+        "focus": { "type": "string" },
+        "title": { "type": "string" },
+        "mark": { "type": "string" },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

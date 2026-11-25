@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-25T04:48:07.507Z",
+  "generated": "2026-11-25T22:53:32.120Z",
   "mode": "stateless",
-  "library": "0.9.0",
+  "library": "0.9.4",
   "threads": [
     {
       "id": "portfolio-stack",
@@ -32,7 +32,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "which of those use python?",
@@ -45,7 +46,7 @@
               "groundglass"
             ]
           },
-          "text": "Readback and Groundglass, 2 projects on Python 3.10+. Both also list pytest. Boaz does not list it; its stack is TypeScript and Vite.",
+          "text": "Readback and Groundglass, 2 projects on Python 3.10+. Both also list pytest. shobyde.com does not list it; its stack is Vite and Cloudflare Pages.",
           "calls": [
             {
               "id": "projects.list",
@@ -53,12 +54,13 @@
             }
           ],
           "plannedBy": "projects.using",
-          "flesch": 87,
+          "flesch": 82,
           "pass": true,
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "and what does the reading one use?",
@@ -85,7 +87,8 @@
             "flask"
           ],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         }
       ]
     },
@@ -116,7 +119,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "and the one for testing generated interfaces?",
@@ -138,7 +142,8 @@
             "groundglass"
           ],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         }
       ]
     },
@@ -156,7 +161,7 @@
               "60"
             ]
           },
-          "text": "That is 60 entries, most recently \"A Queued Chat Is a State Problem, Not a Buffer Problem\".",
+          "text": "That is 61 entries, most recently \"GLM-5.4's loop transformer bets refinement over depth\".",
           "calls": [
             {
               "id": "blog.stats",
@@ -164,12 +169,15 @@
             }
           ],
           "plannedBy": "posts.newest",
-          "flesch": 70,
-          "pass": true,
+          "flesch": 57,
+          "pass": false,
           "declined": false,
-          "missing": [],
+          "missing": [
+            "60"
+          ],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "which is the newest?",
@@ -181,7 +189,7 @@
               "queued"
             ]
           },
-          "text": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\" is the latest; 60 in all.",
+          "text": "\"GLM-5.4's loop transformer bets refinement over depth\" is the latest; 61 in all.",
           "calls": [
             {
               "id": "blog.stats",
@@ -189,12 +197,15 @@
             }
           ],
           "plannedBy": "posts.newest",
-          "flesch": 80,
-          "pass": true,
+          "flesch": 70,
+          "pass": false,
           "declined": false,
-          "missing": [],
+          "missing": [
+            "queued"
+          ],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "what is that one about?",
@@ -206,30 +217,23 @@
               "queue"
             ]
           },
-          "text": "```json\n{\"tool\":\"blog.topics\",\"arguments\":{}}\n```",
+          "text": "I'm not sure about that. I can help with: Summarise the blog; Expand a project card; About Sho.",
           "calls": [
             {
               "id": "projects.list",
               "args": {}
-            },
-            {
-              "id": "blog.topics",
-              "args": {}
-            },
-            {
-              "id": "blog.topics",
-              "args": {}
             }
           ],
           "plannedBy": "projects.about",
-          "flesch": -50,
+          "flesch": 85,
           "pass": false,
-          "declined": false,
+          "declined": true,
           "missing": [
             "queue"
           ],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         }
       ]
     },
@@ -266,7 +270,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "now the blog",
@@ -284,7 +289,8 @@
           "declined": true,
           "missing": [],
           "leaked": [],
-          "toolOk": false
+          "toolOk": false,
+          "argsOk": true
         },
         {
           "ask": "take me back to the top",
@@ -315,7 +321,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         }
       ]
     },
@@ -341,7 +348,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "copy it",
@@ -372,7 +380,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "and his linkedin?",
@@ -392,7 +401,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         }
       ]
     },
@@ -411,7 +421,7 @@
               "groundglass"
             ]
           },
-          "text": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. Boaz takes the other route: TypeScript and Vite.",
+          "text": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. shobyde.com takes the other route: Vite and Cloudflare Pages.",
           "calls": [
             {
               "id": "projects.list",
@@ -419,12 +429,13 @@
             }
           ],
           "plannedBy": "projects.using",
-          "flesch": 85,
+          "flesch": 79,
           "pass": true,
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "not readback, the other one",
@@ -449,7 +460,8 @@
             "groundglass"
           ],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         }
       ]
     },
@@ -480,7 +492,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "the third one?",
@@ -502,7 +515,8 @@
             "groundglass"
           ],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         }
       ]
     },
@@ -533,7 +547,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "and its stack?",
@@ -545,17 +560,18 @@
               "whisper"
             ]
           },
-          "text": "I'm not sure about that. I can help with: Skills and stack; Skills; List projects.",
+          "text": "I'm not sure about that. I can help with: Skills and stack; Skills; Chart the tool footprint.",
           "calls": [],
           "plannedBy": null,
-          "flesch": 103,
+          "flesch": 104,
           "pass": false,
           "declined": true,
           "missing": [
             "whisper"
           ],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "does it send anything to a server?",
@@ -580,7 +596,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         }
       ]
     },
@@ -598,7 +615,7 @@
               "engineering"
             ]
           },
-          "text": "An engineering manager who still ships: 12+ years across APIs, cloud systems and applications people actually use. He has been at Conversica since Jul 2021.",
+          "text": "An engineering manager who still ships: 12+ years across APIs, cloud systems and applications people actually use. He has been at Conversica since Jul 2021 - Present.",
           "calls": [],
           "plannedBy": null,
           "flesch": 49,
@@ -606,7 +623,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "what does he do now?",
@@ -618,15 +636,16 @@
               "conversica"
             ]
           },
-          "text": "12+ years of software, now managing engineers and still writing code. He has been at Conversica since Jul 2021.",
+          "text": "12+ years of software, now managing engineers and still writing code. He has been at Conversica since Jul 2021 - Present.",
           "calls": [],
           "plannedBy": null,
-          "flesch": 68,
+          "flesch": 67,
           "pass": true,
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         }
       ]
     },
@@ -657,7 +676,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "why not both?",
@@ -679,7 +699,8 @@
             "groundglass"
           ],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         }
       ]
     },
@@ -710,7 +731,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "why not both?",
@@ -732,7 +754,8 @@
             "groundglass"
           ],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         }
       ]
     },
@@ -764,7 +787,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "which one is bigger?",
@@ -791,7 +815,8 @@
             "hobnob"
           ],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         }
       ]
     },
@@ -809,15 +834,16 @@
               "capabilit"
             ]
           },
-          "text": "I have 26 capabilities, all answered from this page: Show the newest article card; Open the full archive; Read the newest article; Log statistics; Summarise the blog; Show the contact card, and 20 more.",
+          "text": "I have 31 capabilities, all answered from this page: Show the newest article card; Open the full archive; Read the newest article; Log statistics; Summarise the blog; Chart the posting cadence, and 25 more.",
           "calls": [],
           "plannedBy": null,
-          "flesch": 43,
+          "flesch": 40,
           "pass": true,
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "open the archive",
@@ -848,7 +874,8 @@
           "declined": false,
           "missing": [],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         },
         {
           "ask": "and the newest post?",
@@ -860,7 +887,7 @@
               "queued"
             ]
           },
-          "text": "\"A Queued Chat Is a State Problem, Not a Buffer Problem\" is the latest; 60 in all.",
+          "text": "\"GLM-5.4's loop transformer bets refinement over depth\" is the latest; 61 in all.",
           "calls": [
             {
               "id": "blog.stats",
@@ -868,12 +895,15 @@
             }
           ],
           "plannedBy": "posts.newest",
-          "flesch": 80,
-          "pass": true,
+          "flesch": 70,
+          "pass": false,
           "declined": false,
-          "missing": [],
+          "missing": [
+            "queued"
+          ],
           "leaked": [],
-          "toolOk": true
+          "toolOk": true,
+          "argsOk": true
         }
       ]
     }

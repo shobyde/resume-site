@@ -1,0 +1,395 @@
+{
+  "generated": "2026-11-25T22:53:36.984Z",
+  "strategy": "tool",
+  "engine": "0.9.4",
+  "memory": "0.9.4",
+  "threads": [
+    {
+      "id": "commit-switch",
+      "title": "Commits for one repo, then another",
+      "turns": [
+        {
+          "ask": "how many commits does Boaz have?",
+          "routed": "how many commits does Boaz have?",
+          "follow": null,
+          "pointer": null,
+          "kind": "tool",
+          "expect": {
+            "tool": "github.activity",
+            "args": {
+              "repo": "boaz"
+            },
+            "include": [
+              "81"
+            ]
+          },
+          "text": "Boaz: 81 commits, 67 releases, 0 stars.",
+          "calls": [
+            {
+              "id": "github.activity",
+              "args": {
+                "repo": "boaz"
+              }
+            }
+          ],
+          "plannedBy": null,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true,
+          "argsOk": true
+        },
+        {
+          "ask": "what about Hobnob?",
+          "routed": "how many commits does Hobnob have?",
+          "follow": {
+            "capabilityId": "github.activity",
+            "query": "how many commits does Hobnob have?",
+            "previousSubject": "Boaz",
+            "subject": "Hobnob",
+            "previousQuery": "how many commits does Boaz have?",
+            "previousArgs": {
+              "repo": "boaz"
+            },
+            "turn": 1
+          },
+          "pointer": null,
+          "kind": "context",
+          "expect": {
+            "tool": "github.activity",
+            "args": {
+              "repo": "hobnob"
+            },
+            "include": [
+              "Hobnob"
+            ],
+            "exclude": [
+              "Boaz"
+            ]
+          },
+          "text": "Hobnob: 42 commits, 6 releases, 0 stars.",
+          "calls": [
+            {
+              "id": "github.activity",
+              "args": {
+                "repo": "hobnob"
+              }
+            }
+          ],
+          "plannedBy": null,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true,
+          "argsOk": true
+        },
+        {
+          "ask": "and Readback?",
+          "routed": "how many commits does Readback have?",
+          "follow": {
+            "capabilityId": "github.activity",
+            "query": "how many commits does Readback have?",
+            "previousSubject": "Hobnob",
+            "subject": "Readback",
+            "previousQuery": "how many commits does Hobnob have?",
+            "previousArgs": {
+              "repo": "hobnob"
+            },
+            "turn": 2
+          },
+          "pointer": null,
+          "kind": "context",
+          "expect": {
+            "tool": "github.activity",
+            "args": {
+              "repo": "readback"
+            },
+            "include": [
+              "Readback"
+            ],
+            "exclude": [
+              "Hobnob"
+            ]
+          },
+          "text": "Readback: 10 commits, 1 releases, 0 stars.",
+          "calls": [
+            {
+              "id": "github.activity",
+              "args": {
+                "repo": "readback"
+              }
+            }
+          ],
+          "plannedBy": null,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true,
+          "argsOk": true
+        }
+      ]
+    },
+    {
+      "id": "chart-switch",
+      "title": "A chart query, then another repo",
+      "turns": [
+        {
+          "ask": "chart commits by week for Boaz",
+          "routed": "chart commits by week for Boaz",
+          "follow": null,
+          "pointer": null,
+          "kind": "tool",
+          "expect": {
+            "tool": "github.activity",
+            "args": {
+              "repo": "boaz"
+            },
+            "include": [
+              "81"
+            ]
+          },
+          "text": "Boaz: 81 commits, 67 releases, 0 stars.",
+          "calls": [
+            {
+              "id": "github.activity",
+              "args": {
+                "repo": "boaz"
+              }
+            }
+          ],
+          "plannedBy": null,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true,
+          "argsOk": true
+        },
+        {
+          "ask": "what about Hobnob?",
+          "routed": "chart commits by week for Hobnob",
+          "follow": {
+            "capabilityId": "github.activity",
+            "query": "chart commits by week for Hobnob",
+            "previousSubject": "Boaz",
+            "subject": "Hobnob",
+            "previousQuery": "chart commits by week for Boaz",
+            "previousArgs": {
+              "repo": "boaz"
+            },
+            "turn": 1
+          },
+          "pointer": null,
+          "kind": "context",
+          "expect": {
+            "tool": "github.activity",
+            "args": {
+              "repo": "hobnob"
+            },
+            "include": [
+              "Hobnob"
+            ],
+            "exclude": [
+              "Boaz"
+            ]
+          },
+          "text": "Hobnob: 42 commits, 6 releases, 0 stars.",
+          "calls": [
+            {
+              "id": "github.activity",
+              "args": {
+                "repo": "hobnob"
+              }
+            }
+          ],
+          "plannedBy": null,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true,
+          "argsOk": true
+        }
+      ]
+    },
+    {
+      "id": "card-switch",
+      "title": "A project card, then another project",
+      "turns": [
+        {
+          "ask": "show me the Hobnob card",
+          "routed": "show me the Hobnob card",
+          "follow": null,
+          "pointer": null,
+          "kind": "tool",
+          "expect": {
+            "tool": "projects.card",
+            "args": {
+              "project": "hobnob"
+            },
+            "include": [
+              "Hobnob"
+            ]
+          },
+          "text": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"hobnob\"}}\n```",
+          "calls": [
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "hobnob"
+              }
+            },
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "hobnob"
+              }
+            },
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "hobnob"
+              }
+            }
+          ],
+          "plannedBy": null,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true,
+          "argsOk": true
+        },
+        {
+          "ask": "what about Readback?",
+          "routed": "show me the Readback card",
+          "follow": {
+            "capabilityId": "projects.card",
+            "query": "show me the Readback card",
+            "previousSubject": "Hobnob",
+            "subject": "Readback",
+            "previousQuery": "show me the Hobnob card",
+            "previousArgs": {
+              "project": "hobnob"
+            },
+            "turn": 1
+          },
+          "pointer": null,
+          "kind": "context",
+          "expect": {
+            "tool": "projects.card",
+            "args": {
+              "project": "readback"
+            },
+            "include": [
+              "Readback"
+            ],
+            "exclude": [
+              "Hobnob"
+            ]
+          },
+          "text": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"readback\"}}\n```",
+          "calls": [
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "readback"
+              }
+            },
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "readback"
+              }
+            },
+            {
+              "id": "projects.card",
+              "args": {
+                "project": "readback"
+              }
+            }
+          ],
+          "plannedBy": null,
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true,
+          "argsOk": true
+        }
+      ]
+    },
+    {
+      "id": "stack-switch",
+      "title": "A stack answer, then another project",
+      "turns": [
+        {
+          "ask": "what stack does Hobnob use?",
+          "routed": "what stack does Hobnob use?",
+          "follow": null,
+          "pointer": null,
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Whisper"
+            ]
+          },
+          "text": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.stack",
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true,
+          "argsOk": true
+        },
+        {
+          "ask": "what about Readback?",
+          "routed": "what stack does Readback use?",
+          "follow": {
+            "capabilityId": "projects.list",
+            "query": "what stack does Readback use?",
+            "previousSubject": "Hobnob",
+            "subject": "Readback",
+            "previousQuery": "what stack does Hobnob use?",
+            "previousArgs": {},
+            "turn": 1
+          },
+          "pointer": null,
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Flask"
+            ],
+            "exclude": [
+              "Whisper"
+            ]
+          },
+          "text": "Readback is built with Python 3.10+, Flask 3, Jinja (no JS), SQLite, OpenAI-compatible LLMs, httpx, Docker and pytest.",
+          "calls": [
+            {
+              "id": "projects.list",
+              "args": {}
+            }
+          ],
+          "plannedBy": "projects.stack",
+          "pass": true,
+          "declined": false,
+          "missing": [],
+          "leaked": [],
+          "toolOk": true,
+          "argsOk": true
+        }
+      ]
+    }
+  ]
+}

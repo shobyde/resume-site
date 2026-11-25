@@ -1,21 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="720" height="420" viewBox="0 0 720 420">
-  <rect width="720" height="420" fill="#0b0b0f"/>
-  <text x="360" y="36" fill="#e8e8f0" font-family="sans-serif" font-size="18" text-anchor="middle">Tech stack</text>
-  <g fill="#151520" stroke="#7c6cff" stroke-width="2">
-    <rect x="40" y="70" width="640" height="60" rx="10"/>
-    <rect x="40" y="150" width="310" height="60" rx="10"/>
-    <rect x="370" y="150" width="310" height="60" rx="10"/>
-    <rect x="40" y="230" width="640" height="60" rx="10"/>
-    <rect x="40" y="310" width="640" height="60" rx="10"/>
+  <rect width="720" height="420" fill="#e9edf0"/>
+  <g stroke="#0b1220" stroke-opacity="0.06">
+    <path d="M0 60H720M0 120H720M0 180H720M0 240H720M0 300H720M0 360H720"/>
+    <path d="M60 0V420M120 0V420M180 0V420M240 0V420M300 0V420M360 0V420M420 0V420M480 0V420M540 0V420M600 0V420M660 0V420"/>
   </g>
-  <g fill="#e8e8f0" font-family="sans-serif" font-size="14" text-anchor="middle">
-    <text x="360" y="105">Browser</text>
-    <text x="195" y="185">Vite (build)</text>
-    <text x="525" y="185">Three.js (starfield)</text>
-    <text x="360" y="265">Vanilla JS + CSS (no React/Tailwind)</text>
-    <text x="360" y="345">Cloudflare Pages (static hosting)</text>
+  <rect x="0.5" y="0.5" width="719" height="419" fill="none" stroke="#0b1220" stroke-width="1"/>
+  <text x="28" y="34" fill="#1b3cff" font-family="monospace" font-size="11" letter-spacing="2">SHOBYDE.COM / STACK</text>
+  <g fill="#fbfcfc" stroke="#0b1220" stroke-width="1.5">
+    <rect x="28" y="58" width="664" height="72"/>
+    <rect x="28" y="148" width="664" height="72"/>
+    <rect x="28" y="238" width="664" height="72"/>
+    <rect x="28" y="328" width="664" height="58"/>
   </g>
-  <g fill="#8a8aa0" font-family="sans-serif" font-size="12" text-anchor="middle">
-    <text x="360" y="122">runtime fetches markdown posts</text>
+  <g font-family="monospace">
+    <text x="46" y="86" fill="#0b1220" font-size="12" font-weight="bold" letter-spacing="1">CONTENT STORE</text>
+    <text x="46" y="108" fill="#46515f" font-size="11">markdown posts + generated index.json, fetched at runtime</text>
+    <text x="46" y="176" fill="#0b1220" font-size="12" font-weight="bold" letter-spacing="1">VITE BUILD</text>
+    <text x="46" y="198" fill="#46515f" font-size="11">static pages, reading theme, agent-manifest.json from defineCapability()</text>
+    <text x="46" y="266" fill="#0b1220" font-size="12" font-weight="bold" letter-spacing="1">BROWSER</text>
+    <text x="46" y="288" fill="#46515f" font-size="11">Boaz runtime, A2UI renderer, native surfaces, 0 models</text>
+    <text x="46" y="356" fill="#0b1220" font-size="12" font-weight="bold" letter-spacing="1">CLOUDFLARE PAGES</text>
+    <text x="46" y="376" fill="#46515f" font-size="11">static hosting, clean URLs, no server in the answer path</text>
   </g>
+  <rect x="620" y="68" width="54" height="18" fill="#e4ff3d"/>
+  <text x="647" y="81" fill="#0b1220" font-family="monospace" font-size="9" text-anchor="middle" letter-spacing="1">NO MODEL</text>
 </svg>

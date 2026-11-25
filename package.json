@@ -24,10 +24,11 @@
     "scorecard": "node scripts/gen-scorecard.mjs",
     "smoke:prod": "node bench/no-llm/browser-agent.mjs --base https://shobyde.com/",
     "prebuild": "python3 scripts/check_posts.py && python3 scripts/contrast-check.py && node bench/no-llm/lint-tasks.mjs",
-    "bench:threads": "node bench/threads/run.mjs && node bench/threads/run.mjs --baseline && node bench/threads/compile.mjs",
-    "judge:threads": "python3 bench/threads/judge.py && python3 bench/threads/judge.py --stateless && node bench/threads/compile.mjs",
-    "bench:kb": "node bench/kb/run.mjs && node bench/kb/run.mjs --heldout && node bench/kb/run.mjs --heldout2 && node bench/kb/compile.mjs",
-    "judge:kb": "python3 bench/kb/judge.py bench/kb/results/kb-hybrid-heldout2.json && python3 bench/kb/judge.py bench/kb/results/kb-templates-heldout2.json && node bench/kb/compile.mjs",
+    "bench:threads": "node bench/threads/run.mjs && node bench/threads/run.mjs --baseline",
+    "bench:threads:tools": "node bench/threads/run-tool-continuation.mjs",
+    "judge:threads": "python3 bench/threads/judge.py && python3 bench/threads/judge.py --stateless",
+    "bench:kb": "node bench/kb/run.mjs && node bench/kb/run.mjs --heldout && node bench/kb/run.mjs --heldout2",
+    "judge:kb": "python3 bench/kb/judge.py bench/kb/results/kb-hybrid-heldout2.json && python3 bench/kb/judge.py bench/kb/results/kb-templates-heldout2.json",
     "bench:lint": "node bench/no-llm/lint-tasks.mjs",
     "bench:refusals": "node bench/no-llm/refusals.mjs",
     "audit:labs": "node node_modules/@shobyde/boaz/dist/cli/index.js audit --probes bench/labs/ledger-probes.json --module bench/labs/ledger-setup.mjs && node node_modules/@shobyde/boaz/dist/cli/index.js audit --probes bench/labs/rota-probes.json --module bench/labs/rota-setup.mjs && node node_modules/@shobyde/boaz/dist/cli/index.js audit --probes bench/labs/runbook-probes.json --module bench/labs/runbook-setup.mjs",
@@ -37,8 +38,6 @@
     "vite": "^6.0.0"
   },
   "dependencies": {
-    "@shobyde/boaz": "0.9.0",
-    "lenis": "^1.3.26",
-    "three": "^0.170.0"
+    "@shobyde/boaz": "0.9.6"
   }
 }

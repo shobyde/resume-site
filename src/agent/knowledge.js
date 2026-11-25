@@ -143,6 +143,28 @@ export function createAssistantKnowledge({ posts }) {
       },
     },
     {
+      id: 'history.work',
+      title: 'Work history',
+      keywords: ['work history', 'career history', 'where has he worked', 'jobs', 'roles', 'employment history', 'work experience'],
+      goal: 'profile(?N)',
+      requiresSubject: false,
+      match: (question) =>
+        /\b(work history|career history|employment history|where has (he|sho) worked|what jobs|which roles|work experience)\b/i.test(question),
+      explain: () => 'Read the work history from the record',
+      compose: () => {
+        const current = DATA.experience.find((entry) => /present/i.test(entry.period));
+        const intuli = DATA.experience.find((entry) => /intuli/i.test(entry.org));
+        const teaching = DATA.experience.find((entry) => /teacher/i.test(entry.role));
+        const digipen = DATA.experience.find((entry) => /digipen/i.test(entry.org));
+        const parts = [];
+        if (current) parts.push(`${current.role} at ${current.org} (${current.period})`);
+        if (intuli) parts.push(`${intuli.role} at ${intuli.org} (${intuli.period})`);
+        if (teaching) parts.push(`${teaching.role} at ${teaching.org} (${teaching.period})`);
+        if (digipen) parts.push(`${digipen.role} at ${digipen.org} (${digipen.period})`);
+        return parts.length ? `Sho's work history: ${parts.join('; ')}.` : '';
+      },
+    },
+    {
       id: 'assistant.about',
       title: 'What this assistant can do',
       keywords: ['what can you do', 'what can this do', 'what do you do'],
@@ -411,14 +433,15 @@ export function createAssistantKnowledge({ posts }) {
       match: (question) =>
         PROJECT_NAME.test(question) && /(send|upload|store|leave).{0,20}(server|cloud|machine|device)/i.test(question),
       explain: ({ observed }) => (observed['projects.list'] ? 'Read the project list and its own pitch about data' : 'Read the project list'),
-      compose: ({ solutions, observed }) => {
+      compose: ({ query, solutions, observed }) => {
         const records = observed['projects.list']?.projects ?? [];
-        const record = records.find((project) => slugOf(project.title) === solutions[0]?.bindings['?P']);
+        const named = namedProjects(query, records)[0];
+        const record = named ?? records.find((project) => slugOf(project.title) === solutions[0]?.bindings['?P']);
         if (!record) return '';
         // The card's subtitle is the claim ("private meeting notes, no cloud");
         // repeating it is honest, and inventing a data policy is not.
         const subtitle = String(record.title).includes(':') ? String(record.title).split(':').slice(1).join(':').trim() : '';
-        const local = /no cloud|local|offline|on.device|private/i.test(`${subtitle} ${record.summary ?? ''}`);
+        const local = /no cloud|local|offline|on.device|private|nothing leaving|no model/i.test(`${subtitle} ${record.summary ?? ''}`);
         if (!local) return '';
         return `${shortName(record.title)}: ${subtitle || 'runs locally'}. Nothing in its stack needs a remote server.`;
       },
@@ -537,19 +560,23 @@ export function createAssistantKnowledge({ posts }) {
       title: 'His email address',
       keywords: ['what is his email', 'his email', 'email address', 'how do i email him', 'how do i reach him'],
       goal: 'email(?V)',
-      compose: ({ query, bindings }) =>
-        bindings['?V'] ? phraseEmail(query, bindings['?V']) : '',
+      compose: ({ query, bindings }) => {
+        const value = bindings['?V'] || DATA.contact?.email;
+        return value ? phraseEmail(query, value) : '';
+      },
       explain: ({ solutions }) =>
-        solutions.length ? 'Read the email address off this page' : 'Looked for an email address on this page',
+        solutions.length ? 'Read the email address off this page' : 'Read the email address from the record',
     },
     {
       id: 'contact.linkedin',
       title: 'His LinkedIn profile',
       keywords: ['his linkedin', 'what is his linkedin', 'linkedin profile'],
       goal: 'linkedin(?V)',
-      compose: ({ query, bindings }) =>
-        bindings['?V'] ? phraseLinkedin(query, bindings['?V']) : '',
-      explain: () => 'Read the LinkedIn link off this page',
+      compose: ({ query, bindings }) => {
+        const value = bindings['?V'] || DATA.contact?.linkedin;
+        return value ? phraseLinkedin(query, value) : '';
+      },
+      explain: () => 'Read the LinkedIn link from the record',
     },
     {
       id: 'posts.newest',
@@ -576,6 +603,9 @@ export function createAssistantKnowledge({ posts }) {
         const newest = stats.newest ?? bindings['?T'];
         const count = stats.posts ?? lookup('post_count(?N)')[0]?.bindings['?N'];
         if (!newest) return '';
+        if (/\b(about|summar|cover|detail)\b/i.test(query) && stats.newestExcerpt) {
+          return `The newest post, "${newest}": ${stats.newestExcerpt}`;
+        }
         return phraseNewestPost(query, { count, newest, register: answerRegister() });
       },
     },

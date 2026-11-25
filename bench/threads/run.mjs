@@ -62,8 +62,12 @@ function check(t, kind) {
   const missing = (exp.include ?? []).filter((word) => !text.includes(norm(word)));
   const present = (exp.exclude ?? []).filter((word) => text.includes(norm(word)));
   const toolOk = !exp.tool || (t.calls ?? []).some((call) => call.id === exp.tool);
-  const pass = !declined && missing.length === 0 && present.length === 0 && toolOk;
-  return { pass, declined, missing, leaked: present, toolOk };
+  const argsOk = !exp.args || (t.calls ?? []).some((call) => {
+    if (call.id !== exp.tool) return false;
+    return Object.entries(exp.args).every(([key, value]) => String(call.args?.[key] ?? '') === String(value));
+  });
+  const pass = !declined && missing.length === 0 && present.length === 0 && toolOk && argsOk;
+  return { pass, declined, missing, leaked: present, toolOk, argsOk };
 }
 
 function syllables(word) {
@@ -119,6 +123,7 @@ for (const thread of suite.threads) {
       missing: verdict.missing,
       leaked: verdict.leaked,
       toolOk: verdict.toolOk,
+      argsOk: verdict.argsOk,
     });
   }
   threads.push({ id: thread.id, title: thread.title, turns });

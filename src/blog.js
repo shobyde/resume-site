@@ -1,289 +1,84 @@
 /* ============================================================
-   Blog loader - reads content/posts/index.json, renders cards,
-   opens posts in a side modal. Cron pipeline writes new files.
+   Blog loader: the engineering log as a lead entry plus an
+   index table. One fetch, no framework, no card grid.
    ============================================================ */
 
-import { motionPrefs } from './motionPrefs.js';
-
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const SEEN_KEY = 'sbyde:seen-post';
+
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 function shortDate(iso) {
   const [y, m, d] = String(iso).split('-').map(Number);
   if (!y || !m || !d) return String(iso);
-  return `${MONTHS[m - 1]} ${d}, ${y}`;
+  return `${MONTHS[m - 1]} ${String(d).padStart(2, '0')}, ${y}`;
 }
 
 function newestFirst(posts) {
   return [...posts].sort((a, b) => `${b.date}-${b.slug}`.localeCompare(`${a.date}-${a.slug}`));
 }
 
-/* A quiet notification for the newest post, shown once per article.
-   The seen slug lives in localStorage, so publishing a new post brings the
-   notice back without nagging a reader who already dismissed this one. */
-function showNewPostNotice(posts) {
-  const box = document.getElementById('newPost');
-  if (!box || !posts.length) return;
-
-  const newest = newestFirst(posts)[0];
-  let seen = null;
-  try { seen = localStorage.getItem(SEEN_KEY); } catch (e) { /* storage blocked */ }
-  if (seen === newest.slug) return;
-
-  const title = document.getElementById('newPostTitle');
-  const meta = document.getElementById('newPostMeta');
-  const close = document.getElementById('newPostClose');
-  if (!title || !meta || !close) return;
-
-  title.textContent = newest.title;
-  title.href = `/posts/${newest.slug}/`;
-  const bits = [shortDate(newest.date), newest.tag || 'log'];
-  if (newest.minutes) bits.push(`${newest.minutes} min read`);
-  meta.textContent = bits.join(' · ');
-
-  const markSeen = () => { try { localStorage.setItem(SEEN_KEY, newest.slug); } catch (e) { /* ignore */ } };
-  let timer = 0;
-  let shown = false;
-  const hide = (seen = true) => {
-    if (seen) markSeen();
-    window.clearTimeout(timer);
-    box.classList.remove('is-visible');
-    window.setTimeout(() => { box.hidden = true; }, 350);
-  };
-  close.addEventListener('click', () => hide(true));
-  title.addEventListener('click', () => markSeen());
-
-  // Do not sit on top of the hero on a first visit. Wait until the reader has
-  // moved past the fold; then show it once, briefly, and let it go.
-  const reveal = () => {
-    if (shown) return;
-    shown = true;
-    box.hidden = false;
-    if (motionPrefs.reduced) box.classList.add('is-visible');
-    else requestAnimationFrame(() => box.classList.add('is-visible'));
-    timer = window.setTimeout(() => hide(true), 8000);
-  };
-  // Show the notice where it is relevant: when the log comes into view. It
-  // used to sit over the hero and the project cards for the whole visit.
-  const blog = document.getElementById('blog');
-  if (location.hash === '#blog') reveal();
-  else if (blog && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      if (!entries.some((entry) => entry.isIntersecting)) return;
-      io.disconnect();
-      window.setTimeout(reveal, 700);
-    }, { threshold: 0.15 });
-    io.observe(blog);
-
-    // The contact section follows the log. Get out of its way instead of
-    // sitting over the closing headline for the rest of the auto-dismiss.
-    const hideForContact = () => {
-      const contact = document.getElementById('contact');
-      if (!contact) return;
-      if (contact.getBoundingClientRect().top >= window.innerHeight * 0.8) return;
-      hide(true);
-      window.removeEventListener('scroll', hideForContact);
-    };
-    window.addEventListener('scroll', hideForContact, { passive: true });
-  } else {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY >= window.innerHeight * 0.6) reveal();
-    }, { passive: true });
-  }
-  box.addEventListener('pointerenter', () => window.clearTimeout(timer));
-  box.addEventListener('focusin', () => window.clearTimeout(timer));
-}
-
 function renderBlogStats(posts) {
   const el = document.getElementById('blogStats');
   if (!el || !posts.length) return;
   const newest = newestFirst(posts)[0];
-  el.textContent = `${posts.length} posts · updated ${shortDate(newest.date)}`;
+  el.textContent = `${posts.length} entries / last filed ${shortDate(newest.date)}`;
 }
 
 export async function initBlog() {
   const grid = document.getElementById('blogGrid');
-  if (!grid) return { posts: [] };
 
   let posts = [];
   try {
     const res = await fetch('/content/posts/index.json');
     if (res.ok) posts = await res.json();
-  } catch (e) { /* offline or no file - show empty state below */ }
+  } catch (error) {
+    /* offline or missing index: the fallback below stays in place */
+  }
 
-  renderBlogStats(posts);
-
-  const visible = posts.slice(0, 3); // card grid shows 3 latest; deep links resolve against all posts
-  if (!posts.length) {
-    grid.innerHTML = `<p style="color:var(--fg-mute);font-size:.9rem">No posts yet - the daily writer hasn't woken up. Check back tomorrow morning.</p>`;
+  if (!Array.isArray(posts) || posts.length === 0) {
+    const stats = document.getElementById('blogStats');
+    if (stats) stats.textContent = 'No entries filed yet';
+    if (grid) grid.innerHTML = '<p class="section__sub">The log is empty for now. <a href="/archive/">Open the archive</a> for everything that has been filed.</p>';
     return { posts: [] };
   }
 
-  // show 3 latest
-  visible.forEach((post, i) => {
-    const a = document.createElement('a');
-    a.className = 'post-card reveal';
-    a.href = `/posts/${post.slug}/`;
-    a.dataset.slug = post.slug;
-    a.style.transitionDelay = `${i * 60}ms`;
-    a.innerHTML = `
-      <span class="post-card__date">${post.date} · ${post.tag || 'log'}</span>
-      <span class="post-card__title">${esc(post.title)}</span>
-      <span class="post-card__excerpt">${esc(post.excerpt)}</span>
-      <span class="post-card__read">Read →</span>
-    `;
-    a.addEventListener('pointermove', (e) => {
-      const r = a.getBoundingClientRect();
-      a.style.setProperty('--mx', `${e.clientX - r.left}px`);
-      a.style.setProperty('--my', `${e.clientY - r.top}px`);
-    });
-    // real URL: static /posts/<slug>/ page (SEO + shareable). No click interception.
-    grid.appendChild(a);
+  const sorted = newestFirst(posts);
+  renderBlogStats(sorted);
+  if (!grid) return { posts: sorted };
+
+  const [lead, ...rest] = sorted;
+  const leadMeta = [shortDate(lead.date), lead.tag || 'log', lead.minutes ? `${lead.minutes} min` : null]
+    .filter(Boolean)
+    .join('<br />');
+
+  const rows = rest.slice(0, 7).map((post) => `
+    <a class="log-row" href="/posts/${esc(post.slug)}/">
+      <time datetime="${esc(post.date)}">${shortDate(post.date)}</time>
+      <span class="log-row__title">${esc(post.title)}</span>
+      <span class="log-row__tag">${esc(post.tag || 'log')}<span>${post.minutes ? `${post.minutes} min` : ''}</span></span>
+    </a>`).join('');
+
+  grid.innerHTML = `
+    <a class="log-lead reveal" href="/posts/${esc(lead.slug)}/">
+      <span class="log-lead__meta">${leadMeta}</span>
+      <span class="log-lead__title">${esc(lead.title)}</span>
+      <span class="log-lead__cta">Read entry <span aria-hidden="true">→</span></span>
+      <span class="log-lead__excerpt">${esc(lead.excerpt || '')}</span>
+    </a>
+    <div class="log-table">
+      <div class="log-head" aria-hidden="true"><span>Date</span><span>Entry</span><span>Topic</span></div>
+      ${rows}
+    </div>`;
+
+  requestAnimationFrame(() => {
+    grid.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-inview'));
   });
-
-  // observe reveals again
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) if (e.isIntersecting) { e.target.classList.add('is-inview'); io.unobserve(e.target); }
-  }, { threshold: 0.1 });
-  grid.querySelectorAll('.reveal').forEach((el) => io.observe(el));
-
-  showNewPostNotice(posts);
 
   // legacy ?post= deep links redirect to the static page (SEO canonical)
   const req = new URLSearchParams(location.search).get('post');
   if (req) {
     location.replace(`/posts/${req}/`);
-    return { posts };
+    return { posts: sorted };
   }
-  return { posts };
-}
-
-/* ---------- full-page article view ---------- */
-async function openArticle(post) {
-  try { history.pushState({post: post.slug}, '', `?post=${post.slug}`); } catch {}
-  document.title = `${post.title} - Sho Byde`;
-
-  const site = document.getElementById('app');
-  if (site) site.style.display = 'none';
-
-  let view = document.getElementById('articleView');
-  if (!view) {
-    view = document.createElement('div');
-    view.id = 'articleView';
-    document.body.appendChild(view);
-  }
-  view.style.display = 'block';
-  view.innerHTML = `
-    <article class="article">
-      <a href="/" class="article__back">&larr; Back</a>
-      <div class="article__meta">${post.date} · ${esc(post.tag || 'log')} · by ${esc(post.author || 'Sho Byde')}</div>
-      <h1 class="article__title">${escapeHtml(post.title)}</h1>
-      <p class="article__deck" hidden></p>
-      <div class="article__body" id="articleBody"><p class="article__loading">Loading…</p></div>
-    </article>
-  `;
-  view.querySelector('.article__back').addEventListener('click', (e) => { e.preventDefault(); closeArticle(); });
-  document.addEventListener('keydown', onArticleEsc);
-
-  const body = document.getElementById('articleBody');
-  try {
-    const res = await fetch(`/content/posts/${post.slug}.md`);
-    if (!res.ok) throw new Error(res.status);
-    const { meta, html } = mdToHtml(await res.text());
-    body.innerHTML = html;
-    const deck = view.querySelector('.article__deck');
-    if (meta.Subtitle) { deck.textContent = meta.Subtitle; deck.hidden = false; }
-    if (meta.Tag && post.tag !== meta.Tag) {
-      view.querySelector('.article__meta').textContent =
-        `${post.date} · ${meta.Tag} · by ${post.author || 'Sho Byde'}`;
-    }
-  } catch (e) {
-    body.innerHTML = `<p>Couldn't load this post (${e.message}).</p>`;
-  }
-  view.scrollTop = 0;
-}
-
-function onArticleEsc(e) { if (e.key === 'Escape') closeArticle(); }
-
-function closeArticle() {
-  const view = document.getElementById('articleView');
-  if (view) view.style.display = 'none';
-  document.removeEventListener('keydown', onArticleEsc);
-  const site = document.getElementById('app');
-  if (site) site.style.display = '';
-  document.title = 'Sho Byde - Software Engineer';
-  try { history.pushState({}, '', window.location.pathname); } catch {}
-}
-
-function escapeHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-/* ---------- markdown renderer ----------
-   Returns { meta: {Tag, Subtitle, ...}, html }. The header block
-   (lines like "Tag: x" / "Subtitle: y" before the first ---) is
-   parsed as meta; the H1 title line is consumed by the view. */
-function mdToHtml(md) {
-  const meta = {};
-  // split off the front header: everything up to the first '---' rule
-  let head = '', rest = md;
-  const m = md.match(/([\s\S]*?)^---\s*$/m);
-  if (m) { head = m[1]; rest = md.slice(m[0].length); }
-  for (const line of head.split('\n')) {
-    const kv = line.match(/^([A-Za-z][\w-]*):\s*(.+)$/);
-    if (kv) meta[kv[1]] = kv[2].trim();
-  }
-
-  // fenced code -> placeholders so blocks don't eat it
-  const fences = [];
-  rest = rest.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
-    fences.push(`<pre class="article__pre"><code>${escapeCode(code.trim())}</code></pre>`);
-    return `\u0000FENCE${fences.length - 1}\u0000`;
-  });
-
-  const blocks = [];
-  let cur = [];
-  const flush = () => { if (cur.length) { blocks.push(cur.join('\n')); cur = []; } };
-  for (const line of rest.split('\n')) {
-    if (line.trim() === '') { flush(); continue; }
-    // block-level starts force a break from a preceding paragraph
-    if (/^(#{1,4} |> |- |\* |\d+\. |\u0000FENCE)/.test(line) && cur.length &&
-        !/^(> |- |\* |\d+\. )/.test(cur[0])) flush();
-    if (/^(> |- |\* |\d+\. )/.test(line) && cur.length &&
-        !/^(> |- |\* |\d+\. |\u0000FENCE)/.test(cur[0])) flush();
-    cur.push(line);
-  }
-  flush();
-
-  let html = '';
-  for (const b of blocks) {
-    if (/^\u0000FENCE\d+\u0000$/.test(b.trim())) { html += fences[+b.trim().match(/\d+/)[0]]; continue; }
-    if (/^#### /.test(b)) html += `<h4>${inline(b.slice(5))}</h4>`;
-    else if (/^### /.test(b)) html += `<h3>${inline(b.slice(4))}</h3>`;
-    else if (/^## /.test(b)) html += `<h2>${inline(b.slice(3))}</h2>`;
-    else if (/^# /.test(b)) html += `<h2>${inline(b.slice(2))}</h2>`;
-    else if (/^(-{3,}|\*{3,})$/.test(b.trim())) html += '<hr>';
-    else if (/^> /.test(b)) {
-      html += `<blockquote>${b.split('\n').map((l) => inline(l.replace(/^> ?/, ''))).join('<br>')}</blockquote>`;
-    } else if (/^- |^\* /.test(b)) {
-      html += `<ul>${b.split('\n').map((l) => `<li>${inline(l.replace(/^(- |\* )/, ''))}</li>`).join('')}</ul>`;
-    } else if (/^\d+\. /.test(b)) {
-      html += `<ol>${b.split('\n').map((l) => `<li>${inline(l.replace(/^\d+\. /, ''))}</li>`).join('')}</ol>`;
-    } else {
-      // paragraph: soft-wrapped lines join into one <p>
-      html += `<p>${inline(b.split('\n').join(' '))}</p>`;
-    }
-  }
-  return { meta, html };
-}
-function inline(s) {
-  return escapeCode(s)
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/`(.+?)`/g, '<code>$1</code>')
-    .replace(/!\[(.+?)\]\((.+?)\)/g, '<img src="$2" alt="$1" loading="lazy" />')
-    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-}
-function esc(s) {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return { posts: sorted };
 }

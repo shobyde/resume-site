@@ -4,8 +4,8 @@
  * the engine without opening the panel.
  */
 import manifest from 'boaz:manifest';
-import { AgentRuntime, registry } from '@shobyde/boaz/core';
-import { createRulesEngine } from '@shobyde/boaz/rules';
+import { registry } from '@shobyde/boaz/core';
+import { createConversation } from '@shobyde/boaz/conversation';
 import { DATA } from '../data.js';
 import { siteCapabilities } from '../agent/capabilities.js';
 import { createAssistantKnowledge } from '../agent/knowledge.js';
@@ -77,54 +77,33 @@ async function boot() {
 
   const eventLine = (event) => {
     const stamp = String(Math.round(performance.now()) % 100000).padStart(5, '0');
-    if (event.type === 'delta') return `${stamp}  delta    ${JSON.stringify(event.text)}`;
+    if (event.type === 'text.delta') return `${stamp}  delta    ${JSON.stringify(event.text)}`;
     if (event.type === 'step') {
       const step = event.step;
       return `${stamp}  step     ${step.type}${step.capabilityId ? ` ${step.capabilityId}` : ''}${step.label ? ` · ${step.label}` : ''}`;
     }
-    if (event.type === 'turn') return `${stamp}  turn     ${event.steps?.length ?? 0} steps, ${String(event.text ?? '').length} chars`;
+    if (event.type === 'tool.use') return `${stamp}  tool     ${event.id} ${JSON.stringify(event.args)}`;
+    if (event.type === 'tool.result') return `${stamp}  result   ${event.id} ${event.ok ? 'ok' : 'failed'}`;
+    if (event.type === 'surface') return `${stamp}  surface  ${event.messages?.length ?? 0} messages`;
+    if (event.type === 'turn.completed') {
+      return `${stamp}  turn     ${event.turn.steps?.length ?? 0} steps, ${String(event.turn.text ?? '').length} chars`;
+    }
     return `${stamp}  ${event.type}`;
   };
 
-  const runtime = new AgentRuntime({
-    engine: createRulesEngine({
-      knowledge,
-      answers,
-      capabilities,
-      // The page is the corpus: field questions read the text you are looking at.
-      grounding: { read: () => document.body.innerText },
-      constants: [...new Set(DATA.projects.flatMap((project) => project.stack))],
-    }),
+  const conversation = createConversation({
+    knowledge,
+    answers,
     capabilities,
     registry,
+    // The page is the corpus: field questions read the text you are looking at.
+    grounding: { read: () => document.body.innerText },
+    constants: [...new Set(DATA.projects.flatMap((project) => project.stack))],
     getSnapshot: () => ({ currentRoute: '/boaz/', state }),
     navigate: () => {},
     dispatch: () => {},
     confirm: async () => true,
     streaming: { chunkChars: 12, paceMs: 16, leadInMs: 520 },
-    onEvent: (event) => {
-      if (event.type === 'step') {
-        const line = describeTrace(event.step, titleOf);
-        if (line) {
-          const bubble = ensureBubble();
-          const item = document.createElement('li');
-          item.textContent = line;
-          if (event.step.type === 'inference' && event.step.rule) item.title = event.step.rule;
-          bubble.trace.appendChild(item);
-          log.scrollTop = log.scrollHeight;
-        }
-      }
-      if (event.type === 'delta') {
-        const bubble = ensureBubble();
-        bubble.text += String(event.text ?? '');
-        bubble.body.textContent = bubble.text;
-        log.scrollTop = log.scrollHeight;
-      }
-      if (event.type === 'step' || event.type === 'delta' || event.type === 'turn') {
-        events.push(eventLine(event));
-        if (eventsEl) eventsEl.textContent = events.slice(-40).join('\n');
-      }
-    },
   });
 
   /** Paints an A2UI surface with the site's own components, like the panel does. */
@@ -163,14 +142,34 @@ async function boot() {
         ensureBubble().body.textContent = register.reply;
         return;
       }
-      const result = await runtime.send(register.cleaned || question);
-      // Never render the wire format, whatever a host returned.
-      for (const step of result.steps) {
-        if (step.type === 'surface') renderSurface(step.capabilityId, step.messages);
+      let finalText = '';
+      for await (const event of conversation.stream(register.cleaned || question)) {
+        if (event.type === 'step') {
+          if (event.step.type === 'surface') renderSurface(event.step.capabilityId, event.step.messages);
+          const line = describeTrace(event.step, titleOf);
+          if (line) {
+            const bubble = ensureBubble();
+            const item = document.createElement('li');
+            item.textContent = line;
+            if (event.step.type === 'inference' && event.step.rule) item.title = event.step.rule;
+            bubble.trace.appendChild(item);
+            log.scrollTop = log.scrollHeight;
+          }
+        }
+        if (event.type === 'text.delta') {
+          const bubble = ensureBubble();
+          bubble.text += String(event.text ?? '');
+          bubble.body.textContent = bubble.text;
+          log.scrollTop = log.scrollHeight;
+        }
+        if (event.type === 'turn.completed') finalText = event.turn.text;
+        if (event.type === 'error') finalText = `That did not work: ${event.message}`;
+        events.push(eventLine(event));
+        if (eventsEl) eventsEl.textContent = events.slice(-40).join('\n');
       }
-      const safe = /^\s*[[{]/.test(result.text)
-        ? 'That came back as data rather than a sentence. Try a narrower question.'
-        : result.text;
+      const safe = /^\s*[[{]/.test(finalText)
+        ? 'That came back as data rather than a sentence. Try asking something narrower.'
+        : finalText;
       if (safe) {
         const bubble = live ?? ensureBubble();
         bubble.text = safe;

@@ -12,11 +12,120 @@
    ============================================================ */
 import { defineCapability, defineKnowledge, splitSentences, summarise } from '@shobyde/boaz/core';
 import { DATA } from '../data.js';
-import { PROJECT_SIZE } from './projectSize.js';
+import { PROJECT_SIZE, withCommas } from './projectSize.js';
 import { articleCard, contactCard, findProject, projectCard } from './surfaces.js';
 import { phraseSummary, rankPosts, summariseDocuments } from './summarise.js';
+import { pageSurface } from '../page/pageSurface.js';
 
 const plain = (html) => String(html).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+
+const GITHUB_REPOS = {
+  boaz: { repo: 'shobyde/boaz', label: 'Boaz' },
+  hobnob: { repo: 'emberscribe/hobnob', label: 'Hobnob' },
+  readback: { repo: 'shobyde/readback', label: 'Readback' },
+  groundglass: { repo: 'shobyde/groundglass', label: 'Groundglass' },
+  shobyde: { repo: 'shobyde/resume-site', label: 'shobyde.com' },
+};
+const githubCache = new Map();
+const GITHUB_TTL = 10 * 60 * 1000;
+
+async function githubJson(path) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 9000);
+  try {
+    const response = await fetch(`https://api.github.com${path}`, {
+      headers: { Accept: 'application/vnd.github+json' },
+      signal: controller.signal,
+    });
+    if (!response.ok) {
+      if (response.status === 403) throw new Error('GitHub rate limit reached');
+      throw new Error(`GitHub returned ${response.status}`);
+    }
+    return response;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function githubRepo(key) {
+  const definition = GITHUB_REPOS[key];
+  if (!definition) throw new Error(`unknown repository "${key}"`);
+  const cached = githubCache.get(key);
+  if (cached && Date.now() - cached.at < GITHUB_TTL) {
+    return { ...cached.data, cached: true };
+  }
+  try {
+    const meta = await (await githubJson(`/repos/${definition.repo}`)).json();
+    const recentResponse = await githubJson(`/repos/${definition.repo}/commits?per_page=100`);
+    const recent = await recentResponse.json();
+    const totalResponse = await githubJson(`/repos/${definition.repo}/commits?per_page=1`);
+    const link = totalResponse.headers.get('link') || '';
+    const last = link.match(/[?&]page=(\d+)>; rel="last"/);
+    const commitsTotal = last ? Number(last[1]) : 1;
+    const releaseResponse = await githubJson(`/repos/${definition.repo}/releases?per_page=100`);
+    const releases = await releaseResponse.json();
+
+    let weeks = [];
+    try {
+      const activityResponse = await githubJson(`/repos/${definition.repo}/stats/commit_activity`);
+      if (activityResponse.status === 200) {
+        const activity = await activityResponse.json();
+        if (Array.isArray(activity)) {
+          weeks = activity.slice(-12).map((week) => {
+            const stamp = Number(week.week || 0);
+            const label = week.week_start
+              ? String(week.week_start).slice(0, 10)
+              : (stamp ? new Date(stamp * 1000).toISOString().slice(0, 10) : '');
+            return { label, value: Number(week.total || 0) };
+          });
+        }
+      }
+    } catch (error) {
+      // GitHub computes this endpoint lazily; the recent commit months are the fallback.
+    }
+
+    const months = new Map();
+    const days = new Map();
+    for (const commit of Array.isArray(recent) ? recent : []) {
+      const date = commit?.commit?.author?.date || commit?.commit?.committer?.date || '';
+      const month = date.slice(0, 7);
+      const day = date.slice(0, 10);
+      if (month) months.set(month, (months.get(month) || 0) + 1);
+      if (day) days.set(day, (days.get(day) || 0) + 1);
+    }
+    const releaseMonths = new Map();
+    for (const release of Array.isArray(releases) ? releases : []) {
+      const month = String(release.published_at || '').slice(0, 7);
+      if (month) releaseMonths.set(month, (releaseMonths.get(month) || 0) + 1);
+    }
+
+    const data = {
+      key,
+      repo: definition.repo,
+      label: definition.label,
+      commits: commitsTotal,
+      recentCommits: Array.isArray(recent) ? recent.length : 0,
+      releases: Array.isArray(releases) ? releases.length : 0,
+      stars: Number(meta.stargazers_count || 0),
+      forks: Number(meta.forks_count || 0),
+      openIssues: Number(meta.open_issues_count || 0),
+      months: [...months.entries()].sort(([a], [b]) => a.localeCompare(b)).slice(-12).map(([label, value]) => ({ label, value })),
+      days: [...days.entries()].sort(([a], [b]) => a.localeCompare(b)).slice(-30).map(([label, value]) => ({ label, value })),
+      weeks,
+      releaseMonths: [...releaseMonths.entries()].sort(([a], [b]) => a.localeCompare(b)).slice(-12).map(([label, value]) => ({ label, value })),
+      releaseList: (Array.isArray(releases) ? releases : []).slice(0, 4).map((release) => ({
+        tag: release.tag_name || '',
+        name: release.name || '',
+        date: String(release.published_at || '').slice(0, 10),
+      })),
+      fetchedAt: new Date().toISOString(),
+    };
+    githubCache.set(key, { at: Date.now(), data });
+    return { ...data, cached: false };
+  } catch (error) {
+    return { key, repo: definition.repo, label: definition.label, error: error.message };
+  }
+}
 
 export const siteCapabilities = [
   /* ---------- destinations ---------- */
@@ -26,7 +135,6 @@ export const siteCapabilities = [
     title: 'Top of the page',
     description: 'Scrolls back to the top, where the headline and the download and contact buttons are.',
     keywords: ['top', 'start', 'beginning', 'hero', 'headline'],
-    requiresConfirmation: true,
     route: '#hero',
   }),
   defineCapability({
@@ -36,7 +144,6 @@ export const siteCapabilities = [
     description:
       'Scrolls to the about section: what he has worked on for twelve years, how he works with teams, and the numbers behind it.',
     keywords: ['about', 'bio', 'background', 'who is', 'summary', 'stats'],
-    requiresConfirmation: true,
     route: '#about',
   }),
   defineCapability({
@@ -46,7 +153,6 @@ export const siteCapabilities = [
     description:
       'Scrolls to the project cards, where every piece of work has architecture notes and engineering decisions behind an expand button.',
     keywords: ['projects', 'work', 'portfolio', 'built', 'examples', 'show me'],
-    requiresConfirmation: true,
     route: '#projects',
   }),
   defineCapability({
@@ -55,7 +161,6 @@ export const siteCapabilities = [
     title: 'Work experience',
     description: 'Scrolls to the twelve year timeline of roles, employers, and what he did in each.',
     keywords: ['experience', 'jobs', 'career', 'history', 'timeline', 'employment'],
-    requiresConfirmation: true,
     route: '#experience',
   }),
   defineCapability({
@@ -64,7 +169,6 @@ export const siteCapabilities = [
     title: 'Skills',
     description: 'Scrolls to the skill groups: languages, frameworks, data, cloud, and the leadership row.',
     keywords: ['skills', 'stack', 'tech', 'tools', 'languages', 'frameworks'],
-    requiresConfirmation: true,
     route: '#skills',
   }),
   defineCapability({
@@ -74,7 +178,6 @@ export const siteCapabilities = [
     description:
       'Scrolls to the writing section, an AI-assisted daily log of news, notes, and build updates that he curates by hand.',
     keywords: ['blog', 'writing', 'log', 'posts', 'articles', 'reading', 'show me the blog'],
-    requiresConfirmation: true,
     route: '#blog',
   }),
   defineCapability({
@@ -83,11 +186,34 @@ export const siteCapabilities = [
     title: 'Contact',
     description: 'Scrolls to the contact section with his email and LinkedIn.',
     keywords: ['contact', 'contact page', 'email', 'reach', 'hire', 'talk', 'linkedin', 'get in touch'],
-    requiresConfirmation: true,
     route: '#contact',
   }),
 
   /* ---------- actions ---------- */
+  defineCapability({
+    id: 'page.compose',
+    kind: 'action',
+    title: 'Recompose the front page',
+    description:
+      'Rebuilds the front page from a declarative page surface: the profile, the work index, the register, the history, the stack, the log, the contact band, or the work index filtered by a technology or a project. The host renders the surface with the page\'s own sections.',
+    keywords: ['remake the page', 'rebuild the page', 'recompose the page', 'show only', 'focus the page', 'page about', 'full record', 'change the page'],
+    route: '#hero',
+    paramsSchema: {
+      type: 'object',
+      properties: {
+        view: { type: 'string', enum: ['home', 'profile', 'work', 'register', 'history', 'stack', 'log', 'contact'] },
+        sections: { type: 'array', items: { type: 'string', enum: ['about', 'projects', 'register', 'experience', 'skills', 'blog', 'contact'] } },
+        filter: { type: 'string' },
+        focus: { type: 'string' },
+        title: { type: 'string' },
+        mark: { type: 'string' },
+        note: { type: 'string' },
+      },
+      additionalProperties: false,
+    },
+    handler: async (params = {}) => ({ surface: pageSurface(params), recomposed: params.view || 'home' }),
+  }),
+
   defineCapability({
     id: 'resume.print',
     kind: 'action',
@@ -134,16 +260,6 @@ export const siteCapabilities = [
       ctx.dispatch('blog:open', { slug: newest.slug });
       return { opened: newest.title };
     },
-  }),
-  defineCapability({
-    id: 'labs.tools',
-    kind: 'route',
-    title: 'Tools without a model',
-    description:
-      'Opens the lab where the manifest answers JSON-RPC tool calls and the page\'s own buttons are found by role and accessible name, with no model.',
-    keywords: ['tools lab', 'json-rpc', 'mcp', 'accessibility tree', 'no model'],
-    route: '/labs/tools/',
-    requiresConfirmation: true,
   }),
   defineCapability({
     id: 'blog.open_archive',
@@ -282,7 +398,7 @@ export const siteCapabilities = [
     handler: async () => {
       const role = plain(DATA.hero.role);
       const current = DATA.experience[0];
-      const since = String(current?.period || '').split('–')[0].trim();
+      const since = String(current?.period || '').split(/\s[-–]\s/)[0].trim();
       const where = since ? `${current.org} since ${since}` : current?.org || 'Conversica';
       return {
         answer: `Sho is an engineering manager and hands-on IC with 12+ years building APIs, cloud systems, and client-facing apps. He has been at ${where}, and his current title is ${current?.role || 'Engineering Manager (IC)'}.`,
@@ -353,6 +469,7 @@ export const siteCapabilities = [
       return {
         posts,
         newest: newest?.title ?? null,
+        newestExcerpt: newest?.excerpt ?? null,
         // phrase the reply here: a key/value dump reads like a database row
         answer: newest
           ? `${posts} posts are published, and the newest is "${newest.title}".`
@@ -383,6 +500,126 @@ export const siteCapabilities = [
       })),
     }),
   }),
+  defineCapability({
+    id: 'github.activity',
+    kind: 'query',
+    title: 'Read GitHub activity',
+    description: 'Reads public commit, release, star and issue counts from the GitHub API for Boaz or another project, and returns the recent commit history for a chart.',
+    keywords: ['github', 'commits', 'releases', 'stars', 'forks', 'repo activity', 'how many commits', 'chart commits', 'release history', 'github activity'],
+    paramsSchema: {
+      type: 'object',
+      properties: {
+        repo: { type: 'string', enum: ['all', 'boaz', 'hobnob', 'readback', 'groundglass', 'shobyde'] },
+      },
+      additionalProperties: false,
+    },
+    handler: async (params = {}) => {
+      const requested = params.repo || 'all';
+      const keys = requested === 'all'
+        ? ['boaz', 'hobnob', 'readback', 'groundglass', 'shobyde']
+        : [requested];
+      const repos = await Promise.all(keys.map((key) => githubRepo(key)));
+      const live = repos.filter((repo) => !repo.error);
+      const answer = live.length
+        ? `${live.map((repo) => `${repo.label}: ${repo.commits} commits, ${repo.releases} releases, ${repo.stars} stars`).join('; ')}.`
+        : 'GitHub did not return public data for that project.';
+      return { answer, github: { repos, requested, live: live.length } };
+    },
+  }),
+
+  /* ---------- chart tools ---------- */
+  defineCapability({
+    id: 'charts.tech',
+    kind: 'query',
+    title: 'Chart the tool footprint',
+    description: 'Counts the projects that name each tool and returns a bar chart of the result.',
+    keywords: ['tech chart', 'chart the stack', 'tool frequency', 'chart the tools', 'graph the tools'],
+    paramsSchema: { type: 'object', properties: {}, additionalProperties: false },
+    handler: async () => {
+      const tech = ['A2UI', 'Python', 'Vite', 'pytest', 'SQLite', 'Docker', 'TypeScript', 'Cloudflare', 'Whisper', 'GGUF', 'Flask', 'C++'];
+      const bars = tech
+        .map((label) => ({
+          label,
+          value: DATA.projects.filter((project) => project.stack.some((entry) => entry.toLowerCase().includes(label.toLowerCase()))).length,
+        }))
+        .filter((bar) => bar.value > 0)
+        .sort((a, b) => b.value - a.value);
+      const summary = bars.map((bar) => `${bar.label} ${bar.value}`).join(', ');
+      return {
+        answer: `Technology footprint: ${summary}.`,
+        chart: { kind: 'bars', title: 'Technology footprint', unit: 'projects', bars },
+      };
+    },
+  }),
+  defineCapability({
+    id: 'charts.sizes',
+    kind: 'query',
+    title: 'Chart the project sizes',
+    description: 'Reads the measured code counts and returns a bar chart of project size in lines.',
+    keywords: ['chart project sizes', 'project size chart', 'codebase size chart', 'chart code size', 'size chart', 'graph the project sizes', 'chart the projects by size'],
+    paramsSchema: { type: 'object', properties: {}, additionalProperties: false },
+    handler: async () => {
+      const bars = Object.entries(PROJECT_SIZE)
+        .map(([label, size]) => ({ label, value: size.lines, meta: `${withCommas(size.files)} files` }))
+        .sort((a, b) => b.value - a.value);
+      const [largest] = bars;
+      return {
+        answer: largest
+          ? `${largest.label} is the largest at ${withCommas(largest.value)} lines; the chart compares the measured codebases.`
+          : 'There are no measured codebases on this page.',
+        chart: { kind: 'bars', title: 'Codebase size', unit: 'lines', bars, format: 'number' },
+      };
+    },
+  }),
+  defineCapability({
+    id: 'charts.posts',
+    kind: 'query',
+    title: 'Chart the posting cadence',
+    description: 'Counts the engineering log by month and returns a bar chart of the publishing cadence.',
+    keywords: ['chart posts per month', 'posts per month', 'post cadence', 'writing chart', 'chart the log', 'chart writing', 'posts by month', 'chart the posting cadence'],
+    paramsSchema: { type: 'object', properties: {}, additionalProperties: false },
+    handler: async (_params, ctx) => {
+      const posts = ctx.read('postsIndex') || [];
+      const counts = new Map();
+      for (const post of posts) {
+        const month = String(post.date || '').slice(0, 7);
+        if (month) counts.set(month, (counts.get(month) || 0) + 1);
+      }
+      const bars = [...counts.entries()]
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([label, value]) => ({ label, value }));
+      const peak = bars.reduce((best, bar) => (bar.value > (best?.value || 0) ? bar : best), null);
+      return {
+        answer: posts.length
+          ? `${posts.length} entries across ${bars.length} months${peak ? `; ${peak.label} is the busiest at ${peak.value}` : ''}.`
+          : 'The log has no entries to chart yet.',
+        chart: { kind: 'line', title: 'Posts per month', unit: 'entries', bars },
+      };
+    },
+  }),
+  defineCapability({
+    id: 'charts.roles',
+    kind: 'query',
+    title: 'Chart the roles over time',
+    description: 'Reads the role periods and returns a timeline chart from 2012 to 2026.',
+    keywords: ['chart roles', 'roles over time', 'career timeline chart', 'chart his career', 'timeline chart', 'roles timeline', 'chart the work history'],
+    paramsSchema: { type: 'object', properties: {}, additionalProperties: false },
+    handler: async () => {
+      const startYear = 2012;
+      const endYear = 2026;
+      const bars = DATA.experience.map((role) => {
+        const years = String(role.period).match(/\d{4}/g) || [];
+        const start = Number(years[0]) || startYear;
+        const end = /present/i.test(role.period) ? endYear : Number(years[1]) || start;
+        return { label: role.org, meta: role.role, value: Math.max(1, end - start + 1), start, end };
+      });
+      return {
+        answer: `Sho's roles run from ${startYear} to ${endYear}; the timeline shows ${bars.length} roles, with the teaching year overlapping Conversica.`,
+        chart: { kind: 'timeline', title: 'Roles over time', unit: 'years', start: startYear, end: endYear, bars },
+      };
+    },
+  }),
+
   /* ---------- the page, read as material for a skill ---------- */
   defineCapability({
     id: 'page.sections',

@@ -1,276 +1,194 @@
 # shobyde.com: design decisions
 
 This is the decision record for the site's visual and editorial identity. When
-`DESIGN.md` and the code disagree, treat the doc as the decision and the code as
-an unfinished ticket, unless a section explicitly marks the doc as pending.
+this document and the code disagree, treat the document as the decision and the
+code as an unfinished ticket, unless a section explicitly marks the doc as
+pending.
 
-Values are never defined here. `src/styles/main.css` `:root` is the single source
-of truth for tokens; this file says what they are for and what may not be done
-with them.
-
-Scope: the screen surface served at shobyde.com plus its print stylesheet. It
-does not describe the blog content pipeline, which lives in
-`resume-site-ops` and `shobyde-blog-editorial`.
+Values are defined in `src/styles/main.css` `:root`. The generated reading pages
+mirror those tokens in `scripts/reading_theme.py`; change both together.
 
 ## 1. Identity
 
-**Dark editorial.** Near-black ground, light text, one accent family, mono
-metadata. The page is a reading environment for a resume and an engineering
-log, not a product marketing page. It should read like a technical journal set
-on a dark stock.
+**Working record / cold blueprint.** The site is a technical record with an ink
+navigation rail, a graphite canvas, expanded grotesque display type, cobalt as
+the interaction signal, and one acid highlight. It is not an essay on paper and
+not a product landing page. The rail stays put; the record scrolls beside it.
 
-- `--bg: #0b0b0f` is the ground, `--bg-elev: #12121a` the only raised panel.
-- `--fg: #e8e8ee` is body ink. `--fg-dim` and `--fg-mute` are the two
-  de-emphasis steps; `--fg-mute` is the contrast floor and must not be pushed
-  darker without a measurement.
-- Surfaces are near-black plates over the scene: `--card` is a high-opacity
-  dark fill and `--card-hover` lifts it another step, with `--border` /
-  `--border-strong` hairlines. They read as paper on the ground, not glass, so
-  stars from the WebGL scene do not show through body copy. Depth comes from
-  the hairlines and blur, not from drop shadows.
-- `--radius: 8px` for cards, panels and buttons. Tags, nav links and toggles are
-  100px pills. Do not introduce a third radius.
-- The nav is a fixed frosted pill: `rgba(18, 18, 26, 0.7)` plus 20px backdrop
-  blur, centered at the top. A fixed full-width scrim fades the page out behind
-  it, so a heading never passes through the pill mid-line.
+The previous warm-paper and serif direction is retired. Do not reintroduce cream
+grounds, terracotta accents, serif display faces, drop caps, paper grain, or
+soft "editorial" cards. That register reads as a generic generated site and it
+fights the engineering record.
 
-**The WebGL scene is atmosphere, never content.** `#bg3d` is a fixed,
-`pointer-events: none`, `aria-hidden` canvas behind the `.site` layer. It
-renders a star fly-through, ambient dust, drifting haze and a breathing accent
-underfill. It carries no information, must never reduce copy contrast, and must
-never become the thing a visitor notices before the headline. The correct level
-is felt before it is studied: if a motif only resolves once you stop scrolling
-and stare at it, that is working as intended.
+**The conversation is a separate room.** The home page is the static record.
+`/thread/` is the conversation surface: a real thread with typed text, tool,
+and surface events, a visible trace, and follow-up suggestions. `/boaz/` is the
+live console for the same engine. The home page has a starter dock at the
+bottom; it submits to `/thread/?q=` and never answers in place. The rail Ask
+control is the same route. No overlay, no page rewrite, no floating chat
+bubble, no glass panel, no avatar.
 
-**Mono is the label language.** JetBrains Mono in uppercase with wide tracking
-marks metadata: section labels (`.eyebrow`), period stamps
-(`.tl-item__period`), card meta (`.project-card__meta`), post dates
-(`.post-card__date`), article meta, loader percentage, group titles
-(`.skill-group__title`). Mono never sets body copy, never sets a headline, and
-never appears at paragraph length.
+**Labs are separate exhibits.** `/labs/ledger`, `/labs/rota` and
+`/labs/runbook` carry their own colour worlds on purpose. The labs index and the
+`/boaz/` product page follow the tokens here so the front door and the product
+story match; the exhibits are allowed to be their own rooms.
 
-**Print is a deliberate inversion.** `src/styles/print.css` remaps the tokens to
-black on white, hides all screen chrome, and expands external URLs. The printed
-resume is a light document by design. Do not carry the dark ground, accents, or
-WebGL into print.
+## 2. The record is static
 
-## 2. Typography
+The front page is a prerendered record, not a Boaz surface. It does not
+recompose around a question. Every section is in the initial HTML, so SEO and
+no-JS visitors get the same work, history, stack, log, and contact record.
 
-Canonical stack, as defined in `src/styles/main.css` (`:root`) and loaded in
-`index.html`:
+- `/thread/` owns the conversation. It uses `createConversation` from
+  `@shobyde/boaz/conversation` and renders the typed stream.
+- `pageIntent()` still maps a question to the thread's work, history, stack,
+  log, contact, profile, and register components. It no longer rewrites the
+  home page.
+- `page.compose` remains a declared capability and the register viewer still
+  exposes the page surface stream, but no home route calls it. The static HTML
+  is the page.
+- The hero is a single column: statement, lede, actions, note, and the data
+  strip. There is no assistant console beside it.
+- The print stylesheet prints the full record from any page.
 
-| Token | Family | Used for |
+## 3. Layout
+
+- Desktop: a fixed ink rail `236px` wide and content to its right. The rail
+  holds the brand, section index, current role/base/last-filed status, and an
+  Ask link to `/thread/`. A vertical acid line on its right edge is the reading
+  progress.
+- Tablet and phone: the rail becomes a compact top strip with the brand and a
+  horizontally scrollable index. The Ask link is hidden; the Thread link in the
+  index is the route.
+- Hero: a single column. The statement, lede, actions, note, and data strip are
+  the record. The home starter dock sits at the bottom and starts a thread.
+- `/thread/`: the same dock gets the conversation input. The home version only
+  navigates; it does not stream an answer into the page.
+- Sections vary deliberately. Profile is prose plus a key-value record. Work is
+  a dense index with one featured row and expandable architecture rows. The
+  register is a dark full-bleed band with a live surface viewer. History is a
+  career chart followed by role records. Stack is a spec table. Log is a cobalt
+  lead plus an index table. Contact is an acid band.
+- Do not repeat the same three-card grid. Do not put a fake "SECTION 01" above a
+  heading. Real labels (`Profile`, `Work`, `Register`, `History`, `Stack`, `Log`,
+  `Contact`) are navigation; they stay.
+
+## 4. Typography
+
+| Token | Family | Role |
 |---|---|---|
-| `--font-head` | Space Grotesk (500/600/700) | `h1`-`h4`, card titles, display numerals (`.hero__headline`, `.section-title`, `.stat__num`, `.loader__name`, `.post-card__title`) |
-| `--font-body` | Inter (400/500/600) | Body copy, paragraphs, and small UI chrome (nav links, buttons, tags, small controls) |
-| `--font-mono` | JetBrains Mono (400/500) | Labels and metadata, per section 1 |
+| `--display` | Archivo variable, width 125, weight 800 | h1, section titles, project titles, role titles |
+| `--sans` | Archivo variable, width 100, weight 400/600 | body copy, summaries, forms |
+| `--mono` | IBM Plex Mono | labels, dates, metadata, code, manifest rows |
 
-Rules:
+- Display type is uppercase, tight (`letter-spacing: -0.045em` to `-0.055em`),
+  and short-measure (`13ch` to `24ch`). It is a poster voice, not body copy.
+- Body measure stays at 48ch to 68ch. Body is 17px at 1.6, article body 1.02rem
+  at 1.75.
+- `code.mono` keeps its original case. Package names are not headings.
+- No em dashes or en dashes in interface copy. Use a period, comma, colon, or a
+  hyphen for a date range. Blog prose is editorial content and is not rewritten
+  by the theme.
 
-- One display scale only. Headline `clamp(2.4rem, 7.5vw, 5.2rem)`, section
-  titles `clamp(2rem, 5vw, 3.2rem)`, card titles around 1.05 to 1.35rem.
-  New surfaces reuse these steps rather than inventing sizes.
-- Measures are capped: `55ch` for section subtitles, `58ch` for hero support
-  copy, `68ch` for article bodies. Long-form reading does not go wider.
-- Body baseline is 16px at 1.6 line height. Article body is 1.05rem at 1.78.
-- Space Grotesk headings carry `letter-spacing: -0.02em` (hero `-0.03em`). Do
-  not add tracking to display type; tracking belongs to mono labels.
-- Loaded with `media="print" onload="this.media='all'"` plus a `noscript`
-  fallback so a slow font CDN cannot block first paint. The 2.5s boot cap in
-  `src/main.js` is part of this contract, not an optimization detail.
-
-**Superseded: the parchment stack.** Zilla Slab headings with Source Serif 4
-body and the warm ink-on-paper theme are historical. They were replaced by the
-dark editorial surface and are not an alternative direction. Do not reintroduce
-Zilla Slab, Source Serif 4, sepia tokens, parchment grounds, coffee/water
-stains, or a handwritten reveal as the site's identity without an explicit,
-recorded direction change from Sho. Repo leftovers from that era
-(`src/handwrite.js`, `src/styles/handwrite.css`, `src/stains.js`) are not
-imported by `src/main.js` and are not part of the rendered surface. Leaving them
-inert is correct until a ticket mounts them on purpose.
-
-## 3. Color
+## 5. Color
 
 | Token | Value | Role |
 |---|---|---|
-| `--accent` | `#7c6cff` | Interactive accent: hover borders, list markers, timeline thread, selection ground, primary button gradient start |
-| `--accent2` | `#00d9b8` | Informational accent: labels, period stamps, meta rows, in-body links, the global focus ring, stat numerals |
-| `--accent-dim` | `#3a2f8f` | Accent in a recessive role: active nav ground, gradient end stop, underline color |
-| `--fg-mute` | `#858592` | Lowest text value that still clears 4.5:1 on `#0b0b0f` |
+| `--canvas` | `#e9edf0` | page ground |
+| `--surface` | `#fbfcfc` | raised plate, hover ground |
+| `--ink` | `#0b1220` | body ink, the rail |
+| `--dim` | `#46515f` | secondary copy |
+| `--mute` | `#5f6a76` | metadata floor, 4.68:1 on canvas |
+| `--cobalt` | `#1b3cff` | interaction, links, active state, the log lead |
+| `--acid` | `#e4ff3d` | one highlight per view, manifest IDs, contact band |
+| `--line` | `#c4ccd4` | hairlines and table rules |
 
-Usage rules:
+Rules:
 
-- Accent colors are for type, rules, borders, and state. They are not
-  decoration sprinkled on backgrounds.
-- Teal (`--accent2`) is the informational accent: metadata and secondary links.
-  Violet (`--accent`) is the interactive accent: hover and active state. A single
-  element may use both only in a gradient (loader bar, progress bar, timeline
-  thread).
-- **No zero-offset colored halos.** A radial glow with no light direction is a
-  generated-UI tell and it fights the typography. If an element needs emphasis,
-  use a border color change, a background step, a real directional shadow, or a
-  gradient rule. The former `--shadow-glow` and timeline halos were retired in
-  the 2026-10-19 audit batch. Do not add a third.
-- Gradients are two stops, or three where a rule fades out through `--border`
-  (the timeline thread). No multi-stop color fills.
-- Selection is `--accent` ground with `--bg` ink. Visible selection is an
-  accessibility feature, so do not theme it quieter. Measured: `--bg` on
-  `#7c6cff` is 5.09:1; white was 3.86:1 and failed AA at body size.
+- Cobalt is for interaction and structure. Section-title emphasis is cobalt, not
+  a highlighter. Acid is for one thing at a time: the hero phrase, the Ask
+  control, the register headline, the profile pull quote, and the contact band.
+  If acid is on every section, it stops being a signal.
+- No gradients, glows, glass, or colored halos. The only pattern is the faint
+  64px blueprint grid on the canvas.
+- The dark register is a band, not a second theme. Its surfaces use the same
+  cobalt and acid as the light page; its headline keeps the acid mark because
+  cobalt would disappear on ink.
+- Never put a colored border on one side of a callout or card. Use a full
+  hairline, a background step, or a label.
+- Contrast is measured by `python3 scripts/contrast-check.py`. Do not add a
+  dimmer text token without measuring it.
 
-## 4. Motion
+## 6. Components
 
-Motion has one job: show that the page is alive and where the reader is. It does
-not perform.
+- **Buttons** are rectangular, 46px tall, mono uppercase, one hairline. Primary
+  is ink; hover is cobalt. Destructive actions are not present on this site.
+- **Tags** are rectangular hairlines, 0.5rem mono. No pills.
+- **Tables** are the default composition for lists of facts: work, stack, log,
+  archive, manifest. A row is a line, not a card. Hover is a surface step.
+- **The composer** is the bottom dock. On `/`, five starter questions and a
+  free-text input navigate to `/thread/?q=`. On `/thread/`, the same input runs
+  the conversation. Both never open a dialog.
+- **The thread answer** is a message: the question, a live tool card when a
+  tool runs, the answer text, any A2UI surface, and the component for the
+  subject. It streams typed events and keeps the trace separate from the
+  sentence.
+- **The work result band** belongs to the thread's work component when a filter
+  is applied. The home work index is the full record and has no result band.
+- **The surface viewer** in the register remains the page's one A2UI viewer.
+- **The surface viewer** in the register is one panel with four tabs
+  (`project_card`, `contact`, `newest_article`, `page`), a light stage, and a
+  collapsible JSON stream. The `page` tab shows the current `SitePage` surface
+  stream. Do not turn it into three identical cards.
+- **The career chart** is data, not decoration: four bars on a 2012 to 2026
+  scale, cobalt for current, acid for the teaching year, ink for earlier roles.
 
-Tokens and inventory:
+## 7. Motion
 
-- `--ease-out: cubic-bezier(0.16, 1, 0.3, 1)` is the canonical curve. Use it for
-  entrances, reveals, and panel expansion.
-- `--ease-elastic` is defined but unused. It is not an approved default; using
-  it requires a specific interaction that needs overshoot.
-- Entrance: hero elements rise 14px and fade over 0.55s, staggered 0.05, 0.18,
-  0.34, 0.5s, then stay at rest.
-- Reveals: `.reveal` and `.tl-item` rise 24 to 40px and fade over 0.8s on
-  `IntersectionObserver` entry. Hidden states are gated on the `js` class that
-  `index.html` puts on `<html>`, so no-JS visitors never see blank content.
-- Scroll: Lenis smooth scroll, a top reading-progress bar scaled by scroll
-  fraction, and the hero support copy drifting and fading as the page moves.
-- Pointer: magnetic offset on `.btn` (pointer devices only), a lift on the
-  post card (which is a link), and a radial highlight following the pointer
-  across `.post-card`. Cards, tags, stats and skill groups that are not
-  clickable do not move on hover: a lift promises an action.
-- Data: stat numerals count up over 1.4s on first view.
-- Text: per-character opacity stream on About paragraphs, section subtitles, and
-  experience bullets.
+- One purpose: show entry and position. Scroll reveals are 8px rise plus fade,
+  500ms, and are gated on `html.js`.
+- The rail progress line is the only continuous motion. It is a transform on a
+  2px acid rule.
+- No hero entrance choreography, no magnetic buttons, no animated counters, no
+  WebGL scene, no Lenis.
+- `prefers-reduced-motion` removes transforms and transitions; opacity states
+  remain. Every new animated element needs a reduced-motion path.
 
-Reduced-motion contract (`prefers-reduced-motion: reduce`). This is a designed
-state, not a global kill:
+## 8. Accessibility
 
-- Off, at the JS level, so no work happens at all: WebGL scene (replaced by a
-  static CSS gradient on `#bg3d`), Lenis, magnetic buttons, stream text (text
-  renders at full opacity), stat counting (final value set immediately), pointer
-  highlight, scroll-linked hero drift, and the handwriting sweep if a ticket ever
-  mounts that module.
-- Off, at the CSS level: entrance animations and scroll reveal transforms.
-  Elements appear in their final position with no transition.
-- **Preserved:** color, border-color, background, focus outline, selection,
-  underline, and opacity-only state feedback. A hover or focus state must still
-  be visible without motion. The blanket 0.01ms kill was replaced by targeted
-  rules in the 2026-10-19 audit batch.
-- The preference is read live through `src/motionPrefs.js` (a getter plus the
-  `motionprefchange` event), never by sampling `matchMedia` once at boot. The
-  WebGL module tears down and re-inits on a live toggle using a generation
-  token and a single guarded listener; new animated subsystems follow that
-  pattern.
-- Every new animated element must gate itself on `motionPrefs`. A new animation
-  with no reduced-motion path is not finished.
+- Contrast: body, dim and mute all clear 4.5:1 on canvas and surface. Cobalt
+  clears 4.5:1 on canvas and surface. Ink on acid clears 4.5:1.
+- Target size: rail links 44px, buttons 46px, toggles and tabs at least 32px,
+  chips at least 32px.
+- Focus: 2px cobalt outline at 3px offset. Never remove it.
+- Headings: one `h1` per page, `h2` per section, `h3` per item, `h4` inside
+  expanded architecture notes.
+- The rail is a `nav` with `aria-current` on the active section. The Assistant is
+  a dialog with `aria-modal`, a focus trap, Escape to close, and Cmd/Ctrl+K to
+  open.
+- No-JS: the resume content is in the data module; the noscript block links to
+  email and LinkedIn. The hero and sections are not hidden behind JS classes.
 
-There is no custom cursor. The native pointer stays; a replacement overlay is
-hostile to pointer-finder and keyboard users and was removed on purpose.
+## 9. Generated reading pages
 
-## 5. Copy rules
+`scripts/reading_theme.py` owns the shared tokens, top bar and prose rules for
+`/posts/<slug>/` and `/archive/`. `scripts/gen_seo_pages.py` and
+`scripts/gen_archive.py` add only page-specific layout. Regenerate both after a
+theme change:
 
-- **No em dashes in site copy** (U+2014). Use a colon, comma, period, or
-  parentheses. The one exception is the hero tag's pre-existing dash between
-  `SOFTWARE ENGINEER` and `PNW`, which is section chrome rather than prose.
-  `src/data.js`, `src/main.js` visible strings, and `content/posts/` are all in
-  scope. Grep the rendered DOM, not just the source, because the source and the
-  rendered page have drifted before.
-- First person, concrete, past tense for work done. Say what was built, for
-  whom, and what it changed. No "passionate", no "leveraging", no "in today's
-  fast-paced landscape".
-- No AI cadence: avoid the "not X but Y" construction as a repeating rhythm,
-  inflated emphasis ("truly", "genuinely", "powerful"), stacked metaphors, and
-  certainty the evidence does not support. Shorter is better than balanced.
-- No invented facts, metrics, employers, or outcomes. The resume data is a
-  factual record and `src/data.js` says so at the top.
-- Headings are claims, not labels. "Proof, not adjectives" and "Twelve years,
-  one throughline: ship useful things" are the register. A heading that only
-  names the section is a missed opportunity, but a heading that performs is
-  worse.
-- Privacy: name, email, and LinkedIn only. No phone number, street address, ZIP,
-  or city-level placement of employers or schools. Coarse region is the limit.
+```bash
+python3 scripts/gen_seo_pages.py
+python3 scripts/gen_archive.py
+```
 
-## 6. Accessibility
+The archive's calendar uses cobalt steps with acid for the busiest day. The post
+page keeps a 68ch measure and a single article column; it does not get the rail.
 
-Non-negotiable, checked on every change:
+## 10. Changing this document
 
-- **Tap targets 44x44 CSS px minimum.** This includes inline links that read as
-  small text. Expand the hit area with padding or a pseudo-element rather than
-  enlarging the glyph. Mobile nav pills already clear 44px in height at
-  `max-width: 720px`; short labels and inline links still fall short
-  horizontally (section 8).
-- **AA contrast.** Body text at least 4.5:1, large text at least 3:1, against
-  its actual backdrop including translucent cards. `--fg-dim` and `--fg-mute`
-  clear 4.5:1 on `--bg` (5.75 and 5.4). Anything lighter does not, so do not
-  invent a dimmer text token, and re-measure copy that sits over translucent
-  cards or the WebGL scene.
-- **Heading order.** One `h1` per page (the hero headline), `h2` per section,
-  `h3` per item, `h4` inside detail panels. No skipped levels and no styled
-  `div` standing in for a heading.
-- **Every control has a name.** Icon-only controls need `aria-label`. The
-  project detail toggle keeps `aria-expanded` and `aria-controls` in sync with
-  its panel. Decorative layers (`#bg3d`, the progress bar) stay `aria-hidden`.
-- **Focus is visible.** `:focus-visible` draws a 2px `--accent2` outline at 3px
-  offset. Never remove it without an equally visible replacement. The skip link
-  to `#main-content` is the first tab stop.
-- **No-JS is a supported state.** Content must never be hidden behind a
-  JS-only class, and the `noscript` block stays.
-- **Motion** follows the contract in section 4.
-
-## 7. Scaffolding
-
-- **No numbered kickers above section headings.** A sequence number above every
-  `h2` turns the page into a template and tells the reader nothing the scroll
-  position already tells them. The heading carries the hierarchy.
-- The project "Detail" control lives in the card's top row, opposite the meta
-  line. It is a control, not a footer ornament, and keeping it out of the
-  links row stops the card footers from going ragged.
-- A mono label may still appear where it adds information the heading cannot
-  carry (a date stamp, a category, a project status). It must not repeat the
-  heading, must not be numbered, and must not sit above every section on the
-  page. At that density it stops being navigation and becomes decoration.
-- Section anatomy: optional label, `h2.section-title`, optional
-  `p.section-sub`, then content. Section rhythm is
-  `padding: clamp(5rem, 12vh, 9rem) 0` inside a 1200px container.
-- Cards are containers, not decorations: one hairline, one background step, no
-  nested card-in-card, no shadows beyond the hover lift.
-- Anchor jumps use `scroll-margin-top: 5.5rem` so titles clear the floating nav.
-
-## 8. Audit batch (2026-10-19)
-
-The UI audit that prompted this document landed in full: the 27 rendered em
-dashes were reduced to the hero-tag chrome only, numbered kickers were removed,
-the type stack was canonicalized, reduced motion became a designed state, tap
-targets reached 44x44, the zero-offset halos and unused motion tokens were
-retired, and heading wraps were fixed. This section is the record of that batch;
-new work inherits the rules above.
-
-## 9. Changing this document
-
-Open a ticket. A direction change (new theme, new type stack, new accent family)
-is a decision for Sho, recorded here before code lands. A clarification or a
-correction of something the code already does can land with the code in the same
-change, provided both the doc and the implementation move together. Adding a new
-deviation to section 8 requires a ticket id and an owner.
-
-## 10. Cleanup batch (2026-11-24)
-
-- The package publishes as `@shobyde/boaz`; the boaz page, install block, entry
-  point table and the homepage badge all follow the scoped name. The homepage
-  badge reads the installed package's version instead of a hand-typed string.
-- The assistant compares the two projects the question names, not the first two
-  in the list, and answers a phone/address question with the published-contact
-  rule rather than routing to About.
-- Benchmark scores separate the deterministic thread count from the judge's
-  stricter rubric, so 28/30, 21/30, 25/30 and 20/30 read as four measurements
-  rather than a contradiction. The thread matrix has one header row; the
-  ladder chart uses one colour for the movement and one for the destination;
-  the handbook bars are pass rates, not raw counts on mismatched totals.
-- On phones, the thread matrix becomes labelled rows, the handbook table
-  becomes labelled metric tiles, and the scorecard becomes a card per class.
-  Wide charts scroll with a visible hint. Long code samples wrap; nothing is
-  clipped at a panel edge.
-- The new-article notice waits for the log section and dismisses itself. The
-  assistant launcher collapses to a circular target on phones, and the footer
-  reserves space for it. Non-interactive cards and tags no longer lift on hover.
+A direction change (new type stack, new ground, new accent family) is a decision
+for Sho and lands here before code. A clarification that matches the code can
+land together with it. The anti-slop rules are inherited from the UX/UI agent
+skills doctrine: no default warm-editorial serif pages, no symmetrical card
+grids, no fake section numbers, no emoji, no decorative side borders, no
+invisible microcopy.

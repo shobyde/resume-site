@@ -1,0 +1,111 @@
+{
+  "note": "Continuation threads for a tool-backed answer. A turn is only a pass when the new subject reaches the same operation, including the capability arguments.",
+  "threads": [
+    {
+      "id": "commit-switch",
+      "title": "Commits for one repo, then another",
+      "turns": [
+        {
+          "ask": "how many commits does Boaz have?",
+          "kind": "tool",
+          "expect": {
+            "tool": "github.activity",
+            "args": { "repo": "boaz" },
+            "include": ["81"]
+          }
+        },
+        {
+          "ask": "what about Hobnob?",
+          "kind": "context",
+          "expect": {
+            "tool": "github.activity",
+            "args": { "repo": "hobnob" },
+            "include": ["Hobnob"],
+            "exclude": ["Boaz"]
+          }
+        },
+        {
+          "ask": "and Readback?",
+          "kind": "context",
+          "expect": {
+            "tool": "github.activity",
+            "args": { "repo": "readback" },
+            "include": ["Readback"],
+            "exclude": ["Hobnob"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "chart-switch",
+      "title": "A chart query, then another repo",
+      "turns": [
+        {
+          "ask": "chart commits by week for Boaz",
+          "kind": "tool",
+          "expect": {
+            "tool": "github.activity",
+            "args": { "repo": "boaz" },
+            "include": ["81"]
+          }
+        },
+        {
+          "ask": "what about Hobnob?",
+          "kind": "context",
+          "expect": {
+            "tool": "github.activity",
+            "args": { "repo": "hobnob" },
+            "include": ["Hobnob"],
+            "exclude": ["Boaz"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "card-switch",
+      "title": "A project card, then another project",
+      "turns": [
+        {
+          "ask": "show me the Hobnob card",
+          "kind": "tool",
+          "expect": {
+            "tool": "projects.card",
+            "args": { "project": "hobnob" },
+            "include": ["Hobnob"]
+          }
+        },
+        {
+          "ask": "what about Readback?",
+          "kind": "context",
+          "expect": {
+            "tool": "projects.card",
+            "args": { "project": "readback" },
+            "include": ["Readback"],
+            "exclude": ["Hobnob"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "stack-switch",
+      "title": "A stack answer, then another project",
+      "turns": [
+        {
+          "ask": "what stack does Hobnob use?",
+          "kind": "knowledge",
+          "expect": {
+            "include": ["Whisper"]
+          }
+        },
+        {
+          "ask": "what about Readback?",
+          "kind": "context",
+          "expect": {
+            "include": ["Flask"],
+            "exclude": ["Whisper"]
+          }
+        }
+      ]
+    }
+  ]
+}

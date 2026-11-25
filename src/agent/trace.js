@@ -6,7 +6,9 @@ export function describeTrace(step, titleOf) {
   const sentence = (title) => String(title).charAt(0).toLowerCase() + String(title).slice(1);
   switch (step.type) {
     case 'inference':
-      return step.label || `Looked through the page for ${step.terms?.join(' or ') || 'that'}`;
+      // The step type is the rules engine's formal name; the label the visitor
+      // reads is the rule it applied, not "inference".
+      return step.label || `Applied a rule for ${step.terms?.join(' or ') || 'that'}`;
     case 'navigate':
       return `Scrolled to ${sentence(titleOf(step.capabilityId))}`;
     case 'query':

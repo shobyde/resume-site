@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""WCAG contrast for the colours in src/styles/main.css.
+"""WCAG contrast for the "working record" palette.
 
-The palette is the dark editorial one: near-black ground, light ink, one
-violet interactive accent, one teal informational accent. Run this after any
-token change; a pair that fails AA at body size is a bug, not a taste call.
+Cold canvas, ink, cobalt interaction, acid highlight. Run after any token
+change; a pair that fails AA at body size is a bug, not a taste call.
 """
 def lum(h):
     r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
@@ -18,38 +17,36 @@ def cr(a, b):
     return (hi + 0.05) / (lo + 0.05)
 
 
-def blend(fg, bg, alpha):
-    return ''.join(f'{round(int(fg[i:i + 2], 16) * alpha + int(bg[i:i + 2], 16) * (1 - alpha)):02x}' for i in (0, 2, 4))
-
-
-BG = '0b0b0f'
-CARD = blend('111119', BG, 0.84)
-CARD_HOVER = blend('181822', BG, 0.92)
-ACCENT = '7c6cff'
-ACCENT_DIM = '3a2f8f'
-ACCENT2 = '00d9b8'
+CANVAS = 'e9edf0'
+SURFACE = 'fbfcfc'
+INK = '0b1220'
+DIM = '46515f'
+MUTE = '5f6a76'
+COBALT = '1b3cff'
+ACID = 'e4ff3d'
+INK_BG = '0b1220'
+INK_FG = 'f4f6f7'
+INK_DIM = 'a9b4c1'
 
 pairs = [
-    ('fg on bg', 'e8e8ee', BG, 4.5),
-    ('fg-dim on bg', '8a8a95', BG, 4.5),
-    ('fg-mute on bg', '858592', BG, 4.5),
-    ('fg-dim on card', '8a8a95', CARD, 4.5),
-    ('fg-mute on card', '858592', CARD, 4.5),
-    ('fg-mute on card hover', '858592', CARD_HOVER, 4.5),
-    ('accent2 on bg', ACCENT2, BG, 4.5),
-    ('nav active, white on accent-dim', 'ffffff', ACCENT_DIM, 4.5),
-    ('primary button, bg on accent', BG, ACCENT, 4.5),
-    ('primary hover, bg on accent-soft', BG, '8e7fff', 4.5),
-    # Kept as a record: this pair is why the primary button uses bg ink.
-    ('the retired white on accent', 'ffffff', ACCENT, None),
+    ('ink on canvas', INK, CANVAS, 4.5),
+    ('dim on canvas', DIM, CANVAS, 4.5),
+    ('mute on canvas', MUTE, CANVAS, 4.5),
+    ('ink on surface', INK, SURFACE, 4.5),
+    ('dim on surface', DIM, SURFACE, 4.5),
+    ('cobalt on canvas', COBALT, CANVAS, 4.5),
+    ('cobalt on surface', COBALT, SURFACE, 4.5),
+    ('ink on acid', INK, ACID, 4.5),
+    ('acid on ink', ACID, INK_BG, 4.5),
+    ('ink-fg on ink', INK_FG, INK_BG, 4.5),
+    ('ink-dim on ink', INK_DIM, INK_BG, 4.5),
+    ('white on cobalt', 'ffffff', COBALT, 4.5),
+    ('white on inert ink', 'ffffff', '1b2635', 4.5),
 ]
 
 failed = 0
 for name, fg, bg, need in pairs:
     ratio = cr(fg, bg)
-    if need is None:
-        print(f'INFO  {ratio:5.2f}:1  {name}')
-        continue
     ok = ratio >= need
     if not ok:
         failed += 1
