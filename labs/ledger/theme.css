@@ -1,0 +1,185 @@
+/* Ledger theme: a desk book on warm paper.
+   Oxblood ink, Fraunces for the headings, Plex Mono for figures and
+   the surface chrome. Cards are sheets of paper, not panels. */
+
+body[data-lab='ledger'] {
+  --bg: #f1e9d9;
+  --panel: #fbf6e9;
+  --panel-2: #fffdf5;
+  --panel-3: #efe5d0;
+  --ink: #251e16;
+  --dim: #4d4132;
+  --mute: #746455;
+  --line: rgba(37, 30, 22, 0.14);
+  --line-strong: rgba(37, 30, 22, 0.32);
+  --accent: #8c2f28;
+  --accent-soft: #a2473d;
+  --accent-2: #3c6a4e;
+  --warn: #9a5b14;
+  --bad: #8c2f28;
+  --good: #3c6a4e;
+  --display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --radius: 6px;
+  --user-bg: #8c2f28;
+  --user-ink: #fdf8ec;
+
+  background-color: var(--bg);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 31px,
+    rgba(37, 30, 22, 0.055) 31px 32px
+  );
+  color: var(--ink);
+}
+
+body[data-lab='ledger']::before {
+  background:
+    radial-gradient(58% 44% at 82% -8%, rgba(140, 47, 40, 0.1), transparent 62%),
+    radial-gradient(40% 36% at 0% 2%, rgba(60, 106, 78, 0.08), transparent 60%);
+}
+
+body[data-lab='ledger'] .bar {
+  background: rgba(246, 239, 224, 0.9);
+  border-bottom-color: rgba(37, 30, 22, 0.18);
+}
+
+body[data-lab='ledger'] .bar__num { color: var(--accent); letter-spacing: 0.18em; }
+body[data-lab='ledger'] .bar__name {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.12rem;
+  letter-spacing: -0.01em;
+}
+body[data-lab='ledger'] .bar__tag { color: var(--mute); }
+body[data-lab='ledger'] .bar__pill { border-style: dotted; border-color: var(--line-strong); }
+body[data-lab='ledger'] #labReset { border-radius: 3px; border-color: var(--line-strong); }
+
+body[data-lab='ledger'] .kicker { letter-spacing: 0.22em; }
+
+body[data-lab='ledger'] .intro h1 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(2rem, 4.4vw, 2.95rem);
+  letter-spacing: -0.022em;
+  line-height: 1.02;
+}
+
+body[data-lab='ledger'] .intro .lede { font-size: 0.99rem; line-height: 1.64; }
+
+body[data-lab='ledger'] .intro__facts li {
+  border-style: dotted;
+  border-color: var(--line-strong);
+  color: var(--dim);
+}
+
+body[data-lab='ledger'] .turn__head { letter-spacing: 0.12em; }
+body[data-lab='ledger'] .turn__who {
+  font-family: var(--display);
+  font-size: 0.78rem;
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  color: var(--accent);
+}
+body[data-lab='ledger'] .turn--user .turn__who {
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--mute);
+}
+body[data-lab='ledger'] .turn__mark { color: var(--accent); }
+
+body[data-lab='ledger'] .turn--user .turn__text {
+  font-size: 0.92rem;
+  border-radius: 4px 4px 1px 4px;
+  box-shadow: 0 1px 0 rgba(37, 30, 22, 0.18);
+}
+
+body[data-lab='ledger'] .turn__text { font-size: 1rem; line-height: 1.62; }
+
+body[data-lab='ledger'] .stream--ledger {
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--line);
+}
+body[data-lab='ledger'] .stream--ledger.is-settled { border-bottom-color: var(--line-strong); }
+body[data-lab='ledger'] .stream__figure { color: var(--accent); font-size: 0.94em; }
+body[data-lab='ledger'] .how__line { font-family: var(--mono); font-size: 0.62rem; }
+
+body[data-lab='ledger'] .surface {
+  background: var(--panel-2);
+  border-color: rgba(37, 30, 22, 0.2);
+  border-radius: 3px;
+  box-shadow:
+    0 1px 0 rgba(37, 30, 22, 0.08),
+    0 26px 46px -38px rgba(37, 30, 22, 0.7);
+}
+body[data-lab='ledger'] .surface__bar {
+  background: rgba(37, 30, 22, 0.045);
+  border-bottom-color: var(--line);
+  letter-spacing: 0.18em;
+}
+body[data-lab='ledger'] .surface__bar-id { color: var(--accent); }
+body[data-lab='ledger'] .surface__host { padding: 1rem 1.05rem; }
+
+body[data-lab='ledger'] .a2ui-card {
+  background: var(--panel-2);
+  border: 1px solid rgba(37, 30, 22, 0.16);
+  border-radius: 3px;
+  padding: 0.85rem 0.95rem;
+}
+body[data-lab='ledger'] h2.a2ui-text {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.45rem;
+  letter-spacing: -0.015em;
+}
+body[data-lab='ledger'] h4.a2ui-text { font-family: var(--display); font-weight: 600; font-size: 1rem; }
+body[data-lab='ledger'] h5.a2ui-text { font-family: var(--display); font-weight: 600; font-size: 0.95rem; }
+body[data-lab='ledger'] small.a2ui-text { font-size: 0.69rem; color: var(--mute); }
+
+body[data-lab='ledger'] .a2ui-column > .a2ui-row + .a2ui-row {
+  border-top: 1px dotted var(--line-strong);
+}
+body[data-lab='ledger'] .a2ui-button {
+  font-size: 0.6rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  color: var(--dim);
+}
+body[data-lab='ledger'] .a2ui-button:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--user-ink);
+}
+
+body[data-lab='ledger'] .dock { background: rgba(246, 239, 224, 0.92); }
+body[data-lab='ledger'] .chip {
+  background: transparent;
+  border: 1px dotted var(--line-strong);
+  border-radius: 3px;
+  font-size: 0.64rem;
+  color: var(--dim);
+}
+body[data-lab='ledger'] .chip:hover { border-style: solid; border-color: var(--accent); color: var(--accent); }
+
+body[data-lab='ledger'] .composer input {
+  background: var(--panel-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  font-size: 0.95rem;
+}
+body[data-lab='ledger'] .composer button {
+  border-radius: 3px;
+  letter-spacing: 0.12em;
+  font-size: 0.64rem;
+  padding: 0.58rem 1rem;
+}
+
+body[data-lab='ledger'] .lab__confirm-card { border-radius: 4px; }

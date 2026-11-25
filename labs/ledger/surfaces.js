@@ -185,7 +185,7 @@ export function briefMessages() {
     Column('risk_body', [
       Text('risk_kicker', 'Largest open balances', { variant: 'caption' }),
       ...ranked.map((entry, index) =>
-        Text(`risk_${index}`, `${index + 1}. ${entry.customer} — ${money(entry.sum)} across ${entry.count} invoice${entry.count === 1 ? '' : 's'}`),
+        Text(`risk_${index}`, `${index + 1}. ${entry.customer} · ${money(entry.sum)} across ${entry.count} invoice${entry.count === 1 ? '' : 's'}`),
       ),
       Text('risk_note', 'Ask a question and the answer arrives as this table, with the rows it bound underneath it.', { variant: 'caption' }),
     ]),

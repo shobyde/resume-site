@@ -139,7 +139,7 @@ export const howItWorks = defineKnowledge({
   keywords: ['how does this work', 'where do the numbers come from', 'is this a model', 'how do you know'],
   route: '/labs/ledger/',
   knowledge:
-    'The book is declared as facts — one row per invoice with its customer, status, amount and age. A question is joined against those facts by a rule, the sentence is composed from the rows that matched, and the same rows are rendered as an A2UI surface. There is no model and no network: if a row is not in the book, the answer cannot mention it. The Settle and Draft reminders buttons are the only writes, and both ask first.',
+    'The book is declared as facts: one row per invoice with its customer, status, amount and age. A question is joined against those facts by a rule, the sentence is composed from the rows that matched, and the same rows are rendered as an A2UI surface. There is no model and no network: if a row is not in the book, the answer cannot mention it. The Settle and Draft reminders buttons are the only writes, and both ask first.',
 });
 
 export const capabilities = [viewBook, debtors, remind, settleInvoice, howItWorks];

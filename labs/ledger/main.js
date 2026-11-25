@@ -1,16 +1,23 @@
 import '../shared/lab.css';
-import { mountLab } from '../shared/shell.js';
+import './theme.css';
+import { mountChat } from '../shared/shell.js';
 import { capabilities, state } from './capabilities.js';
 import { createLedgerEngine, demos } from './rules.js';
 import { briefMessages, solutionMessages } from './surfaces.js';
 
 const engine = createLedgerEngine(capabilities);
 
-const lab = mountLab({
+const lab = mountChat({
   capabilities,
   engine,
   getSnapshot: () => ({ currentRoute: '/labs/ledger/', state }),
-  welcome: 'Ask about the money, or press a chip. Every answer arrives with the rows it read.',
+  persona: { name: 'the book', mark: '▤' },
+  stream: 'ledger',
+  streaming: { chunkChars: 7, paceMs: 24, leadInMs: 600 },
+  pending: 'reading the rows',
+  patchReply: 'The table above carries that change now.',
+  welcome:
+    'Twenty-four invoices, dated 2 October. Ask about the money, or press a chip: I answer from the rows and draw the table I read underneath the sentence.',
   chips: demos,
   initial: briefMessages,
   placeholder: 'Which invoices are overdue?',

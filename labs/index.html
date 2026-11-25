@@ -45,7 +45,11 @@ h1 { font-family: var(--display); font-size: clamp(2rem, 5vw, 3.2rem); line-heig
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 1.1rem; }
 .card { display: flex; flex-direction: column; gap: 0.5rem; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 1.3rem; text-decoration: none; color: inherit; position: relative; overflow: hidden; transition: border-color 160ms, transform 160ms; }
 .card:hover, .card:focus-visible { border-color: var(--accent); transform: translateY(-2px); }
-.card--play { background: linear-gradient(180deg, rgba(124,108,255,0.08), transparent 60%), var(--panel-2); }
+.card--play { background: linear-gradient(180deg, color-mix(in srgb, var(--lab, var(--accent)) 13%, transparent), transparent 58%), var(--panel-2); }
+.card--play::before { content: ''; position: absolute; inset: 0 0 auto; height: 4px; background: var(--lab, var(--accent)); }
+.card--play[data-lab='ledger'] { --lab: #8c2f28; }
+.card--play[data-lab='rota'] { --lab: #4fe3a6; }
+.card--play[data-lab='runbook'] { --lab: #b6f36b; }
 .card .num { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.16em; color: var(--mute); }
 .card h3 { font-family: var(--display); font-size: 1.3rem; margin: 0; letter-spacing: -0.01em; }
 .card p { margin: 0; color: var(--dim); font-size: 0.9rem; }
@@ -65,7 +69,7 @@ footer a { color: var(--mute); }
   <header class="hero">
     <p class="kicker">Working exhibits</p>
     <h1>Three measured. Three playable.</h1>
-    <p class="lede">The first three report what the assistant does without a model. The next three are small applications built on it: ask a question, and the answer is a generated interface with the rows, the rule and the gate that produced it still attached.</p>
+    <p class="lede">The first three report what the assistant does without a model. The next three are small applications built on it: each one is a chat, and the answer is a generated interface drawn inside the reply, with the rows, the rule and the gate that produced it still attached.</p>
   </header>
 
   <section class="group" aria-labelledby="measured">
@@ -98,25 +102,25 @@ footer a { color: var(--mute); }
   <section class="group" aria-labelledby="playable">
     <div class="group__head">
       <h2 id="playable">Playable</h2>
-      <p>the answer is an interface</p>
+      <p>three chats where the answer is an interface</p>
     </div>
     <div class="grid">
-      <a class="card card--play" href="/labs/ledger/">
+      <a class="card card--play" data-lab="ledger" href="/labs/ledger/">
         <span class="num">04 · reasoning</span>
         <h3>Ledger</h3>
-        <p>A 24-invoice book where the answer is a working table. Rules join the rows, the sentence cites them, and settling one is a guarded write.</p>
+        <p>A 24-invoice book you talk to. Each reply pairs a sentence with the table it read. Settling an invoice is a guarded write.</p>
         <span class="stat">24 invoices · 6 rules · 2 guarded writes</span>
       </a>
-      <a class="card card--play" href="/labs/rota/">
+      <a class="card card--play" data-lab="rota" href="/labs/rota/">
         <span class="num">05 · constraints</span>
         <h3>Rota</h3>
-        <p>Six people, fourteen shifts, three holes. The agent proposes cover or names the 4-hour gap that makes it impossible.</p>
+        <p>Six people, fourteen shifts, three holes. Ask for cover and the reply draws the week it read, or names the rule and the hours that block it.</p>
         <span class="stat">14 shifts · 5 rules · 1 dry run</span>
       </a>
-      <a class="card card--play" href="/labs/runbook/">
+      <a class="card card--play" data-lab="runbook" href="/labs/runbook/">
         <span class="num">06 · procedure</span>
         <h3>Runbook</h3>
-        <p>A failing build walked as a declared skill: checks that patch the checklist as they return, then a fix plan — or a stop when the evidence is thin.</p>
+        <p>A failing build walked as a declared skill. The checklist fills in as each check returns, then a fix plan, or a stop.</p>
         <span class="stat">9 checks · 4 skills · 1 stop condition</span>
       </a>
     </div>

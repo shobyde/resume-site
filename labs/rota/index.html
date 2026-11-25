@@ -4,71 +4,74 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Rota · cover the week, and say why you can’t · boaz labs</title>
-<meta name="description" content="Six people, fourteen shifts, three holes. The agent joins skills to shifts, applies an 11-hour rest rule, and either proposes cover or names the hours that rule it out." />
+<meta name="description" content="Six people, fourteen shifts, three holes. The agent joins skills to shifts, applies an 11-hour rest rule, and either proposes cover or names the hours that rule it out. The week is drawn inside the chat." />
 <link rel="canonical" href="https://shobyde.com/labs/rota/" />
-<meta name="theme-color" content="#0b0b0f" />
+<meta name="theme-color" content="#060b18" />
 <meta property="og:title" content="Rota · boaz labs" />
-<meta property="og:description" content="A week of on-call cover where a refusal is a query result: the rule that failed, with the numbers." />
+<meta property="og:description" content="A week of on-call cover where a refusal is a query result: the rule that failed, with the numbers, in the reply that asked." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://shobyde.com/labs/rota/" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
 </head>
 <body data-lab="rota">
-<div class="lab" id="lab">
-  <nav class="crumbs" aria-label="Breadcrumb">
-    <a href="/">shobyde.com</a><span>/</span><a href="/labs/">labs</a><span>/</span><span aria-current="page">rota</span>
-  </nav>
-
-  <header class="lab__head">
-    <p class="kicker">Lab 05 · constraint reasoning</p>
-    <h1>Cover the week, and say why you can’t.</h1>
-    <p class="lede">
-      Six people, fourteen shifts, three holes. The agent joins skills to shifts, checks the 11-hour rest rule and the hours cap, then either
-      proposes a cover with the change it would make or names the rule that rules it out. Committing is a guarded write; the week redraws under it.
-    </p>
-    <ul class="lab__facts">
-      <li><b>6</b> people</li>
-      <li><b>14</b> shifts</li>
-      <li><b>3</b> open</li>
-      <li><b>6</b> eligibility rules</li>
-      <li><b>0 kB</b> model</li>
-    </ul>
+<div class="app" id="lab">
+  <header class="bar">
+    <div class="bar__inner">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">shobyde.com</a><span>/</span><a href="/labs/">labs</a><span>/</span><span aria-current="page">rota</span>
+      </nav>
+      <div class="bar__id">
+        <span class="bar__num">05</span>
+        <span class="bar__name">Rota</span>
+        <span class="bar__tag">cover the week, and say why you can’t</span>
+      </div>
+      <div class="bar__tools">
+        <span class="bar__pill">model-free · 0 kB</span>
+        <span id="labStats" aria-live="polite"></span>
+        <button id="labReset" type="button" title="Clear the conversation">Clear</button>
+      </div>
+    </div>
   </header>
 
-  <main class="lab__stage">
-    <section class="lab__chat" aria-label="Conversation">
-      <div class="lab__log" id="labLog" role="log" aria-live="polite"></div>
-      <div class="lab__chips" id="labChips" aria-label="Questions to try"></div>
-      <form class="lab__composer" id="labForm" autocomplete="off">
-        <label class="sr-only" for="labAsk">Ask about the rota</label>
-        <input id="labAsk" type="text" placeholder="Who can cover Saturday night?" />
-        <button id="labSend" type="submit" disabled>Ask</button>
-      </form>
-      <p class="lab__foot">
-        The week is the page’s own data. Assigning writes to it; nothing is sent anywhere. <a href="/boaz/">How this works</a>
-      </p>
-    </section>
-
-    <section class="lab__canvas" aria-label="Generated interface">
-      <div class="lab__canvas-head">
-        <span class="lab__canvas-kicker">generated surface</span>
-        <span id="labCanvasMeta">the week before a question</span>
-        <button id="labReset" type="button" title="Clear the conversation and canvas">Clear</button>
-      </div>
-      <div class="lab__surface" id="labSurface"></div>
-      <div id="labProof" hidden></div>
-      <p class="lab__foot" id="labStats" aria-live="polite"></p>
-    </section>
+  <main class="thread" id="labThread" aria-label="Conversation">
+    <div class="thread__inner">
+      <section class="intro">
+        <p class="kicker">Lab 05 · constraint reasoning</p>
+        <h1>Cover the week, and say why you can’t.</h1>
+        <p class="lede">
+          Six people, fourteen shifts, three holes. The agent joins skills to shifts, checks the 11-hour rest rule and the hours
+          cap, then either proposes a cover with the change it would make or names the rule that rules it out. The week it read is
+          drawn in the same reply. Committing is a guarded write.
+        </p>
+        <ul class="intro__facts">
+          <li><b>6</b> people</li>
+          <li><b>14</b> shifts</li>
+          <li><b>3</b> open</li>
+          <li><b>6</b> eligibility rules</li>
+          <li><b>0 kB</b> model</li>
+        </ul>
+      </section>
+      <div class="log" id="labLog" role="log" aria-live="polite" aria-relevant="additions text"></div>
+    </div>
   </main>
 
-  <footer class="lab__end">
-    <span class="lab__pieces">Datalog join · six eligibility rules · dry run · guarded commit</span>
-    <span>Built on <a href="/boaz/">@shobyde/boaz</a> · every surface is checked by <a href="https://github.com/shobyde/groundglass">groundglass</a> in CI.</span>
-    <span><a href="/labs/">All labs</a> · <a href="/">shobyde.com</a></span>
-  </footer>
+  <div class="dock">
+    <div class="dock__inner">
+      <div class="chips" id="labChips" aria-label="Questions to try"></div>
+      <form class="composer" id="labForm" autocomplete="off">
+        <label class="sr-only" for="labAsk">Ask about the rota</label>
+        <input id="labAsk" type="text" enterkeyhint="send" placeholder="Who can cover Saturday night?" />
+        <button id="labSend" type="submit" disabled>Ask</button>
+      </form>
+      <p class="dock__foot">
+        <span>The week is the page’s own data. Assigning writes to it; nothing is sent anywhere.</span>
+        <span><a href="/boaz/">How this works</a> · <a href="/labs/">All labs</a></span>
+      </p>
+    </div>
+  </div>
 </div>
 
 <div class="lab__confirm" id="labConfirm" role="dialog" aria-modal="true" aria-labelledby="labConfirmTitle" hidden>

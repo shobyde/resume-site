@@ -1,0 +1,192 @@
+/* Runbook theme: the log.
+   Near-black, one phosphor lime, everything monospace. The user turn
+   is a shell line, surfaces are terminal panels with a bracket rule,
+   and actions read as bracketed commands. */
+
+body[data-lab='runbook'] {
+  --bg: #060907;
+  --panel: #0a100c;
+  --panel-2: #0d1410;
+  --panel-3: #121b15;
+  --ink: #e5ebdf;
+  --dim: #a7b2a5;
+  --mute: #8d9a90;
+  --line: rgba(182, 243, 107, 0.16);
+  --line-strong: rgba(182, 243, 107, 0.34);
+  --accent: #b6f36b;
+  --accent-soft: #cdf79a;
+  --accent-2: #ffb454;
+  --warn: #ffb454;
+  --bad: #ff8f8f;
+  --good: #b6f36b;
+  --display: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --sans: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --radius: 4px;
+  --user-bg: transparent;
+  --user-ink: var(--ink);
+
+  background-color: var(--bg);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(182, 243, 107, 0.028) 0 1px,
+    transparent 1px 4px
+  );
+  color: var(--ink);
+}
+
+body[data-lab='runbook']::before {
+  background:
+    radial-gradient(52% 40% at 88% -10%, rgba(182, 243, 107, 0.1), transparent 60%),
+    radial-gradient(34% 30% at 0% 0%, rgba(255, 180, 84, 0.06), transparent 62%);
+}
+
+body[data-lab='runbook'] .bar {
+  background: rgba(6, 9, 7, 0.86);
+  border-bottom-color: var(--line);
+}
+
+body[data-lab='runbook'] .bar__num { color: var(--accent); }
+body[data-lab='runbook'] .bar__name {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 0.98rem;
+  letter-spacing: 0.01em;
+}
+body[data-lab='runbook'] .bar__name::before { content: '> '; color: var(--accent); }
+body[data-lab='runbook'] .bar__pill { border-radius: 2px; border-style: dashed; color: var(--dim); }
+body[data-lab='runbook'] #labReset { border-radius: 2px; }
+
+body[data-lab='runbook'] .kicker {
+  color: var(--accent);
+  letter-spacing: 0.2em;
+}
+body[data-lab='runbook'] .kicker::before { content: '// '; opacity: 0.6; }
+
+body[data-lab='runbook'] .intro h1 {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: clamp(1.6rem, 3.9vw, 2.35rem);
+  letter-spacing: -0.02em;
+  line-height: 1.14;
+}
+
+body[data-lab='runbook'] .intro .lede {
+  font-size: 0.86rem;
+  line-height: 1.75;
+  color: var(--dim);
+}
+
+body[data-lab='runbook'] .intro__facts li {
+  border-radius: 2px;
+  border-style: dashed;
+  color: var(--mute);
+}
+
+body[data-lab='runbook'] .turn__mark { color: var(--accent); }
+body[data-lab='runbook'] .turn__who { color: var(--dim); letter-spacing: 0.16em; }
+body[data-lab='runbook'] .turn__meta { font-size: 0.58rem; }
+
+/* The visitor's turn is a shell line, not a bubble. */
+body[data-lab='runbook'] .turn--user .turn__text {
+  max-width: 100%;
+  background: none;
+  border-left: 2px solid var(--accent);
+  border-radius: 0;
+  padding: 0.1rem 0 0.1rem 0.6rem;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+body[data-lab='runbook'] .turn--user .turn__text::before {
+  content: '$ ';
+  color: var(--accent);
+}
+
+body[data-lab='runbook'] .turn__text { font-size: 0.9rem; line-height: 1.7; }
+
+body[data-lab='runbook'] .stream--runbook .stream__figure { color: var(--accent-soft); }
+
+body[data-lab='runbook'] .how__line { font-family: var(--mono); font-size: 0.62rem; }
+body[data-lab='runbook'] .how__kicker { letter-spacing: 0.16em; }
+
+body[data-lab='runbook'] .surface {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 2px;
+}
+body[data-lab='runbook'] .surface__bar {
+  background: rgba(182, 243, 107, 0.06);
+  border-bottom-color: var(--line);
+  letter-spacing: 0.18em;
+}
+body[data-lab='runbook'] .surface__bar-id { color: var(--accent); }
+body[data-lab='runbook'] .surface__bar-tag { color: var(--mute); }
+body[data-lab='runbook'] .surface__host { padding: 0.85rem 0.9rem; }
+
+body[data-lab='runbook'] .a2ui-card {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0.75rem 0.85rem;
+}
+body[data-lab='runbook'] h2.a2ui-text {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 1.02rem;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+body[data-lab='runbook'] h3.a2ui-text,
+body[data-lab='runbook'] h4.a2ui-text,
+body[data-lab='runbook'] h5.a2ui-text {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+body[data-lab='runbook'] small.a2ui-text { color: var(--mute); font-size: 0.68rem; }
+
+body[data-lab='runbook'] .a2ui-column > .a2ui-row + .a2ui-row { border-top-style: dashed; border-top-color: var(--line); }
+body[data-lab='runbook'] .a2ui-button {
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  color: var(--accent-soft);
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+}
+body[data-lab='runbook'] .a2ui-button::before { content: '['; color: var(--mute); }
+body[data-lab='runbook'] .a2ui-button::after { content: ']'; color: var(--mute); }
+body[data-lab='runbook'] .a2ui-button:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #08110a;
+}
+body[data-lab='runbook'] .a2ui-button:hover::before,
+body[data-lab='runbook'] .a2ui-button:hover::after { color: #08110a; }
+
+body[data-lab='runbook'] .dock { background: rgba(6, 9, 7, 0.92); }
+body[data-lab='runbook'] .chip {
+  background: transparent;
+  border: 1px dashed var(--line-strong);
+  border-radius: 2px;
+  color: var(--dim);
+}
+body[data-lab='runbook'] .chip::before { content: '> '; color: var(--accent); }
+body[data-lab='runbook'] .chip:hover { border-style: solid; border-color: var(--accent); color: var(--accent); }
+
+body[data-lab='runbook'] .composer input {
+  background: var(--panel-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  font-size: 0.88rem;
+}
+body[data-lab='runbook'] .composer input::placeholder { color: var(--mute); }
+body[data-lab='runbook'] .composer button {
+  border-radius: 2px;
+  background: var(--accent);
+  color: #08110a;
+}
+
+body[data-lab='runbook'] .lab__confirm-card { border-radius: 2px; border-left: 3px solid var(--accent); }
+body[data-lab='runbook'] .lab__confirm-card h2::before { content: '> '; color: var(--accent); }

@@ -124,7 +124,7 @@ export function findingsMessages(symptomId, run) {
     Column('passed_body', [
       Text('passed_kicker', 'Checks that came back clean', { variant: 'caption' }),
       ...(passing.length
-        ? passing.map((result, index) => Text(`passed_${index}`, `${result.headline} — ${result.evidence}`, { variant: 'caption' }))
+        ? passing.map((result, index) => Text(`passed_${index}`, `${result.headline} · ${result.evidence}`, { variant: 'caption' }))
         : [Text('passed_0', 'None: every check found something.', { variant: 'caption' })]),
     ]),
     Text('note', 'Applying a fix asks first and records it on this page. The command is quoted so it can be run for real.', { variant: 'caption' }),
