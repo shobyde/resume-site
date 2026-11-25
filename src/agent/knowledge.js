@@ -192,8 +192,8 @@ export function createAssistantKnowledge({ posts }) {
         const found = propertyMatches(query);
         const names = (found?.matches ?? []).map((match) => shortName(match.project.title));
         const rejected = (found?.mentionedOnly ?? []).map((project) => shortName(project.title));
-        if (names.length) return `Read the cards and found "${found.surface ?? found.phrase}" in ${names.length} summary${names.length === 1 ? '' : 'ies'}`;
-        if (rejected.length) return `Read the cards: ${rejected.join(' and ')} name it only to reject it`;
+        if (names.length) return `Read the cards and found "${found.surface ?? found.phrase}" in ${names.length} ${names.length === 1 ? 'summary' : 'summaries'}`;
+        if (rejected.length) return `Read the cards: ${rejected.join(' and ')} ${rejected.length === 1 ? 'names' : 'name'} it only to reject it`;
         return 'Read the cards for that property';
       },
       compose: ({ query }) => {
