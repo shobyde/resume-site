@@ -1,0 +1,14 @@
+{
+  "questions": [
+    { "question": "where is the week short?", "expect": "rota.gaps" },
+    { "question": "which shifts are uncovered?", "expect": "rota.gaps" },
+    { "question": "who can cover saturday night?", "expect": "rota.find_cover", "args": { "day": "saturday", "slot": "night" } },
+    { "question": "who can cover wednesday day?", "expect": "rota.find_cover", "args": { "day": "wednesday", "slot": "day" } },
+    { "question": "propose ana for saturday night", "expect": "rota.propose", "args": { "day": "saturday", "slot": "night", "person": "ana" } },
+    { "question": "propose priya for saturday night", "expect": "rota.propose", "args": { "day": "saturday", "slot": "night", "person": "priya" } },
+    { "question": "who is carrying the week?", "expect": "rota.hours" },
+    { "question": "how much of the week is covered?", "expect": "rota.week_shape" },
+    { "question": "what is the rest rule?", "expect": "rota.rest_rule" },
+    { "question": "show the week", "expect": "rota.grid" }
+  ]
+}

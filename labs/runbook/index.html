@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Runbook · a diagnostic that shows its checks · boaz labs</title>
+<meta name="description" content="A failing CI build walked as a declared skill: three checks, a checklist that fills in, a guarded fix plan, and a stop when one flaky test is all the evidence there is." />
+<link rel="canonical" href="https://shobyde.com/labs/runbook/" />
+<meta name="theme-color" content="#0b0b0f" />
+<meta property="og:title" content="Runbook · boaz labs" />
+<meta property="og:description" content="Procedural agency without a model: the checks, the evidence and the stop condition are all declared." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shobyde.com/labs/runbook/" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+</head>
+<body data-lab="runbook">
+<div class="lab" id="lab">
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="/">shobyde.com</a><span>/</span><a href="/labs/">labs</a><span>/</span><span aria-current="page">runbook</span>
+  </nav>
+
+  <header class="lab__head">
+    <p class="kicker">Lab 06 · procedural agency</p>
+    <h1>A diagnostic that shows its checks.</h1>
+    <p class="lede">
+      The checkout build is red. Instead of an answer, the agent walks a declared skill: three checks, each patching the checklist as it returns,
+      then a fix plan with a guarded Apply on every line — or a stop, when one flaky test is all the evidence there is.
+    </p>
+    <ul class="lab__facts">
+      <li><b>4</b> symptoms</li>
+      <li><b>9</b> checks</li>
+      <li><b>4</b> skills</li>
+      <li><b>1</b> stop condition</li>
+      <li><b>0 kB</b> model</li>
+    </ul>
+  </header>
+
+  <main class="lab__stage">
+    <section class="lab__chat" aria-label="Conversation">
+      <div class="lab__log" id="labLog" role="log" aria-live="polite"></div>
+      <div class="lab__chips" id="labChips" aria-label="Symptoms to try"></div>
+      <form class="lab__composer" id="labForm" autocomplete="off">
+        <label class="sr-only" for="labAsk">Describe the symptom</label>
+        <input id="labAsk" type="text" placeholder="The build is failing on CI" />
+        <button id="labSend" type="submit" disabled>Ask</button>
+      </form>
+      <p class="lab__foot">
+        The checks are a record of what the pipeline reported. Nothing is executed against CI. <a href="/boaz/">How this works</a>
+      </p>
+    </section>
+
+    <section class="lab__canvas" aria-label="Generated interface">
+      <div class="lab__canvas-head">
+        <span class="lab__canvas-kicker">generated surface</span>
+        <span id="labCanvasMeta">nothing has run yet</span>
+        <button id="labReset" type="button" title="Clear the conversation and canvas">Clear</button>
+      </div>
+      <div class="lab__surface" id="labSurface"></div>
+      <div id="labProof" hidden></div>
+      <p class="lab__foot" id="labStats" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="lab__end">
+    <span class="lab__pieces">runSkill · declared checks · A2UI patches · stop condition</span>
+    <span>Built on <a href="/boaz/">@shobyde/boaz</a> · every surface is checked by <a href="https://github.com/shobyde/groundglass">groundglass</a> in CI.</span>
+    <span><a href="/labs/">All labs</a> · <a href="/">shobyde.com</a></span>
+  </footer>
+</div>
+
+<div class="lab__confirm" id="labConfirm" role="dialog" aria-modal="true" aria-labelledby="labConfirmTitle" hidden>
+  <div class="lab__confirm-card">
+    <h2 id="labConfirmTitle">Confirm</h2>
+    <p id="labConfirmBody">This records a fix on the page.</p>
+    <pre id="labConfirmArgs">{}</pre>
+    <div class="lab__confirm-actions">
+      <button id="labConfirmNo" type="button">Cancel</button>
+      <button id="labConfirmYes" type="button">Approve</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="./main.js"></script>
+</body>
+</html>

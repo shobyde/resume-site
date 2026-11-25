@@ -1,0 +1,10 @@
+{
+  "questions": [
+    { "question": "the build is failing on CI", "expect": "runbook.intake", "args": { "symptom": "build-fails" } },
+    { "question": "the tests are flaky", "expect": "runbook.intake", "args": { "symptom": "tests-flaky" } },
+    { "question": "the site 500s after deploy", "expect": "runbook.intake", "args": { "symptom": "site-500s" } },
+    { "question": "deploys got slow", "expect": "runbook.intake", "args": { "symptom": "deploy-slow" } },
+    { "question": "what do we know?", "expect": "runbook.recap" },
+    { "question": "how does this work?", "expect": "runbook.how" }
+  ]
+}

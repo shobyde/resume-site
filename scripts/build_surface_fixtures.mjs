@@ -5,13 +5,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SURFACE_CASES } from '../src/agent/surfaces.js';
+import { LAB_SURFACE_CASES } from '../labs/surfaces.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const outDir = path.join(here, '..', 'surfaces');
 fs.mkdirSync(outDir, { recursive: true });
 
 let total = 0;
-for (const entry of SURFACE_CASES) {
+for (const entry of [...SURFACE_CASES, ...LAB_SURFACE_CASES]) {
   const messages = entry.build();
   if (!messages || messages.length === 0) {
     console.error(`surface "${entry.name}" produced nothing`);

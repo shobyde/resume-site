@@ -1,6 +1,6 @@
 name: surfaces
 
-# The assistant can emit seven A2UI surfaces. This job regenerates them from
+# The site and the playable labs can emit A2UI surfaces. This job regenerates them from
 # their builders and runs groundglass over the result, so a component that
 # references a missing child, an unlabelled button, or a dead binding fails the
 # build instead of disappearing quietly in the browser.

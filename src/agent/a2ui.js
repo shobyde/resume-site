@@ -121,11 +121,14 @@ function renderComponent(id, surface, onAction, seen = new Set()) {
 }
 
 /**
- * Applies one stream of A2UI messages to a container and returns the surfaces
- * it rendered. Re-rendering replaces the surface in place, which is what
- * updateComponents and updateDataModel expect.
+ * A surface host keeps the surfaces it has seen, so a later
+ * `updateComponents` or `updateDataModel` message can change one in place.
+ *
+ * `renderA2UI` is the one-shot wrapper below; a host that runs several turns
+ * (the labs do: a checklist that fills in one check at a time) needs the
+ * state to survive between calls, which is what this returns.
  */
-export function renderA2UI(messages, container, { onAction } = {}) {
+export function createSurfaceHost(container, { onAction } = {}) {
   const surfaces = new Map();
   const nodes = new Map();
 
@@ -145,39 +148,63 @@ export function renderA2UI(messages, container, { onAction } = {}) {
     nodes.set(surfaceId, tree);
   };
 
-  for (const message of messages) {
-    if (!message || typeof message !== 'object') continue;
-    if (message.createSurface) {
-      const { surfaceId, components = [], dataModel } = message.createSurface;
-      surfaces.set(surfaceId, createSurfaceState(surfaceId, components, dataModel));
-      paint(surfaceId);
-    } else if (message.updateComponents) {
-      const { surfaceId, components = [] } = message.updateComponents;
-      const surface = surfaces.get(surfaceId);
-      if (!surface) continue;
-      for (const component of components) surface.components.set(component.id, component);
-      paint(surfaceId);
-    } else if (message.updateDataModel) {
-      const { surfaceId, path, value } = message.updateDataModel;
-      const surface = surfaces.get(surfaceId);
-      if (!surface) continue;
-      // Only the shallow write our own surfaces need; nested paths are rare in
-      // cards and would need a structural setter.
-      if (!path || path === '/') surface.dataModel = value;
-      else {
-        const parts = path.split('/').slice(1);
-        let cursor = surface.dataModel;
-        parts.slice(0, -1).forEach((part) => {
-          if (cursor[part] == null) cursor[part] = {};
-          cursor = cursor[part];
-        });
-        cursor[parts[parts.length - 1]] = value;
+  const apply = (messages) => {
+    for (const message of messages ?? []) {
+      if (!message || typeof message !== 'object') continue;
+      if (message.createSurface) {
+        const { surfaceId, components = [], dataModel } = message.createSurface;
+        surfaces.set(surfaceId, createSurfaceState(surfaceId, components, dataModel));
+        paint(surfaceId);
+      } else if (message.updateComponents) {
+        const { surfaceId, components = [] } = message.updateComponents;
+        const surface = surfaces.get(surfaceId);
+        if (!surface) continue;
+        for (const component of components) surface.components.set(component.id, component);
+        paint(surfaceId);
+      } else if (message.updateDataModel) {
+        const { surfaceId, path, value } = message.updateDataModel;
+        const surface = surfaces.get(surfaceId);
+        if (!surface) continue;
+        // Only the shallow write our own surfaces need; nested paths are rare in
+        // cards and would need a structural setter.
+        if (!path || path === '/') surface.dataModel = value;
+        else {
+          const parts = path.split('/').slice(1);
+          let cursor = surface.dataModel;
+          parts.slice(0, -1).forEach((part) => {
+            if (cursor[part] == null) cursor[part] = {};
+            cursor = cursor[part];
+          });
+          cursor[parts[parts.length - 1]] = value;
+        }
+        paint(surfaceId);
       }
-      paint(surfaceId);
     }
-  }
+    return [...surfaces.keys()];
+  };
 
-  return { surfaceIds: [...surfaces.keys()] };
+  return {
+    apply,
+    clear() {
+      surfaces.clear();
+      nodes.clear();
+      container.replaceChildren();
+    },
+    get surfaceIds() {
+      return [...surfaces.keys()];
+    },
+  };
+}
+
+/**
+ * Applies one stream of A2UI messages to a container and returns the surfaces
+ * it rendered. Re-rendering replaces the surface in place, which is what
+ * updateComponents and updateDataModel expect.
+ */
+export function renderA2UI(messages, container, { onAction } = {}) {
+  const host = createSurfaceHost(container, { onAction });
+  host.apply(messages);
+  return { surfaceIds: host.surfaceIds };
 }
 
 export { CATALOG };

@@ -1,0 +1,36 @@
+name: labs
+
+# The three playable labs answer from declared capabilities and rules, so their
+# routing is testable without a browser. This job measures every probe against
+# the engine the page runs, and regenerates the surface fixtures so a change to
+# a builder cannot drift from the file groundglass checks.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'labs/**'
+      - 'bench/labs/**'
+      - 'scripts/build_surface_fixtures.mjs'
+      - '.github/workflows/labs.yml'
+  pull_request:
+    paths:
+      - 'labs/**'
+      - 'bench/labs/**'
+  workflow_dispatch:
+
+jobs:
+  probes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - name: Every question reaches what it should
+        run: npm run audit:labs
+      - name: Fixtures match their builders
+        run: |
+          node scripts/build_surface_fixtures.mjs
+          git diff --exit-code surfaces/

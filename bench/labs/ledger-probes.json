@@ -1,0 +1,19 @@
+{
+  "questions": [
+    { "question": "how much is overdue?", "expect": "ledger.overdue_total" },
+    { "question": "what is the total outstanding?", "expect": "ledger.overdue_total" },
+    { "question": "who owes the most?", "expect": "ledger.biggest_debtor" },
+    { "question": "which invoice has been waiting longest?", "expect": "ledger.oldest_overdue" },
+    { "question": "how many invoices are overdue?", "expect": "ledger.count_status" },
+    { "question": "how many invoices are in the book?", "expect": "ledger.count_status" },
+    { "question": "which overdue invoices are under $2,500?", "expect": "ledger.threshold" },
+    { "question": "which unpaid invoices are below 1k?", "expect": "ledger.threshold" },
+    { "question": "who did you remind?", "expect": "ledger.reminded" },
+    { "question": "show the overdue book", "expect": "ledger.view", "args": { "status": "overdue" } },
+    { "question": "show the settled invoices", "expect": "ledger.view", "args": { "status": "settled" } },
+    { "question": "show the open invoices", "expect": "ledger.view", "args": { "status": "open" } },
+    { "question": "who owes the most money?", "expect": "ledger.biggest_debtor" },
+    { "question": "rank the customers by balance", "expect": "ledger.debtors" },
+    { "question": "how does this work?", "expect": "ledger.how" }
+  ]
+}

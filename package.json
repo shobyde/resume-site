@@ -29,7 +29,9 @@
     "bench:kb": "node bench/kb/run.mjs && node bench/kb/run.mjs --heldout && node bench/kb/run.mjs --heldout2 && node bench/kb/compile.mjs",
     "judge:kb": "python3 bench/kb/judge.py bench/kb/results/kb-hybrid-heldout2.json && python3 bench/kb/judge.py bench/kb/results/kb-templates-heldout2.json && node bench/kb/compile.mjs",
     "bench:lint": "node bench/no-llm/lint-tasks.mjs",
-    "bench:refusals": "node bench/no-llm/refusals.mjs"
+    "bench:refusals": "node bench/no-llm/refusals.mjs",
+    "audit:labs": "node node_modules/@shobyde/boaz/dist/cli/index.js audit --probes bench/labs/ledger-probes.json --module bench/labs/ledger-setup.mjs && node node_modules/@shobyde/boaz/dist/cli/index.js audit --probes bench/labs/rota-probes.json --module bench/labs/rota-setup.mjs && node node_modules/@shobyde/boaz/dist/cli/index.js audit --probes bench/labs/runbook-probes.json --module bench/labs/runbook-setup.mjs",
+    "surfaces": "node scripts/build_surface_fixtures.mjs"
   },
   "devDependencies": {
     "vite": "^6.0.0"

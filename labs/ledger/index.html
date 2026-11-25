@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ledger · the book answers in tables · boaz labs</title>
+<meta name="description" content="A 24-invoice book where the answer is a working table. Rules join the rows, the sentence cites them, A2UI draws them, and settling one is a guarded action. No model, no network." />
+<link rel="canonical" href="https://shobyde.com/labs/ledger/" />
+<meta name="theme-color" content="#0b0b0f" />
+<meta property="og:title" content="Ledger · boaz labs" />
+<meta property="og:description" content="Ask the book a question; the answer arrives as the table it read, with the rows it bound underneath." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shobyde.com/labs/ledger/" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+</head>
+<body data-lab="ledger">
+<div class="lab" id="lab">
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="/">shobyde.com</a><span>/</span><a href="/labs/">labs</a><span>/</span><span aria-current="page">ledger</span>
+  </nav>
+
+  <header class="lab__head">
+    <p class="kicker">Lab 04 · reasoning + generative UI</p>
+    <h1>The book answers in tables.</h1>
+    <p class="lede">
+      Twenty-four invoices for a fictional studio, dated to one morning. Ask about the money and the agent joins the rows, composes the
+      sentence, and draws the exact table it read. Settle an invoice and the book changes under the next question — after you approve it.
+    </p>
+    <ul class="lab__facts">
+      <li><b>24</b> invoice rows</li>
+      <li><b>6</b> answer rules</li>
+      <li><b>5</b> capabilities</li>
+      <li><b>2</b> guarded writes</li>
+      <li><b>0 kB</b> model</li>
+    </ul>
+  </header>
+
+  <main class="lab__stage">
+    <section class="lab__chat" aria-label="Conversation">
+      <div class="lab__log" id="labLog" role="log" aria-live="polite"></div>
+      <div class="lab__chips" id="labChips" aria-label="Questions to try"></div>
+      <form class="lab__composer" id="labForm" autocomplete="off">
+        <label class="sr-only" for="labAsk">Ask the book</label>
+        <input id="labAsk" type="text" placeholder="Which invoices are overdue?" />
+        <button id="labSend" type="submit" disabled>Ask</button>
+      </form>
+      <p class="lab__foot">
+        Nothing leaves this tab. “Draft reminders” writes to the page’s own book, not a mailbox. <a href="/boaz/">How this works</a>
+      </p>
+    </section>
+
+    <section class="lab__canvas" aria-label="Generated interface">
+      <div class="lab__canvas-head">
+        <span class="lab__canvas-kicker">generated surface</span>
+        <span id="labCanvasMeta">the unasked book</span>
+        <button id="labReset" type="button" title="Clear the conversation and canvas">Clear</button>
+      </div>
+      <div class="lab__surface" id="labSurface"></div>
+      <div id="labProof" hidden></div>
+      <p class="lab__foot" id="labStats" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="lab__end">
+    <span class="lab__pieces">KnowledgeBase · answer rules · A2UI surfaces · updateDataModel · confirmation gate</span>
+    <span>Built on <a href="/boaz/">@shobyde/boaz</a> · every surface is checked by <a href="https://github.com/shobyde/groundglass">groundglass</a> in CI.</span>
+    <span><a href="/labs/">All labs</a> · <a href="/">shobyde.com</a></span>
+  </footer>
+</div>
+
+<div class="lab__confirm" id="labConfirm" role="dialog" aria-modal="true" aria-labelledby="labConfirmTitle" hidden>
+  <div class="lab__confirm-card">
+    <h2 id="labConfirmTitle">Confirm</h2>
+    <p id="labConfirmBody">This changes the book.</p>
+    <pre id="labConfirmArgs">{}</pre>
+    <div class="lab__confirm-actions">
+      <button id="labConfirmNo" type="button">Cancel</button>
+      <button id="labConfirmYes" type="button">Approve</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="./main.js"></script>
+</body>
+</html>
