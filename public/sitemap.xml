@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://shobyde.com/</loc><lastmod>2026-11-24T08:00:00-07:00</lastmod></url>
-<url><loc>https://shobyde.com/archive/</loc><lastmod>2026-11-24T08:00:00-07:00</lastmod></url>
-<url><loc>https://shobyde.com/boaz/</loc><lastmod>2026-11-24T08:00:00-07:00</lastmod></url>
+<url><loc>https://shobyde.com/</loc><lastmod>2026-11-25T08:00:00-07:00</lastmod></url>
+<url><loc>https://shobyde.com/archive/</loc><lastmod>2026-11-25T08:00:00-07:00</lastmod></url>
+<url><loc>https://shobyde.com/boaz/</loc><lastmod>2026-11-25T08:00:00-07:00</lastmod></url>
+<url><loc>https://shobyde.com/posts/2026-11-25-glm-5-4-s-loop-transformer-bets-refinement-over-depth/</loc><lastmod>2026-11-25T08:00:00-07:00</lastmod></url>
 <url><loc>https://shobyde.com/posts/2026-11-24-a-queued-chat-is-a-state-problem-not-a-buffer-problem/</loc><lastmod>2026-11-24T08:00:00-07:00</lastmod></url>
 <url><loc>https://shobyde.com/posts/2026-11-24-a-manifest-already-knows-what-to-test/</loc><lastmod>2026-11-24T08:00:00-07:00</lastmod></url>
 <url><loc>https://shobyde.com/posts/2026-11-23-langchain-s-frontend-sdk-hands-you-state-not-a-chat-widget/</loc><lastmod>2026-11-23T08:00:00-07:00</lastmod></url>

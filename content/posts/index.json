@@ -1,5 +1,14 @@
 [
   {
+    "slug": "2026-11-25-glm-5-4-s-loop-transformer-bets-refinement-over-depth",
+    "date": "2026-11-25",
+    "title": "GLM-5.4's loop transformer bets refinement over depth",
+    "tag": "tools",
+    "excerpt": "GLM-5.4 is the first loop-transformer model aimed at generalized coding, and the interesting part is the architecture, not the benchmark.",
+    "words": 230,
+    "minutes": 1
+  },
+  {
     "slug": "2026-11-24-a-queued-chat-is-a-state-problem-not-a-buffer-problem",
     "date": "2026-11-24",
     "title": "A Queued Chat Is a State Problem, Not a Buffer Problem",
