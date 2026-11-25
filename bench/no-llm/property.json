@@ -1,0 +1,69 @@
+{
+  "class": "property",
+  "note": "Rung 26: a question can name a property no stack entry carries (\"which projects run locally\", \"which one needs a GPU\") while the card itself describes it in prose. This class asks whether the answer reads that prose instead of saying \"not a listed stack value\". Pass needs the right names, no name the card only mentions in order to reject it, every extra sentence made of words the cards actually contain, no em dash, and the same question twice giving the same text.",
+  "tasks": [
+    {
+      "id": "local",
+      "q": "which projects run locally",
+      "must": ["Hobnob", "Readback"]
+    },
+    {
+      "id": "offline",
+      "q": "which projects work offline",
+      "must": ["Hobnob"]
+    },
+    {
+      "id": "selfhosted",
+      "q": "which project is self-hosted",
+      "must": ["Readback"],
+      "mustNot": ["Hobnob"]
+    },
+    {
+      "id": "summarise-meetings",
+      "q": "which projects summarise meetings",
+      "must": ["Hobnob"]
+    },
+    {
+      "id": "transcribe-audio",
+      "q": "which projects transcribe audio",
+      "must": ["Hobnob"]
+    },
+    {
+      "id": "gpu",
+      "q": "which project needs a GPU",
+      "must": [],
+      "says": "no (project )?card claims"
+    },
+    {
+      "id": "machine",
+      "q": "which projects keep data on the machine",
+      "must": ["Hobnob"]
+    },
+    {
+      "id": "desktop",
+      "q": "which project is a desktop app",
+      "must": ["Hobnob"]
+    },
+    {
+      "id": "model",
+      "q": "which projects need human review",
+      "must": ["Readback"],
+      "mustNot": ["Groundglass"]
+    },
+    {
+      "id": "daily",
+      "q": "which projects publish daily",
+      "must": ["shobyde.com"]
+    },
+    {
+      "id": "browser",
+      "q": "which project runs in the browser",
+      "must": ["Boaz"]
+    },
+    {
+      "id": "tests",
+      "q": "which projects have tests",
+      "must": ["Groundglass"]
+    }
+  ]
+}

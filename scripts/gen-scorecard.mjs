@@ -78,6 +78,12 @@ const CLASSES = [
     ceiling: 'a declared constant is unreachable by its first word ("a2ui"), a punctuated subject never reaches a rule ("c++"), and an unknown second name drops combine',
   },
   {
+    id: 'property', rung: 26, name: 'A property the cards describe', suite: 'property.json',
+    cmd: ['bench/no-llm/property.mjs'],
+    after: /^property: (?<p>\d+)\/(?<t>\d+)/m, before: null,
+    ceiling: 'a property word on most cards is treated as a common noun and dropped ("app"), a negation in the same sentence as a real claim is read as a denial, and polysemy is not resolved: "surface model" answers a question about language models',
+  },
+  {
     id: 'summarise', rung: 7, name: 'Extractive summarisation with citations', suite: 'summarise.json',
     cmd: ['bench/no-llm/summarise.mjs'],
     after: null, before: null,
@@ -234,7 +240,7 @@ for (const entry of CLASSES) {
     after,
     beforePct: percentages?.beforePct ?? null,
     afterPct: percentages?.afterPct ?? null,
-    headline: pickLines(report, ['score:', 'pass ', 'before', 'after', 'bridge', 'outline:', 'discourse:', 'preferences:', 'taxonomy:', 'negation:', 'reference:', 'compound:', 'synonyms:', 'answers:', 'register:', 'Skill suite', 'Memory suite']).slice(0, 3),
+    headline: pickLines(report, ['score:', 'pass ', 'before', 'after', 'bridge', 'outline:', 'discourse:', 'property:', 'preferences:', 'taxonomy:', 'negation:', 'reference:', 'compound:', 'synonyms:', 'answers:', 'register:', 'Skill suite', 'Memory suite']).slice(0, 3),
     ceiling: entry.ceiling,
     // The whole harness transcript, so the page can show the failing input next
     // to a passing one without re-deriving anything.

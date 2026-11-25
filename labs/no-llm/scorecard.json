@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-25T00:56:34.990Z",
+  "generated": "2026-11-25T01:48:36.152Z",
   "library": "@shobyde/boaz 0.8.3",
   "note": "Every number here was parsed from the harness output in the same run that wrote this file. The five slot-filling classes are also graded live in the browser by /labs/no-llm/, through bench/no-llm/grade.mjs, which is the module the Node harness uses.",
   "classes": [
@@ -150,17 +150,36 @@
       "tasks": 19,
       "before": null,
       "after": {
-        "passed": 17,
+        "passed": 18,
         "total": 19
       },
       "beforePct": null,
       "afterPct": null,
       "headline": [
-        "discourse: 89.5% (17/19)",
+        "discourse: 94.7% (18/19)",
         "  template compound: max paraphrase similarity 0.36 (want < 0.95)"
       ],
       "ceiling": "a declared constant is unreachable by its first word (\"a2ui\"), a punctuated subject never reaches a rule (\"c++\"), and an unknown second name drops combine",
-      "report": "discourse: 89.5% (17/19)\n  fidelity 17/19  sentences 18/19  grounded 19/19  clean 18/19  plain 19/19  stable 19/19\n  readability: flesch 78.0, words per sentence 9.4\n  template projects.using: max paraphrase similarity 1.00 (want < 0.95)\n  template projects.list: max paraphrase similarity 0.72 (want < 0.95)\n  template compound: max paraphrase similarity 0.36 (want < 0.95)\n  template profile: max paraphrase similarity 1.00 (want < 0.95)\n  FAIL \"which projects use c++\" (missing C++ physics simulation engines; 1 sentences; banned word or em dash)\n    I can do that — Show a project card needs project.\n  FAIL \"how many projects has he built\" (missing 6)\n    I'm not sure about that. I can help with: List projects; Selected projects; Show a project card."
+      "report": "discourse: 94.7% (18/19)\n  fidelity 18/19  sentences 18/19  grounded 19/19  clean 18/19  plain 19/19  stable 19/19\n  readability: flesch 74.7, words per sentence 9.6\n  template projects.using: max paraphrase similarity 1.00 (want < 0.95)\n  template projects.list: max paraphrase similarity 0.76 (want < 0.95)\n  template compound: max paraphrase similarity 0.36 (want < 0.95)\n  template profile: max paraphrase similarity 1.00 (want < 0.95)\n  FAIL \"which projects use c++\" (missing C++ physics simulation engines; 1 sentences; banned word or em dash)\n    I can do that — Show a project card needs project."
+    },
+    {
+      "id": "property",
+      "rung": 26,
+      "name": "A property the cards describe",
+      "suite": "property.json",
+      "tasks": 12,
+      "before": null,
+      "after": {
+        "passed": 12,
+        "total": 12
+      },
+      "beforePct": null,
+      "afterPct": null,
+      "headline": [
+        "property: 12/12 pass, 12/12 answered"
+      ],
+      "ceiling": "a property word on most cards is treated as a common noun and dropped (\"app\"), a negation in the same sentence as a real claim is read as a denial, and polysemy is not resolved: \"surface model\" answers a question about language models",
+      "report": "property: 12/12 pass, 12/12 answered"
     },
     {
       "id": "summarise",

@@ -4,6 +4,7 @@ import { KnowledgeBase, fact } from '@shobyde/boaz/rules';
 import { DATA } from '../data.js';
 import { answerRegister } from './register.js';
 import { isStackValue, stackHas, stackWords, unresolvedCondition } from './conditions.js';
+import { propertyMatches, propertyPhrase, surfaceOf } from './properties.js';
 import { PROJECT_SIZE, SIZE_METRIC } from './projectSize.js';
 import {
   phraseEmail,
@@ -17,6 +18,7 @@ import {
   phraseProjectsUsing,
   phraseProjectsUsingAll,
   phraseProjectsSplit,
+  phraseProperty,
   shortName,
 } from './phrasing.js';
 
@@ -158,6 +160,49 @@ export function createAssistantKnowledge({ posts }) {
       },
     },
     {
+      id: 'projects.property',
+      title: 'A property the cards describe',
+      keywords: ['runs locally', 'offline', 'self-hosted', 'desktop app', 'in the browser', 'summarise'],
+      goal: 'project(?P, ?N)',
+      steps: [{ capabilityId: 'projects.list', toFacts: projectFacts }],
+      requiresSubject: false,
+      // Reachable by match only, like the size rule: a title that mentions
+      // "local" or "offline" would otherwise steal stack questions on one word.
+      threshold: 100,
+      // Only when the cards actually claim (or reject) the phrase. A question
+      // naming a technology is the join rule's, and one asking for a size is the
+      // measurement rule's; both are checked here so neither is taken.
+      match: (question) => {
+        if (!/^\s*(which|what)\s+(one|project|projects|of them)\b/i.test(question)) return false;
+        if (/\b(stack|tech|technolog|built with|written in|made with|by size|bigger|biggest|largest|smaller|smallest|lines of code|code|codes)\b/i.test(question)) return false;
+        // A technology is the join rule's question, even when the word also
+        // appears in a card's prose: "use sqlite" must stay a stack answer.
+        // One stack word in the question makes it a technology question, whether
+        // the phrase is a single name or two joined by a connective. Without this
+        // "use python and sqlite" reached the prose reader and answered from the
+        // cards instead of the stacks.
+        const asked = (propertyPhrase(question) || '').split(' ').filter(Boolean);
+        if (!asked.length || asked.some((word) => isStackValue(word))) return false;
+        // A named project is a stack, comparison or description question.
+        if (PROJECT_NAME.test(question)) return false;
+        const found = propertyMatches(question);
+        return Boolean(found && (found.matches.length || found.mentionedOnly.length));
+      },
+      explain: ({ query }) => {
+        const found = propertyMatches(query);
+        const names = (found?.matches ?? []).map((match) => shortName(match.project.title));
+        const rejected = (found?.mentionedOnly ?? []).map((project) => shortName(project.title));
+        if (names.length) return `Read the cards and found "${found.surface ?? found.phrase}" in ${names.length} summary${names.length === 1 ? '' : 'ies'}`;
+        if (rejected.length) return `Read the cards: ${rejected.join(' and ')} name it only to reject it`;
+        return 'Read the cards for that property';
+      },
+      compose: ({ query }) => {
+        const found = propertyMatches(query);
+        if (!found) return '';
+        return phraseProperty(query, { ...found, surface: surfaceOf(query) }, { register: answerRegister() });
+      },
+    },
+    {
       id: 'projects.using',
       title: 'Which projects use a technology',
       keywords: ['which projects use', 'what uses', 'written in', 'uses', 'dependencies', 'powered by'],
@@ -292,7 +337,11 @@ export function createAssistantKnowledge({ posts }) {
       // rules shrinks every score, and a 1.1 floor made this rule vanish as the
       // corpus grew. "Which projects use python" still belongs to the join rule.
       match: (question) =>
-        /^\s*(what (has|did) he (build|built|make|made|ship|shipped)|list (the|his) projects|project list)\b/i.test(question),
+        /^\s*(what (has|did) he (build|built|make|made|ship|shipped)|list (the|his) projects|project list)\b/i.test(question) ||
+        // "how many projects has he built" lost its score once a rule was added
+        // (adding a rule shrinks every BM25 score), so the fixed counts get a
+        // match of their own rather than depending on a threshold.
+        /^\s*how many (projects|of them) (has|did) he (built|made|shipped)\b/i.test(question),
       explain: ({ solutions }) => `Read the project list: ${solutions.length} projects`,
       compose: ({ query, solutions, observed }) => {
         if (solutions.length === 0) return '';

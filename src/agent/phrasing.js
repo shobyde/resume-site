@@ -10,6 +10,7 @@
 // Every realisation carries the same facts, and the bench in bench/composition
 // fails a system that drops one (npm run bench:composition).
 import { withCommas } from './projectSize.js';
+import { snippetOf } from './properties.js';
 
 const hash = (text) => {
   let h = 0x811c9dc5;
@@ -24,6 +25,9 @@ const pick = (list, key) => list[hash(key) % list.length];
 
 const join = (items) =>
   items.length <= 1 ? items[0] ?? '' : `${items.slice(0, -1).join(', ')} and ${items.at(-1)}`;
+
+/** A technology name is a regex sometimes: "C++" and "C#" must not throw. */
+export const escapeRegExp = (text) => String(text ?? '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const count = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
 
@@ -125,7 +129,7 @@ export function phraseProjectsUsing(query, matches, term, { records = [], regist
     return `No project on this page lists ${asked}.${tail}`;
   }
 
-  const stack = matches[0]?.stack?.find((value) => new RegExp(String(term || ''), 'i').test(value));
+  const stack = matches[0]?.stack?.find((value) => new RegExp(escapeRegExp(String(term || '')), 'i').test(value));
   const named = stack ? ` (${stack})` : '';
   const claim = names.length === 1
     ? pick(
@@ -290,6 +294,67 @@ function contrastSentence(query, matches, term, records) {
  * name Python" was the bug), so the sentence is per term: who lists which.
  * `both` is the intersection, and when it is empty the claim says so.
  */
+/**
+ * "Which projects run locally": a property the cards describe in prose rather
+ * than in a stack entry. The answer quotes the card, because the card is the
+ * evidence, and says plainly when no card claims it. A card that names the
+ * property only to reject it gets named as such: Boaz mentions a GPU to say it
+ * avoids one, and answering with Boaz would be the opposite of the truth.
+ */
+export function phraseProperty(query, result, { register = 'normal' } = {}) {
+  const { matches = [], mentionedOnly = [], surface = '' } = result ?? {};
+  const said = surface || 'that';
+  const names = matches.map((match) => shortName(match.project.title));
+  const cards = matches.length + mentionedOnly.length;
+
+  if (!names.length) {
+    const claim = `No project card claims ${said}.`;
+    if (register === 'terse') return claim;
+    const only = mentionedOnly.map((project) => shortName(project.title));
+    if (only.length === 1) {
+      return `${claim} ${only[0]} names ${said} only to say it avoids it.`;
+    }
+    if (only.length > 1) {
+      return `${claim} ${join(only)} name it only to say they avoid it.`;
+    }
+    return `${claim} Nothing in the ${cards || 6} card summaries mentions it.`;
+  }
+
+  const first = matches[0];
+  const claim = names.length === 1
+    ? pick(
+        [
+          `One card describes it: ${names[0]}.`,
+          `${names[0]} is the only card that describes it.`,
+          `Just ${names[0]} describes it.`,
+        ],
+        query,
+      )
+    : pick(
+        [
+          `${join(names.slice(0, 3))} describe it.`,
+          `${join(names.slice(0, 3))} both describe it.`,
+          `Two cards describe it: ${join(names.slice(0, 3))}.`,
+        ],
+        query,
+      );
+
+  const quote = (match) => {
+    const text = snippetOf(match);
+    return text ? `${shortName(match.project.title)}: "${text}".` : '';
+  };
+  const firstQuote = quote(first);
+  if (register === 'terse') return firstQuote || claim;
+  const rest = matches.slice(1, 3).map(quote).filter(Boolean);
+  const body = [claim, firstQuote, ...rest].filter(Boolean).join(' ');
+  if (register === 'normal') return body;
+  const others = cards - names.length;
+  const tail = others > 0
+    ? ` The other ${others} ${others === 1 ? 'card' : 'cards'} ${others === 1 ? 'does' : 'do'} not claim it.`
+    : '';
+  return `${body}${tail}`;
+}
+
 export function phraseProjectsSplit(query, groups, { both = [], conjunction = true, total = 0, register = 'normal' } = {}) {
   const present = groups.filter((group) => (group.names ?? []).length > 0);
   if (present.length < 2) return '';
@@ -321,7 +386,7 @@ export function phraseProjectsUsingAll(query, matches, terms, { records = [], re
   if (names.length === 0) {
     const asked = String(terms[0] ?? '').trim();
     if (register === 'terse') return `No project on this page lists both ${pair}.`;
-    const overlap = (records ?? []).filter((project) => (project.stack ?? []).some((entry) => new RegExp(asked, 'i').test(entry)));
+    const overlap = (records ?? []).filter((project) => (project.stack ?? []).some((entry) => new RegExp(escapeRegExp(asked), 'i').test(entry)));
     const only = overlap.map((project) => shortName(project.title));
     const tail = only.length
       ? ` ${join(only)} ${only.length === 1 ? 'lists' : 'list'} ${asked} without the other.`

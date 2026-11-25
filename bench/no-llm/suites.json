@@ -66,6 +66,16 @@
       "live": false
     },
     {
+      "class": "property",
+      "rung": 26,
+      "file": "property.json",
+      "container": "tasks",
+      "input": "q",
+      "runner": "property.mjs",
+      "live": false,
+      "note": "A property no stack entry carries, read off the card's own prose. The grader also checks that a card which only rejects the property (Boaz on a GPU) is not named as a claimant."
+    },
+    {
       "class": "summarise",
       "rung": 7,
       "file": "summarise.json",
