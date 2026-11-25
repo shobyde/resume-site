@@ -1,0 +1,50 @@
+{
+  "judged": "2026-11-24T19:54:14",
+  "model": "minimax-m3.1-flash",
+  "pairs": [
+    {
+      "approach": "answerFirst",
+      "question": "compare hobnob and readback",
+      "source": "site",
+      "before": 5,
+      "after": 5,
+      "prefer": "tie",
+      "why": "Both are clear and well structured, with similarly short sentences and scannable product s",
+      "beforeText": "Hobnob: Meeting note-takers ship your conversations to someone else's server. It runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions. Readback: Reading-comprehension programs are closed systems: the school picks the quizzes, parents never see them, and the reading log lives on someone else's server. It runs on Python 3.10+, Flask 3, Jinja (no JS).",
+      "afterText": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions. Meeting note-takers ship your conversations to someone else's server. Readback runs on Python 3.10+, Flask 3, Jinja (no JS). Reading-comprehension programs are closed systems: the school picks the quizzes, parents never see them, and the reading log lives on someone else's server.",
+      "beforeFlesch": 58,
+      "afterFlesch": 57
+    },
+    {
+      "approach": "shortSentences",
+      "question": "what can you do?",
+      "source": "site",
+      "before": 4,
+      "after": 5,
+      "prefer": "after",
+      "why": "B uses short, separate sentences, making each capability easier to scan and understand.",
+      "beforeText": "I have 26 capabilities, all answered from this page: Show the newest article card; Open the full archive; Read the newest article; Log statistics; Summarise the blog; Show the contact card, and 20 more.",
+      "afterText": "I have 26 capabilities, all answered from this page: Show the newest article card. Open the full archive. Read the newest article. Log statistics. Summarise the blog. Show the contact card, and 20 more.",
+      "beforeFlesch": 43,
+      "afterFlesch": 72
+    }
+  ],
+  "byApproach": {
+    "shortSentences": {
+      "pairs": 1,
+      "before": 4.0,
+      "after": 5.0,
+      "preferBefore": 0,
+      "preferAfter": 1,
+      "ties": 0
+    },
+    "answerFirst": {
+      "pairs": 1,
+      "before": 5.0,
+      "after": 5.0,
+      "preferBefore": 0,
+      "preferAfter": 0,
+      "ties": 1
+    }
+  }
+}

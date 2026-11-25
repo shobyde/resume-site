@@ -1,0 +1,111 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>boaz matching spike: near misses and features</title>
+<style>
+  @page { size: letter; margin: 15mm; }
+  body { margin: 0; font-family: "Inter", "Helvetica Neue", Arial, sans-serif; color: #17171d; font-size: 9.5pt; line-height: 1.5; }
+  .kicker { font-family: "JetBrains Mono", monospace; font-size: 7.2pt; letter-spacing: 0.16em; text-transform: uppercase; color: #6c5ce7; margin: 0 0 5pt; }
+  h1 { font-size: 18.5pt; line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 6pt; }
+  h2 { font-size: 10.8pt; margin: 0; flex: 1; }
+  .lede { color: #3d3d49; max-width: 64ch; margin: 0 0 8pt; }
+  .verdict { background: #f6f4ff; border-left: 3pt solid #6c5ce7; padding: 7pt 9pt; margin: 8pt 0; font-size: 8.8pt; }
+  table { width: 100%; border-collapse: collapse; margin: 6pt 0 8pt; font-size: 8.4pt; }
+  th { text-align: left; font-family: "JetBrains Mono", monospace; font-size: 6.6pt; letter-spacing: 0.08em; text-transform: uppercase; color: #6f6f7e; border-bottom: 0.7pt solid #b9b9c6; padding: 3pt; }
+  td { border-bottom: 0.4pt solid #e6e6ec; padding: 2.6pt 3pt; vertical-align: top; }
+  .case { break-inside: avoid; border-top: 0.6pt solid #dcdce4; padding-top: 6pt; margin-top: 9pt; }
+  .head { display: flex; gap: 7pt; align-items: baseline; }
+  .badge { font-family: "JetBrains Mono", monospace; font-size: 6.4pt; letter-spacing: 0.08em; text-transform: uppercase; background: #efeaff; color: #5240d6; border-radius: 3pt; padding: 1.5pt 4pt; }
+  .canon { font-family: "JetBrains Mono", monospace; font-size: 7.4pt; color: #6c5ce7; margin: 2pt 0 3pt; }
+  .ans { margin: 3pt 0; padding-left: 7pt; border-left: 2pt solid #d9d9e2; }
+  .ans.after { border-left-color: #6c5ce7; }
+  .ans .label { font-family: "JetBrains Mono", monospace; font-size: 6.4pt; letter-spacing: 0.12em; text-transform: uppercase; color: #7a7a8a; margin: 0 0 1pt; }
+  .ans p { margin: 0; }
+  .footer { margin-top: 12pt; border-top: 0.6pt solid #dcdce4; padding-top: 6pt; font-family: "JetBrains Mono", monospace; font-size: 7pt; color: #6f6f7e; }
+</style></head><body>
+<p class="kicker">boaz · matching spike · not shipped</p>
+<h1>When the words are nearly right, match on purpose instead of by accident</h1>
+<p class="lede">Two mechanisms, measured on the site's own cards: a near-miss name is rewritten to the entity the
+visitor meant before routing, and a feature question is answered by quoting the clause of the card that carries the
+words, or declining when no clause does.</p>
+
+<div class="verdict"><b>The name half works; the feature half does not yet.</b> 7/8 near-miss
+names now resolve and answer. Of 8 feature questions, 4 find a clause, but only two of
+those clauses actually answer the question (“transcribe” and “rules”); two are on-point-looking matches that quote the
+wrong paragraph (“need a server”, “quizzes for kids”), and they are shown verbatim below so the difference is visible.
+Controls: 3/4 declined, with one denial misread.</div>
+
+<h2>How the two mechanisms work</h2>
+<table>
+  <tr><th>Step</th><th>Rule</th></tr>
+  <tr><td>canonicalise</td><td>Compare each word span (1 to 3 words) with each entity name after removing spaces and punctuation. Accept when the phonetic key matches and the spelling is within one edit (two for long names), or when the span shares the first three letters and is within two edits. Rewrite every accepted span.</td></tr>
+  <tr><td>evidence</td><td>With the entity resolved, split its card into sentences and score each against the question's content words (exact tokens only). The first sentence of a card is the problem the project rejects, so it is ranked down rather than quoted. A clause containing "no/not/never" is a denial, and answered as one.</td></tr>
+</table>
+
+<h2>Results</h2>
+<table>
+  <tr><th>Kind</th><th>Pass</th><th>Total</th><th>What a pass needs</th></tr>
+  <tr><td>Near-miss name</td><td class="n">7</td><td class="n">8</td><td>the entity is resolved and an answer follows, where before was a decline or a card</td></tr>
+  <tr><td>Feature question</td><td class="n">4</td><td class="n">8</td><td>a clause of the card carries the question's words, and is quoted</td></tr>
+  <tr><td>Control</td><td class="n">3</td><td class="n">4</td><td>no clause carries them, so the answer declines</td></tr>
+</table>
+
+<h2>Verbatim</h2>
+<section class="case">
+  <div class="head"><h2>what stack does hob knob use?</h2><span class="badge">typo</span></div>
+  <p class="canon">what stack does Hobnob use?</p>
+  <div class="ans before"><p class="label">Before</p><p>I can do that — Show a project card needs project.</p></div>
+  <div class="ans after"><p class="label">After</p><p>Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).</p></div>
+</section><section class="case">
+  <div class="head"><h2>tell me about hobnobb</h2><span class="badge">typo</span></div>
+  <p class="canon">tell me about Hobnob</p>
+  <div class="ans before"><p class="label">Before</p><p>Sho is a software engineer with twelve years of experience building web applications and platforms. He has worked across frontend, backend, and infrastructure, partnering with product and design teams to ship user-facing features.</p></div>
+  <div class="ans after"><p class="label">After</p><p>Hobnob. Meeting note-takers ship your conversations to someone else&#x27;s server.</p></div>
+</section><section class="case">
+  <div class="head"><h2>how big is read back?</h2><span class="badge">typo</span></div>
+  <p class="canon">how big is Readback</p>
+  <div class="ans before"><p class="label">Before</p><p>```json
+{&quot;tool&quot;:&quot;site.top&quot;,&quot;arguments&quot;:{}}
+```</p></div>
+  <div class="ans after"><p class="label">After</p><p>Readback carries 7,315 non-blank source lines across 34 files.</p></div>
+</section><section class="case">
+  <div class="head"><h2>what is ground glass?</h2><span class="badge">typo</span></div>
+  <p class="canon">what is Groundglass</p>
+  <div class="ans before"><p class="label">Before</p><p>I can only help with the screens and controls built into this app.</p></div>
+  <div class="ans after"><p class="label">After</p><p>Groundglass: Agents now assemble interfaces at runtime.</p></div>
+</section><section class="case">
+  <div class="head"><h2>does hobnob transcribe audio?</h2><span class="badge">feature</span></div>
+  <p class="canon">does Hobnob transcribe audio?</p>
+  <div class="ans before"><p class="label">Before</p><p>```json
+{&quot;tool&quot;:&quot;projects.card&quot;,&quot;arguments&quot;:{&quot;project&quot;:&quot;hobnob&quot;}}
+```</p></div>
+  <div class="ans after"><p class="label">After</p><p>Hobnob: “Microphone and system audio are captured locally and streamed through a Whisper pass for real-time captions with speaker labels;”.</p></div>
+</section><section class="case">
+  <div class="head"><h2>does readback need a server?</h2><span class="badge">feature</span></div>
+  <p class="canon">does Readback need a server?</p>
+  <div class="ans before"><p class="label">Before</p><p>Hobnob: private meeting notes, no cloud. Nothing in its stack needs a remote server.</p></div>
+  <div class="ans after"><p class="label">After</p><p>Readback: “Model-agnostic by configuration: Ollama, LM Studio, or any hosted endpoint that speaks /chat/completions, with one retry when a server rejects the response_format field”.</p></div>
+</section><section class="case">
+  <div class="head"><h2>does readback have quizzes for kids?</h2><span class="badge">feature</span></div>
+  <p class="canon">does Readback have quizzes for kids?</p>
+  <div class="ans before"><p class="label">Before</p><p>```json
+{&quot;tool&quot;:&quot;projects.card&quot;,&quot;arguments&quot;:{&quot;project&quot;:&quot;readback&quot;}}
+```</p></div>
+  <div class="ans after"><p class="label">After</p><p>Readback says the opposite: “Human review is a hard gate, not a hint: approval is refused when any question is structurally invalid, the reasons are shown on the page, and readers only ever see approved quizzes”.</p></div>
+</section>
+
+<h2>What still fails, and why</h2>
+<table>
+  <tr><th>Case</th><th>Failure</th></tr>
+  <tr><td>“does hobnob work offline?”</td><td>The card says “on-device” and “local”, never “offline”. A synonym map for features is the missing piece, not a better matcher.</td></tr>
+  <tr><td>“does groundglass test generated interfaces?”</td><td>The card says “conformance tests” and “a stream describes”; no sentence carries both question words above the floor.</td></tr>
+  <tr><td>“does boaz need a model file?”</td><td>The card says “No model, no API key”. It is a denial, and the denial branch needs to fire on “no model” before the token score decides.</td></tr>
+  <tr><td>“does sho byde dot com have a blog?”</td><td>Rewritten to “shobyde.com com”: the “dot com” span is consumed by the name and the trailing “com” is left behind.</td></tr>
+  <tr><td>“who built hobnob?”</td><td>Not a typo case: the name is exact, and the wrong rule answers. That is routing, not matching.</td></tr>
+</table>
+
+<p class="small"><b>Two false positives, named:</b> “does readback need a server?” quotes a paragraph about model
+endpoints, and “does readback have quizzes for kids?” quotes one about approval gates. Both share a word with the
+question and neither answers it. A feature matcher needs the question's head noun, not any shared token.</p>
+
+<p class="footer">Corpus: the six project cards (summary, details, stack). 20 cases: 8 near misses, 8 feature questions, 4 controls.
+Nothing in this spike is pushed. Raw data: bench/matching/results/matching.json</p>
+</body></html>

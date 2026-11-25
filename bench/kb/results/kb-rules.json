@@ -1,19 +1,19 @@
 {
   "system": "rules",
-  "passed": 33,
-  "total": 91,
+  "passed": 32,
+  "total": 117,
   "byKind": {
     "knowledge": {
       "passed": 24,
-      "total": 24
+      "total": 38
     },
     "context": {
       "passed": 0,
-      "total": 46
+      "total": 60
     },
     "tool": {
-      "passed": 9,
-      "total": 14
+      "passed": 8,
+      "total": 12
     },
     "planning": {
       "passed": 0,
@@ -373,7 +373,7 @@
       "thread": "database-list",
       "ask": "which products use Postgres?",
       "kind": "knowledge",
-      "text": "Atlas, Beacon, Delta, Harbor.",
+      "text": "Atlas, Beacon, Delta, Harbor, Iris, Mica, Opal.",
       "calls": [],
       "pass": true,
       "missing": [],
@@ -924,34 +924,6 @@
       "wantsDecline": false
     },
     {
-      "thread": "page-search",
-      "ask": "page the oncall for Search",
-      "kind": "tool",
-      "text": "{\"tool\":\"page_oncall\",\"arguments\":{\"team\":\"Search\"}}",
-      "calls": [
-        "page_oncall"
-      ],
-      "pass": true,
-      "missing": [],
-      "leaked": [],
-      "toolOk": true,
-      "declined": false,
-      "wantsDecline": false
-    },
-    {
-      "thread": "page-search",
-      "ask": "and open a ticket for it",
-      "kind": "tool",
-      "text": "I'm not sure about that.",
-      "calls": [],
-      "pass": false,
-      "missing": [],
-      "leaked": [],
-      "toolOk": false,
-      "declined": true,
-      "wantsDecline": false
-    },
-    {
       "thread": "deploy-atlas",
       "ask": "deploy Atlas",
       "kind": "tool",
@@ -1311,7 +1283,7 @@
       "thread": "policy-p4",
       "ask": "what is the Oncall handoff policy?",
       "kind": "knowledge",
-      "text": "Oncall handoff: Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "text": "Oncall handoff: Oncall rotates weekly on Monday at 09:00 in the team lead timezone, with a written handoff in the team channel..",
       "calls": [],
       "pass": true,
       "missing": [],
@@ -1329,6 +1301,426 @@
       "pass": false,
       "missing": [
         "Platform"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-northwind",
+      "ask": "what plan is Northwind on?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "annual"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-northwind",
+      "ask": "and who owns that account?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Support"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-contoso",
+      "ask": "what plan is Contoso on?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "annual"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-contoso",
+      "ask": "and who owns that account?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Support"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-fabrikam",
+      "ask": "what plan is Fabrikam on?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "monthly"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-fabrikam",
+      "ask": "and who owns that account?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Growth"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-tailspin",
+      "ask": "what plan is Tailspin on?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "annual"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-tailspin",
+      "ask": "and who owns that account?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Growth"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4101",
+      "ask": "what is the severity of INC-4101?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Sev 1"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4101",
+      "ask": "which team owns it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Platform"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4102",
+      "ask": "what is the severity of INC-4102?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Sev 1"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4102",
+      "ask": "which team owns it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Payments"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4103",
+      "ask": "what is the severity of INC-4103?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Sev 2"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4103",
+      "ask": "which team owns it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Search"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4104",
+      "ask": "what is the severity of INC-4104?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Sev 2"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4104",
+      "ask": "which team owns it?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Growth"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "runbook-rb-atlas",
+      "ask": "what are the steps for Atlas ingest backlog?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Check queue depth,"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "runbook-rb-atlas",
+      "ask": "who owns that runbook?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Platform"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "runbook-rb-delta",
+      "ask": "what are the steps for Ledger reconciliation?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Freeze writes, replay"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "runbook-rb-delta",
+      "ask": "who owns that runbook?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Payments"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "runbook-rb-flint",
+      "ask": "what are the steps for Search index rebuild?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Snapshot the index,"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "runbook-rb-flint",
+      "ask": "who owns that runbook?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Search"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "integration-stripe",
+      "ask": "which direction does Stripe sync?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "outbound"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "integration-stripe",
+      "ask": "and which product does it belong to?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Delta"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "integration-salesforce",
+      "ask": "which direction does Salesforce sync?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "bidirectional"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "integration-salesforce",
+      "ask": "and which product does it belong to?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Harbor"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "integration-okta",
+      "ask": "which direction does Okta sync?",
+      "kind": "knowledge",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "inbound"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "integration-okta",
+      "ask": "and which product does it belong to?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Iris"
       ],
       "leaked": [],
       "toolOk": true,

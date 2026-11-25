@@ -1,5 +1,5 @@
 {
-  "note": "Generated from kb.json by suite.mjs. Thirty-eight threads over a synthetic handbook.",
+  "note": "Generated from kb.json by suite.mjs. Products, teams, people, policies, customers, incidents, runbooks and integrations.",
   "threads": [
     {
       "id": "product-atlas",
@@ -704,26 +704,6 @@
       ]
     },
     {
-      "id": "page-search",
-      "title": "Page Search oncall",
-      "turns": [
-        {
-          "ask": "page the oncall for Search",
-          "kind": "tool",
-          "expect": {
-            "tool": "page_oncall"
-          }
-        },
-        {
-          "ask": "and open a ticket for it",
-          "kind": "tool",
-          "expect": {
-            "tool": "create_ticket"
-          }
-        }
-      ]
-    },
-    {
       "id": "deploy-atlas",
       "title": "Deploy and roll back Atlas",
       "turns": [
@@ -1033,6 +1013,342 @@
           "expect": {
             "include": [
               "Platform"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "customer-northwind",
+      "title": "Northwind: plan and owner",
+      "turns": [
+        {
+          "ask": "what plan is Northwind on?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "annual"
+            ]
+          }
+        },
+        {
+          "ask": "and who owns that account?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Support"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "customer-contoso",
+      "title": "Contoso: plan and owner",
+      "turns": [
+        {
+          "ask": "what plan is Contoso on?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "annual"
+            ]
+          }
+        },
+        {
+          "ask": "and who owns that account?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Support"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "customer-fabrikam",
+      "title": "Fabrikam: plan and owner",
+      "turns": [
+        {
+          "ask": "what plan is Fabrikam on?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "monthly"
+            ]
+          }
+        },
+        {
+          "ask": "and who owns that account?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Growth"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "customer-tailspin",
+      "title": "Tailspin: plan and owner",
+      "turns": [
+        {
+          "ask": "what plan is Tailspin on?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "annual"
+            ]
+          }
+        },
+        {
+          "ask": "and who owns that account?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Growth"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "incident-INC-4101",
+      "title": "INC-4101: severity and owner",
+      "turns": [
+        {
+          "ask": "what is the severity of INC-4101?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Sev 1"
+            ]
+          }
+        },
+        {
+          "ask": "which team owns it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Platform"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "incident-INC-4102",
+      "title": "INC-4102: severity and owner",
+      "turns": [
+        {
+          "ask": "what is the severity of INC-4102?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Sev 1"
+            ]
+          }
+        },
+        {
+          "ask": "which team owns it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Payments"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "incident-INC-4103",
+      "title": "INC-4103: severity and owner",
+      "turns": [
+        {
+          "ask": "what is the severity of INC-4103?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Sev 2"
+            ]
+          }
+        },
+        {
+          "ask": "which team owns it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Search"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "incident-INC-4104",
+      "title": "INC-4104: severity and owner",
+      "turns": [
+        {
+          "ask": "what is the severity of INC-4104?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Sev 2"
+            ]
+          }
+        },
+        {
+          "ask": "which team owns it?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Growth"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "runbook-rb-atlas",
+      "title": "Runbook: Atlas ingest backlog",
+      "turns": [
+        {
+          "ask": "what are the steps for Atlas ingest backlog?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Check queue depth,"
+            ]
+          }
+        },
+        {
+          "ask": "who owns that runbook?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Platform"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "runbook-rb-delta",
+      "title": "Runbook: Ledger reconciliation",
+      "turns": [
+        {
+          "ask": "what are the steps for Ledger reconciliation?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Freeze writes, replay"
+            ]
+          }
+        },
+        {
+          "ask": "who owns that runbook?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Payments"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "runbook-rb-flint",
+      "title": "Runbook: Search index rebuild",
+      "turns": [
+        {
+          "ask": "what are the steps for Search index rebuild?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "Snapshot the index,"
+            ]
+          }
+        },
+        {
+          "ask": "who owns that runbook?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Search"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "integration-stripe",
+      "title": "Stripe: direction and product",
+      "turns": [
+        {
+          "ask": "which direction does Stripe sync?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "outbound"
+            ]
+          }
+        },
+        {
+          "ask": "and which product does it belong to?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Delta"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "integration-salesforce",
+      "title": "Salesforce: direction and product",
+      "turns": [
+        {
+          "ask": "which direction does Salesforce sync?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "bidirectional"
+            ]
+          }
+        },
+        {
+          "ask": "and which product does it belong to?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Harbor"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "integration-okta",
+      "title": "Okta: direction and product",
+      "turns": [
+        {
+          "ask": "which direction does Okta sync?",
+          "kind": "knowledge",
+          "expect": {
+            "include": [
+              "inbound"
+            ]
+          }
+        },
+        {
+          "ask": "and which product does it belong to?",
+          "kind": "context",
+          "expect": {
+            "include": [
+              "Iris"
             ]
           }
         }

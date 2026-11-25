@@ -1,0 +1,426 @@
+{
+  "generated": "2026-11-25T04:05:27.335Z",
+  "summary": {
+    "cases": 20,
+    "typo": 8,
+    "typoFixed": 4,
+    "feature": 8,
+    "featureEvidenced": 4,
+    "control": 4,
+    "controlDeclined": 3,
+    "beforeAnswered": 7,
+    "afterAnswered": 19,
+    "passed": 14,
+    "baselinePassed": 7
+  },
+  "rows": [
+    {
+      "id": "t1",
+      "kind": "typo",
+      "ask": "what stack does hob knob use?",
+      "canonical": "what stack does Hobnob use?",
+      "matched": {
+        "entity": "Hobnob",
+        "from": "hob knob",
+        "spelling": 1
+      },
+      "before": "I can do that — Show a project card needs project.",
+      "proposed": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+      "afterName": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+      "evidence": null,
+      "featureAnswer": "Hobnob is not described as doing that on this page.",
+      "pass": true,
+      "baselinePass": true
+    },
+    {
+      "id": "t2",
+      "kind": "typo",
+      "ask": "tell me about hobnobb",
+      "canonical": "tell me about Hobnob",
+      "matched": {
+        "entity": "Hobnob",
+        "from": "hobnobb",
+        "spelling": 1
+      },
+      "before": "Sho is a software engineer with twelve years of experience building web applications and platforms. He has worked across frontend, backend, and infrastructure, partnering with product and design teams to ship user-facing features.",
+      "proposed": "Hobnob. Meeting note-takers ship your conversations to someone else's server.",
+      "afterName": "Hobnob. Meeting note-takers ship your conversations to someone else's server.",
+      "evidence": null,
+      "featureAnswer": "Hobnob is not described as doing that on this page.",
+      "pass": true,
+      "baselinePass": true
+    },
+    {
+      "id": "t3",
+      "kind": "typo",
+      "ask": "how big is read back?",
+      "canonical": "how big is Readback",
+      "matched": {
+        "entity": "Readback",
+        "from": "read back",
+        "spelling": 0
+      },
+      "before": "```json\n{\"tool\":\"site.top\",\"arguments\":{}}\n```",
+      "proposed": "Readback carries 7,315 non-blank source lines across 34 files.",
+      "afterName": "Readback carries 7,315 non-blank source lines across 34 files.",
+      "evidence": null,
+      "featureAnswer": "Readback is not described as doing that on this page.",
+      "pass": true,
+      "baselinePass": false
+    },
+    {
+      "id": "t4",
+      "kind": "typo",
+      "ask": "what is ground glass?",
+      "canonical": "what is Groundglass",
+      "matched": {
+        "entity": "Groundglass",
+        "from": "ground glass",
+        "spelling": 0
+      },
+      "before": "I can only help with the screens and controls built into this app.",
+      "proposed": "Groundglass: Agents now assemble interfaces at runtime.",
+      "afterName": "Groundglass: Agents now assemble interfaces at runtime.",
+      "evidence": {
+        "clause": "I built Groundglass to make that visible: it rebuilds the surface a stream describes, reports what a renderer would silently drop, then injects twelve faults to prove each class is caught.",
+        "score": 1,
+        "shared": [
+          "what"
+        ]
+      },
+      "featureAnswer": "Groundglass: “I built Groundglass to make that visible: it rebuilds the surface a stream describes, reports what a renderer would silently drop, then injects twelve faults to prove each class is caught”.",
+      "pass": true,
+      "baselinePass": false
+    },
+    {
+      "id": "t5",
+      "kind": "typo",
+      "ask": "what is boas?",
+      "canonical": "what is Boaz",
+      "matched": {
+        "entity": "Boaz",
+        "from": "boas",
+        "spelling": 1
+      },
+      "before": "I can only help with the screens and controls built into this app.",
+      "proposed": "Boaz. Most \"AI in your app\" features ship weights: a download, a GPU requirement, and answers nobody can check.",
+      "afterName": "Boaz. Most \"AI in your app\" features ship weights: a download, a GPU requirement, and answers nobody can check.",
+      "evidence": {
+        "clause": "A Vite plugin scans defineCapability() and defineKnowledge() declarations with the TypeScript AST and emits one JSON manifest, which the runtime treats as the closed list of what exists.",
+        "score": 1,
+        "shared": [
+          "what"
+        ]
+      },
+      "featureAnswer": "Boaz: “A Vite plugin scans defineCapability() and defineKnowledge() declarations with the TypeScript AST and emits one JSON manifest, which the runtime treats as the closed list of what exists”.",
+      "pass": true,
+      "baselinePass": false
+    },
+    {
+      "id": "t6",
+      "kind": "typo",
+      "ask": "compare hob knob and read back",
+      "canonical": "compare Hobnob and Readback",
+      "matched": {
+        "entity": "Readback",
+        "from": "read back",
+        "spelling": 0
+      },
+      "before": "```json\n{\"tool\":\"site.top\",\"arguments\":{}}\n```",
+      "proposed": "Hobnob: Meeting note-takers ship your conversations to someone else's server. It runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions. Readback: Reading-comprehension programs are closed systems: the school picks the quizzes, parents never see them, and the reading log lives on someone else's server. It runs on Python 3.10+, Flask 3, Jinja (no JS).",
+      "afterName": "Hobnob: Meeting note-takers ship your conversations to someone else's server. It runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions. Readback: Reading-comprehension programs are closed systems: the school picks the quizzes, parents never see them, and the reading log lives on someone else's server. It runs on Python 3.10+, Flask 3, Jinja (no JS).",
+      "evidence": null,
+      "featureAnswer": "Readback is not described as doing that on this page.",
+      "pass": true,
+      "baselinePass": false
+    },
+    {
+      "id": "t7",
+      "kind": "typo",
+      "ask": "does sho byde dot com have a blog?",
+      "canonical": "does shobyde.com com have a blog?",
+      "matched": {
+        "entity": "shobyde.com",
+        "from": "sho byde com",
+        "spelling": 0
+      },
+      "before": "Sho is an engineering manager and hands-on IC: 12+ years of APIs, cloud systems and client-facing apps. He has been at Conversica since Jul 2021.",
+      "proposed": "I'm not sure about that. I can help with: Summarise the blog; Engineering log; Log statistics.",
+      "afterName": "I'm not sure about that. I can help with: Summarise the blog; Engineering log; Log statistics.",
+      "evidence": null,
+      "featureAnswer": "shobyde.com is not described as doing that on this page.",
+      "pass": false,
+      "baselinePass": true
+    },
+    {
+      "id": "t8",
+      "kind": "typo",
+      "ask": "who built hobnob?",
+      "canonical": "who built Hobnob",
+      "matched": {
+        "entity": "Hobnob",
+        "from": "hobnob",
+        "spelling": 0
+      },
+      "before": "An engineering manager who still ships: 12+ years across APIs, cloud systems and applications people actually use. He has been at Conversica since Jul 2021.",
+      "proposed": "12+ years of software, now managing engineers and still writing code. He has been at Conversica since Jul 2021.",
+      "afterName": "12+ years of software, now managing engineers and still writing code. He has been at Conversica since Jul 2021.",
+      "evidence": {
+        "clause": "I built Hobnob to prove you don't need that: a desktop app that records, transcribes, and summarizes meetings entirely on-device, with no accounts, no cloud, and no telemetry.",
+        "score": 0.5,
+        "shared": [
+          "built"
+        ]
+      },
+      "featureAnswer": "Hobnob says the opposite: “I built Hobnob to prove you don't need that: a desktop app that records, transcribes, and summarizes meetings entirely on-device, with no accounts, no cloud, and no telemetry”.",
+      "pass": true,
+      "baselinePass": true
+    },
+    {
+      "id": "f1",
+      "kind": "feature",
+      "ask": "does hobnob transcribe audio?",
+      "canonical": "does Hobnob transcribe audio?",
+      "matched": {
+        "entity": "Hobnob",
+        "from": "hobnob",
+        "spelling": 0
+      },
+      "before": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"hobnob\"}}\n```",
+      "proposed": "Hobnob: “Microphone and system audio are captured locally and streamed through a Whisper pass for real-time captions with speaker labels;”.",
+      "afterName": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"hobnob\"}}\n```",
+      "evidence": {
+        "clause": "Microphone and system audio are captured locally and streamed through a Whisper pass for real-time captions with speaker labels;",
+        "score": 0.5,
+        "shared": [
+          "audio"
+        ]
+      },
+      "featureAnswer": "Hobnob: “Microphone and system audio are captured locally and streamed through a Whisper pass for real-time captions with speaker labels;”.",
+      "pass": true,
+      "baselinePass": false
+    },
+    {
+      "id": "f2",
+      "kind": "feature",
+      "ask": "does hobnob work offline?",
+      "canonical": "does Hobnob work offline?",
+      "matched": {
+        "entity": "Hobnob",
+        "from": "hobnob",
+        "spelling": 0
+      },
+      "before": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"hobnob\"}}\n```",
+      "proposed": "Hobnob is not described as doing that on this page.",
+      "afterName": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"hobnob\"}}\n```",
+      "evidence": null,
+      "featureAnswer": "Hobnob is not described as doing that on this page.",
+      "pass": false,
+      "baselinePass": false
+    },
+    {
+      "id": "f3",
+      "kind": "feature",
+      "ask": "does readback need a server?",
+      "canonical": "does Readback need a server?",
+      "matched": {
+        "entity": "Readback",
+        "from": "readback",
+        "spelling": 0
+      },
+      "before": "Hobnob: private meeting notes, no cloud. Nothing in its stack needs a remote server.",
+      "proposed": "Readback: “Model-agnostic by configuration: Ollama, LM Studio, or any hosted endpoint that speaks /chat/completions, with one retry when a server rejects the response_format field”.",
+      "afterName": "Hobnob: private meeting notes, no cloud. Nothing in its stack needs a remote server.",
+      "evidence": {
+        "clause": "Model-agnostic by configuration: Ollama, LM Studio, or any hosted endpoint that speaks /chat/completions, with one retry when a server rejects the response_format field.",
+        "score": 0.5,
+        "shared": [
+          "server"
+        ]
+      },
+      "featureAnswer": "Readback: “Model-agnostic by configuration: Ollama, LM Studio, or any hosted endpoint that speaks /chat/completions, with one retry when a server rejects the response_format field”.",
+      "pass": true,
+      "baselinePass": false
+    },
+    {
+      "id": "f4",
+      "kind": "feature",
+      "ask": "does groundglass test generated interfaces?",
+      "canonical": "does Groundglass test generated interfaces?",
+      "matched": {
+        "entity": "Groundglass",
+        "from": "groundglass",
+        "spelling": 0
+      },
+      "before": "I can only help with the screens and controls built into this app.",
+      "proposed": "Groundglass is not described as doing that on this page.",
+      "afterName": "I can only help with the screens and controls built into this app.",
+      "evidence": null,
+      "featureAnswer": "Groundglass is not described as doing that on this page.",
+      "pass": false,
+      "baselinePass": false
+    },
+    {
+      "id": "f5",
+      "kind": "feature",
+      "ask": "does boaz need a model file?",
+      "canonical": "does Boaz need a model file?",
+      "matched": {
+        "entity": "Boaz",
+        "from": "boaz",
+        "spelling": 0
+      },
+      "before": "```json\n{\"tool\":\"labs.tools\",\"arguments\":{}}\n```",
+      "proposed": "Boaz is not described as doing that on this page.",
+      "afterName": "```json\n{\"tool\":\"labs.tools\",\"arguments\":{}}\n```",
+      "evidence": null,
+      "featureAnswer": "Boaz is not described as doing that on this page.",
+      "pass": false,
+      "baselinePass": false
+    },
+    {
+      "id": "f6",
+      "kind": "feature",
+      "ask": "does hobnob label speakers?",
+      "canonical": "does Hobnob label speakers?",
+      "matched": {
+        "entity": "Hobnob",
+        "from": "hobnob",
+        "spelling": 0
+      },
+      "before": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"hobnob\"}}\n```",
+      "proposed": "Hobnob is not described as doing that on this page.",
+      "afterName": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"hobnob\"}}\n```",
+      "evidence": null,
+      "featureAnswer": "Hobnob is not described as doing that on this page.",
+      "pass": false,
+      "baselinePass": false
+    },
+    {
+      "id": "f7",
+      "kind": "feature",
+      "ask": "does readback have quizzes for kids?",
+      "canonical": "does Readback have quizzes for kids?",
+      "matched": {
+        "entity": "Readback",
+        "from": "readback",
+        "spelling": 0
+      },
+      "before": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"readback\"}}\n```",
+      "proposed": "Readback says the opposite: “Human review is a hard gate, not a hint: approval is refused when any question is structurally invalid, the reasons are shown on the page, and readers only ever see approved quizzes”.",
+      "afterName": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"readback\"}}\n```",
+      "evidence": {
+        "clause": "Human review is a hard gate, not a hint: approval is refused when any question is structurally invalid, the reasons are shown on the page, and readers only ever see approved quizzes.",
+        "score": 0.5,
+        "shared": [
+          "quizzes"
+        ]
+      },
+      "featureAnswer": "Readback says the opposite: “Human review is a hard gate, not a hint: approval is refused when any question is structurally invalid, the reasons are shown on the page, and readers only ever see approved quizzes”.",
+      "pass": true,
+      "baselinePass": false
+    },
+    {
+      "id": "f8",
+      "kind": "feature",
+      "ask": "does boaz use rules?",
+      "canonical": "does Boaz use rules?",
+      "matched": {
+        "entity": "Boaz",
+        "from": "boaz",
+        "spelling": 0
+      },
+      "before": "Boaz is the one project listing boaz. 6 projects are listed here in all. Groundglass takes the other route: Python 3.10+ and Standard library only.",
+      "proposed": "Boaz: “Rules can declare tool steps, so a question about live data runs the app's own capability and turns the structured result into facts for that turn”.",
+      "afterName": "Boaz is the only one: it lists boaz. It is one of 6 projects on the page. Groundglass does not list it; its stack is Python 3.10+ and Standard library only.",
+      "evidence": {
+        "clause": "Rules can declare tool steps, so a question about live data runs the app's own capability and turns the structured result into facts for that turn.",
+        "score": 0.5,
+        "shared": [
+          "rules"
+        ]
+      },
+      "featureAnswer": "Boaz: “Rules can declare tool steps, so a question about live data runs the app's own capability and turns the structured result into facts for that turn”.",
+      "pass": true,
+      "baselinePass": false
+    },
+    {
+      "id": "c1",
+      "kind": "control",
+      "ask": "does hobnob support klingon?",
+      "canonical": "does Hobnob support klingon?",
+      "matched": {
+        "entity": "Hobnob",
+        "from": "hobnob",
+        "spelling": 0
+      },
+      "before": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"hobnob\"}}\n```",
+      "proposed": "Hobnob is not described as doing that on this page.",
+      "afterName": "```json\n{\"tool\":\"projects.card\",\"arguments\":{\"project\":\"hobnob\"}}\n```",
+      "evidence": null,
+      "featureAnswer": "Hobnob is not described as doing that on this page.",
+      "pass": true,
+      "baselinePass": true
+    },
+    {
+      "id": "c2",
+      "kind": "control",
+      "ask": "does boaz train a model?",
+      "canonical": "does Boaz train a model?",
+      "matched": {
+        "entity": "Boaz",
+        "from": "boaz",
+        "spelling": 0
+      },
+      "before": "```json\n{\"tool\":\"labs.tools\",\"arguments\":{}}\n```",
+      "proposed": "Boaz says the opposite: “No model, no API key, nothing leaving the page”.",
+      "afterName": "```json\n{\"tool\":\"labs.tools\",\"arguments\":{}}\n```",
+      "evidence": {
+        "clause": "No model, no API key, nothing leaving the page.",
+        "score": 0.5,
+        "shared": [
+          "model"
+        ]
+      },
+      "featureAnswer": "Boaz says the opposite: “No model, no API key, nothing leaving the page”.",
+      "pass": false,
+      "baselinePass": true
+    },
+    {
+      "id": "c3",
+      "kind": "control",
+      "ask": "what is the price of hobnob?",
+      "canonical": "what is the price of Hobnob",
+      "matched": {
+        "entity": "Hobnob",
+        "from": "hobnob",
+        "spelling": 0
+      },
+      "before": "Hobnob. Meeting note-takers ship your conversations to someone else's server.",
+      "proposed": "Hobnob is not described as doing that on this page.",
+      "afterName": "Hobnob: Meeting note-takers ship your conversations to someone else's server.",
+      "evidence": null,
+      "featureAnswer": "Hobnob is not described as doing that on this page.",
+      "pass": true,
+      "baselinePass": false
+    },
+    {
+      "id": "c4",
+      "kind": "control",
+      "ask": "does readback print braille?",
+      "canonical": "does Readback print braille?",
+      "matched": {
+        "entity": "Readback",
+        "from": "readback",
+        "spelling": 0
+      },
+      "before": "```json\n{\"tool\":\"resume.print\",\"arguments\":{}}\n```",
+      "proposed": "Readback is not described as doing that on this page.",
+      "afterName": "```json\n{\"tool\":\"resume.print\",\"arguments\":{}}\n```",
+      "evidence": null,
+      "featureAnswer": "Readback is not described as doing that on this page.",
+      "pass": true,
+      "baselinePass": true
+    }
+  ]
+}

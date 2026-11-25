@@ -1,0 +1,140 @@
+{
+  "total": 10,
+  "score": {
+    "A": 3,
+    "B": 5,
+    "C": 5,
+    "D": 5
+  },
+  "controlHits": {
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "D": 0
+  },
+  "derived": [
+    {
+      "alias": "boaz",
+      "entity": "Boaz",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "boazs",
+      "entity": "Boaz",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "game",
+      "entity": "C++ physics simulation engines",
+      "kind": "learned",
+      "score": 0.4
+    },
+    {
+      "alias": "design",
+      "entity": "C++ physics simulation engines",
+      "kind": "learned",
+      "score": 0.39
+    },
+    {
+      "alias": "built",
+      "entity": "C++ physics simulation engines",
+      "kind": "learned",
+      "score": 0.34
+    },
+    {
+      "alias": "c++physicssimulationengines",
+      "entity": "C++ physics simulation engines",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "c++ physics simulation engines",
+      "entity": "C++ physics simulation engines",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "c++-physics-simulation-engines",
+      "entity": "C++ physics simulation engines",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "c++_physics_simulation_engines",
+      "entity": "C++ physics simulation engines",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "c++physicssimulationengine",
+      "entity": "C++ physics simulation engines",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "cpse",
+      "entity": "C++ physics simulation engines",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "groundglass",
+      "entity": "Groundglass",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "groundglas",
+      "entity": "Groundglass",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "hobnob",
+      "entity": "Hobnob",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "hobnobs",
+      "entity": "Hobnob",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "readback",
+      "entity": "Readback",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "readbacks",
+      "entity": "Readback",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "shobydecom",
+      "entity": "shobyde.com",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "shobyde com",
+      "entity": "shobyde.com",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "shobyde-com",
+      "entity": "shobyde.com",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "shobyde_com",
+      "entity": "shobyde.com",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "shobyde",
+      "entity": "shobyde.com",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "shobydecoms",
+      "entity": "shobyde.com",
+      "kind": "mechanical"
+    },
+    {
+      "alias": "sc",
+      "entity": "shobyde.com",
+      "kind": "mechanical"
+    }
+  ]
+}

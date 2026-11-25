@@ -1,5 +1,5 @@
 {
-  "note": "Synthetic operations handbook for bench/kb. Every entity is invented.",
+  "note": "Synthetic operations handbook for bench/kb. Every entity is invented. v2: wider tables and ten tool actions.",
   "products": [
     {
       "id": "atlas",
@@ -80,106 +80,312 @@
       "database": "Postgres",
       "region": "ap-south",
       "tier": 3
+    },
+    {
+      "id": "iris",
+      "name": "Iris",
+      "owner": "Identity",
+      "language": "Go",
+      "sla": "99.99%",
+      "database": "Postgres",
+      "region": "us-east",
+      "tier": 1
+    },
+    {
+      "id": "juno",
+      "name": "Juno",
+      "owner": "Identity",
+      "language": "Rust",
+      "sla": "99.95%",
+      "database": "Redis",
+      "region": "us-east",
+      "tier": 1
+    },
+    {
+      "id": "kestrel",
+      "name": "Kestrel",
+      "owner": "Search",
+      "language": "Java",
+      "sla": "99.5%",
+      "database": "Elasticsearch",
+      "region": "eu-west",
+      "tier": 2
+    },
+    {
+      "id": "lumen",
+      "name": "Lumen",
+      "owner": "Infra",
+      "language": "Go",
+      "sla": "99.9%",
+      "database": "Prometheus",
+      "region": "us-west",
+      "tier": 2
+    },
+    {
+      "id": "mica",
+      "name": "Mica",
+      "owner": "Infra",
+      "language": "Python",
+      "sla": "99.0%",
+      "database": "Postgres",
+      "region": "us-west",
+      "tier": 3
+    },
+    {
+      "id": "nimbus",
+      "name": "Nimbus",
+      "owner": "Platform",
+      "language": "TypeScript",
+      "sla": "99.5%",
+      "database": "DynamoDB",
+      "region": "ap-south",
+      "tier": 3
+    },
+    {
+      "id": "opal",
+      "name": "Opal",
+      "owner": "Payments",
+      "language": "Rust",
+      "sla": "99.95%",
+      "database": "Postgres",
+      "region": "eu-west",
+      "tier": 1
+    },
+    {
+      "id": "quartz",
+      "name": "Quartz",
+      "owner": "Data",
+      "language": "Python",
+      "sla": "99.0%",
+      "database": "ClickHouse",
+      "region": "us-east",
+      "tier": 3
     }
   ],
   "services": [
     {
-      "id": "ingest-api",
+      "id": "atlas-api",
       "product": "atlas",
       "runtime": "Go",
       "replicas": 12,
       "oncall": "Platform"
     },
     {
-      "id": "ingest-worker",
+      "id": "atlas-worker",
       "product": "atlas",
       "runtime": "Go",
-      "replicas": 30,
+      "replicas": 8,
       "oncall": "Platform"
     },
     {
-      "id": "signup-web",
+      "id": "beacon-api",
       "product": "beacon",
       "runtime": "TypeScript",
-      "replicas": 6,
+      "replicas": 8,
       "oncall": "Growth"
     },
     {
-      "id": "experiment-api",
+      "id": "beacon-worker",
       "product": "beacon",
       "runtime": "TypeScript",
       "replicas": 4,
       "oncall": "Growth"
     },
     {
-      "id": "pipeline-runner",
+      "id": "cinder-api",
       "product": "cinder",
       "runtime": "Python",
       "replicas": 8,
       "oncall": "Data"
     },
     {
-      "id": "query-cache",
+      "id": "cinder-worker",
       "product": "cinder",
-      "runtime": "Go",
-      "replicas": 3,
+      "runtime": "Python",
+      "replicas": 4,
       "oncall": "Data"
     },
     {
-      "id": "ledger-api",
+      "id": "delta-api",
       "product": "delta",
       "runtime": "Rust",
-      "replicas": 10,
+      "replicas": 12,
       "oncall": "Payments"
     },
     {
-      "id": "settlement-worker",
+      "id": "delta-worker",
       "product": "delta",
       "runtime": "Rust",
-      "replicas": 5,
+      "replicas": 8,
       "oncall": "Payments"
     },
     {
-      "id": "notify-fanout",
+      "id": "ember-api",
       "product": "ember",
       "runtime": "Go",
-      "replicas": 9,
+      "replicas": 8,
       "oncall": "Platform"
     },
     {
-      "id": "search-index",
+      "id": "ember-worker",
+      "product": "ember",
+      "runtime": "Go",
+      "replicas": 4,
+      "oncall": "Platform"
+    },
+    {
+      "id": "flint-api",
       "product": "flint",
       "runtime": "Java",
-      "replicas": 14,
+      "replicas": 12,
       "oncall": "Search"
     },
     {
-      "id": "search-suggest",
+      "id": "flint-worker",
       "product": "flint",
       "runtime": "Java",
-      "replicas": 6,
+      "replicas": 8,
       "oncall": "Search"
     },
     {
-      "id": "metrics-rollup",
+      "id": "gauge-api",
       "product": "gauge",
       "runtime": "Python",
       "replicas": 4,
       "oncall": "Data"
     },
     {
-      "id": "marketing-site",
+      "id": "gauge-worker",
+      "product": "gauge",
+      "runtime": "Python",
+      "replicas": 4,
+      "oncall": "Data"
+    },
+    {
+      "id": "harbor-api",
       "product": "harbor",
       "runtime": "TypeScript",
-      "replicas": 2,
+      "replicas": 4,
       "oncall": "Growth"
     },
     {
-      "id": "docs-portal",
+      "id": "harbor-worker",
       "product": "harbor",
       "runtime": "TypeScript",
-      "replicas": 2,
+      "replicas": 4,
       "oncall": "Growth"
+    },
+    {
+      "id": "iris-api",
+      "product": "iris",
+      "runtime": "Go",
+      "replicas": 12,
+      "oncall": "Identity"
+    },
+    {
+      "id": "iris-worker",
+      "product": "iris",
+      "runtime": "Go",
+      "replicas": 8,
+      "oncall": "Identity"
+    },
+    {
+      "id": "juno-api",
+      "product": "juno",
+      "runtime": "Rust",
+      "replicas": 12,
+      "oncall": "Identity"
+    },
+    {
+      "id": "juno-worker",
+      "product": "juno",
+      "runtime": "Rust",
+      "replicas": 8,
+      "oncall": "Identity"
+    },
+    {
+      "id": "kestrel-api",
+      "product": "kestrel",
+      "runtime": "Java",
+      "replicas": 8,
+      "oncall": "Search"
+    },
+    {
+      "id": "kestrel-worker",
+      "product": "kestrel",
+      "runtime": "Java",
+      "replicas": 4,
+      "oncall": "Search"
+    },
+    {
+      "id": "lumen-api",
+      "product": "lumen",
+      "runtime": "Go",
+      "replicas": 8,
+      "oncall": "Infra"
+    },
+    {
+      "id": "lumen-worker",
+      "product": "lumen",
+      "runtime": "Go",
+      "replicas": 4,
+      "oncall": "Infra"
+    },
+    {
+      "id": "mica-api",
+      "product": "mica",
+      "runtime": "Python",
+      "replicas": 4,
+      "oncall": "Infra"
+    },
+    {
+      "id": "mica-worker",
+      "product": "mica",
+      "runtime": "Python",
+      "replicas": 4,
+      "oncall": "Infra"
+    },
+    {
+      "id": "nimbus-api",
+      "product": "nimbus",
+      "runtime": "TypeScript",
+      "replicas": 4,
+      "oncall": "Platform"
+    },
+    {
+      "id": "nimbus-worker",
+      "product": "nimbus",
+      "runtime": "TypeScript",
+      "replicas": 4,
+      "oncall": "Platform"
+    },
+    {
+      "id": "opal-api",
+      "product": "opal",
+      "runtime": "Rust",
+      "replicas": 12,
+      "oncall": "Payments"
+    },
+    {
+      "id": "opal-worker",
+      "product": "opal",
+      "runtime": "Rust",
+      "replicas": 8,
+      "oncall": "Payments"
+    },
+    {
+      "id": "quartz-api",
+      "product": "quartz",
+      "runtime": "Python",
+      "replicas": 4,
+      "oncall": "Data"
+    },
+    {
+      "id": "quartz-worker",
+      "product": "quartz",
+      "runtime": "Python",
+      "replicas": 4,
+      "oncall": "Data"
     }
   ],
   "teams": [
@@ -217,6 +423,41 @@
       "lead": "Tom Haddad",
       "headcount": 4,
       "channel": "#search"
+    },
+    {
+      "id": "identity",
+      "name": "Identity",
+      "lead": "Sofia Brandt",
+      "headcount": 6,
+      "channel": "#identity"
+    },
+    {
+      "id": "infra",
+      "name": "Infra",
+      "lead": "Marco Silva",
+      "headcount": 8,
+      "channel": "#infra"
+    },
+    {
+      "id": "support",
+      "name": "Support",
+      "lead": "Hana Sato",
+      "headcount": 11,
+      "channel": "#support"
+    },
+    {
+      "id": "security",
+      "name": "Security",
+      "lead": "Omar Aziz",
+      "headcount": 4,
+      "channel": "#security"
+    },
+    {
+      "id": "docs",
+      "name": "Docs",
+      "lead": "Elsa Novak",
+      "headcount": 3,
+      "channel": "#docs"
     }
   ],
   "people": [
@@ -289,6 +530,76 @@
       "team": "search",
       "role": "Search engineer",
       "timezone": "IST"
+    },
+    {
+      "id": "sofia",
+      "name": "Sofia Brandt",
+      "team": "identity",
+      "role": "Staff engineer",
+      "timezone": "CET"
+    },
+    {
+      "id": "marco",
+      "name": "Marco Silva",
+      "team": "infra",
+      "role": "Engineering manager",
+      "timezone": "PT"
+    },
+    {
+      "id": "hana",
+      "name": "Hana Sato",
+      "team": "support",
+      "role": "Support lead",
+      "timezone": "JST"
+    },
+    {
+      "id": "omar",
+      "name": "Omar Aziz",
+      "team": "security",
+      "role": "Security engineer",
+      "timezone": "ET"
+    },
+    {
+      "id": "elsa",
+      "name": "Elsa Novak",
+      "team": "docs",
+      "role": "Technical writer",
+      "timezone": "CET"
+    },
+    {
+      "id": "jules",
+      "name": "Jules Marchand",
+      "team": "identity",
+      "role": "Platform engineer",
+      "timezone": "CET"
+    },
+    {
+      "id": "kai",
+      "name": "Kai Tanaka",
+      "team": "support",
+      "role": "Support engineer",
+      "timezone": "JST"
+    },
+    {
+      "id": "nina",
+      "name": "Nina Petrov",
+      "team": "infra",
+      "role": "SRE",
+      "timezone": "CET"
+    },
+    {
+      "id": "rex",
+      "name": "Rex Okonkwo",
+      "team": "security",
+      "role": "Incident commander",
+      "timezone": "ET"
+    },
+    {
+      "id": "yuki",
+      "name": "Yuki Mori",
+      "team": "docs",
+      "role": "Docs engineer",
+      "timezone": "JST"
     }
   ],
   "oncall": [
@@ -316,6 +627,31 @@
       "team": "search",
       "person": "Ravi Shah",
       "week": "2026-W48"
+    },
+    {
+      "team": "identity",
+      "person": "Jules Marchand",
+      "week": "2026-W48"
+    },
+    {
+      "team": "infra",
+      "person": "Nina Petrov",
+      "week": "2026-W48"
+    },
+    {
+      "team": "support",
+      "person": "Kai Tanaka",
+      "week": "2026-W48"
+    },
+    {
+      "team": "security",
+      "person": "Rex Okonkwo",
+      "week": "2026-W48"
+    },
+    {
+      "team": "docs",
+      "person": "Yuki Mori",
+      "week": "2026-W48"
     }
   ],
   "policies": [
@@ -340,7 +676,7 @@
     {
       "id": "p4",
       "name": "Oncall handoff",
-      "text": "Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel.",
+      "text": "Oncall rotates weekly on Monday at 09:00 in the team lead timezone, with a written handoff in the team channel.",
       "owner": "Platform"
     },
     {
@@ -366,6 +702,376 @@
       "name": "Payment retries",
       "text": "Failed charges retry three times over 48 hours with exponential backoff, then settle to manual review.",
       "owner": "Payments"
+    },
+    {
+      "id": "p9",
+      "name": "Secrets rotation",
+      "text": "Service credentials rotate every 90 days. Database credentials rotate every 30 days. A rotation that fails pages the Security oncall.",
+      "owner": "Security"
+    },
+    {
+      "id": "p10",
+      "name": "Backup testing",
+      "text": "Every production database restore is tested monthly into a scratch environment, and the result is attached to the runbook.",
+      "owner": "Infra"
+    },
+    {
+      "id": "p11",
+      "name": "Customer escalation",
+      "text": "A customer marked priority one gets an engineer on the call within 15 minutes. Priority two gets a written update within four hours.",
+      "owner": "Support"
+    },
+    {
+      "id": "p12",
+      "name": "Change windows",
+      "text": "Routine changes ship Monday through Thursday between 09:00 and 16:00 in the service region. Friday changes need a rollback plan.",
+      "owner": "Infra"
+    },
+    {
+      "id": "p13",
+      "name": "Incident review",
+      "text": "Every Sev 1 gets a written review within five business days, and the action items are tracked to closure by the owning team.",
+      "owner": "Security"
+    },
+    {
+      "id": "p14",
+      "name": "Feature flags",
+      "text": "A flag older than 90 days is either made permanent or removed. Flags that gate a payment path need an owner and an expiry.",
+      "owner": "Payments"
+    },
+    {
+      "id": "p15",
+      "name": "Documentation freshness",
+      "text": "A runbook untouched for 180 days is marked stale and routed to its owning team for review.",
+      "owner": "Docs"
+    },
+    {
+      "id": "p16",
+      "name": "Third party integrations",
+      "text": "Every external integration has a named owner, a fallback path when it is down, and a quarterly health check.",
+      "owner": "Identity"
+    }
+  ],
+  "customers": [
+    {
+      "id": "northwind",
+      "name": "Northwind",
+      "tier": "enterprise",
+      "plan": "annual",
+      "owner": "Support",
+      "since": "2021",
+      "seats": 4200
+    },
+    {
+      "id": "contoso",
+      "name": "Contoso",
+      "tier": "enterprise",
+      "plan": "annual",
+      "owner": "Support",
+      "since": "2020",
+      "seats": 9100
+    },
+    {
+      "id": "fabrikam",
+      "name": "Fabrikam",
+      "tier": "midmarket",
+      "plan": "monthly",
+      "owner": "Growth",
+      "since": "2023",
+      "seats": 380
+    },
+    {
+      "id": "tailspin",
+      "name": "Tailspin",
+      "tier": "midmarket",
+      "plan": "annual",
+      "owner": "Growth",
+      "since": "2022",
+      "seats": 640
+    },
+    {
+      "id": "adatum",
+      "name": "Adatum",
+      "tier": "enterprise",
+      "plan": "annual",
+      "owner": "Support",
+      "since": "2019",
+      "seats": 12800
+    },
+    {
+      "id": "proseware",
+      "name": "Proseware",
+      "tier": "startup",
+      "plan": "monthly",
+      "owner": "Growth",
+      "since": "2024",
+      "seats": 45
+    },
+    {
+      "id": "lucerne",
+      "name": "Lucerne",
+      "tier": "midmarket",
+      "plan": "annual",
+      "owner": "Payments",
+      "since": "2022",
+      "seats": 1200
+    },
+    {
+      "id": "wingtip",
+      "name": "Wingtip",
+      "tier": "startup",
+      "plan": "monthly",
+      "owner": "Growth",
+      "since": "2024",
+      "seats": 80
+    },
+    {
+      "id": "relecloud",
+      "name": "Relecloud",
+      "tier": "enterprise",
+      "plan": "annual",
+      "owner": "Support",
+      "since": "2018",
+      "seats": 15300
+    },
+    {
+      "id": "alpineski",
+      "name": "Alpine Ski House",
+      "tier": "midmarket",
+      "plan": "annual",
+      "owner": "Search",
+      "since": "2021",
+      "seats": 900
+    },
+    {
+      "id": "graphicdesign",
+      "name": "Graphic Design Institute",
+      "tier": "startup",
+      "plan": "monthly",
+      "owner": "Docs",
+      "since": "2025",
+      "seats": 30
+    },
+    {
+      "id": "lorem",
+      "name": "Lorem Medical",
+      "tier": "enterprise",
+      "plan": "annual",
+      "owner": "Identity",
+      "since": "2020",
+      "seats": 7400
+    }
+  ],
+  "incidents": [
+    {
+      "id": "INC-4101",
+      "title": "Atlas ingest backlog",
+      "service": "ingest-worker",
+      "severity": "Sev 1",
+      "status": "resolved",
+      "team": "Platform"
+    },
+    {
+      "id": "INC-4102",
+      "title": "Ledger duplicate charges",
+      "service": "ledger-api",
+      "severity": "Sev 1",
+      "status": "mitigated",
+      "team": "Payments"
+    },
+    {
+      "id": "INC-4103",
+      "title": "Search latency spike",
+      "service": "search-index",
+      "severity": "Sev 2",
+      "status": "resolved",
+      "team": "Search"
+    },
+    {
+      "id": "INC-4104",
+      "title": "Signup rate limit too tight",
+      "service": "signup-web",
+      "severity": "Sev 2",
+      "status": "open",
+      "team": "Growth"
+    },
+    {
+      "id": "INC-4105",
+      "title": "Pipeline retry storm",
+      "service": "pipeline-runner",
+      "severity": "Sev 2",
+      "status": "resolved",
+      "team": "Data"
+    },
+    {
+      "id": "INC-4106",
+      "title": "Metrics gap after rollup",
+      "service": "metrics-rollup",
+      "severity": "Sev 3",
+      "status": "open",
+      "team": "Data"
+    },
+    {
+      "id": "INC-4107",
+      "title": "Docs portal expired certificate",
+      "service": "docs-portal",
+      "severity": "Sev 2",
+      "status": "resolved",
+      "team": "Docs"
+    },
+    {
+      "id": "INC-4108",
+      "title": "Identity token refresh loop",
+      "service": "iris",
+      "severity": "Sev 1",
+      "status": "resolved",
+      "team": "Identity"
+    },
+    {
+      "id": "INC-4109",
+      "title": "Cache eviction churn",
+      "service": "query-cache",
+      "severity": "Sev 3",
+      "status": "mitigated",
+      "team": "Data"
+    },
+    {
+      "id": "INC-4110",
+      "title": "Notification fanout delay",
+      "service": "notify-fanout",
+      "severity": "Sev 2",
+      "status": "resolved",
+      "team": "Platform"
+    }
+  ],
+  "runbooks": [
+    {
+      "id": "rb-atlas",
+      "title": "Atlas ingest backlog",
+      "service": "ingest-api",
+      "owner": "Platform",
+      "steps": "Check queue depth, scale workers, drain oldest partition"
+    },
+    {
+      "id": "rb-delta",
+      "title": "Ledger reconciliation",
+      "service": "ledger-api",
+      "owner": "Payments",
+      "steps": "Freeze writes, replay the settlement window, compare totals"
+    },
+    {
+      "id": "rb-flint",
+      "title": "Search index rebuild",
+      "service": "search-index",
+      "owner": "Search",
+      "steps": "Snapshot the index, rebuild shard by shard, flip the alias"
+    },
+    {
+      "id": "rb-cinder",
+      "title": "Pipeline backfill",
+      "service": "pipeline-runner",
+      "owner": "Data",
+      "steps": "Pick the date range, run the backfill, verify row counts"
+    },
+    {
+      "id": "rb-iris",
+      "title": "Token rotation",
+      "service": "iris",
+      "owner": "Identity",
+      "steps": "Rotate the signing key, publish the new JWKS, watch the error rate"
+    },
+    {
+      "id": "rb-lumen",
+      "title": "Metrics gap",
+      "service": "lumen",
+      "owner": "Infra",
+      "steps": "Check scrape targets, restart the shipper, backfill the gap"
+    },
+    {
+      "id": "rb-beacon",
+      "title": "Experiment rollback",
+      "service": "experiment-api",
+      "owner": "Growth",
+      "steps": "Set the split to zero, confirm exposure, archive the result"
+    },
+    {
+      "id": "rb-harbor",
+      "title": "Certificate renewal",
+      "service": "docs-portal",
+      "owner": "Docs",
+      "steps": "Renew the certificate, deploy the secret, verify the chain"
+    }
+  ],
+  "integrations": [
+    {
+      "id": "stripe",
+      "name": "Stripe",
+      "product": "Delta",
+      "direction": "outbound",
+      "owner": "Payments"
+    },
+    {
+      "id": "salesforce",
+      "name": "Salesforce",
+      "product": "Harbor",
+      "direction": "bidirectional",
+      "owner": "Growth"
+    },
+    {
+      "id": "okta",
+      "name": "Okta",
+      "product": "Iris",
+      "direction": "inbound",
+      "owner": "Identity"
+    },
+    {
+      "id": "segment",
+      "name": "Segment",
+      "product": "Beacon",
+      "direction": "outbound",
+      "owner": "Growth"
+    },
+    {
+      "id": "slack",
+      "name": "Slack",
+      "product": "Nimbus",
+      "direction": "outbound",
+      "owner": "Platform"
+    },
+    {
+      "id": "snowflake",
+      "name": "Snowflake",
+      "product": "Quartz",
+      "direction": "outbound",
+      "owner": "Data"
+    },
+    {
+      "id": "pagerduty",
+      "name": "PagerDuty",
+      "product": "Lumen",
+      "direction": "outbound",
+      "owner": "Infra"
+    },
+    {
+      "id": "zendesk",
+      "name": "Zendesk",
+      "product": "Harbor",
+      "direction": "bidirectional",
+      "owner": "Support"
+    },
+    {
+      "id": "github",
+      "name": "GitHub",
+      "product": "Kestrel",
+      "direction": "inbound",
+      "owner": "Search"
+    },
+    {
+      "id": "twilio",
+      "name": "Twilio",
+      "product": "Ember",
+      "direction": "outbound",
+      "owner": "Platform"
     }
   ],
   "facts": [
@@ -658,340 +1364,1060 @@
       "tier 3"
     ],
     [
+      "product",
+      "Iris",
+      "owner",
+      "Identity"
+    ],
+    [
+      "product",
+      "Iris",
+      "language",
+      "Go"
+    ],
+    [
+      "product",
+      "Iris",
+      "sla",
+      "99.99%"
+    ],
+    [
+      "product",
+      "Iris",
+      "database",
+      "Postgres"
+    ],
+    [
+      "product",
+      "Iris",
+      "region",
+      "us-east"
+    ],
+    [
+      "product",
+      "Iris",
+      "tier",
+      "tier 1"
+    ],
+    [
+      "product",
+      "Juno",
+      "owner",
+      "Identity"
+    ],
+    [
+      "product",
+      "Juno",
+      "language",
+      "Rust"
+    ],
+    [
+      "product",
+      "Juno",
+      "sla",
+      "99.95%"
+    ],
+    [
+      "product",
+      "Juno",
+      "database",
+      "Redis"
+    ],
+    [
+      "product",
+      "Juno",
+      "region",
+      "us-east"
+    ],
+    [
+      "product",
+      "Juno",
+      "tier",
+      "tier 1"
+    ],
+    [
+      "product",
+      "Kestrel",
+      "owner",
+      "Search"
+    ],
+    [
+      "product",
+      "Kestrel",
+      "language",
+      "Java"
+    ],
+    [
+      "product",
+      "Kestrel",
+      "sla",
+      "99.5%"
+    ],
+    [
+      "product",
+      "Kestrel",
+      "database",
+      "Elasticsearch"
+    ],
+    [
+      "product",
+      "Kestrel",
+      "region",
+      "eu-west"
+    ],
+    [
+      "product",
+      "Kestrel",
+      "tier",
+      "tier 2"
+    ],
+    [
+      "product",
+      "Lumen",
+      "owner",
+      "Infra"
+    ],
+    [
+      "product",
+      "Lumen",
+      "language",
+      "Go"
+    ],
+    [
+      "product",
+      "Lumen",
+      "sla",
+      "99.9%"
+    ],
+    [
+      "product",
+      "Lumen",
+      "database",
+      "Prometheus"
+    ],
+    [
+      "product",
+      "Lumen",
+      "region",
+      "us-west"
+    ],
+    [
+      "product",
+      "Lumen",
+      "tier",
+      "tier 2"
+    ],
+    [
+      "product",
+      "Mica",
+      "owner",
+      "Infra"
+    ],
+    [
+      "product",
+      "Mica",
+      "language",
+      "Python"
+    ],
+    [
+      "product",
+      "Mica",
+      "sla",
+      "99.0%"
+    ],
+    [
+      "product",
+      "Mica",
+      "database",
+      "Postgres"
+    ],
+    [
+      "product",
+      "Mica",
+      "region",
+      "us-west"
+    ],
+    [
+      "product",
+      "Mica",
+      "tier",
+      "tier 3"
+    ],
+    [
+      "product",
+      "Nimbus",
+      "owner",
+      "Platform"
+    ],
+    [
+      "product",
+      "Nimbus",
+      "language",
+      "TypeScript"
+    ],
+    [
+      "product",
+      "Nimbus",
+      "sla",
+      "99.5%"
+    ],
+    [
+      "product",
+      "Nimbus",
+      "database",
+      "DynamoDB"
+    ],
+    [
+      "product",
+      "Nimbus",
+      "region",
+      "ap-south"
+    ],
+    [
+      "product",
+      "Nimbus",
+      "tier",
+      "tier 3"
+    ],
+    [
+      "product",
+      "Opal",
+      "owner",
+      "Payments"
+    ],
+    [
+      "product",
+      "Opal",
+      "language",
+      "Rust"
+    ],
+    [
+      "product",
+      "Opal",
+      "sla",
+      "99.95%"
+    ],
+    [
+      "product",
+      "Opal",
+      "database",
+      "Postgres"
+    ],
+    [
+      "product",
+      "Opal",
+      "region",
+      "eu-west"
+    ],
+    [
+      "product",
+      "Opal",
+      "tier",
+      "tier 1"
+    ],
+    [
+      "product",
+      "Quartz",
+      "owner",
+      "Data"
+    ],
+    [
+      "product",
+      "Quartz",
+      "language",
+      "Python"
+    ],
+    [
+      "product",
+      "Quartz",
+      "sla",
+      "99.0%"
+    ],
+    [
+      "product",
+      "Quartz",
+      "database",
+      "ClickHouse"
+    ],
+    [
+      "product",
+      "Quartz",
+      "region",
+      "us-east"
+    ],
+    [
+      "product",
+      "Quartz",
+      "tier",
+      "tier 3"
+    ],
+    [
       "service",
-      "ingest-api",
+      "atlas-api",
       "product",
       "Atlas"
     ],
     [
       "service",
-      "ingest-api",
+      "atlas-api",
       "runtime",
       "Go"
     ],
     [
       "service",
-      "ingest-api",
+      "atlas-api",
       "replicas",
       "12"
     ],
     [
       "service",
-      "ingest-api",
+      "atlas-api",
       "oncall",
       "Platform"
     ],
     [
       "service",
-      "ingest-worker",
+      "atlas-worker",
       "product",
       "Atlas"
     ],
     [
       "service",
-      "ingest-worker",
+      "atlas-worker",
       "runtime",
       "Go"
     ],
     [
       "service",
-      "ingest-worker",
-      "replicas",
-      "30"
-    ],
-    [
-      "service",
-      "ingest-worker",
-      "oncall",
-      "Platform"
-    ],
-    [
-      "service",
-      "signup-web",
-      "product",
-      "Beacon"
-    ],
-    [
-      "service",
-      "signup-web",
-      "runtime",
-      "TypeScript"
-    ],
-    [
-      "service",
-      "signup-web",
-      "replicas",
-      "6"
-    ],
-    [
-      "service",
-      "signup-web",
-      "oncall",
-      "Growth"
-    ],
-    [
-      "service",
-      "experiment-api",
-      "product",
-      "Beacon"
-    ],
-    [
-      "service",
-      "experiment-api",
-      "runtime",
-      "TypeScript"
-    ],
-    [
-      "service",
-      "experiment-api",
-      "replicas",
-      "4"
-    ],
-    [
-      "service",
-      "experiment-api",
-      "oncall",
-      "Growth"
-    ],
-    [
-      "service",
-      "pipeline-runner",
-      "product",
-      "Cinder"
-    ],
-    [
-      "service",
-      "pipeline-runner",
-      "runtime",
-      "Python"
-    ],
-    [
-      "service",
-      "pipeline-runner",
+      "atlas-worker",
       "replicas",
       "8"
     ],
     [
       "service",
-      "pipeline-runner",
-      "oncall",
-      "Data"
-    ],
-    [
-      "service",
-      "query-cache",
-      "product",
-      "Cinder"
-    ],
-    [
-      "service",
-      "query-cache",
-      "runtime",
-      "Go"
-    ],
-    [
-      "service",
-      "query-cache",
-      "replicas",
-      "3"
-    ],
-    [
-      "service",
-      "query-cache",
-      "oncall",
-      "Data"
-    ],
-    [
-      "service",
-      "ledger-api",
-      "product",
-      "Delta"
-    ],
-    [
-      "service",
-      "ledger-api",
-      "runtime",
-      "Rust"
-    ],
-    [
-      "service",
-      "ledger-api",
-      "replicas",
-      "10"
-    ],
-    [
-      "service",
-      "ledger-api",
-      "oncall",
-      "Payments"
-    ],
-    [
-      "service",
-      "settlement-worker",
-      "product",
-      "Delta"
-    ],
-    [
-      "service",
-      "settlement-worker",
-      "runtime",
-      "Rust"
-    ],
-    [
-      "service",
-      "settlement-worker",
-      "replicas",
-      "5"
-    ],
-    [
-      "service",
-      "settlement-worker",
-      "oncall",
-      "Payments"
-    ],
-    [
-      "service",
-      "notify-fanout",
-      "product",
-      "Ember"
-    ],
-    [
-      "service",
-      "notify-fanout",
-      "runtime",
-      "Go"
-    ],
-    [
-      "service",
-      "notify-fanout",
-      "replicas",
-      "9"
-    ],
-    [
-      "service",
-      "notify-fanout",
+      "atlas-worker",
       "oncall",
       "Platform"
     ],
     [
       "service",
-      "search-index",
+      "beacon-api",
       "product",
-      "Flint"
+      "Beacon"
     ],
     [
       "service",
-      "search-index",
+      "beacon-api",
       "runtime",
-      "Java"
+      "TypeScript"
     ],
     [
       "service",
-      "search-index",
+      "beacon-api",
       "replicas",
-      "14"
+      "8"
     ],
     [
       "service",
-      "search-index",
+      "beacon-api",
       "oncall",
-      "Search"
+      "Growth"
     ],
     [
       "service",
-      "search-suggest",
+      "beacon-worker",
       "product",
-      "Flint"
+      "Beacon"
     ],
     [
       "service",
-      "search-suggest",
+      "beacon-worker",
       "runtime",
-      "Java"
+      "TypeScript"
     ],
     [
       "service",
-      "search-suggest",
-      "replicas",
-      "6"
-    ],
-    [
-      "service",
-      "search-suggest",
-      "oncall",
-      "Search"
-    ],
-    [
-      "service",
-      "metrics-rollup",
-      "product",
-      "Gauge"
-    ],
-    [
-      "service",
-      "metrics-rollup",
-      "runtime",
-      "Python"
-    ],
-    [
-      "service",
-      "metrics-rollup",
+      "beacon-worker",
       "replicas",
       "4"
     ],
     [
       "service",
-      "metrics-rollup",
+      "beacon-worker",
+      "oncall",
+      "Growth"
+    ],
+    [
+      "service",
+      "cinder-api",
+      "product",
+      "Cinder"
+    ],
+    [
+      "service",
+      "cinder-api",
+      "runtime",
+      "Python"
+    ],
+    [
+      "service",
+      "cinder-api",
+      "replicas",
+      "8"
+    ],
+    [
+      "service",
+      "cinder-api",
       "oncall",
       "Data"
     ],
     [
       "service",
-      "marketing-site",
+      "cinder-worker",
+      "product",
+      "Cinder"
+    ],
+    [
+      "service",
+      "cinder-worker",
+      "runtime",
+      "Python"
+    ],
+    [
+      "service",
+      "cinder-worker",
+      "replicas",
+      "4"
+    ],
+    [
+      "service",
+      "cinder-worker",
+      "oncall",
+      "Data"
+    ],
+    [
+      "service",
+      "delta-api",
+      "product",
+      "Delta"
+    ],
+    [
+      "service",
+      "delta-api",
+      "runtime",
+      "Rust"
+    ],
+    [
+      "service",
+      "delta-api",
+      "replicas",
+      "12"
+    ],
+    [
+      "service",
+      "delta-api",
+      "oncall",
+      "Payments"
+    ],
+    [
+      "service",
+      "delta-worker",
+      "product",
+      "Delta"
+    ],
+    [
+      "service",
+      "delta-worker",
+      "runtime",
+      "Rust"
+    ],
+    [
+      "service",
+      "delta-worker",
+      "replicas",
+      "8"
+    ],
+    [
+      "service",
+      "delta-worker",
+      "oncall",
+      "Payments"
+    ],
+    [
+      "service",
+      "ember-api",
+      "product",
+      "Ember"
+    ],
+    [
+      "service",
+      "ember-api",
+      "runtime",
+      "Go"
+    ],
+    [
+      "service",
+      "ember-api",
+      "replicas",
+      "8"
+    ],
+    [
+      "service",
+      "ember-api",
+      "oncall",
+      "Platform"
+    ],
+    [
+      "service",
+      "ember-worker",
+      "product",
+      "Ember"
+    ],
+    [
+      "service",
+      "ember-worker",
+      "runtime",
+      "Go"
+    ],
+    [
+      "service",
+      "ember-worker",
+      "replicas",
+      "4"
+    ],
+    [
+      "service",
+      "ember-worker",
+      "oncall",
+      "Platform"
+    ],
+    [
+      "service",
+      "flint-api",
+      "product",
+      "Flint"
+    ],
+    [
+      "service",
+      "flint-api",
+      "runtime",
+      "Java"
+    ],
+    [
+      "service",
+      "flint-api",
+      "replicas",
+      "12"
+    ],
+    [
+      "service",
+      "flint-api",
+      "oncall",
+      "Search"
+    ],
+    [
+      "service",
+      "flint-worker",
+      "product",
+      "Flint"
+    ],
+    [
+      "service",
+      "flint-worker",
+      "runtime",
+      "Java"
+    ],
+    [
+      "service",
+      "flint-worker",
+      "replicas",
+      "8"
+    ],
+    [
+      "service",
+      "flint-worker",
+      "oncall",
+      "Search"
+    ],
+    [
+      "service",
+      "gauge-api",
+      "product",
+      "Gauge"
+    ],
+    [
+      "service",
+      "gauge-api",
+      "runtime",
+      "Python"
+    ],
+    [
+      "service",
+      "gauge-api",
+      "replicas",
+      "4"
+    ],
+    [
+      "service",
+      "gauge-api",
+      "oncall",
+      "Data"
+    ],
+    [
+      "service",
+      "gauge-worker",
+      "product",
+      "Gauge"
+    ],
+    [
+      "service",
+      "gauge-worker",
+      "runtime",
+      "Python"
+    ],
+    [
+      "service",
+      "gauge-worker",
+      "replicas",
+      "4"
+    ],
+    [
+      "service",
+      "gauge-worker",
+      "oncall",
+      "Data"
+    ],
+    [
+      "service",
+      "harbor-api",
       "product",
       "Harbor"
     ],
     [
       "service",
-      "marketing-site",
+      "harbor-api",
       "runtime",
       "TypeScript"
     ],
     [
       "service",
-      "marketing-site",
+      "harbor-api",
       "replicas",
-      "2"
+      "4"
     ],
     [
       "service",
-      "marketing-site",
+      "harbor-api",
       "oncall",
       "Growth"
     ],
     [
       "service",
-      "docs-portal",
+      "harbor-worker",
       "product",
       "Harbor"
     ],
     [
       "service",
-      "docs-portal",
+      "harbor-worker",
       "runtime",
       "TypeScript"
     ],
     [
       "service",
-      "docs-portal",
+      "harbor-worker",
       "replicas",
-      "2"
+      "4"
     ],
     [
       "service",
-      "docs-portal",
+      "harbor-worker",
       "oncall",
       "Growth"
+    ],
+    [
+      "service",
+      "iris-api",
+      "product",
+      "Iris"
+    ],
+    [
+      "service",
+      "iris-api",
+      "runtime",
+      "Go"
+    ],
+    [
+      "service",
+      "iris-api",
+      "replicas",
+      "12"
+    ],
+    [
+      "service",
+      "iris-api",
+      "oncall",
+      "Identity"
+    ],
+    [
+      "service",
+      "iris-worker",
+      "product",
+      "Iris"
+    ],
+    [
+      "service",
+      "iris-worker",
+      "runtime",
+      "Go"
+    ],
+    [
+      "service",
+      "iris-worker",
+      "replicas",
+      "8"
+    ],
+    [
+      "service",
+      "iris-worker",
+      "oncall",
+      "Identity"
+    ],
+    [
+      "service",
+      "juno-api",
+      "product",
+      "Juno"
+    ],
+    [
+      "service",
+      "juno-api",
+      "runtime",
+      "Rust"
+    ],
+    [
+      "service",
+      "juno-api",
+      "replicas",
+      "12"
+    ],
+    [
+      "service",
+      "juno-api",
+      "oncall",
+      "Identity"
+    ],
+    [
+      "service",
+      "juno-worker",
+      "product",
+      "Juno"
+    ],
+    [
+      "service",
+      "juno-worker",
+      "runtime",
+      "Rust"
+    ],
+    [
+      "service",
+      "juno-worker",
+      "replicas",
+      "8"
+    ],
+    [
+      "service",
+      "juno-worker",
+      "oncall",
+      "Identity"
+    ],
+    [
+      "service",
+      "kestrel-api",
+      "product",
+      "Kestrel"
+    ],
+    [
+      "service",
+      "kestrel-api",
+      "runtime",
+      "Java"
+    ],
+    [
+      "service",
+      "kestrel-api",
+      "replicas",
+      "8"
+    ],
+    [
+      "service",
+      "kestrel-api",
+      "oncall",
+      "Search"
+    ],
+    [
+      "service",
+      "kestrel-worker",
+      "product",
+      "Kestrel"
+    ],
+    [
+      "service",
+      "kestrel-worker",
+      "runtime",
+      "Java"
+    ],
+    [
+      "service",
+      "kestrel-worker",
+      "replicas",
+      "4"
+    ],
+    [
+      "service",
+      "kestrel-worker",
+      "oncall",
+      "Search"
+    ],
+    [
+      "service",
+      "lumen-api",
+      "product",
+      "Lumen"
+    ],
+    [
+      "service",
+      "lumen-api",
+      "runtime",
+      "Go"
+    ],
+    [
+      "service",
+      "lumen-api",
+      "replicas",
+      "8"
+    ],
+    [
+      "service",
+      "lumen-api",
+      "oncall",
+      "Infra"
+    ],
+    [
+      "service",
+      "lumen-worker",
+      "product",
+      "Lumen"
+    ],
+    [
+      "service",
+      "lumen-worker",
+      "runtime",
+      "Go"
+    ],
+    [
+      "service",
+      "lumen-worker",
+      "replicas",
+      "4"
+    ],
+    [
+      "service",
+      "lumen-worker",
+      "oncall",
+      "Infra"
+    ],
+    [
+      "service",
+      "mica-api",
+      "product",
+      "Mica"
+    ],
+    [
+      "service",
+      "mica-api",
+      "runtime",
+      "Python"
+    ],
+    [
+      "service",
+      "mica-api",
+      "replicas",
+      "4"
+    ],
+    [
+      "service",
+      "mica-api",
+      "oncall",
+      "Infra"
+    ],
+    [
+      "service",
+      "mica-worker",
+      "product",
+      "Mica"
+    ],
+    [
+      "service",
+      "mica-worker",
+      "runtime",
+      "Python"
+    ],
+    [
+      "service",
+      "mica-worker",
+      "replicas",
+      "4"
+    ],
+    [
+      "service",
+      "mica-worker",
+      "oncall",
+      "Infra"
+    ],
+    [
+      "service",
+      "nimbus-api",
+      "product",
+      "Nimbus"
+    ],
+    [
+      "service",
+      "nimbus-api",
+      "runtime",
+      "TypeScript"
+    ],
+    [
+      "service",
+      "nimbus-api",
+      "replicas",
+      "4"
+    ],
+    [
+      "service",
+      "nimbus-api",
+      "oncall",
+      "Platform"
+    ],
+    [
+      "service",
+      "nimbus-worker",
+      "product",
+      "Nimbus"
+    ],
+    [
+      "service",
+      "nimbus-worker",
+      "runtime",
+      "TypeScript"
+    ],
+    [
+      "service",
+      "nimbus-worker",
+      "replicas",
+      "4"
+    ],
+    [
+      "service",
+      "nimbus-worker",
+      "oncall",
+      "Platform"
+    ],
+    [
+      "service",
+      "opal-api",
+      "product",
+      "Opal"
+    ],
+    [
+      "service",
+      "opal-api",
+      "runtime",
+      "Rust"
+    ],
+    [
+      "service",
+      "opal-api",
+      "replicas",
+      "12"
+    ],
+    [
+      "service",
+      "opal-api",
+      "oncall",
+      "Payments"
+    ],
+    [
+      "service",
+      "opal-worker",
+      "product",
+      "Opal"
+    ],
+    [
+      "service",
+      "opal-worker",
+      "runtime",
+      "Rust"
+    ],
+    [
+      "service",
+      "opal-worker",
+      "replicas",
+      "8"
+    ],
+    [
+      "service",
+      "opal-worker",
+      "oncall",
+      "Payments"
+    ],
+    [
+      "service",
+      "quartz-api",
+      "product",
+      "Quartz"
+    ],
+    [
+      "service",
+      "quartz-api",
+      "runtime",
+      "Python"
+    ],
+    [
+      "service",
+      "quartz-api",
+      "replicas",
+      "4"
+    ],
+    [
+      "service",
+      "quartz-api",
+      "oncall",
+      "Data"
+    ],
+    [
+      "service",
+      "quartz-worker",
+      "product",
+      "Quartz"
+    ],
+    [
+      "service",
+      "quartz-worker",
+      "runtime",
+      "Python"
+    ],
+    [
+      "service",
+      "quartz-worker",
+      "replicas",
+      "4"
+    ],
+    [
+      "service",
+      "quartz-worker",
+      "oncall",
+      "Data"
     ],
     [
       "team",
@@ -1082,6 +2508,96 @@
       "Search",
       "channel",
       "#search"
+    ],
+    [
+      "team",
+      "Identity",
+      "lead",
+      "Sofia Brandt"
+    ],
+    [
+      "team",
+      "Identity",
+      "headcount",
+      "6"
+    ],
+    [
+      "team",
+      "Identity",
+      "channel",
+      "#identity"
+    ],
+    [
+      "team",
+      "Infra",
+      "lead",
+      "Marco Silva"
+    ],
+    [
+      "team",
+      "Infra",
+      "headcount",
+      "8"
+    ],
+    [
+      "team",
+      "Infra",
+      "channel",
+      "#infra"
+    ],
+    [
+      "team",
+      "Support",
+      "lead",
+      "Hana Sato"
+    ],
+    [
+      "team",
+      "Support",
+      "headcount",
+      "11"
+    ],
+    [
+      "team",
+      "Support",
+      "channel",
+      "#support"
+    ],
+    [
+      "team",
+      "Security",
+      "lead",
+      "Omar Aziz"
+    ],
+    [
+      "team",
+      "Security",
+      "headcount",
+      "4"
+    ],
+    [
+      "team",
+      "Security",
+      "channel",
+      "#security"
+    ],
+    [
+      "team",
+      "Docs",
+      "lead",
+      "Elsa Novak"
+    ],
+    [
+      "team",
+      "Docs",
+      "headcount",
+      "3"
+    ],
+    [
+      "team",
+      "Docs",
+      "channel",
+      "#docs"
     ],
     [
       "person",
@@ -1264,6 +2780,186 @@
       "IST"
     ],
     [
+      "person",
+      "Sofia Brandt",
+      "team",
+      "Identity"
+    ],
+    [
+      "person",
+      "Sofia Brandt",
+      "role",
+      "Staff engineer"
+    ],
+    [
+      "person",
+      "Sofia Brandt",
+      "timezone",
+      "CET"
+    ],
+    [
+      "person",
+      "Marco Silva",
+      "team",
+      "Infra"
+    ],
+    [
+      "person",
+      "Marco Silva",
+      "role",
+      "Engineering manager"
+    ],
+    [
+      "person",
+      "Marco Silva",
+      "timezone",
+      "PT"
+    ],
+    [
+      "person",
+      "Hana Sato",
+      "team",
+      "Support"
+    ],
+    [
+      "person",
+      "Hana Sato",
+      "role",
+      "Support lead"
+    ],
+    [
+      "person",
+      "Hana Sato",
+      "timezone",
+      "JST"
+    ],
+    [
+      "person",
+      "Omar Aziz",
+      "team",
+      "Security"
+    ],
+    [
+      "person",
+      "Omar Aziz",
+      "role",
+      "Security engineer"
+    ],
+    [
+      "person",
+      "Omar Aziz",
+      "timezone",
+      "ET"
+    ],
+    [
+      "person",
+      "Elsa Novak",
+      "team",
+      "Docs"
+    ],
+    [
+      "person",
+      "Elsa Novak",
+      "role",
+      "Technical writer"
+    ],
+    [
+      "person",
+      "Elsa Novak",
+      "timezone",
+      "CET"
+    ],
+    [
+      "person",
+      "Jules Marchand",
+      "team",
+      "Identity"
+    ],
+    [
+      "person",
+      "Jules Marchand",
+      "role",
+      "Platform engineer"
+    ],
+    [
+      "person",
+      "Jules Marchand",
+      "timezone",
+      "CET"
+    ],
+    [
+      "person",
+      "Kai Tanaka",
+      "team",
+      "Support"
+    ],
+    [
+      "person",
+      "Kai Tanaka",
+      "role",
+      "Support engineer"
+    ],
+    [
+      "person",
+      "Kai Tanaka",
+      "timezone",
+      "JST"
+    ],
+    [
+      "person",
+      "Nina Petrov",
+      "team",
+      "Infra"
+    ],
+    [
+      "person",
+      "Nina Petrov",
+      "role",
+      "SRE"
+    ],
+    [
+      "person",
+      "Nina Petrov",
+      "timezone",
+      "CET"
+    ],
+    [
+      "person",
+      "Rex Okonkwo",
+      "team",
+      "Security"
+    ],
+    [
+      "person",
+      "Rex Okonkwo",
+      "role",
+      "Incident commander"
+    ],
+    [
+      "person",
+      "Rex Okonkwo",
+      "timezone",
+      "ET"
+    ],
+    [
+      "person",
+      "Yuki Mori",
+      "team",
+      "Docs"
+    ],
+    [
+      "person",
+      "Yuki Mori",
+      "role",
+      "Docs engineer"
+    ],
+    [
+      "person",
+      "Yuki Mori",
+      "timezone",
+      "JST"
+    ],
+    [
       "oncall",
       "platform",
       "person",
@@ -1292,6 +2988,36 @@
       "search",
       "person",
       "Ravi Shah"
+    ],
+    [
+      "oncall",
+      "identity",
+      "person",
+      "Jules Marchand"
+    ],
+    [
+      "oncall",
+      "infra",
+      "person",
+      "Nina Petrov"
+    ],
+    [
+      "oncall",
+      "support",
+      "person",
+      "Kai Tanaka"
+    ],
+    [
+      "oncall",
+      "security",
+      "person",
+      "Rex Okonkwo"
+    ],
+    [
+      "oncall",
+      "docs",
+      "person",
+      "Yuki Mori"
     ],
     [
       "policy",
@@ -1339,7 +3065,7 @@
       "policy",
       "Oncall handoff",
       "text",
-      "Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel."
+      "Oncall rotates weekly on Monday at 09:00 in the team lead timezone, with a written handoff in the team channel."
     ],
     [
       "policy",
@@ -1388,6 +3114,1086 @@
       "Payment retries",
       "text",
       "Failed charges retry three times over 48 hours with exponential backoff, then settle to manual review."
+    ],
+    [
+      "policy",
+      "Secrets rotation",
+      "owner",
+      "Security"
+    ],
+    [
+      "policy",
+      "Secrets rotation",
+      "text",
+      "Service credentials rotate every 90 days. Database credentials rotate every 30 days. A rotation that fails pages the Security oncall."
+    ],
+    [
+      "policy",
+      "Backup testing",
+      "owner",
+      "Infra"
+    ],
+    [
+      "policy",
+      "Backup testing",
+      "text",
+      "Every production database restore is tested monthly into a scratch environment, and the result is attached to the runbook."
+    ],
+    [
+      "policy",
+      "Customer escalation",
+      "owner",
+      "Support"
+    ],
+    [
+      "policy",
+      "Customer escalation",
+      "text",
+      "A customer marked priority one gets an engineer on the call within 15 minutes. Priority two gets a written update within four hours."
+    ],
+    [
+      "policy",
+      "Change windows",
+      "owner",
+      "Infra"
+    ],
+    [
+      "policy",
+      "Change windows",
+      "text",
+      "Routine changes ship Monday through Thursday between 09:00 and 16:00 in the service region. Friday changes need a rollback plan."
+    ],
+    [
+      "policy",
+      "Incident review",
+      "owner",
+      "Security"
+    ],
+    [
+      "policy",
+      "Incident review",
+      "text",
+      "Every Sev 1 gets a written review within five business days, and the action items are tracked to closure by the owning team."
+    ],
+    [
+      "policy",
+      "Feature flags",
+      "owner",
+      "Payments"
+    ],
+    [
+      "policy",
+      "Feature flags",
+      "text",
+      "A flag older than 90 days is either made permanent or removed. Flags that gate a payment path need an owner and an expiry."
+    ],
+    [
+      "policy",
+      "Documentation freshness",
+      "owner",
+      "Docs"
+    ],
+    [
+      "policy",
+      "Documentation freshness",
+      "text",
+      "A runbook untouched for 180 days is marked stale and routed to its owning team for review."
+    ],
+    [
+      "policy",
+      "Third party integrations",
+      "owner",
+      "Identity"
+    ],
+    [
+      "policy",
+      "Third party integrations",
+      "text",
+      "Every external integration has a named owner, a fallback path when it is down, and a quarterly health check."
+    ],
+    [
+      "customer",
+      "Northwind",
+      "tier",
+      "enterprise"
+    ],
+    [
+      "customer",
+      "Northwind",
+      "plan",
+      "annual"
+    ],
+    [
+      "customer",
+      "Northwind",
+      "owner",
+      "Support"
+    ],
+    [
+      "customer",
+      "Northwind",
+      "since",
+      "2021"
+    ],
+    [
+      "customer",
+      "Northwind",
+      "seats",
+      "4200"
+    ],
+    [
+      "customer",
+      "Contoso",
+      "tier",
+      "enterprise"
+    ],
+    [
+      "customer",
+      "Contoso",
+      "plan",
+      "annual"
+    ],
+    [
+      "customer",
+      "Contoso",
+      "owner",
+      "Support"
+    ],
+    [
+      "customer",
+      "Contoso",
+      "since",
+      "2020"
+    ],
+    [
+      "customer",
+      "Contoso",
+      "seats",
+      "9100"
+    ],
+    [
+      "customer",
+      "Fabrikam",
+      "tier",
+      "midmarket"
+    ],
+    [
+      "customer",
+      "Fabrikam",
+      "plan",
+      "monthly"
+    ],
+    [
+      "customer",
+      "Fabrikam",
+      "owner",
+      "Growth"
+    ],
+    [
+      "customer",
+      "Fabrikam",
+      "since",
+      "2023"
+    ],
+    [
+      "customer",
+      "Fabrikam",
+      "seats",
+      "380"
+    ],
+    [
+      "customer",
+      "Tailspin",
+      "tier",
+      "midmarket"
+    ],
+    [
+      "customer",
+      "Tailspin",
+      "plan",
+      "annual"
+    ],
+    [
+      "customer",
+      "Tailspin",
+      "owner",
+      "Growth"
+    ],
+    [
+      "customer",
+      "Tailspin",
+      "since",
+      "2022"
+    ],
+    [
+      "customer",
+      "Tailspin",
+      "seats",
+      "640"
+    ],
+    [
+      "customer",
+      "Adatum",
+      "tier",
+      "enterprise"
+    ],
+    [
+      "customer",
+      "Adatum",
+      "plan",
+      "annual"
+    ],
+    [
+      "customer",
+      "Adatum",
+      "owner",
+      "Support"
+    ],
+    [
+      "customer",
+      "Adatum",
+      "since",
+      "2019"
+    ],
+    [
+      "customer",
+      "Adatum",
+      "seats",
+      "12800"
+    ],
+    [
+      "customer",
+      "Proseware",
+      "tier",
+      "startup"
+    ],
+    [
+      "customer",
+      "Proseware",
+      "plan",
+      "monthly"
+    ],
+    [
+      "customer",
+      "Proseware",
+      "owner",
+      "Growth"
+    ],
+    [
+      "customer",
+      "Proseware",
+      "since",
+      "2024"
+    ],
+    [
+      "customer",
+      "Proseware",
+      "seats",
+      "45"
+    ],
+    [
+      "customer",
+      "Lucerne",
+      "tier",
+      "midmarket"
+    ],
+    [
+      "customer",
+      "Lucerne",
+      "plan",
+      "annual"
+    ],
+    [
+      "customer",
+      "Lucerne",
+      "owner",
+      "Payments"
+    ],
+    [
+      "customer",
+      "Lucerne",
+      "since",
+      "2022"
+    ],
+    [
+      "customer",
+      "Lucerne",
+      "seats",
+      "1200"
+    ],
+    [
+      "customer",
+      "Wingtip",
+      "tier",
+      "startup"
+    ],
+    [
+      "customer",
+      "Wingtip",
+      "plan",
+      "monthly"
+    ],
+    [
+      "customer",
+      "Wingtip",
+      "owner",
+      "Growth"
+    ],
+    [
+      "customer",
+      "Wingtip",
+      "since",
+      "2024"
+    ],
+    [
+      "customer",
+      "Wingtip",
+      "seats",
+      "80"
+    ],
+    [
+      "customer",
+      "Relecloud",
+      "tier",
+      "enterprise"
+    ],
+    [
+      "customer",
+      "Relecloud",
+      "plan",
+      "annual"
+    ],
+    [
+      "customer",
+      "Relecloud",
+      "owner",
+      "Support"
+    ],
+    [
+      "customer",
+      "Relecloud",
+      "since",
+      "2018"
+    ],
+    [
+      "customer",
+      "Relecloud",
+      "seats",
+      "15300"
+    ],
+    [
+      "customer",
+      "Alpine Ski House",
+      "tier",
+      "midmarket"
+    ],
+    [
+      "customer",
+      "Alpine Ski House",
+      "plan",
+      "annual"
+    ],
+    [
+      "customer",
+      "Alpine Ski House",
+      "owner",
+      "Search"
+    ],
+    [
+      "customer",
+      "Alpine Ski House",
+      "since",
+      "2021"
+    ],
+    [
+      "customer",
+      "Alpine Ski House",
+      "seats",
+      "900"
+    ],
+    [
+      "customer",
+      "Graphic Design Institute",
+      "tier",
+      "startup"
+    ],
+    [
+      "customer",
+      "Graphic Design Institute",
+      "plan",
+      "monthly"
+    ],
+    [
+      "customer",
+      "Graphic Design Institute",
+      "owner",
+      "Docs"
+    ],
+    [
+      "customer",
+      "Graphic Design Institute",
+      "since",
+      "2025"
+    ],
+    [
+      "customer",
+      "Graphic Design Institute",
+      "seats",
+      "30"
+    ],
+    [
+      "customer",
+      "Lorem Medical",
+      "tier",
+      "enterprise"
+    ],
+    [
+      "customer",
+      "Lorem Medical",
+      "plan",
+      "annual"
+    ],
+    [
+      "customer",
+      "Lorem Medical",
+      "owner",
+      "Identity"
+    ],
+    [
+      "customer",
+      "Lorem Medical",
+      "since",
+      "2020"
+    ],
+    [
+      "customer",
+      "Lorem Medical",
+      "seats",
+      "7400"
+    ],
+    [
+      "incident",
+      "INC-4101",
+      "title",
+      "Atlas ingest backlog"
+    ],
+    [
+      "incident",
+      "INC-4101",
+      "service",
+      "ingest-worker"
+    ],
+    [
+      "incident",
+      "INC-4101",
+      "severity",
+      "Sev 1"
+    ],
+    [
+      "incident",
+      "INC-4101",
+      "status",
+      "resolved"
+    ],
+    [
+      "incident",
+      "INC-4101",
+      "team",
+      "Platform"
+    ],
+    [
+      "incident",
+      "INC-4102",
+      "title",
+      "Ledger duplicate charges"
+    ],
+    [
+      "incident",
+      "INC-4102",
+      "service",
+      "ledger-api"
+    ],
+    [
+      "incident",
+      "INC-4102",
+      "severity",
+      "Sev 1"
+    ],
+    [
+      "incident",
+      "INC-4102",
+      "status",
+      "mitigated"
+    ],
+    [
+      "incident",
+      "INC-4102",
+      "team",
+      "Payments"
+    ],
+    [
+      "incident",
+      "INC-4103",
+      "title",
+      "Search latency spike"
+    ],
+    [
+      "incident",
+      "INC-4103",
+      "service",
+      "search-index"
+    ],
+    [
+      "incident",
+      "INC-4103",
+      "severity",
+      "Sev 2"
+    ],
+    [
+      "incident",
+      "INC-4103",
+      "status",
+      "resolved"
+    ],
+    [
+      "incident",
+      "INC-4103",
+      "team",
+      "Search"
+    ],
+    [
+      "incident",
+      "INC-4104",
+      "title",
+      "Signup rate limit too tight"
+    ],
+    [
+      "incident",
+      "INC-4104",
+      "service",
+      "signup-web"
+    ],
+    [
+      "incident",
+      "INC-4104",
+      "severity",
+      "Sev 2"
+    ],
+    [
+      "incident",
+      "INC-4104",
+      "status",
+      "open"
+    ],
+    [
+      "incident",
+      "INC-4104",
+      "team",
+      "Growth"
+    ],
+    [
+      "incident",
+      "INC-4105",
+      "title",
+      "Pipeline retry storm"
+    ],
+    [
+      "incident",
+      "INC-4105",
+      "service",
+      "pipeline-runner"
+    ],
+    [
+      "incident",
+      "INC-4105",
+      "severity",
+      "Sev 2"
+    ],
+    [
+      "incident",
+      "INC-4105",
+      "status",
+      "resolved"
+    ],
+    [
+      "incident",
+      "INC-4105",
+      "team",
+      "Data"
+    ],
+    [
+      "incident",
+      "INC-4106",
+      "title",
+      "Metrics gap after rollup"
+    ],
+    [
+      "incident",
+      "INC-4106",
+      "service",
+      "metrics-rollup"
+    ],
+    [
+      "incident",
+      "INC-4106",
+      "severity",
+      "Sev 3"
+    ],
+    [
+      "incident",
+      "INC-4106",
+      "status",
+      "open"
+    ],
+    [
+      "incident",
+      "INC-4106",
+      "team",
+      "Data"
+    ],
+    [
+      "incident",
+      "INC-4107",
+      "title",
+      "Docs portal expired certificate"
+    ],
+    [
+      "incident",
+      "INC-4107",
+      "service",
+      "docs-portal"
+    ],
+    [
+      "incident",
+      "INC-4107",
+      "severity",
+      "Sev 2"
+    ],
+    [
+      "incident",
+      "INC-4107",
+      "status",
+      "resolved"
+    ],
+    [
+      "incident",
+      "INC-4107",
+      "team",
+      "Docs"
+    ],
+    [
+      "incident",
+      "INC-4108",
+      "title",
+      "Identity token refresh loop"
+    ],
+    [
+      "incident",
+      "INC-4108",
+      "service",
+      "iris"
+    ],
+    [
+      "incident",
+      "INC-4108",
+      "severity",
+      "Sev 1"
+    ],
+    [
+      "incident",
+      "INC-4108",
+      "status",
+      "resolved"
+    ],
+    [
+      "incident",
+      "INC-4108",
+      "team",
+      "Identity"
+    ],
+    [
+      "incident",
+      "INC-4109",
+      "title",
+      "Cache eviction churn"
+    ],
+    [
+      "incident",
+      "INC-4109",
+      "service",
+      "query-cache"
+    ],
+    [
+      "incident",
+      "INC-4109",
+      "severity",
+      "Sev 3"
+    ],
+    [
+      "incident",
+      "INC-4109",
+      "status",
+      "mitigated"
+    ],
+    [
+      "incident",
+      "INC-4109",
+      "team",
+      "Data"
+    ],
+    [
+      "incident",
+      "INC-4110",
+      "title",
+      "Notification fanout delay"
+    ],
+    [
+      "incident",
+      "INC-4110",
+      "service",
+      "notify-fanout"
+    ],
+    [
+      "incident",
+      "INC-4110",
+      "severity",
+      "Sev 2"
+    ],
+    [
+      "incident",
+      "INC-4110",
+      "status",
+      "resolved"
+    ],
+    [
+      "incident",
+      "INC-4110",
+      "team",
+      "Platform"
+    ],
+    [
+      "runbook",
+      "Atlas ingest backlog",
+      "service",
+      "ingest-api"
+    ],
+    [
+      "runbook",
+      "Atlas ingest backlog",
+      "owner",
+      "Platform"
+    ],
+    [
+      "runbook",
+      "Atlas ingest backlog",
+      "steps",
+      "Check queue depth, scale workers, drain oldest partition"
+    ],
+    [
+      "runbook",
+      "Ledger reconciliation",
+      "service",
+      "ledger-api"
+    ],
+    [
+      "runbook",
+      "Ledger reconciliation",
+      "owner",
+      "Payments"
+    ],
+    [
+      "runbook",
+      "Ledger reconciliation",
+      "steps",
+      "Freeze writes, replay the settlement window, compare totals"
+    ],
+    [
+      "runbook",
+      "Search index rebuild",
+      "service",
+      "search-index"
+    ],
+    [
+      "runbook",
+      "Search index rebuild",
+      "owner",
+      "Search"
+    ],
+    [
+      "runbook",
+      "Search index rebuild",
+      "steps",
+      "Snapshot the index, rebuild shard by shard, flip the alias"
+    ],
+    [
+      "runbook",
+      "Pipeline backfill",
+      "service",
+      "pipeline-runner"
+    ],
+    [
+      "runbook",
+      "Pipeline backfill",
+      "owner",
+      "Data"
+    ],
+    [
+      "runbook",
+      "Pipeline backfill",
+      "steps",
+      "Pick the date range, run the backfill, verify row counts"
+    ],
+    [
+      "runbook",
+      "Token rotation",
+      "service",
+      "iris"
+    ],
+    [
+      "runbook",
+      "Token rotation",
+      "owner",
+      "Identity"
+    ],
+    [
+      "runbook",
+      "Token rotation",
+      "steps",
+      "Rotate the signing key, publish the new JWKS, watch the error rate"
+    ],
+    [
+      "runbook",
+      "Metrics gap",
+      "service",
+      "lumen"
+    ],
+    [
+      "runbook",
+      "Metrics gap",
+      "owner",
+      "Infra"
+    ],
+    [
+      "runbook",
+      "Metrics gap",
+      "steps",
+      "Check scrape targets, restart the shipper, backfill the gap"
+    ],
+    [
+      "runbook",
+      "Experiment rollback",
+      "service",
+      "experiment-api"
+    ],
+    [
+      "runbook",
+      "Experiment rollback",
+      "owner",
+      "Growth"
+    ],
+    [
+      "runbook",
+      "Experiment rollback",
+      "steps",
+      "Set the split to zero, confirm exposure, archive the result"
+    ],
+    [
+      "runbook",
+      "Certificate renewal",
+      "service",
+      "docs-portal"
+    ],
+    [
+      "runbook",
+      "Certificate renewal",
+      "owner",
+      "Docs"
+    ],
+    [
+      "runbook",
+      "Certificate renewal",
+      "steps",
+      "Renew the certificate, deploy the secret, verify the chain"
+    ],
+    [
+      "integration",
+      "Stripe",
+      "product",
+      "Delta"
+    ],
+    [
+      "integration",
+      "Stripe",
+      "direction",
+      "outbound"
+    ],
+    [
+      "integration",
+      "Stripe",
+      "owner",
+      "Payments"
+    ],
+    [
+      "integration",
+      "Salesforce",
+      "product",
+      "Harbor"
+    ],
+    [
+      "integration",
+      "Salesforce",
+      "direction",
+      "bidirectional"
+    ],
+    [
+      "integration",
+      "Salesforce",
+      "owner",
+      "Growth"
+    ],
+    [
+      "integration",
+      "Okta",
+      "product",
+      "Iris"
+    ],
+    [
+      "integration",
+      "Okta",
+      "direction",
+      "inbound"
+    ],
+    [
+      "integration",
+      "Okta",
+      "owner",
+      "Identity"
+    ],
+    [
+      "integration",
+      "Segment",
+      "product",
+      "Beacon"
+    ],
+    [
+      "integration",
+      "Segment",
+      "direction",
+      "outbound"
+    ],
+    [
+      "integration",
+      "Segment",
+      "owner",
+      "Growth"
+    ],
+    [
+      "integration",
+      "Slack",
+      "product",
+      "Nimbus"
+    ],
+    [
+      "integration",
+      "Slack",
+      "direction",
+      "outbound"
+    ],
+    [
+      "integration",
+      "Slack",
+      "owner",
+      "Platform"
+    ],
+    [
+      "integration",
+      "Snowflake",
+      "product",
+      "Quartz"
+    ],
+    [
+      "integration",
+      "Snowflake",
+      "direction",
+      "outbound"
+    ],
+    [
+      "integration",
+      "Snowflake",
+      "owner",
+      "Data"
+    ],
+    [
+      "integration",
+      "PagerDuty",
+      "product",
+      "Lumen"
+    ],
+    [
+      "integration",
+      "PagerDuty",
+      "direction",
+      "outbound"
+    ],
+    [
+      "integration",
+      "PagerDuty",
+      "owner",
+      "Infra"
+    ],
+    [
+      "integration",
+      "Zendesk",
+      "product",
+      "Harbor"
+    ],
+    [
+      "integration",
+      "Zendesk",
+      "direction",
+      "bidirectional"
+    ],
+    [
+      "integration",
+      "Zendesk",
+      "owner",
+      "Support"
+    ],
+    [
+      "integration",
+      "GitHub",
+      "product",
+      "Kestrel"
+    ],
+    [
+      "integration",
+      "GitHub",
+      "direction",
+      "inbound"
+    ],
+    [
+      "integration",
+      "GitHub",
+      "owner",
+      "Search"
+    ],
+    [
+      "integration",
+      "Twilio",
+      "product",
+      "Ember"
+    ],
+    [
+      "integration",
+      "Twilio",
+      "direction",
+      "outbound"
+    ],
+    [
+      "integration",
+      "Twilio",
+      "owner",
+      "Platform"
     ]
   ],
   "docs": [
@@ -1728,396 +4534,1236 @@
       "text": "Harbor: tier is tier 3."
     },
     {
-      "id": "service:ingest-api:product",
+      "id": "product:Iris:owner",
+      "kind": "product",
+      "subject": "Iris",
+      "attribute": "owner",
+      "text": "Iris: owner is Identity."
+    },
+    {
+      "id": "product:Iris:language",
+      "kind": "product",
+      "subject": "Iris",
+      "attribute": "language",
+      "text": "Iris: language is Go."
+    },
+    {
+      "id": "product:Iris:sla",
+      "kind": "product",
+      "subject": "Iris",
+      "attribute": "sla",
+      "text": "Iris: sla is 99.99%."
+    },
+    {
+      "id": "product:Iris:database",
+      "kind": "product",
+      "subject": "Iris",
+      "attribute": "database",
+      "text": "Iris: database is Postgres."
+    },
+    {
+      "id": "product:Iris:region",
+      "kind": "product",
+      "subject": "Iris",
+      "attribute": "region",
+      "text": "Iris: region is us-east."
+    },
+    {
+      "id": "product:Iris:tier",
+      "kind": "product",
+      "subject": "Iris",
+      "attribute": "tier",
+      "text": "Iris: tier is tier 1."
+    },
+    {
+      "id": "product:Juno:owner",
+      "kind": "product",
+      "subject": "Juno",
+      "attribute": "owner",
+      "text": "Juno: owner is Identity."
+    },
+    {
+      "id": "product:Juno:language",
+      "kind": "product",
+      "subject": "Juno",
+      "attribute": "language",
+      "text": "Juno: language is Rust."
+    },
+    {
+      "id": "product:Juno:sla",
+      "kind": "product",
+      "subject": "Juno",
+      "attribute": "sla",
+      "text": "Juno: sla is 99.95%."
+    },
+    {
+      "id": "product:Juno:database",
+      "kind": "product",
+      "subject": "Juno",
+      "attribute": "database",
+      "text": "Juno: database is Redis."
+    },
+    {
+      "id": "product:Juno:region",
+      "kind": "product",
+      "subject": "Juno",
+      "attribute": "region",
+      "text": "Juno: region is us-east."
+    },
+    {
+      "id": "product:Juno:tier",
+      "kind": "product",
+      "subject": "Juno",
+      "attribute": "tier",
+      "text": "Juno: tier is tier 1."
+    },
+    {
+      "id": "product:Kestrel:owner",
+      "kind": "product",
+      "subject": "Kestrel",
+      "attribute": "owner",
+      "text": "Kestrel: owner is Search."
+    },
+    {
+      "id": "product:Kestrel:language",
+      "kind": "product",
+      "subject": "Kestrel",
+      "attribute": "language",
+      "text": "Kestrel: language is Java."
+    },
+    {
+      "id": "product:Kestrel:sla",
+      "kind": "product",
+      "subject": "Kestrel",
+      "attribute": "sla",
+      "text": "Kestrel: sla is 99.5%."
+    },
+    {
+      "id": "product:Kestrel:database",
+      "kind": "product",
+      "subject": "Kestrel",
+      "attribute": "database",
+      "text": "Kestrel: database is Elasticsearch."
+    },
+    {
+      "id": "product:Kestrel:region",
+      "kind": "product",
+      "subject": "Kestrel",
+      "attribute": "region",
+      "text": "Kestrel: region is eu-west."
+    },
+    {
+      "id": "product:Kestrel:tier",
+      "kind": "product",
+      "subject": "Kestrel",
+      "attribute": "tier",
+      "text": "Kestrel: tier is tier 2."
+    },
+    {
+      "id": "product:Lumen:owner",
+      "kind": "product",
+      "subject": "Lumen",
+      "attribute": "owner",
+      "text": "Lumen: owner is Infra."
+    },
+    {
+      "id": "product:Lumen:language",
+      "kind": "product",
+      "subject": "Lumen",
+      "attribute": "language",
+      "text": "Lumen: language is Go."
+    },
+    {
+      "id": "product:Lumen:sla",
+      "kind": "product",
+      "subject": "Lumen",
+      "attribute": "sla",
+      "text": "Lumen: sla is 99.9%."
+    },
+    {
+      "id": "product:Lumen:database",
+      "kind": "product",
+      "subject": "Lumen",
+      "attribute": "database",
+      "text": "Lumen: database is Prometheus."
+    },
+    {
+      "id": "product:Lumen:region",
+      "kind": "product",
+      "subject": "Lumen",
+      "attribute": "region",
+      "text": "Lumen: region is us-west."
+    },
+    {
+      "id": "product:Lumen:tier",
+      "kind": "product",
+      "subject": "Lumen",
+      "attribute": "tier",
+      "text": "Lumen: tier is tier 2."
+    },
+    {
+      "id": "product:Mica:owner",
+      "kind": "product",
+      "subject": "Mica",
+      "attribute": "owner",
+      "text": "Mica: owner is Infra."
+    },
+    {
+      "id": "product:Mica:language",
+      "kind": "product",
+      "subject": "Mica",
+      "attribute": "language",
+      "text": "Mica: language is Python."
+    },
+    {
+      "id": "product:Mica:sla",
+      "kind": "product",
+      "subject": "Mica",
+      "attribute": "sla",
+      "text": "Mica: sla is 99.0%."
+    },
+    {
+      "id": "product:Mica:database",
+      "kind": "product",
+      "subject": "Mica",
+      "attribute": "database",
+      "text": "Mica: database is Postgres."
+    },
+    {
+      "id": "product:Mica:region",
+      "kind": "product",
+      "subject": "Mica",
+      "attribute": "region",
+      "text": "Mica: region is us-west."
+    },
+    {
+      "id": "product:Mica:tier",
+      "kind": "product",
+      "subject": "Mica",
+      "attribute": "tier",
+      "text": "Mica: tier is tier 3."
+    },
+    {
+      "id": "product:Nimbus:owner",
+      "kind": "product",
+      "subject": "Nimbus",
+      "attribute": "owner",
+      "text": "Nimbus: owner is Platform."
+    },
+    {
+      "id": "product:Nimbus:language",
+      "kind": "product",
+      "subject": "Nimbus",
+      "attribute": "language",
+      "text": "Nimbus: language is TypeScript."
+    },
+    {
+      "id": "product:Nimbus:sla",
+      "kind": "product",
+      "subject": "Nimbus",
+      "attribute": "sla",
+      "text": "Nimbus: sla is 99.5%."
+    },
+    {
+      "id": "product:Nimbus:database",
+      "kind": "product",
+      "subject": "Nimbus",
+      "attribute": "database",
+      "text": "Nimbus: database is DynamoDB."
+    },
+    {
+      "id": "product:Nimbus:region",
+      "kind": "product",
+      "subject": "Nimbus",
+      "attribute": "region",
+      "text": "Nimbus: region is ap-south."
+    },
+    {
+      "id": "product:Nimbus:tier",
+      "kind": "product",
+      "subject": "Nimbus",
+      "attribute": "tier",
+      "text": "Nimbus: tier is tier 3."
+    },
+    {
+      "id": "product:Opal:owner",
+      "kind": "product",
+      "subject": "Opal",
+      "attribute": "owner",
+      "text": "Opal: owner is Payments."
+    },
+    {
+      "id": "product:Opal:language",
+      "kind": "product",
+      "subject": "Opal",
+      "attribute": "language",
+      "text": "Opal: language is Rust."
+    },
+    {
+      "id": "product:Opal:sla",
+      "kind": "product",
+      "subject": "Opal",
+      "attribute": "sla",
+      "text": "Opal: sla is 99.95%."
+    },
+    {
+      "id": "product:Opal:database",
+      "kind": "product",
+      "subject": "Opal",
+      "attribute": "database",
+      "text": "Opal: database is Postgres."
+    },
+    {
+      "id": "product:Opal:region",
+      "kind": "product",
+      "subject": "Opal",
+      "attribute": "region",
+      "text": "Opal: region is eu-west."
+    },
+    {
+      "id": "product:Opal:tier",
+      "kind": "product",
+      "subject": "Opal",
+      "attribute": "tier",
+      "text": "Opal: tier is tier 1."
+    },
+    {
+      "id": "product:Quartz:owner",
+      "kind": "product",
+      "subject": "Quartz",
+      "attribute": "owner",
+      "text": "Quartz: owner is Data."
+    },
+    {
+      "id": "product:Quartz:language",
+      "kind": "product",
+      "subject": "Quartz",
+      "attribute": "language",
+      "text": "Quartz: language is Python."
+    },
+    {
+      "id": "product:Quartz:sla",
+      "kind": "product",
+      "subject": "Quartz",
+      "attribute": "sla",
+      "text": "Quartz: sla is 99.0%."
+    },
+    {
+      "id": "product:Quartz:database",
+      "kind": "product",
+      "subject": "Quartz",
+      "attribute": "database",
+      "text": "Quartz: database is ClickHouse."
+    },
+    {
+      "id": "product:Quartz:region",
+      "kind": "product",
+      "subject": "Quartz",
+      "attribute": "region",
+      "text": "Quartz: region is us-east."
+    },
+    {
+      "id": "product:Quartz:tier",
+      "kind": "product",
+      "subject": "Quartz",
+      "attribute": "tier",
+      "text": "Quartz: tier is tier 3."
+    },
+    {
+      "id": "service:atlas-api:product",
       "kind": "service",
-      "subject": "ingest-api",
+      "subject": "atlas-api",
       "attribute": "product",
-      "text": "ingest-api: product is Atlas."
+      "text": "atlas-api: product is Atlas."
     },
     {
-      "id": "service:ingest-api:runtime",
+      "id": "service:atlas-api:runtime",
       "kind": "service",
-      "subject": "ingest-api",
+      "subject": "atlas-api",
       "attribute": "runtime",
-      "text": "ingest-api: runtime is Go."
+      "text": "atlas-api: runtime is Go."
     },
     {
-      "id": "service:ingest-api:replicas",
+      "id": "service:atlas-api:replicas",
       "kind": "service",
-      "subject": "ingest-api",
+      "subject": "atlas-api",
       "attribute": "replicas",
-      "text": "ingest-api: replicas is 12."
+      "text": "atlas-api: replicas is 12."
     },
     {
-      "id": "service:ingest-api:oncall",
+      "id": "service:atlas-api:oncall",
       "kind": "service",
-      "subject": "ingest-api",
+      "subject": "atlas-api",
       "attribute": "oncall",
-      "text": "ingest-api: oncall is Platform."
+      "text": "atlas-api: oncall is Platform."
     },
     {
-      "id": "service:ingest-worker:product",
+      "id": "service:atlas-worker:product",
       "kind": "service",
-      "subject": "ingest-worker",
+      "subject": "atlas-worker",
       "attribute": "product",
-      "text": "ingest-worker: product is Atlas."
+      "text": "atlas-worker: product is Atlas."
     },
     {
-      "id": "service:ingest-worker:runtime",
+      "id": "service:atlas-worker:runtime",
       "kind": "service",
-      "subject": "ingest-worker",
+      "subject": "atlas-worker",
       "attribute": "runtime",
-      "text": "ingest-worker: runtime is Go."
+      "text": "atlas-worker: runtime is Go."
     },
     {
-      "id": "service:ingest-worker:replicas",
+      "id": "service:atlas-worker:replicas",
       "kind": "service",
-      "subject": "ingest-worker",
+      "subject": "atlas-worker",
       "attribute": "replicas",
-      "text": "ingest-worker: replicas is 30."
+      "text": "atlas-worker: replicas is 8."
     },
     {
-      "id": "service:ingest-worker:oncall",
+      "id": "service:atlas-worker:oncall",
       "kind": "service",
-      "subject": "ingest-worker",
+      "subject": "atlas-worker",
       "attribute": "oncall",
-      "text": "ingest-worker: oncall is Platform."
+      "text": "atlas-worker: oncall is Platform."
     },
     {
-      "id": "service:signup-web:product",
+      "id": "service:beacon-api:product",
       "kind": "service",
-      "subject": "signup-web",
+      "subject": "beacon-api",
       "attribute": "product",
-      "text": "signup-web: product is Beacon."
+      "text": "beacon-api: product is Beacon."
     },
     {
-      "id": "service:signup-web:runtime",
+      "id": "service:beacon-api:runtime",
       "kind": "service",
-      "subject": "signup-web",
+      "subject": "beacon-api",
       "attribute": "runtime",
-      "text": "signup-web: runtime is TypeScript."
+      "text": "beacon-api: runtime is TypeScript."
     },
     {
-      "id": "service:signup-web:replicas",
+      "id": "service:beacon-api:replicas",
       "kind": "service",
-      "subject": "signup-web",
+      "subject": "beacon-api",
       "attribute": "replicas",
-      "text": "signup-web: replicas is 6."
+      "text": "beacon-api: replicas is 8."
     },
     {
-      "id": "service:signup-web:oncall",
+      "id": "service:beacon-api:oncall",
       "kind": "service",
-      "subject": "signup-web",
+      "subject": "beacon-api",
       "attribute": "oncall",
-      "text": "signup-web: oncall is Growth."
+      "text": "beacon-api: oncall is Growth."
     },
     {
-      "id": "service:experiment-api:product",
+      "id": "service:beacon-worker:product",
       "kind": "service",
-      "subject": "experiment-api",
+      "subject": "beacon-worker",
       "attribute": "product",
-      "text": "experiment-api: product is Beacon."
+      "text": "beacon-worker: product is Beacon."
     },
     {
-      "id": "service:experiment-api:runtime",
+      "id": "service:beacon-worker:runtime",
       "kind": "service",
-      "subject": "experiment-api",
+      "subject": "beacon-worker",
       "attribute": "runtime",
-      "text": "experiment-api: runtime is TypeScript."
+      "text": "beacon-worker: runtime is TypeScript."
     },
     {
-      "id": "service:experiment-api:replicas",
+      "id": "service:beacon-worker:replicas",
       "kind": "service",
-      "subject": "experiment-api",
+      "subject": "beacon-worker",
       "attribute": "replicas",
-      "text": "experiment-api: replicas is 4."
+      "text": "beacon-worker: replicas is 4."
     },
     {
-      "id": "service:experiment-api:oncall",
+      "id": "service:beacon-worker:oncall",
       "kind": "service",
-      "subject": "experiment-api",
+      "subject": "beacon-worker",
       "attribute": "oncall",
-      "text": "experiment-api: oncall is Growth."
+      "text": "beacon-worker: oncall is Growth."
     },
     {
-      "id": "service:pipeline-runner:product",
+      "id": "service:cinder-api:product",
       "kind": "service",
-      "subject": "pipeline-runner",
+      "subject": "cinder-api",
       "attribute": "product",
-      "text": "pipeline-runner: product is Cinder."
+      "text": "cinder-api: product is Cinder."
     },
     {
-      "id": "service:pipeline-runner:runtime",
+      "id": "service:cinder-api:runtime",
       "kind": "service",
-      "subject": "pipeline-runner",
+      "subject": "cinder-api",
       "attribute": "runtime",
-      "text": "pipeline-runner: runtime is Python."
+      "text": "cinder-api: runtime is Python."
     },
     {
-      "id": "service:pipeline-runner:replicas",
+      "id": "service:cinder-api:replicas",
       "kind": "service",
-      "subject": "pipeline-runner",
+      "subject": "cinder-api",
       "attribute": "replicas",
-      "text": "pipeline-runner: replicas is 8."
+      "text": "cinder-api: replicas is 8."
     },
     {
-      "id": "service:pipeline-runner:oncall",
+      "id": "service:cinder-api:oncall",
       "kind": "service",
-      "subject": "pipeline-runner",
+      "subject": "cinder-api",
       "attribute": "oncall",
-      "text": "pipeline-runner: oncall is Data."
+      "text": "cinder-api: oncall is Data."
     },
     {
-      "id": "service:query-cache:product",
+      "id": "service:cinder-worker:product",
       "kind": "service",
-      "subject": "query-cache",
+      "subject": "cinder-worker",
       "attribute": "product",
-      "text": "query-cache: product is Cinder."
+      "text": "cinder-worker: product is Cinder."
     },
     {
-      "id": "service:query-cache:runtime",
+      "id": "service:cinder-worker:runtime",
       "kind": "service",
-      "subject": "query-cache",
+      "subject": "cinder-worker",
       "attribute": "runtime",
-      "text": "query-cache: runtime is Go."
+      "text": "cinder-worker: runtime is Python."
     },
     {
-      "id": "service:query-cache:replicas",
+      "id": "service:cinder-worker:replicas",
       "kind": "service",
-      "subject": "query-cache",
+      "subject": "cinder-worker",
       "attribute": "replicas",
-      "text": "query-cache: replicas is 3."
+      "text": "cinder-worker: replicas is 4."
     },
     {
-      "id": "service:query-cache:oncall",
+      "id": "service:cinder-worker:oncall",
       "kind": "service",
-      "subject": "query-cache",
+      "subject": "cinder-worker",
       "attribute": "oncall",
-      "text": "query-cache: oncall is Data."
+      "text": "cinder-worker: oncall is Data."
     },
     {
-      "id": "service:ledger-api:product",
+      "id": "service:delta-api:product",
       "kind": "service",
-      "subject": "ledger-api",
+      "subject": "delta-api",
       "attribute": "product",
-      "text": "ledger-api: product is Delta."
+      "text": "delta-api: product is Delta."
     },
     {
-      "id": "service:ledger-api:runtime",
+      "id": "service:delta-api:runtime",
       "kind": "service",
-      "subject": "ledger-api",
+      "subject": "delta-api",
       "attribute": "runtime",
-      "text": "ledger-api: runtime is Rust."
+      "text": "delta-api: runtime is Rust."
     },
     {
-      "id": "service:ledger-api:replicas",
+      "id": "service:delta-api:replicas",
       "kind": "service",
-      "subject": "ledger-api",
+      "subject": "delta-api",
       "attribute": "replicas",
-      "text": "ledger-api: replicas is 10."
+      "text": "delta-api: replicas is 12."
     },
     {
-      "id": "service:ledger-api:oncall",
+      "id": "service:delta-api:oncall",
       "kind": "service",
-      "subject": "ledger-api",
+      "subject": "delta-api",
       "attribute": "oncall",
-      "text": "ledger-api: oncall is Payments."
+      "text": "delta-api: oncall is Payments."
     },
     {
-      "id": "service:settlement-worker:product",
+      "id": "service:delta-worker:product",
       "kind": "service",
-      "subject": "settlement-worker",
+      "subject": "delta-worker",
       "attribute": "product",
-      "text": "settlement-worker: product is Delta."
+      "text": "delta-worker: product is Delta."
     },
     {
-      "id": "service:settlement-worker:runtime",
+      "id": "service:delta-worker:runtime",
       "kind": "service",
-      "subject": "settlement-worker",
+      "subject": "delta-worker",
       "attribute": "runtime",
-      "text": "settlement-worker: runtime is Rust."
+      "text": "delta-worker: runtime is Rust."
     },
     {
-      "id": "service:settlement-worker:replicas",
+      "id": "service:delta-worker:replicas",
       "kind": "service",
-      "subject": "settlement-worker",
+      "subject": "delta-worker",
       "attribute": "replicas",
-      "text": "settlement-worker: replicas is 5."
+      "text": "delta-worker: replicas is 8."
     },
     {
-      "id": "service:settlement-worker:oncall",
+      "id": "service:delta-worker:oncall",
       "kind": "service",
-      "subject": "settlement-worker",
+      "subject": "delta-worker",
       "attribute": "oncall",
-      "text": "settlement-worker: oncall is Payments."
+      "text": "delta-worker: oncall is Payments."
     },
     {
-      "id": "service:notify-fanout:product",
+      "id": "service:ember-api:product",
       "kind": "service",
-      "subject": "notify-fanout",
+      "subject": "ember-api",
       "attribute": "product",
-      "text": "notify-fanout: product is Ember."
+      "text": "ember-api: product is Ember."
     },
     {
-      "id": "service:notify-fanout:runtime",
+      "id": "service:ember-api:runtime",
       "kind": "service",
-      "subject": "notify-fanout",
+      "subject": "ember-api",
       "attribute": "runtime",
-      "text": "notify-fanout: runtime is Go."
+      "text": "ember-api: runtime is Go."
     },
     {
-      "id": "service:notify-fanout:replicas",
+      "id": "service:ember-api:replicas",
       "kind": "service",
-      "subject": "notify-fanout",
+      "subject": "ember-api",
       "attribute": "replicas",
-      "text": "notify-fanout: replicas is 9."
+      "text": "ember-api: replicas is 8."
     },
     {
-      "id": "service:notify-fanout:oncall",
+      "id": "service:ember-api:oncall",
       "kind": "service",
-      "subject": "notify-fanout",
+      "subject": "ember-api",
       "attribute": "oncall",
-      "text": "notify-fanout: oncall is Platform."
+      "text": "ember-api: oncall is Platform."
     },
     {
-      "id": "service:search-index:product",
+      "id": "service:ember-worker:product",
       "kind": "service",
-      "subject": "search-index",
+      "subject": "ember-worker",
       "attribute": "product",
-      "text": "search-index: product is Flint."
+      "text": "ember-worker: product is Ember."
     },
     {
-      "id": "service:search-index:runtime",
+      "id": "service:ember-worker:runtime",
       "kind": "service",
-      "subject": "search-index",
+      "subject": "ember-worker",
       "attribute": "runtime",
-      "text": "search-index: runtime is Java."
+      "text": "ember-worker: runtime is Go."
     },
     {
-      "id": "service:search-index:replicas",
+      "id": "service:ember-worker:replicas",
       "kind": "service",
-      "subject": "search-index",
+      "subject": "ember-worker",
       "attribute": "replicas",
-      "text": "search-index: replicas is 14."
+      "text": "ember-worker: replicas is 4."
     },
     {
-      "id": "service:search-index:oncall",
+      "id": "service:ember-worker:oncall",
       "kind": "service",
-      "subject": "search-index",
+      "subject": "ember-worker",
       "attribute": "oncall",
-      "text": "search-index: oncall is Search."
+      "text": "ember-worker: oncall is Platform."
     },
     {
-      "id": "service:search-suggest:product",
+      "id": "service:flint-api:product",
       "kind": "service",
-      "subject": "search-suggest",
+      "subject": "flint-api",
       "attribute": "product",
-      "text": "search-suggest: product is Flint."
+      "text": "flint-api: product is Flint."
     },
     {
-      "id": "service:search-suggest:runtime",
+      "id": "service:flint-api:runtime",
       "kind": "service",
-      "subject": "search-suggest",
+      "subject": "flint-api",
       "attribute": "runtime",
-      "text": "search-suggest: runtime is Java."
+      "text": "flint-api: runtime is Java."
     },
     {
-      "id": "service:search-suggest:replicas",
+      "id": "service:flint-api:replicas",
       "kind": "service",
-      "subject": "search-suggest",
+      "subject": "flint-api",
       "attribute": "replicas",
-      "text": "search-suggest: replicas is 6."
+      "text": "flint-api: replicas is 12."
     },
     {
-      "id": "service:search-suggest:oncall",
+      "id": "service:flint-api:oncall",
       "kind": "service",
-      "subject": "search-suggest",
+      "subject": "flint-api",
       "attribute": "oncall",
-      "text": "search-suggest: oncall is Search."
+      "text": "flint-api: oncall is Search."
     },
     {
-      "id": "service:metrics-rollup:product",
+      "id": "service:flint-worker:product",
       "kind": "service",
-      "subject": "metrics-rollup",
+      "subject": "flint-worker",
       "attribute": "product",
-      "text": "metrics-rollup: product is Gauge."
+      "text": "flint-worker: product is Flint."
     },
     {
-      "id": "service:metrics-rollup:runtime",
+      "id": "service:flint-worker:runtime",
       "kind": "service",
-      "subject": "metrics-rollup",
+      "subject": "flint-worker",
       "attribute": "runtime",
-      "text": "metrics-rollup: runtime is Python."
+      "text": "flint-worker: runtime is Java."
     },
     {
-      "id": "service:metrics-rollup:replicas",
+      "id": "service:flint-worker:replicas",
       "kind": "service",
-      "subject": "metrics-rollup",
+      "subject": "flint-worker",
       "attribute": "replicas",
-      "text": "metrics-rollup: replicas is 4."
+      "text": "flint-worker: replicas is 8."
     },
     {
-      "id": "service:metrics-rollup:oncall",
+      "id": "service:flint-worker:oncall",
       "kind": "service",
-      "subject": "metrics-rollup",
+      "subject": "flint-worker",
       "attribute": "oncall",
-      "text": "metrics-rollup: oncall is Data."
+      "text": "flint-worker: oncall is Search."
     },
     {
-      "id": "service:marketing-site:product",
+      "id": "service:gauge-api:product",
       "kind": "service",
-      "subject": "marketing-site",
+      "subject": "gauge-api",
       "attribute": "product",
-      "text": "marketing-site: product is Harbor."
+      "text": "gauge-api: product is Gauge."
     },
     {
-      "id": "service:marketing-site:runtime",
+      "id": "service:gauge-api:runtime",
       "kind": "service",
-      "subject": "marketing-site",
+      "subject": "gauge-api",
       "attribute": "runtime",
-      "text": "marketing-site: runtime is TypeScript."
+      "text": "gauge-api: runtime is Python."
     },
     {
-      "id": "service:marketing-site:replicas",
+      "id": "service:gauge-api:replicas",
       "kind": "service",
-      "subject": "marketing-site",
+      "subject": "gauge-api",
       "attribute": "replicas",
-      "text": "marketing-site: replicas is 2."
+      "text": "gauge-api: replicas is 4."
     },
     {
-      "id": "service:marketing-site:oncall",
+      "id": "service:gauge-api:oncall",
       "kind": "service",
-      "subject": "marketing-site",
+      "subject": "gauge-api",
       "attribute": "oncall",
-      "text": "marketing-site: oncall is Growth."
+      "text": "gauge-api: oncall is Data."
     },
     {
-      "id": "service:docs-portal:product",
+      "id": "service:gauge-worker:product",
       "kind": "service",
-      "subject": "docs-portal",
+      "subject": "gauge-worker",
       "attribute": "product",
-      "text": "docs-portal: product is Harbor."
+      "text": "gauge-worker: product is Gauge."
     },
     {
-      "id": "service:docs-portal:runtime",
+      "id": "service:gauge-worker:runtime",
       "kind": "service",
-      "subject": "docs-portal",
+      "subject": "gauge-worker",
       "attribute": "runtime",
-      "text": "docs-portal: runtime is TypeScript."
+      "text": "gauge-worker: runtime is Python."
     },
     {
-      "id": "service:docs-portal:replicas",
+      "id": "service:gauge-worker:replicas",
       "kind": "service",
-      "subject": "docs-portal",
+      "subject": "gauge-worker",
       "attribute": "replicas",
-      "text": "docs-portal: replicas is 2."
+      "text": "gauge-worker: replicas is 4."
     },
     {
-      "id": "service:docs-portal:oncall",
+      "id": "service:gauge-worker:oncall",
       "kind": "service",
-      "subject": "docs-portal",
+      "subject": "gauge-worker",
       "attribute": "oncall",
-      "text": "docs-portal: oncall is Growth."
+      "text": "gauge-worker: oncall is Data."
+    },
+    {
+      "id": "service:harbor-api:product",
+      "kind": "service",
+      "subject": "harbor-api",
+      "attribute": "product",
+      "text": "harbor-api: product is Harbor."
+    },
+    {
+      "id": "service:harbor-api:runtime",
+      "kind": "service",
+      "subject": "harbor-api",
+      "attribute": "runtime",
+      "text": "harbor-api: runtime is TypeScript."
+    },
+    {
+      "id": "service:harbor-api:replicas",
+      "kind": "service",
+      "subject": "harbor-api",
+      "attribute": "replicas",
+      "text": "harbor-api: replicas is 4."
+    },
+    {
+      "id": "service:harbor-api:oncall",
+      "kind": "service",
+      "subject": "harbor-api",
+      "attribute": "oncall",
+      "text": "harbor-api: oncall is Growth."
+    },
+    {
+      "id": "service:harbor-worker:product",
+      "kind": "service",
+      "subject": "harbor-worker",
+      "attribute": "product",
+      "text": "harbor-worker: product is Harbor."
+    },
+    {
+      "id": "service:harbor-worker:runtime",
+      "kind": "service",
+      "subject": "harbor-worker",
+      "attribute": "runtime",
+      "text": "harbor-worker: runtime is TypeScript."
+    },
+    {
+      "id": "service:harbor-worker:replicas",
+      "kind": "service",
+      "subject": "harbor-worker",
+      "attribute": "replicas",
+      "text": "harbor-worker: replicas is 4."
+    },
+    {
+      "id": "service:harbor-worker:oncall",
+      "kind": "service",
+      "subject": "harbor-worker",
+      "attribute": "oncall",
+      "text": "harbor-worker: oncall is Growth."
+    },
+    {
+      "id": "service:iris-api:product",
+      "kind": "service",
+      "subject": "iris-api",
+      "attribute": "product",
+      "text": "iris-api: product is Iris."
+    },
+    {
+      "id": "service:iris-api:runtime",
+      "kind": "service",
+      "subject": "iris-api",
+      "attribute": "runtime",
+      "text": "iris-api: runtime is Go."
+    },
+    {
+      "id": "service:iris-api:replicas",
+      "kind": "service",
+      "subject": "iris-api",
+      "attribute": "replicas",
+      "text": "iris-api: replicas is 12."
+    },
+    {
+      "id": "service:iris-api:oncall",
+      "kind": "service",
+      "subject": "iris-api",
+      "attribute": "oncall",
+      "text": "iris-api: oncall is Identity."
+    },
+    {
+      "id": "service:iris-worker:product",
+      "kind": "service",
+      "subject": "iris-worker",
+      "attribute": "product",
+      "text": "iris-worker: product is Iris."
+    },
+    {
+      "id": "service:iris-worker:runtime",
+      "kind": "service",
+      "subject": "iris-worker",
+      "attribute": "runtime",
+      "text": "iris-worker: runtime is Go."
+    },
+    {
+      "id": "service:iris-worker:replicas",
+      "kind": "service",
+      "subject": "iris-worker",
+      "attribute": "replicas",
+      "text": "iris-worker: replicas is 8."
+    },
+    {
+      "id": "service:iris-worker:oncall",
+      "kind": "service",
+      "subject": "iris-worker",
+      "attribute": "oncall",
+      "text": "iris-worker: oncall is Identity."
+    },
+    {
+      "id": "service:juno-api:product",
+      "kind": "service",
+      "subject": "juno-api",
+      "attribute": "product",
+      "text": "juno-api: product is Juno."
+    },
+    {
+      "id": "service:juno-api:runtime",
+      "kind": "service",
+      "subject": "juno-api",
+      "attribute": "runtime",
+      "text": "juno-api: runtime is Rust."
+    },
+    {
+      "id": "service:juno-api:replicas",
+      "kind": "service",
+      "subject": "juno-api",
+      "attribute": "replicas",
+      "text": "juno-api: replicas is 12."
+    },
+    {
+      "id": "service:juno-api:oncall",
+      "kind": "service",
+      "subject": "juno-api",
+      "attribute": "oncall",
+      "text": "juno-api: oncall is Identity."
+    },
+    {
+      "id": "service:juno-worker:product",
+      "kind": "service",
+      "subject": "juno-worker",
+      "attribute": "product",
+      "text": "juno-worker: product is Juno."
+    },
+    {
+      "id": "service:juno-worker:runtime",
+      "kind": "service",
+      "subject": "juno-worker",
+      "attribute": "runtime",
+      "text": "juno-worker: runtime is Rust."
+    },
+    {
+      "id": "service:juno-worker:replicas",
+      "kind": "service",
+      "subject": "juno-worker",
+      "attribute": "replicas",
+      "text": "juno-worker: replicas is 8."
+    },
+    {
+      "id": "service:juno-worker:oncall",
+      "kind": "service",
+      "subject": "juno-worker",
+      "attribute": "oncall",
+      "text": "juno-worker: oncall is Identity."
+    },
+    {
+      "id": "service:kestrel-api:product",
+      "kind": "service",
+      "subject": "kestrel-api",
+      "attribute": "product",
+      "text": "kestrel-api: product is Kestrel."
+    },
+    {
+      "id": "service:kestrel-api:runtime",
+      "kind": "service",
+      "subject": "kestrel-api",
+      "attribute": "runtime",
+      "text": "kestrel-api: runtime is Java."
+    },
+    {
+      "id": "service:kestrel-api:replicas",
+      "kind": "service",
+      "subject": "kestrel-api",
+      "attribute": "replicas",
+      "text": "kestrel-api: replicas is 8."
+    },
+    {
+      "id": "service:kestrel-api:oncall",
+      "kind": "service",
+      "subject": "kestrel-api",
+      "attribute": "oncall",
+      "text": "kestrel-api: oncall is Search."
+    },
+    {
+      "id": "service:kestrel-worker:product",
+      "kind": "service",
+      "subject": "kestrel-worker",
+      "attribute": "product",
+      "text": "kestrel-worker: product is Kestrel."
+    },
+    {
+      "id": "service:kestrel-worker:runtime",
+      "kind": "service",
+      "subject": "kestrel-worker",
+      "attribute": "runtime",
+      "text": "kestrel-worker: runtime is Java."
+    },
+    {
+      "id": "service:kestrel-worker:replicas",
+      "kind": "service",
+      "subject": "kestrel-worker",
+      "attribute": "replicas",
+      "text": "kestrel-worker: replicas is 4."
+    },
+    {
+      "id": "service:kestrel-worker:oncall",
+      "kind": "service",
+      "subject": "kestrel-worker",
+      "attribute": "oncall",
+      "text": "kestrel-worker: oncall is Search."
+    },
+    {
+      "id": "service:lumen-api:product",
+      "kind": "service",
+      "subject": "lumen-api",
+      "attribute": "product",
+      "text": "lumen-api: product is Lumen."
+    },
+    {
+      "id": "service:lumen-api:runtime",
+      "kind": "service",
+      "subject": "lumen-api",
+      "attribute": "runtime",
+      "text": "lumen-api: runtime is Go."
+    },
+    {
+      "id": "service:lumen-api:replicas",
+      "kind": "service",
+      "subject": "lumen-api",
+      "attribute": "replicas",
+      "text": "lumen-api: replicas is 8."
+    },
+    {
+      "id": "service:lumen-api:oncall",
+      "kind": "service",
+      "subject": "lumen-api",
+      "attribute": "oncall",
+      "text": "lumen-api: oncall is Infra."
+    },
+    {
+      "id": "service:lumen-worker:product",
+      "kind": "service",
+      "subject": "lumen-worker",
+      "attribute": "product",
+      "text": "lumen-worker: product is Lumen."
+    },
+    {
+      "id": "service:lumen-worker:runtime",
+      "kind": "service",
+      "subject": "lumen-worker",
+      "attribute": "runtime",
+      "text": "lumen-worker: runtime is Go."
+    },
+    {
+      "id": "service:lumen-worker:replicas",
+      "kind": "service",
+      "subject": "lumen-worker",
+      "attribute": "replicas",
+      "text": "lumen-worker: replicas is 4."
+    },
+    {
+      "id": "service:lumen-worker:oncall",
+      "kind": "service",
+      "subject": "lumen-worker",
+      "attribute": "oncall",
+      "text": "lumen-worker: oncall is Infra."
+    },
+    {
+      "id": "service:mica-api:product",
+      "kind": "service",
+      "subject": "mica-api",
+      "attribute": "product",
+      "text": "mica-api: product is Mica."
+    },
+    {
+      "id": "service:mica-api:runtime",
+      "kind": "service",
+      "subject": "mica-api",
+      "attribute": "runtime",
+      "text": "mica-api: runtime is Python."
+    },
+    {
+      "id": "service:mica-api:replicas",
+      "kind": "service",
+      "subject": "mica-api",
+      "attribute": "replicas",
+      "text": "mica-api: replicas is 4."
+    },
+    {
+      "id": "service:mica-api:oncall",
+      "kind": "service",
+      "subject": "mica-api",
+      "attribute": "oncall",
+      "text": "mica-api: oncall is Infra."
+    },
+    {
+      "id": "service:mica-worker:product",
+      "kind": "service",
+      "subject": "mica-worker",
+      "attribute": "product",
+      "text": "mica-worker: product is Mica."
+    },
+    {
+      "id": "service:mica-worker:runtime",
+      "kind": "service",
+      "subject": "mica-worker",
+      "attribute": "runtime",
+      "text": "mica-worker: runtime is Python."
+    },
+    {
+      "id": "service:mica-worker:replicas",
+      "kind": "service",
+      "subject": "mica-worker",
+      "attribute": "replicas",
+      "text": "mica-worker: replicas is 4."
+    },
+    {
+      "id": "service:mica-worker:oncall",
+      "kind": "service",
+      "subject": "mica-worker",
+      "attribute": "oncall",
+      "text": "mica-worker: oncall is Infra."
+    },
+    {
+      "id": "service:nimbus-api:product",
+      "kind": "service",
+      "subject": "nimbus-api",
+      "attribute": "product",
+      "text": "nimbus-api: product is Nimbus."
+    },
+    {
+      "id": "service:nimbus-api:runtime",
+      "kind": "service",
+      "subject": "nimbus-api",
+      "attribute": "runtime",
+      "text": "nimbus-api: runtime is TypeScript."
+    },
+    {
+      "id": "service:nimbus-api:replicas",
+      "kind": "service",
+      "subject": "nimbus-api",
+      "attribute": "replicas",
+      "text": "nimbus-api: replicas is 4."
+    },
+    {
+      "id": "service:nimbus-api:oncall",
+      "kind": "service",
+      "subject": "nimbus-api",
+      "attribute": "oncall",
+      "text": "nimbus-api: oncall is Platform."
+    },
+    {
+      "id": "service:nimbus-worker:product",
+      "kind": "service",
+      "subject": "nimbus-worker",
+      "attribute": "product",
+      "text": "nimbus-worker: product is Nimbus."
+    },
+    {
+      "id": "service:nimbus-worker:runtime",
+      "kind": "service",
+      "subject": "nimbus-worker",
+      "attribute": "runtime",
+      "text": "nimbus-worker: runtime is TypeScript."
+    },
+    {
+      "id": "service:nimbus-worker:replicas",
+      "kind": "service",
+      "subject": "nimbus-worker",
+      "attribute": "replicas",
+      "text": "nimbus-worker: replicas is 4."
+    },
+    {
+      "id": "service:nimbus-worker:oncall",
+      "kind": "service",
+      "subject": "nimbus-worker",
+      "attribute": "oncall",
+      "text": "nimbus-worker: oncall is Platform."
+    },
+    {
+      "id": "service:opal-api:product",
+      "kind": "service",
+      "subject": "opal-api",
+      "attribute": "product",
+      "text": "opal-api: product is Opal."
+    },
+    {
+      "id": "service:opal-api:runtime",
+      "kind": "service",
+      "subject": "opal-api",
+      "attribute": "runtime",
+      "text": "opal-api: runtime is Rust."
+    },
+    {
+      "id": "service:opal-api:replicas",
+      "kind": "service",
+      "subject": "opal-api",
+      "attribute": "replicas",
+      "text": "opal-api: replicas is 12."
+    },
+    {
+      "id": "service:opal-api:oncall",
+      "kind": "service",
+      "subject": "opal-api",
+      "attribute": "oncall",
+      "text": "opal-api: oncall is Payments."
+    },
+    {
+      "id": "service:opal-worker:product",
+      "kind": "service",
+      "subject": "opal-worker",
+      "attribute": "product",
+      "text": "opal-worker: product is Opal."
+    },
+    {
+      "id": "service:opal-worker:runtime",
+      "kind": "service",
+      "subject": "opal-worker",
+      "attribute": "runtime",
+      "text": "opal-worker: runtime is Rust."
+    },
+    {
+      "id": "service:opal-worker:replicas",
+      "kind": "service",
+      "subject": "opal-worker",
+      "attribute": "replicas",
+      "text": "opal-worker: replicas is 8."
+    },
+    {
+      "id": "service:opal-worker:oncall",
+      "kind": "service",
+      "subject": "opal-worker",
+      "attribute": "oncall",
+      "text": "opal-worker: oncall is Payments."
+    },
+    {
+      "id": "service:quartz-api:product",
+      "kind": "service",
+      "subject": "quartz-api",
+      "attribute": "product",
+      "text": "quartz-api: product is Quartz."
+    },
+    {
+      "id": "service:quartz-api:runtime",
+      "kind": "service",
+      "subject": "quartz-api",
+      "attribute": "runtime",
+      "text": "quartz-api: runtime is Python."
+    },
+    {
+      "id": "service:quartz-api:replicas",
+      "kind": "service",
+      "subject": "quartz-api",
+      "attribute": "replicas",
+      "text": "quartz-api: replicas is 4."
+    },
+    {
+      "id": "service:quartz-api:oncall",
+      "kind": "service",
+      "subject": "quartz-api",
+      "attribute": "oncall",
+      "text": "quartz-api: oncall is Data."
+    },
+    {
+      "id": "service:quartz-worker:product",
+      "kind": "service",
+      "subject": "quartz-worker",
+      "attribute": "product",
+      "text": "quartz-worker: product is Quartz."
+    },
+    {
+      "id": "service:quartz-worker:runtime",
+      "kind": "service",
+      "subject": "quartz-worker",
+      "attribute": "runtime",
+      "text": "quartz-worker: runtime is Python."
+    },
+    {
+      "id": "service:quartz-worker:replicas",
+      "kind": "service",
+      "subject": "quartz-worker",
+      "attribute": "replicas",
+      "text": "quartz-worker: replicas is 4."
+    },
+    {
+      "id": "service:quartz-worker:oncall",
+      "kind": "service",
+      "subject": "quartz-worker",
+      "attribute": "oncall",
+      "text": "quartz-worker: oncall is Data."
     },
     {
       "id": "team:Platform:lead",
@@ -2223,6 +5869,111 @@
       "subject": "Search",
       "attribute": "channel",
       "text": "Search: channel is #search."
+    },
+    {
+      "id": "team:Identity:lead",
+      "kind": "team",
+      "subject": "Identity",
+      "attribute": "lead",
+      "text": "Identity: lead is Sofia Brandt."
+    },
+    {
+      "id": "team:Identity:headcount",
+      "kind": "team",
+      "subject": "Identity",
+      "attribute": "headcount",
+      "text": "Identity: headcount is 6."
+    },
+    {
+      "id": "team:Identity:channel",
+      "kind": "team",
+      "subject": "Identity",
+      "attribute": "channel",
+      "text": "Identity: channel is #identity."
+    },
+    {
+      "id": "team:Infra:lead",
+      "kind": "team",
+      "subject": "Infra",
+      "attribute": "lead",
+      "text": "Infra: lead is Marco Silva."
+    },
+    {
+      "id": "team:Infra:headcount",
+      "kind": "team",
+      "subject": "Infra",
+      "attribute": "headcount",
+      "text": "Infra: headcount is 8."
+    },
+    {
+      "id": "team:Infra:channel",
+      "kind": "team",
+      "subject": "Infra",
+      "attribute": "channel",
+      "text": "Infra: channel is #infra."
+    },
+    {
+      "id": "team:Support:lead",
+      "kind": "team",
+      "subject": "Support",
+      "attribute": "lead",
+      "text": "Support: lead is Hana Sato."
+    },
+    {
+      "id": "team:Support:headcount",
+      "kind": "team",
+      "subject": "Support",
+      "attribute": "headcount",
+      "text": "Support: headcount is 11."
+    },
+    {
+      "id": "team:Support:channel",
+      "kind": "team",
+      "subject": "Support",
+      "attribute": "channel",
+      "text": "Support: channel is #support."
+    },
+    {
+      "id": "team:Security:lead",
+      "kind": "team",
+      "subject": "Security",
+      "attribute": "lead",
+      "text": "Security: lead is Omar Aziz."
+    },
+    {
+      "id": "team:Security:headcount",
+      "kind": "team",
+      "subject": "Security",
+      "attribute": "headcount",
+      "text": "Security: headcount is 4."
+    },
+    {
+      "id": "team:Security:channel",
+      "kind": "team",
+      "subject": "Security",
+      "attribute": "channel",
+      "text": "Security: channel is #security."
+    },
+    {
+      "id": "team:Docs:lead",
+      "kind": "team",
+      "subject": "Docs",
+      "attribute": "lead",
+      "text": "Docs: lead is Elsa Novak."
+    },
+    {
+      "id": "team:Docs:headcount",
+      "kind": "team",
+      "subject": "Docs",
+      "attribute": "headcount",
+      "text": "Docs: headcount is 3."
+    },
+    {
+      "id": "team:Docs:channel",
+      "kind": "team",
+      "subject": "Docs",
+      "attribute": "channel",
+      "text": "Docs: channel is #docs."
     },
     {
       "id": "person:Maya Chen:team",
@@ -2435,6 +6186,216 @@
       "text": "Ravi Shah: timezone is IST."
     },
     {
+      "id": "person:Sofia Brandt:team",
+      "kind": "person",
+      "subject": "Sofia Brandt",
+      "attribute": "team",
+      "text": "Sofia Brandt: team is Identity."
+    },
+    {
+      "id": "person:Sofia Brandt:role",
+      "kind": "person",
+      "subject": "Sofia Brandt",
+      "attribute": "role",
+      "text": "Sofia Brandt: role is Staff engineer."
+    },
+    {
+      "id": "person:Sofia Brandt:timezone",
+      "kind": "person",
+      "subject": "Sofia Brandt",
+      "attribute": "timezone",
+      "text": "Sofia Brandt: timezone is CET."
+    },
+    {
+      "id": "person:Marco Silva:team",
+      "kind": "person",
+      "subject": "Marco Silva",
+      "attribute": "team",
+      "text": "Marco Silva: team is Infra."
+    },
+    {
+      "id": "person:Marco Silva:role",
+      "kind": "person",
+      "subject": "Marco Silva",
+      "attribute": "role",
+      "text": "Marco Silva: role is Engineering manager."
+    },
+    {
+      "id": "person:Marco Silva:timezone",
+      "kind": "person",
+      "subject": "Marco Silva",
+      "attribute": "timezone",
+      "text": "Marco Silva: timezone is PT."
+    },
+    {
+      "id": "person:Hana Sato:team",
+      "kind": "person",
+      "subject": "Hana Sato",
+      "attribute": "team",
+      "text": "Hana Sato: team is Support."
+    },
+    {
+      "id": "person:Hana Sato:role",
+      "kind": "person",
+      "subject": "Hana Sato",
+      "attribute": "role",
+      "text": "Hana Sato: role is Support lead."
+    },
+    {
+      "id": "person:Hana Sato:timezone",
+      "kind": "person",
+      "subject": "Hana Sato",
+      "attribute": "timezone",
+      "text": "Hana Sato: timezone is JST."
+    },
+    {
+      "id": "person:Omar Aziz:team",
+      "kind": "person",
+      "subject": "Omar Aziz",
+      "attribute": "team",
+      "text": "Omar Aziz: team is Security."
+    },
+    {
+      "id": "person:Omar Aziz:role",
+      "kind": "person",
+      "subject": "Omar Aziz",
+      "attribute": "role",
+      "text": "Omar Aziz: role is Security engineer."
+    },
+    {
+      "id": "person:Omar Aziz:timezone",
+      "kind": "person",
+      "subject": "Omar Aziz",
+      "attribute": "timezone",
+      "text": "Omar Aziz: timezone is ET."
+    },
+    {
+      "id": "person:Elsa Novak:team",
+      "kind": "person",
+      "subject": "Elsa Novak",
+      "attribute": "team",
+      "text": "Elsa Novak: team is Docs."
+    },
+    {
+      "id": "person:Elsa Novak:role",
+      "kind": "person",
+      "subject": "Elsa Novak",
+      "attribute": "role",
+      "text": "Elsa Novak: role is Technical writer."
+    },
+    {
+      "id": "person:Elsa Novak:timezone",
+      "kind": "person",
+      "subject": "Elsa Novak",
+      "attribute": "timezone",
+      "text": "Elsa Novak: timezone is CET."
+    },
+    {
+      "id": "person:Jules Marchand:team",
+      "kind": "person",
+      "subject": "Jules Marchand",
+      "attribute": "team",
+      "text": "Jules Marchand: team is Identity."
+    },
+    {
+      "id": "person:Jules Marchand:role",
+      "kind": "person",
+      "subject": "Jules Marchand",
+      "attribute": "role",
+      "text": "Jules Marchand: role is Platform engineer."
+    },
+    {
+      "id": "person:Jules Marchand:timezone",
+      "kind": "person",
+      "subject": "Jules Marchand",
+      "attribute": "timezone",
+      "text": "Jules Marchand: timezone is CET."
+    },
+    {
+      "id": "person:Kai Tanaka:team",
+      "kind": "person",
+      "subject": "Kai Tanaka",
+      "attribute": "team",
+      "text": "Kai Tanaka: team is Support."
+    },
+    {
+      "id": "person:Kai Tanaka:role",
+      "kind": "person",
+      "subject": "Kai Tanaka",
+      "attribute": "role",
+      "text": "Kai Tanaka: role is Support engineer."
+    },
+    {
+      "id": "person:Kai Tanaka:timezone",
+      "kind": "person",
+      "subject": "Kai Tanaka",
+      "attribute": "timezone",
+      "text": "Kai Tanaka: timezone is JST."
+    },
+    {
+      "id": "person:Nina Petrov:team",
+      "kind": "person",
+      "subject": "Nina Petrov",
+      "attribute": "team",
+      "text": "Nina Petrov: team is Infra."
+    },
+    {
+      "id": "person:Nina Petrov:role",
+      "kind": "person",
+      "subject": "Nina Petrov",
+      "attribute": "role",
+      "text": "Nina Petrov: role is SRE."
+    },
+    {
+      "id": "person:Nina Petrov:timezone",
+      "kind": "person",
+      "subject": "Nina Petrov",
+      "attribute": "timezone",
+      "text": "Nina Petrov: timezone is CET."
+    },
+    {
+      "id": "person:Rex Okonkwo:team",
+      "kind": "person",
+      "subject": "Rex Okonkwo",
+      "attribute": "team",
+      "text": "Rex Okonkwo: team is Security."
+    },
+    {
+      "id": "person:Rex Okonkwo:role",
+      "kind": "person",
+      "subject": "Rex Okonkwo",
+      "attribute": "role",
+      "text": "Rex Okonkwo: role is Incident commander."
+    },
+    {
+      "id": "person:Rex Okonkwo:timezone",
+      "kind": "person",
+      "subject": "Rex Okonkwo",
+      "attribute": "timezone",
+      "text": "Rex Okonkwo: timezone is ET."
+    },
+    {
+      "id": "person:Yuki Mori:team",
+      "kind": "person",
+      "subject": "Yuki Mori",
+      "attribute": "team",
+      "text": "Yuki Mori: team is Docs."
+    },
+    {
+      "id": "person:Yuki Mori:role",
+      "kind": "person",
+      "subject": "Yuki Mori",
+      "attribute": "role",
+      "text": "Yuki Mori: role is Docs engineer."
+    },
+    {
+      "id": "person:Yuki Mori:timezone",
+      "kind": "person",
+      "subject": "Yuki Mori",
+      "attribute": "timezone",
+      "text": "Yuki Mori: timezone is JST."
+    },
+    {
       "id": "oncall:platform:person",
       "kind": "oncall",
       "subject": "platform",
@@ -2468,6 +6429,41 @@
       "subject": "search",
       "attribute": "person",
       "text": "search: person is Ravi Shah."
+    },
+    {
+      "id": "oncall:identity:person",
+      "kind": "oncall",
+      "subject": "identity",
+      "attribute": "person",
+      "text": "identity: person is Jules Marchand."
+    },
+    {
+      "id": "oncall:infra:person",
+      "kind": "oncall",
+      "subject": "infra",
+      "attribute": "person",
+      "text": "infra: person is Nina Petrov."
+    },
+    {
+      "id": "oncall:support:person",
+      "kind": "oncall",
+      "subject": "support",
+      "attribute": "person",
+      "text": "support: person is Kai Tanaka."
+    },
+    {
+      "id": "oncall:security:person",
+      "kind": "oncall",
+      "subject": "security",
+      "attribute": "person",
+      "text": "security: person is Rex Okonkwo."
+    },
+    {
+      "id": "oncall:docs:person",
+      "kind": "oncall",
+      "subject": "docs",
+      "attribute": "person",
+      "text": "docs: person is Yuki Mori."
     },
     {
       "id": "policy:Incident severity:owner",
@@ -2523,7 +6519,7 @@
       "kind": "policy",
       "subject": "Oncall handoff",
       "attribute": "text",
-      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel.."
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team lead timezone, with a written handoff in the team channel.."
     },
     {
       "id": "policy:Access review:owner",
@@ -2580,6 +6576,1266 @@
       "subject": "Payment retries",
       "attribute": "text",
       "text": "Payment retries: text is Failed charges retry three times over 48 hours with exponential backoff, then settle to manual review.."
+    },
+    {
+      "id": "policy:Secrets rotation:owner",
+      "kind": "policy",
+      "subject": "Secrets rotation",
+      "attribute": "owner",
+      "text": "Secrets rotation: owner is Security."
+    },
+    {
+      "id": "policy:Secrets rotation:text",
+      "kind": "policy",
+      "subject": "Secrets rotation",
+      "attribute": "text",
+      "text": "Secrets rotation: text is Service credentials rotate every 90 days. Database credentials rotate every 30 days. A rotation that fails pages the Security oncall.."
+    },
+    {
+      "id": "policy:Backup testing:owner",
+      "kind": "policy",
+      "subject": "Backup testing",
+      "attribute": "owner",
+      "text": "Backup testing: owner is Infra."
+    },
+    {
+      "id": "policy:Backup testing:text",
+      "kind": "policy",
+      "subject": "Backup testing",
+      "attribute": "text",
+      "text": "Backup testing: text is Every production database restore is tested monthly into a scratch environment, and the result is attached to the runbook.."
+    },
+    {
+      "id": "policy:Customer escalation:owner",
+      "kind": "policy",
+      "subject": "Customer escalation",
+      "attribute": "owner",
+      "text": "Customer escalation: owner is Support."
+    },
+    {
+      "id": "policy:Customer escalation:text",
+      "kind": "policy",
+      "subject": "Customer escalation",
+      "attribute": "text",
+      "text": "Customer escalation: text is A customer marked priority one gets an engineer on the call within 15 minutes. Priority two gets a written update within four hours.."
+    },
+    {
+      "id": "policy:Change windows:owner",
+      "kind": "policy",
+      "subject": "Change windows",
+      "attribute": "owner",
+      "text": "Change windows: owner is Infra."
+    },
+    {
+      "id": "policy:Change windows:text",
+      "kind": "policy",
+      "subject": "Change windows",
+      "attribute": "text",
+      "text": "Change windows: text is Routine changes ship Monday through Thursday between 09:00 and 16:00 in the service region. Friday changes need a rollback plan.."
+    },
+    {
+      "id": "policy:Incident review:owner",
+      "kind": "policy",
+      "subject": "Incident review",
+      "attribute": "owner",
+      "text": "Incident review: owner is Security."
+    },
+    {
+      "id": "policy:Incident review:text",
+      "kind": "policy",
+      "subject": "Incident review",
+      "attribute": "text",
+      "text": "Incident review: text is Every Sev 1 gets a written review within five business days, and the action items are tracked to closure by the owning team.."
+    },
+    {
+      "id": "policy:Feature flags:owner",
+      "kind": "policy",
+      "subject": "Feature flags",
+      "attribute": "owner",
+      "text": "Feature flags: owner is Payments."
+    },
+    {
+      "id": "policy:Feature flags:text",
+      "kind": "policy",
+      "subject": "Feature flags",
+      "attribute": "text",
+      "text": "Feature flags: text is A flag older than 90 days is either made permanent or removed. Flags that gate a payment path need an owner and an expiry.."
+    },
+    {
+      "id": "policy:Documentation freshness:owner",
+      "kind": "policy",
+      "subject": "Documentation freshness",
+      "attribute": "owner",
+      "text": "Documentation freshness: owner is Docs."
+    },
+    {
+      "id": "policy:Documentation freshness:text",
+      "kind": "policy",
+      "subject": "Documentation freshness",
+      "attribute": "text",
+      "text": "Documentation freshness: text is A runbook untouched for 180 days is marked stale and routed to its owning team for review.."
+    },
+    {
+      "id": "policy:Third party integrations:owner",
+      "kind": "policy",
+      "subject": "Third party integrations",
+      "attribute": "owner",
+      "text": "Third party integrations: owner is Identity."
+    },
+    {
+      "id": "policy:Third party integrations:text",
+      "kind": "policy",
+      "subject": "Third party integrations",
+      "attribute": "text",
+      "text": "Third party integrations: text is Every external integration has a named owner, a fallback path when it is down, and a quarterly health check.."
+    },
+    {
+      "id": "customer:Northwind:tier",
+      "kind": "customer",
+      "subject": "Northwind",
+      "attribute": "tier",
+      "text": "Northwind: tier is enterprise."
+    },
+    {
+      "id": "customer:Northwind:plan",
+      "kind": "customer",
+      "subject": "Northwind",
+      "attribute": "plan",
+      "text": "Northwind: plan is annual."
+    },
+    {
+      "id": "customer:Northwind:owner",
+      "kind": "customer",
+      "subject": "Northwind",
+      "attribute": "owner",
+      "text": "Northwind: owner is Support."
+    },
+    {
+      "id": "customer:Northwind:since",
+      "kind": "customer",
+      "subject": "Northwind",
+      "attribute": "since",
+      "text": "Northwind: since is 2021."
+    },
+    {
+      "id": "customer:Northwind:seats",
+      "kind": "customer",
+      "subject": "Northwind",
+      "attribute": "seats",
+      "text": "Northwind: seats is 4200."
+    },
+    {
+      "id": "customer:Contoso:tier",
+      "kind": "customer",
+      "subject": "Contoso",
+      "attribute": "tier",
+      "text": "Contoso: tier is enterprise."
+    },
+    {
+      "id": "customer:Contoso:plan",
+      "kind": "customer",
+      "subject": "Contoso",
+      "attribute": "plan",
+      "text": "Contoso: plan is annual."
+    },
+    {
+      "id": "customer:Contoso:owner",
+      "kind": "customer",
+      "subject": "Contoso",
+      "attribute": "owner",
+      "text": "Contoso: owner is Support."
+    },
+    {
+      "id": "customer:Contoso:since",
+      "kind": "customer",
+      "subject": "Contoso",
+      "attribute": "since",
+      "text": "Contoso: since is 2020."
+    },
+    {
+      "id": "customer:Contoso:seats",
+      "kind": "customer",
+      "subject": "Contoso",
+      "attribute": "seats",
+      "text": "Contoso: seats is 9100."
+    },
+    {
+      "id": "customer:Fabrikam:tier",
+      "kind": "customer",
+      "subject": "Fabrikam",
+      "attribute": "tier",
+      "text": "Fabrikam: tier is midmarket."
+    },
+    {
+      "id": "customer:Fabrikam:plan",
+      "kind": "customer",
+      "subject": "Fabrikam",
+      "attribute": "plan",
+      "text": "Fabrikam: plan is monthly."
+    },
+    {
+      "id": "customer:Fabrikam:owner",
+      "kind": "customer",
+      "subject": "Fabrikam",
+      "attribute": "owner",
+      "text": "Fabrikam: owner is Growth."
+    },
+    {
+      "id": "customer:Fabrikam:since",
+      "kind": "customer",
+      "subject": "Fabrikam",
+      "attribute": "since",
+      "text": "Fabrikam: since is 2023."
+    },
+    {
+      "id": "customer:Fabrikam:seats",
+      "kind": "customer",
+      "subject": "Fabrikam",
+      "attribute": "seats",
+      "text": "Fabrikam: seats is 380."
+    },
+    {
+      "id": "customer:Tailspin:tier",
+      "kind": "customer",
+      "subject": "Tailspin",
+      "attribute": "tier",
+      "text": "Tailspin: tier is midmarket."
+    },
+    {
+      "id": "customer:Tailspin:plan",
+      "kind": "customer",
+      "subject": "Tailspin",
+      "attribute": "plan",
+      "text": "Tailspin: plan is annual."
+    },
+    {
+      "id": "customer:Tailspin:owner",
+      "kind": "customer",
+      "subject": "Tailspin",
+      "attribute": "owner",
+      "text": "Tailspin: owner is Growth."
+    },
+    {
+      "id": "customer:Tailspin:since",
+      "kind": "customer",
+      "subject": "Tailspin",
+      "attribute": "since",
+      "text": "Tailspin: since is 2022."
+    },
+    {
+      "id": "customer:Tailspin:seats",
+      "kind": "customer",
+      "subject": "Tailspin",
+      "attribute": "seats",
+      "text": "Tailspin: seats is 640."
+    },
+    {
+      "id": "customer:Adatum:tier",
+      "kind": "customer",
+      "subject": "Adatum",
+      "attribute": "tier",
+      "text": "Adatum: tier is enterprise."
+    },
+    {
+      "id": "customer:Adatum:plan",
+      "kind": "customer",
+      "subject": "Adatum",
+      "attribute": "plan",
+      "text": "Adatum: plan is annual."
+    },
+    {
+      "id": "customer:Adatum:owner",
+      "kind": "customer",
+      "subject": "Adatum",
+      "attribute": "owner",
+      "text": "Adatum: owner is Support."
+    },
+    {
+      "id": "customer:Adatum:since",
+      "kind": "customer",
+      "subject": "Adatum",
+      "attribute": "since",
+      "text": "Adatum: since is 2019."
+    },
+    {
+      "id": "customer:Adatum:seats",
+      "kind": "customer",
+      "subject": "Adatum",
+      "attribute": "seats",
+      "text": "Adatum: seats is 12800."
+    },
+    {
+      "id": "customer:Proseware:tier",
+      "kind": "customer",
+      "subject": "Proseware",
+      "attribute": "tier",
+      "text": "Proseware: tier is startup."
+    },
+    {
+      "id": "customer:Proseware:plan",
+      "kind": "customer",
+      "subject": "Proseware",
+      "attribute": "plan",
+      "text": "Proseware: plan is monthly."
+    },
+    {
+      "id": "customer:Proseware:owner",
+      "kind": "customer",
+      "subject": "Proseware",
+      "attribute": "owner",
+      "text": "Proseware: owner is Growth."
+    },
+    {
+      "id": "customer:Proseware:since",
+      "kind": "customer",
+      "subject": "Proseware",
+      "attribute": "since",
+      "text": "Proseware: since is 2024."
+    },
+    {
+      "id": "customer:Proseware:seats",
+      "kind": "customer",
+      "subject": "Proseware",
+      "attribute": "seats",
+      "text": "Proseware: seats is 45."
+    },
+    {
+      "id": "customer:Lucerne:tier",
+      "kind": "customer",
+      "subject": "Lucerne",
+      "attribute": "tier",
+      "text": "Lucerne: tier is midmarket."
+    },
+    {
+      "id": "customer:Lucerne:plan",
+      "kind": "customer",
+      "subject": "Lucerne",
+      "attribute": "plan",
+      "text": "Lucerne: plan is annual."
+    },
+    {
+      "id": "customer:Lucerne:owner",
+      "kind": "customer",
+      "subject": "Lucerne",
+      "attribute": "owner",
+      "text": "Lucerne: owner is Payments."
+    },
+    {
+      "id": "customer:Lucerne:since",
+      "kind": "customer",
+      "subject": "Lucerne",
+      "attribute": "since",
+      "text": "Lucerne: since is 2022."
+    },
+    {
+      "id": "customer:Lucerne:seats",
+      "kind": "customer",
+      "subject": "Lucerne",
+      "attribute": "seats",
+      "text": "Lucerne: seats is 1200."
+    },
+    {
+      "id": "customer:Wingtip:tier",
+      "kind": "customer",
+      "subject": "Wingtip",
+      "attribute": "tier",
+      "text": "Wingtip: tier is startup."
+    },
+    {
+      "id": "customer:Wingtip:plan",
+      "kind": "customer",
+      "subject": "Wingtip",
+      "attribute": "plan",
+      "text": "Wingtip: plan is monthly."
+    },
+    {
+      "id": "customer:Wingtip:owner",
+      "kind": "customer",
+      "subject": "Wingtip",
+      "attribute": "owner",
+      "text": "Wingtip: owner is Growth."
+    },
+    {
+      "id": "customer:Wingtip:since",
+      "kind": "customer",
+      "subject": "Wingtip",
+      "attribute": "since",
+      "text": "Wingtip: since is 2024."
+    },
+    {
+      "id": "customer:Wingtip:seats",
+      "kind": "customer",
+      "subject": "Wingtip",
+      "attribute": "seats",
+      "text": "Wingtip: seats is 80."
+    },
+    {
+      "id": "customer:Relecloud:tier",
+      "kind": "customer",
+      "subject": "Relecloud",
+      "attribute": "tier",
+      "text": "Relecloud: tier is enterprise."
+    },
+    {
+      "id": "customer:Relecloud:plan",
+      "kind": "customer",
+      "subject": "Relecloud",
+      "attribute": "plan",
+      "text": "Relecloud: plan is annual."
+    },
+    {
+      "id": "customer:Relecloud:owner",
+      "kind": "customer",
+      "subject": "Relecloud",
+      "attribute": "owner",
+      "text": "Relecloud: owner is Support."
+    },
+    {
+      "id": "customer:Relecloud:since",
+      "kind": "customer",
+      "subject": "Relecloud",
+      "attribute": "since",
+      "text": "Relecloud: since is 2018."
+    },
+    {
+      "id": "customer:Relecloud:seats",
+      "kind": "customer",
+      "subject": "Relecloud",
+      "attribute": "seats",
+      "text": "Relecloud: seats is 15300."
+    },
+    {
+      "id": "customer:Alpine Ski House:tier",
+      "kind": "customer",
+      "subject": "Alpine Ski House",
+      "attribute": "tier",
+      "text": "Alpine Ski House: tier is midmarket."
+    },
+    {
+      "id": "customer:Alpine Ski House:plan",
+      "kind": "customer",
+      "subject": "Alpine Ski House",
+      "attribute": "plan",
+      "text": "Alpine Ski House: plan is annual."
+    },
+    {
+      "id": "customer:Alpine Ski House:owner",
+      "kind": "customer",
+      "subject": "Alpine Ski House",
+      "attribute": "owner",
+      "text": "Alpine Ski House: owner is Search."
+    },
+    {
+      "id": "customer:Alpine Ski House:since",
+      "kind": "customer",
+      "subject": "Alpine Ski House",
+      "attribute": "since",
+      "text": "Alpine Ski House: since is 2021."
+    },
+    {
+      "id": "customer:Alpine Ski House:seats",
+      "kind": "customer",
+      "subject": "Alpine Ski House",
+      "attribute": "seats",
+      "text": "Alpine Ski House: seats is 900."
+    },
+    {
+      "id": "customer:Graphic Design Institute:tier",
+      "kind": "customer",
+      "subject": "Graphic Design Institute",
+      "attribute": "tier",
+      "text": "Graphic Design Institute: tier is startup."
+    },
+    {
+      "id": "customer:Graphic Design Institute:plan",
+      "kind": "customer",
+      "subject": "Graphic Design Institute",
+      "attribute": "plan",
+      "text": "Graphic Design Institute: plan is monthly."
+    },
+    {
+      "id": "customer:Graphic Design Institute:owner",
+      "kind": "customer",
+      "subject": "Graphic Design Institute",
+      "attribute": "owner",
+      "text": "Graphic Design Institute: owner is Docs."
+    },
+    {
+      "id": "customer:Graphic Design Institute:since",
+      "kind": "customer",
+      "subject": "Graphic Design Institute",
+      "attribute": "since",
+      "text": "Graphic Design Institute: since is 2025."
+    },
+    {
+      "id": "customer:Graphic Design Institute:seats",
+      "kind": "customer",
+      "subject": "Graphic Design Institute",
+      "attribute": "seats",
+      "text": "Graphic Design Institute: seats is 30."
+    },
+    {
+      "id": "customer:Lorem Medical:tier",
+      "kind": "customer",
+      "subject": "Lorem Medical",
+      "attribute": "tier",
+      "text": "Lorem Medical: tier is enterprise."
+    },
+    {
+      "id": "customer:Lorem Medical:plan",
+      "kind": "customer",
+      "subject": "Lorem Medical",
+      "attribute": "plan",
+      "text": "Lorem Medical: plan is annual."
+    },
+    {
+      "id": "customer:Lorem Medical:owner",
+      "kind": "customer",
+      "subject": "Lorem Medical",
+      "attribute": "owner",
+      "text": "Lorem Medical: owner is Identity."
+    },
+    {
+      "id": "customer:Lorem Medical:since",
+      "kind": "customer",
+      "subject": "Lorem Medical",
+      "attribute": "since",
+      "text": "Lorem Medical: since is 2020."
+    },
+    {
+      "id": "customer:Lorem Medical:seats",
+      "kind": "customer",
+      "subject": "Lorem Medical",
+      "attribute": "seats",
+      "text": "Lorem Medical: seats is 7400."
+    },
+    {
+      "id": "incident:INC-4101:title",
+      "kind": "incident",
+      "subject": "INC-4101",
+      "attribute": "title",
+      "text": "INC-4101: title is Atlas ingest backlog."
+    },
+    {
+      "id": "incident:INC-4101:service",
+      "kind": "incident",
+      "subject": "INC-4101",
+      "attribute": "service",
+      "text": "INC-4101: service is ingest-worker."
+    },
+    {
+      "id": "incident:INC-4101:severity",
+      "kind": "incident",
+      "subject": "INC-4101",
+      "attribute": "severity",
+      "text": "INC-4101: severity is Sev 1."
+    },
+    {
+      "id": "incident:INC-4101:status",
+      "kind": "incident",
+      "subject": "INC-4101",
+      "attribute": "status",
+      "text": "INC-4101: status is resolved."
+    },
+    {
+      "id": "incident:INC-4101:team",
+      "kind": "incident",
+      "subject": "INC-4101",
+      "attribute": "team",
+      "text": "INC-4101: team is Platform."
+    },
+    {
+      "id": "incident:INC-4102:title",
+      "kind": "incident",
+      "subject": "INC-4102",
+      "attribute": "title",
+      "text": "INC-4102: title is Ledger duplicate charges."
+    },
+    {
+      "id": "incident:INC-4102:service",
+      "kind": "incident",
+      "subject": "INC-4102",
+      "attribute": "service",
+      "text": "INC-4102: service is ledger-api."
+    },
+    {
+      "id": "incident:INC-4102:severity",
+      "kind": "incident",
+      "subject": "INC-4102",
+      "attribute": "severity",
+      "text": "INC-4102: severity is Sev 1."
+    },
+    {
+      "id": "incident:INC-4102:status",
+      "kind": "incident",
+      "subject": "INC-4102",
+      "attribute": "status",
+      "text": "INC-4102: status is mitigated."
+    },
+    {
+      "id": "incident:INC-4102:team",
+      "kind": "incident",
+      "subject": "INC-4102",
+      "attribute": "team",
+      "text": "INC-4102: team is Payments."
+    },
+    {
+      "id": "incident:INC-4103:title",
+      "kind": "incident",
+      "subject": "INC-4103",
+      "attribute": "title",
+      "text": "INC-4103: title is Search latency spike."
+    },
+    {
+      "id": "incident:INC-4103:service",
+      "kind": "incident",
+      "subject": "INC-4103",
+      "attribute": "service",
+      "text": "INC-4103: service is search-index."
+    },
+    {
+      "id": "incident:INC-4103:severity",
+      "kind": "incident",
+      "subject": "INC-4103",
+      "attribute": "severity",
+      "text": "INC-4103: severity is Sev 2."
+    },
+    {
+      "id": "incident:INC-4103:status",
+      "kind": "incident",
+      "subject": "INC-4103",
+      "attribute": "status",
+      "text": "INC-4103: status is resolved."
+    },
+    {
+      "id": "incident:INC-4103:team",
+      "kind": "incident",
+      "subject": "INC-4103",
+      "attribute": "team",
+      "text": "INC-4103: team is Search."
+    },
+    {
+      "id": "incident:INC-4104:title",
+      "kind": "incident",
+      "subject": "INC-4104",
+      "attribute": "title",
+      "text": "INC-4104: title is Signup rate limit too tight."
+    },
+    {
+      "id": "incident:INC-4104:service",
+      "kind": "incident",
+      "subject": "INC-4104",
+      "attribute": "service",
+      "text": "INC-4104: service is signup-web."
+    },
+    {
+      "id": "incident:INC-4104:severity",
+      "kind": "incident",
+      "subject": "INC-4104",
+      "attribute": "severity",
+      "text": "INC-4104: severity is Sev 2."
+    },
+    {
+      "id": "incident:INC-4104:status",
+      "kind": "incident",
+      "subject": "INC-4104",
+      "attribute": "status",
+      "text": "INC-4104: status is open."
+    },
+    {
+      "id": "incident:INC-4104:team",
+      "kind": "incident",
+      "subject": "INC-4104",
+      "attribute": "team",
+      "text": "INC-4104: team is Growth."
+    },
+    {
+      "id": "incident:INC-4105:title",
+      "kind": "incident",
+      "subject": "INC-4105",
+      "attribute": "title",
+      "text": "INC-4105: title is Pipeline retry storm."
+    },
+    {
+      "id": "incident:INC-4105:service",
+      "kind": "incident",
+      "subject": "INC-4105",
+      "attribute": "service",
+      "text": "INC-4105: service is pipeline-runner."
+    },
+    {
+      "id": "incident:INC-4105:severity",
+      "kind": "incident",
+      "subject": "INC-4105",
+      "attribute": "severity",
+      "text": "INC-4105: severity is Sev 2."
+    },
+    {
+      "id": "incident:INC-4105:status",
+      "kind": "incident",
+      "subject": "INC-4105",
+      "attribute": "status",
+      "text": "INC-4105: status is resolved."
+    },
+    {
+      "id": "incident:INC-4105:team",
+      "kind": "incident",
+      "subject": "INC-4105",
+      "attribute": "team",
+      "text": "INC-4105: team is Data."
+    },
+    {
+      "id": "incident:INC-4106:title",
+      "kind": "incident",
+      "subject": "INC-4106",
+      "attribute": "title",
+      "text": "INC-4106: title is Metrics gap after rollup."
+    },
+    {
+      "id": "incident:INC-4106:service",
+      "kind": "incident",
+      "subject": "INC-4106",
+      "attribute": "service",
+      "text": "INC-4106: service is metrics-rollup."
+    },
+    {
+      "id": "incident:INC-4106:severity",
+      "kind": "incident",
+      "subject": "INC-4106",
+      "attribute": "severity",
+      "text": "INC-4106: severity is Sev 3."
+    },
+    {
+      "id": "incident:INC-4106:status",
+      "kind": "incident",
+      "subject": "INC-4106",
+      "attribute": "status",
+      "text": "INC-4106: status is open."
+    },
+    {
+      "id": "incident:INC-4106:team",
+      "kind": "incident",
+      "subject": "INC-4106",
+      "attribute": "team",
+      "text": "INC-4106: team is Data."
+    },
+    {
+      "id": "incident:INC-4107:title",
+      "kind": "incident",
+      "subject": "INC-4107",
+      "attribute": "title",
+      "text": "INC-4107: title is Docs portal expired certificate."
+    },
+    {
+      "id": "incident:INC-4107:service",
+      "kind": "incident",
+      "subject": "INC-4107",
+      "attribute": "service",
+      "text": "INC-4107: service is docs-portal."
+    },
+    {
+      "id": "incident:INC-4107:severity",
+      "kind": "incident",
+      "subject": "INC-4107",
+      "attribute": "severity",
+      "text": "INC-4107: severity is Sev 2."
+    },
+    {
+      "id": "incident:INC-4107:status",
+      "kind": "incident",
+      "subject": "INC-4107",
+      "attribute": "status",
+      "text": "INC-4107: status is resolved."
+    },
+    {
+      "id": "incident:INC-4107:team",
+      "kind": "incident",
+      "subject": "INC-4107",
+      "attribute": "team",
+      "text": "INC-4107: team is Docs."
+    },
+    {
+      "id": "incident:INC-4108:title",
+      "kind": "incident",
+      "subject": "INC-4108",
+      "attribute": "title",
+      "text": "INC-4108: title is Identity token refresh loop."
+    },
+    {
+      "id": "incident:INC-4108:service",
+      "kind": "incident",
+      "subject": "INC-4108",
+      "attribute": "service",
+      "text": "INC-4108: service is iris."
+    },
+    {
+      "id": "incident:INC-4108:severity",
+      "kind": "incident",
+      "subject": "INC-4108",
+      "attribute": "severity",
+      "text": "INC-4108: severity is Sev 1."
+    },
+    {
+      "id": "incident:INC-4108:status",
+      "kind": "incident",
+      "subject": "INC-4108",
+      "attribute": "status",
+      "text": "INC-4108: status is resolved."
+    },
+    {
+      "id": "incident:INC-4108:team",
+      "kind": "incident",
+      "subject": "INC-4108",
+      "attribute": "team",
+      "text": "INC-4108: team is Identity."
+    },
+    {
+      "id": "incident:INC-4109:title",
+      "kind": "incident",
+      "subject": "INC-4109",
+      "attribute": "title",
+      "text": "INC-4109: title is Cache eviction churn."
+    },
+    {
+      "id": "incident:INC-4109:service",
+      "kind": "incident",
+      "subject": "INC-4109",
+      "attribute": "service",
+      "text": "INC-4109: service is query-cache."
+    },
+    {
+      "id": "incident:INC-4109:severity",
+      "kind": "incident",
+      "subject": "INC-4109",
+      "attribute": "severity",
+      "text": "INC-4109: severity is Sev 3."
+    },
+    {
+      "id": "incident:INC-4109:status",
+      "kind": "incident",
+      "subject": "INC-4109",
+      "attribute": "status",
+      "text": "INC-4109: status is mitigated."
+    },
+    {
+      "id": "incident:INC-4109:team",
+      "kind": "incident",
+      "subject": "INC-4109",
+      "attribute": "team",
+      "text": "INC-4109: team is Data."
+    },
+    {
+      "id": "incident:INC-4110:title",
+      "kind": "incident",
+      "subject": "INC-4110",
+      "attribute": "title",
+      "text": "INC-4110: title is Notification fanout delay."
+    },
+    {
+      "id": "incident:INC-4110:service",
+      "kind": "incident",
+      "subject": "INC-4110",
+      "attribute": "service",
+      "text": "INC-4110: service is notify-fanout."
+    },
+    {
+      "id": "incident:INC-4110:severity",
+      "kind": "incident",
+      "subject": "INC-4110",
+      "attribute": "severity",
+      "text": "INC-4110: severity is Sev 2."
+    },
+    {
+      "id": "incident:INC-4110:status",
+      "kind": "incident",
+      "subject": "INC-4110",
+      "attribute": "status",
+      "text": "INC-4110: status is resolved."
+    },
+    {
+      "id": "incident:INC-4110:team",
+      "kind": "incident",
+      "subject": "INC-4110",
+      "attribute": "team",
+      "text": "INC-4110: team is Platform."
+    },
+    {
+      "id": "runbook:Atlas ingest backlog:service",
+      "kind": "runbook",
+      "subject": "Atlas ingest backlog",
+      "attribute": "service",
+      "text": "Atlas ingest backlog: service is ingest-api."
+    },
+    {
+      "id": "runbook:Atlas ingest backlog:owner",
+      "kind": "runbook",
+      "subject": "Atlas ingest backlog",
+      "attribute": "owner",
+      "text": "Atlas ingest backlog: owner is Platform."
+    },
+    {
+      "id": "runbook:Atlas ingest backlog:steps",
+      "kind": "runbook",
+      "subject": "Atlas ingest backlog",
+      "attribute": "steps",
+      "text": "Atlas ingest backlog: steps is Check queue depth, scale workers, drain oldest partition."
+    },
+    {
+      "id": "runbook:Ledger reconciliation:service",
+      "kind": "runbook",
+      "subject": "Ledger reconciliation",
+      "attribute": "service",
+      "text": "Ledger reconciliation: service is ledger-api."
+    },
+    {
+      "id": "runbook:Ledger reconciliation:owner",
+      "kind": "runbook",
+      "subject": "Ledger reconciliation",
+      "attribute": "owner",
+      "text": "Ledger reconciliation: owner is Payments."
+    },
+    {
+      "id": "runbook:Ledger reconciliation:steps",
+      "kind": "runbook",
+      "subject": "Ledger reconciliation",
+      "attribute": "steps",
+      "text": "Ledger reconciliation: steps is Freeze writes, replay the settlement window, compare totals."
+    },
+    {
+      "id": "runbook:Search index rebuild:service",
+      "kind": "runbook",
+      "subject": "Search index rebuild",
+      "attribute": "service",
+      "text": "Search index rebuild: service is search-index."
+    },
+    {
+      "id": "runbook:Search index rebuild:owner",
+      "kind": "runbook",
+      "subject": "Search index rebuild",
+      "attribute": "owner",
+      "text": "Search index rebuild: owner is Search."
+    },
+    {
+      "id": "runbook:Search index rebuild:steps",
+      "kind": "runbook",
+      "subject": "Search index rebuild",
+      "attribute": "steps",
+      "text": "Search index rebuild: steps is Snapshot the index, rebuild shard by shard, flip the alias."
+    },
+    {
+      "id": "runbook:Pipeline backfill:service",
+      "kind": "runbook",
+      "subject": "Pipeline backfill",
+      "attribute": "service",
+      "text": "Pipeline backfill: service is pipeline-runner."
+    },
+    {
+      "id": "runbook:Pipeline backfill:owner",
+      "kind": "runbook",
+      "subject": "Pipeline backfill",
+      "attribute": "owner",
+      "text": "Pipeline backfill: owner is Data."
+    },
+    {
+      "id": "runbook:Pipeline backfill:steps",
+      "kind": "runbook",
+      "subject": "Pipeline backfill",
+      "attribute": "steps",
+      "text": "Pipeline backfill: steps is Pick the date range, run the backfill, verify row counts."
+    },
+    {
+      "id": "runbook:Token rotation:service",
+      "kind": "runbook",
+      "subject": "Token rotation",
+      "attribute": "service",
+      "text": "Token rotation: service is iris."
+    },
+    {
+      "id": "runbook:Token rotation:owner",
+      "kind": "runbook",
+      "subject": "Token rotation",
+      "attribute": "owner",
+      "text": "Token rotation: owner is Identity."
+    },
+    {
+      "id": "runbook:Token rotation:steps",
+      "kind": "runbook",
+      "subject": "Token rotation",
+      "attribute": "steps",
+      "text": "Token rotation: steps is Rotate the signing key, publish the new JWKS, watch the error rate."
+    },
+    {
+      "id": "runbook:Metrics gap:service",
+      "kind": "runbook",
+      "subject": "Metrics gap",
+      "attribute": "service",
+      "text": "Metrics gap: service is lumen."
+    },
+    {
+      "id": "runbook:Metrics gap:owner",
+      "kind": "runbook",
+      "subject": "Metrics gap",
+      "attribute": "owner",
+      "text": "Metrics gap: owner is Infra."
+    },
+    {
+      "id": "runbook:Metrics gap:steps",
+      "kind": "runbook",
+      "subject": "Metrics gap",
+      "attribute": "steps",
+      "text": "Metrics gap: steps is Check scrape targets, restart the shipper, backfill the gap."
+    },
+    {
+      "id": "runbook:Experiment rollback:service",
+      "kind": "runbook",
+      "subject": "Experiment rollback",
+      "attribute": "service",
+      "text": "Experiment rollback: service is experiment-api."
+    },
+    {
+      "id": "runbook:Experiment rollback:owner",
+      "kind": "runbook",
+      "subject": "Experiment rollback",
+      "attribute": "owner",
+      "text": "Experiment rollback: owner is Growth."
+    },
+    {
+      "id": "runbook:Experiment rollback:steps",
+      "kind": "runbook",
+      "subject": "Experiment rollback",
+      "attribute": "steps",
+      "text": "Experiment rollback: steps is Set the split to zero, confirm exposure, archive the result."
+    },
+    {
+      "id": "runbook:Certificate renewal:service",
+      "kind": "runbook",
+      "subject": "Certificate renewal",
+      "attribute": "service",
+      "text": "Certificate renewal: service is docs-portal."
+    },
+    {
+      "id": "runbook:Certificate renewal:owner",
+      "kind": "runbook",
+      "subject": "Certificate renewal",
+      "attribute": "owner",
+      "text": "Certificate renewal: owner is Docs."
+    },
+    {
+      "id": "runbook:Certificate renewal:steps",
+      "kind": "runbook",
+      "subject": "Certificate renewal",
+      "attribute": "steps",
+      "text": "Certificate renewal: steps is Renew the certificate, deploy the secret, verify the chain."
+    },
+    {
+      "id": "integration:Stripe:product",
+      "kind": "integration",
+      "subject": "Stripe",
+      "attribute": "product",
+      "text": "Stripe: product is Delta."
+    },
+    {
+      "id": "integration:Stripe:direction",
+      "kind": "integration",
+      "subject": "Stripe",
+      "attribute": "direction",
+      "text": "Stripe: direction is outbound."
+    },
+    {
+      "id": "integration:Stripe:owner",
+      "kind": "integration",
+      "subject": "Stripe",
+      "attribute": "owner",
+      "text": "Stripe: owner is Payments."
+    },
+    {
+      "id": "integration:Salesforce:product",
+      "kind": "integration",
+      "subject": "Salesforce",
+      "attribute": "product",
+      "text": "Salesforce: product is Harbor."
+    },
+    {
+      "id": "integration:Salesforce:direction",
+      "kind": "integration",
+      "subject": "Salesforce",
+      "attribute": "direction",
+      "text": "Salesforce: direction is bidirectional."
+    },
+    {
+      "id": "integration:Salesforce:owner",
+      "kind": "integration",
+      "subject": "Salesforce",
+      "attribute": "owner",
+      "text": "Salesforce: owner is Growth."
+    },
+    {
+      "id": "integration:Okta:product",
+      "kind": "integration",
+      "subject": "Okta",
+      "attribute": "product",
+      "text": "Okta: product is Iris."
+    },
+    {
+      "id": "integration:Okta:direction",
+      "kind": "integration",
+      "subject": "Okta",
+      "attribute": "direction",
+      "text": "Okta: direction is inbound."
+    },
+    {
+      "id": "integration:Okta:owner",
+      "kind": "integration",
+      "subject": "Okta",
+      "attribute": "owner",
+      "text": "Okta: owner is Identity."
+    },
+    {
+      "id": "integration:Segment:product",
+      "kind": "integration",
+      "subject": "Segment",
+      "attribute": "product",
+      "text": "Segment: product is Beacon."
+    },
+    {
+      "id": "integration:Segment:direction",
+      "kind": "integration",
+      "subject": "Segment",
+      "attribute": "direction",
+      "text": "Segment: direction is outbound."
+    },
+    {
+      "id": "integration:Segment:owner",
+      "kind": "integration",
+      "subject": "Segment",
+      "attribute": "owner",
+      "text": "Segment: owner is Growth."
+    },
+    {
+      "id": "integration:Slack:product",
+      "kind": "integration",
+      "subject": "Slack",
+      "attribute": "product",
+      "text": "Slack: product is Nimbus."
+    },
+    {
+      "id": "integration:Slack:direction",
+      "kind": "integration",
+      "subject": "Slack",
+      "attribute": "direction",
+      "text": "Slack: direction is outbound."
+    },
+    {
+      "id": "integration:Slack:owner",
+      "kind": "integration",
+      "subject": "Slack",
+      "attribute": "owner",
+      "text": "Slack: owner is Platform."
+    },
+    {
+      "id": "integration:Snowflake:product",
+      "kind": "integration",
+      "subject": "Snowflake",
+      "attribute": "product",
+      "text": "Snowflake: product is Quartz."
+    },
+    {
+      "id": "integration:Snowflake:direction",
+      "kind": "integration",
+      "subject": "Snowflake",
+      "attribute": "direction",
+      "text": "Snowflake: direction is outbound."
+    },
+    {
+      "id": "integration:Snowflake:owner",
+      "kind": "integration",
+      "subject": "Snowflake",
+      "attribute": "owner",
+      "text": "Snowflake: owner is Data."
+    },
+    {
+      "id": "integration:PagerDuty:product",
+      "kind": "integration",
+      "subject": "PagerDuty",
+      "attribute": "product",
+      "text": "PagerDuty: product is Lumen."
+    },
+    {
+      "id": "integration:PagerDuty:direction",
+      "kind": "integration",
+      "subject": "PagerDuty",
+      "attribute": "direction",
+      "text": "PagerDuty: direction is outbound."
+    },
+    {
+      "id": "integration:PagerDuty:owner",
+      "kind": "integration",
+      "subject": "PagerDuty",
+      "attribute": "owner",
+      "text": "PagerDuty: owner is Infra."
+    },
+    {
+      "id": "integration:Zendesk:product",
+      "kind": "integration",
+      "subject": "Zendesk",
+      "attribute": "product",
+      "text": "Zendesk: product is Harbor."
+    },
+    {
+      "id": "integration:Zendesk:direction",
+      "kind": "integration",
+      "subject": "Zendesk",
+      "attribute": "direction",
+      "text": "Zendesk: direction is bidirectional."
+    },
+    {
+      "id": "integration:Zendesk:owner",
+      "kind": "integration",
+      "subject": "Zendesk",
+      "attribute": "owner",
+      "text": "Zendesk: owner is Support."
+    },
+    {
+      "id": "integration:GitHub:product",
+      "kind": "integration",
+      "subject": "GitHub",
+      "attribute": "product",
+      "text": "GitHub: product is Kestrel."
+    },
+    {
+      "id": "integration:GitHub:direction",
+      "kind": "integration",
+      "subject": "GitHub",
+      "attribute": "direction",
+      "text": "GitHub: direction is inbound."
+    },
+    {
+      "id": "integration:GitHub:owner",
+      "kind": "integration",
+      "subject": "GitHub",
+      "attribute": "owner",
+      "text": "GitHub: owner is Search."
+    },
+    {
+      "id": "integration:Twilio:product",
+      "kind": "integration",
+      "subject": "Twilio",
+      "attribute": "product",
+      "text": "Twilio: product is Ember."
+    },
+    {
+      "id": "integration:Twilio:direction",
+      "kind": "integration",
+      "subject": "Twilio",
+      "attribute": "direction",
+      "text": "Twilio: direction is outbound."
+    },
+    {
+      "id": "integration:Twilio:owner",
+      "kind": "integration",
+      "subject": "Twilio",
+      "attribute": "owner",
+      "text": "Twilio: owner is Platform."
     }
   ]
 }

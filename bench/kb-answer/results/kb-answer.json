@@ -1,0 +1,227 @@
+{
+  "score": {
+    "before": 13,
+    "after": 18,
+    "total": 18,
+    "repaired": 5,
+    "broken": 0
+  },
+  "rows": [
+    {
+      "ask": "what is the sla for becon?",
+      "want": [
+        "Beacon",
+        "sla"
+      ],
+      "beforeOk": false,
+      "afterOk": true,
+      "before": "I don't have a record for that.",
+      "after": "Beacon carries a 99.9% SLA.",
+      "how": "resolved name"
+    },
+    {
+      "ask": "how many people are on the platfrom team?",
+      "want": [
+        "Platform",
+        "headcount"
+      ],
+      "beforeOk": false,
+      "afterOk": true,
+      "before": "I don't have a record for that.",
+      "after": "Platform has 9 people on it.",
+      "how": "resolved name"
+    },
+    {
+      "ask": "what database does atlas worker use?",
+      "want": [
+        "Atlas",
+        "database"
+      ],
+      "beforeOk": true,
+      "afterOk": true,
+      "before": "Atlas runs on Postgres.",
+      "after": "Atlas runs on Postgres.",
+      "how": "inherited from Atlas"
+    },
+    {
+      "ask": "what happened in INC 4101?",
+      "want": [
+        "INC-4101",
+        "title"
+      ],
+      "beforeOk": false,
+      "afterOk": true,
+      "before": "I don't have a record for that.",
+      "after": "INC-4101: Atlas ingest backlog.",
+      "how": "resolved name"
+    },
+    {
+      "ask": "who is on call for the platform team?",
+      "want": [
+        "platform",
+        "person"
+      ],
+      "beforeOk": false,
+      "afterOk": true,
+      "before": "Platform has no person recorded.",
+      "after": "Ada Ferreira is on call for platform.",
+      "how": "resolved name (on-call record)"
+    },
+    {
+      "ask": "what does the deploy freeze say?",
+      "want": [
+        "Deploy freeze",
+        "text"
+      ],
+      "beforeOk": true,
+      "afterOk": true,
+      "before": "Deploy freeze: No production deploys during the last two business days of the quarter, except for Sev 1 fixes approved by the owning team lead.",
+      "after": "Deploy freeze: No production deploys during the last two business days of the quarter, except for Sev 1 fixes approved by the owning team lead.",
+      "how": "resolved name"
+    },
+    {
+      "ask": "which team owns northwind?",
+      "want": [
+        "Northwind",
+        "owner"
+      ],
+      "beforeOk": true,
+      "afterOk": true,
+      "before": "Northwind is owned by Support.",
+      "after": "Northwind is owned by Support.",
+      "how": "resolved name"
+    },
+    {
+      "ask": "what are the steps for the ledger reconciliation runbook?",
+      "want": [
+        "Ledger reconciliation",
+        "steps"
+      ],
+      "beforeOk": true,
+      "afterOk": true,
+      "before": "For Ledger reconciliation: Freeze writes, replay the settlement window, compare totals.",
+      "after": "For Ledger reconciliation: Freeze writes, replay the settlement window, compare totals.",
+      "how": "resolved name"
+    },
+    {
+      "ask": "when did contoso sign?",
+      "want": [
+        "Contoso",
+        "since"
+      ],
+      "beforeOk": true,
+      "afterOk": true,
+      "before": "Contoso has been a customer since 2020.",
+      "after": "Contoso has been a customer since 2020.",
+      "how": "resolved name"
+    },
+    {
+      "ask": "what is the timezone for maya chen?",
+      "want": [
+        "Maya Chen",
+        "timezone"
+      ],
+      "beforeOk": true,
+      "afterOk": true,
+      "before": "PT is the timezone for Maya Chen.",
+      "after": "PT is the timezone for Maya Chen.",
+      "how": "resolved name"
+    },
+    {
+      "ask": "how big is the growth team?",
+      "want": [
+        "Growth",
+        "headcount"
+      ],
+      "beforeOk": true,
+      "afterOk": true,
+      "before": "Growth has 6 people on it.",
+      "after": "Growth has 6 people on it.",
+      "how": "resolved name"
+    },
+    {
+      "ask": "what language is cinder written in?",
+      "want": [
+        "Cinder",
+        "language"
+      ],
+      "beforeOk": true,
+      "afterOk": true,
+      "before": "Cinder is written in Python.",
+      "after": "Cinder is written in Python.",
+      "how": "resolved name"
+    },
+    {
+      "ask": "what tier is the atlas api?",
+      "want": [
+        "Atlas",
+        "tier"
+      ],
+      "beforeOk": true,
+      "afterOk": true,
+      "before": "Atlas is tier 1.",
+      "after": "Atlas is tier 1.",
+      "how": "inherited from Atlas"
+    },
+    {
+      "ask": "which product does stripe integrate with?",
+      "want": [
+        "Stripe",
+        "product"
+      ],
+      "beforeOk": true,
+      "afterOk": true,
+      "before": "Stripe: product is Delta.",
+      "after": "Stripe: product is Delta.",
+      "how": "resolved name"
+    },
+    {
+      "ask": "what is the sla for northwind?",
+      "want": [
+        null,
+        "sla"
+      ],
+      "beforeOk": true,
+      "afterOk": true,
+      "before": "Northwind has no sla recorded.",
+      "after": "Northwind has no sla recorded.",
+      "how": "declined"
+    },
+    {
+      "ask": "what database does the growth team use?",
+      "want": [
+        null,
+        "database"
+      ],
+      "beforeOk": true,
+      "afterOk": true,
+      "before": "Growth has no database recorded.",
+      "after": "Growth has no database recorded.",
+      "how": "declined"
+    },
+    {
+      "ask": "what severity was INC 4102?",
+      "want": [
+        "INC-4102",
+        "severity"
+      ],
+      "beforeOk": false,
+      "afterOk": true,
+      "before": "I don't have a record for that.",
+      "after": "INC-4102 is Sev 1.",
+      "how": "resolved name"
+    },
+    {
+      "ask": "who leads payments?",
+      "want": [
+        "Payments",
+        "lead"
+      ],
+      "beforeOk": true,
+      "afterOk": true,
+      "before": "Lena Ortiz leads Payments.",
+      "after": "Lena Ortiz leads Payments.",
+      "how": "resolved name"
+    }
+  ]
+}

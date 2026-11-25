@@ -1,19 +1,19 @@
 {
   "system": "bm25",
-  "passed": 20,
-  "total": 91,
+  "passed": 24,
+  "total": 117,
   "byKind": {
     "knowledge": {
-      "passed": 8,
-      "total": 24
+      "passed": 11,
+      "total": 38
     },
     "context": {
-      "passed": 3,
-      "total": 46
+      "passed": 5,
+      "total": 60
     },
     "tool": {
-      "passed": 9,
-      "total": 14
+      "passed": 8,
+      "total": 12
     },
     "planning": {
       "passed": 0,
@@ -29,10 +29,12 @@
       "thread": "product-atlas",
       "ask": "who owns Atlas?",
       "kind": "knowledge",
-      "text": "Atlas: owner is Platform.",
+      "text": "atlas-api: product is Atlas.",
       "calls": [],
-      "pass": true,
-      "missing": [],
+      "pass": false,
+      "missing": [
+        "Platform"
+      ],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -42,7 +44,7 @@
       "thread": "product-atlas",
       "ask": "and what is it written in?",
       "kind": "context",
-      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team lead timezone, with a written handoff in the team channel..",
       "calls": [],
       "pass": false,
       "missing": [
@@ -70,10 +72,12 @@
       "thread": "product-beacon",
       "ask": "who owns Beacon?",
       "kind": "knowledge",
-      "text": "Beacon: owner is Growth.",
+      "text": "beacon-api: product is Beacon.",
       "calls": [],
-      "pass": true,
-      "missing": [],
+      "pass": false,
+      "missing": [
+        "Growth"
+      ],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -83,7 +87,7 @@
       "thread": "product-beacon",
       "ask": "and what is it written in?",
       "kind": "context",
-      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team lead timezone, with a written handoff in the team channel..",
       "calls": [],
       "pass": false,
       "missing": [
@@ -113,10 +117,12 @@
       "thread": "product-cinder",
       "ask": "who owns Cinder?",
       "kind": "knowledge",
-      "text": "Cinder: owner is Data.",
+      "text": "cinder-api: product is Cinder.",
       "calls": [],
-      "pass": true,
-      "missing": [],
+      "pass": false,
+      "missing": [
+        "Data"
+      ],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -126,7 +132,7 @@
       "thread": "product-cinder",
       "ask": "and what is it written in?",
       "kind": "context",
-      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team lead timezone, with a written handoff in the team channel..",
       "calls": [],
       "pass": false,
       "missing": [
@@ -156,10 +162,12 @@
       "thread": "product-delta",
       "ask": "who owns Delta?",
       "kind": "knowledge",
-      "text": "Delta: owner is Payments.",
+      "text": "delta-api: product is Delta.",
       "calls": [],
-      "pass": true,
-      "missing": [],
+      "pass": false,
+      "missing": [
+        "Payments"
+      ],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -169,7 +177,7 @@
       "thread": "product-delta",
       "ask": "and what is it written in?",
       "kind": "context",
-      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team lead timezone, with a written handoff in the team channel..",
       "calls": [],
       "pass": false,
       "missing": [
@@ -199,10 +207,12 @@
       "thread": "product-ember",
       "ask": "who owns Ember?",
       "kind": "knowledge",
-      "text": "Ember: owner is Platform.",
+      "text": "ember-api: product is Ember.",
       "calls": [],
-      "pass": true,
-      "missing": [],
+      "pass": false,
+      "missing": [
+        "Platform"
+      ],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -212,7 +222,7 @@
       "thread": "product-ember",
       "ask": "and what is it written in?",
       "kind": "context",
-      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team lead timezone, with a written handoff in the team channel..",
       "calls": [],
       "pass": false,
       "missing": [
@@ -242,10 +252,12 @@
       "thread": "product-flint",
       "ask": "who owns Flint?",
       "kind": "knowledge",
-      "text": "Flint: owner is Search.",
+      "text": "flint-api: product is Flint.",
       "calls": [],
-      "pass": true,
-      "missing": [],
+      "pass": false,
+      "missing": [
+        "Search"
+      ],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -255,7 +267,7 @@
       "thread": "product-flint",
       "ask": "and what is it written in?",
       "kind": "context",
-      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team lead timezone, with a written handoff in the team channel..",
       "calls": [],
       "pass": false,
       "missing": [
@@ -285,10 +297,12 @@
       "thread": "product-gauge",
       "ask": "who owns Gauge?",
       "kind": "knowledge",
-      "text": "Gauge: owner is Data.",
+      "text": "gauge-api: product is Gauge.",
       "calls": [],
-      "pass": true,
-      "missing": [],
+      "pass": false,
+      "missing": [
+        "Data"
+      ],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -298,7 +312,7 @@
       "thread": "product-gauge",
       "ask": "and what is it written in?",
       "kind": "context",
-      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team lead timezone, with a written handoff in the team channel..",
       "calls": [],
       "pass": false,
       "missing": [
@@ -328,10 +342,12 @@
       "thread": "product-harbor",
       "ask": "who owns Harbor?",
       "kind": "knowledge",
-      "text": "Harbor: owner is Growth.",
+      "text": "harbor-api: product is Harbor.",
       "calls": [],
-      "pass": true,
-      "missing": [],
+      "pass": false,
+      "missing": [
+        "Growth"
+      ],
       "leaked": [],
       "toolOk": true,
       "declined": false,
@@ -341,7 +357,7 @@
       "thread": "product-harbor",
       "ask": "and what is it written in?",
       "kind": "context",
-      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team's lead timezone, with a written handoff in the team channel..",
+      "text": "Oncall handoff: text is Oncall rotates weekly on Monday at 09:00 in the team lead timezone, with a written handoff in the team channel..",
       "calls": [],
       "pass": false,
       "missing": [
@@ -403,7 +419,7 @@
       "thread": "database-list",
       "ask": "the first one?",
       "kind": "context",
-      "text": "I'm not sure about that.",
+      "text": "Customer escalation: text is A customer marked priority one gets an engineer on the call within 15 minutes. Priority two gets a written update within four hours..",
       "calls": [],
       "pass": false,
       "missing": [
@@ -411,7 +427,7 @@
       ],
       "leaked": [],
       "toolOk": true,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
@@ -849,13 +865,13 @@
       "thread": "page-platform",
       "ask": "and open a ticket for it",
       "kind": "tool",
-      "text": "I'm not sure about that.",
+      "text": "INC-4104: status is open.",
       "calls": [],
       "pass": false,
       "missing": [],
       "leaked": [],
       "toolOk": false,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
@@ -877,13 +893,13 @@
       "thread": "page-growth",
       "ask": "and open a ticket for it",
       "kind": "tool",
-      "text": "I'm not sure about that.",
+      "text": "INC-4104: status is open.",
       "calls": [],
       "pass": false,
       "missing": [],
       "leaked": [],
       "toolOk": false,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
@@ -905,13 +921,13 @@
       "thread": "page-data",
       "ask": "and open a ticket for it",
       "kind": "tool",
-      "text": "I'm not sure about that.",
+      "text": "INC-4104: status is open.",
       "calls": [],
       "pass": false,
       "missing": [],
       "leaked": [],
       "toolOk": false,
-      "declined": true,
+      "declined": false,
       "wantsDecline": false
     },
     {
@@ -933,41 +949,13 @@
       "thread": "page-payments",
       "ask": "and open a ticket for it",
       "kind": "tool",
-      "text": "I'm not sure about that.",
+      "text": "INC-4104: status is open.",
       "calls": [],
       "pass": false,
       "missing": [],
       "leaked": [],
       "toolOk": false,
-      "declined": true,
-      "wantsDecline": false
-    },
-    {
-      "thread": "page-search",
-      "ask": "page the oncall for Search",
-      "kind": "tool",
-      "text": "{\"tool\":\"page_oncall\",\"arguments\":{\"team\":\"Search\"}}",
-      "calls": [
-        "page_oncall"
-      ],
-      "pass": true,
-      "missing": [],
-      "leaked": [],
-      "toolOk": true,
       "declined": false,
-      "wantsDecline": false
-    },
-    {
-      "thread": "page-search",
-      "ask": "and open a ticket for it",
-      "kind": "tool",
-      "text": "I'm not sure about that.",
-      "calls": [],
-      "pass": false,
-      "missing": [],
-      "leaked": [],
-      "toolOk": false,
-      "declined": true,
       "wantsDecline": false
     },
     {
@@ -1182,10 +1170,11 @@
       "thread": "read-atlas",
       "ask": "summarise Atlas",
       "kind": "readability",
-      "text": "Atlas: owner is Platform.",
+      "text": "atlas-api: product is Atlas.",
       "calls": [],
       "pass": false,
       "missing": [
+        "Platform",
         "Go"
       ],
       "leaked": [],
@@ -1197,10 +1186,11 @@
       "thread": "read-beacon",
       "ask": "summarise Beacon",
       "kind": "readability",
-      "text": "Beacon: owner is Growth.",
+      "text": "beacon-api: product is Beacon.",
       "calls": [],
       "pass": false,
       "missing": [
+        "Growth",
         "TypeScript"
       ],
       "leaked": [],
@@ -1212,10 +1202,11 @@
       "thread": "read-cinder",
       "ask": "summarise Cinder",
       "kind": "readability",
-      "text": "Cinder: owner is Data.",
+      "text": "cinder-api: product is Cinder.",
       "calls": [],
       "pass": false,
       "missing": [
+        "Data",
         "Python"
       ],
       "leaked": [],
@@ -1227,10 +1218,11 @@
       "thread": "read-delta",
       "ask": "summarise Delta",
       "kind": "readability",
-      "text": "Delta: owner is Payments.",
+      "text": "delta-api: product is Delta.",
       "calls": [],
       "pass": false,
       "missing": [
+        "Payments",
         "Rust"
       ],
       "leaked": [],
@@ -1356,6 +1348,400 @@
       "leaked": [],
       "toolOk": true,
       "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-northwind",
+      "ask": "what plan is Northwind on?",
+      "kind": "knowledge",
+      "text": "Northwind: plan is annual.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-northwind",
+      "ask": "and who owns that account?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Support"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-contoso",
+      "ask": "what plan is Contoso on?",
+      "kind": "knowledge",
+      "text": "Contoso: plan is annual.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-contoso",
+      "ask": "and who owns that account?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Support"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-fabrikam",
+      "ask": "what plan is Fabrikam on?",
+      "kind": "knowledge",
+      "text": "Fabrikam: plan is monthly.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-fabrikam",
+      "ask": "and who owns that account?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Growth"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-tailspin",
+      "ask": "what plan is Tailspin on?",
+      "kind": "knowledge",
+      "text": "Tailspin: plan is annual.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "customer-tailspin",
+      "ask": "and who owns that account?",
+      "kind": "context",
+      "text": "I'm not sure about that.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Growth"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": true,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4101",
+      "ask": "what is the severity of INC-4101?",
+      "kind": "knowledge",
+      "text": "INC-4101: severity is Sev 1.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4101",
+      "ask": "which team owns it?",
+      "kind": "context",
+      "text": "Maya Chen: team is Platform.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4102",
+      "ask": "what is the severity of INC-4102?",
+      "kind": "knowledge",
+      "text": "INC-4102: severity is Sev 1.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4102",
+      "ask": "which team owns it?",
+      "kind": "context",
+      "text": "Maya Chen: team is Platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Payments"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4103",
+      "ask": "what is the severity of INC-4103?",
+      "kind": "knowledge",
+      "text": "INC-4103: severity is Sev 2.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4103",
+      "ask": "which team owns it?",
+      "kind": "context",
+      "text": "Maya Chen: team is Platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Search"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4104",
+      "ask": "what is the severity of INC-4104?",
+      "kind": "knowledge",
+      "text": "INC-4104: severity is Sev 2.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "incident-INC-4104",
+      "ask": "which team owns it?",
+      "kind": "context",
+      "text": "Maya Chen: team is Platform.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Growth"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "runbook-rb-atlas",
+      "ask": "what are the steps for Atlas ingest backlog?",
+      "kind": "knowledge",
+      "text": "Atlas ingest backlog: service is ingest-api.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Check queue depth,"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "runbook-rb-atlas",
+      "ask": "who owns that runbook?",
+      "kind": "context",
+      "text": "Documentation freshness: text is A runbook untouched for 180 days is marked stale and routed to its owning team for review..",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Platform"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "runbook-rb-delta",
+      "ask": "what are the steps for Ledger reconciliation?",
+      "kind": "knowledge",
+      "text": "Ledger reconciliation: service is ledger-api.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Freeze writes, replay"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "runbook-rb-delta",
+      "ask": "who owns that runbook?",
+      "kind": "context",
+      "text": "Documentation freshness: text is A runbook untouched for 180 days is marked stale and routed to its owning team for review..",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Payments"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "runbook-rb-flint",
+      "ask": "what are the steps for Search index rebuild?",
+      "kind": "knowledge",
+      "text": "Search index rebuild: service is search-index.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Snapshot the index,"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "runbook-rb-flint",
+      "ask": "who owns that runbook?",
+      "kind": "context",
+      "text": "Documentation freshness: text is A runbook untouched for 180 days is marked stale and routed to its owning team for review..",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Search"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "integration-stripe",
+      "ask": "which direction does Stripe sync?",
+      "kind": "knowledge",
+      "text": "Stripe: direction is outbound.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "integration-stripe",
+      "ask": "and which product does it belong to?",
+      "kind": "context",
+      "text": "Stripe: product is Delta.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "integration-salesforce",
+      "ask": "which direction does Salesforce sync?",
+      "kind": "knowledge",
+      "text": "Salesforce: direction is bidirectional.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "integration-salesforce",
+      "ask": "and which product does it belong to?",
+      "kind": "context",
+      "text": "Stripe: product is Delta.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Harbor"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "integration-okta",
+      "ask": "which direction does Okta sync?",
+      "kind": "knowledge",
+      "text": "Okta: direction is inbound.",
+      "calls": [],
+      "pass": true,
+      "missing": [],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
+      "wantsDecline": false
+    },
+    {
+      "thread": "integration-okta",
+      "ask": "and which product does it belong to?",
+      "kind": "context",
+      "text": "Stripe: product is Delta.",
+      "calls": [],
+      "pass": false,
+      "missing": [
+        "Iris"
+      ],
+      "leaked": [],
+      "toolOk": true,
+      "declined": false,
       "wantsDecline": false
     }
   ]

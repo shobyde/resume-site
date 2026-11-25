@@ -1,0 +1,33 @@
+{
+  "results": {
+    "site": {
+      "plain": 1,
+      "weighted": 3,
+      "total": 8
+    },
+    "handbook": {
+      "plain": 16,
+      "weighted": 16,
+      "total": 16
+    },
+    "falsePositives": {
+      "plain": 2,
+      "weighted": 0
+    }
+  },
+  "typoHits": [
+    "hob knob",
+    "hobnobb",
+    "read back",
+    "ground glass",
+    "boas"
+  ],
+  "typos": [
+    "hob knob",
+    "hobnobb",
+    "read back",
+    "ground glass",
+    "boas",
+    "sho byde"
+  ]
+}

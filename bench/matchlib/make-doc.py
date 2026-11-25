@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+"""Approach doc: aliases derived at build, with the A/B that tested it."""
+import html
+import json
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+ab = json.loads((HERE / "results" / "ab.json").read_text())
+
+STYLE = """
+@page { size: A4; margin: 16mm 15mm; }
+body { font: 10.2pt/1.55 -apple-system, "Segoe UI", Roboto, sans-serif; color: #1c1a17; }
+h1 { font-size: 20pt; margin: 0 0 2mm; letter-spacing: -0.02em; }
+h2 { font-size: 11.5pt; margin: 7mm 0 2mm; text-transform: uppercase; letter-spacing: 0.09em; color: #6b5b4a; }
+p { margin: 0 0 3mm; }
+.sub { color: #6b5b4a; margin-bottom: 6mm; }
+.lede { font-size: 11pt; border-left: 3px solid #c9a227; padding-left: 4mm; }
+table { width: 100%; border-collapse: collapse; margin: 3mm 0 5mm; font-size: 9.4pt; }
+th, td { text-align: left; padding: 2mm 2.5mm; border-bottom: 1px solid #e2d9c9; vertical-align: top; }
+th { background: #f6f0e2; font-weight: 600; }
+td.n { font-variant-numeric: tabular-nums; }
+.good { color: #2f6b3a; font-weight: 600; }
+.bad { color: #9b3b2f; font-weight: 600; }
+code { font-family: ui-monospace, Menlo, monospace; font-size: 9pt; background: #f3eee4; padding: 0.4mm 1.2mm; border-radius: 2px; }
+.box { background: #f6f0e2; border-radius: 3px; padding: 3.5mm 4mm; margin: 3mm 0 5mm; }
+ul { margin: 0 0 3mm 5mm; padding: 0; }
+li { margin-bottom: 1.6mm; }
+.small { font-size: 9pt; color: #6b5b4a; }
+"""
+
+
+def table(headers, rows):
+    head = "".join(f"<th>{html.escape(h)}</th>" for h in headers)
+    body = "".join(
+        "<tr>" + "".join(f'<td class="{c}">{v}</td>' for v, c in row) + "</tr>" for row in rows
+    )
+    return f"<table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>"
+
+
+s = ab["score"]
+c = ab["controlHits"]
+total = ab["total"]
+learned = [a for a in ab["derived"] if a["kind"] == "learned"]
+
+rows = [
+    [("A. exact names", ""), (f"{s['A']}/{total}", "n"), (f"{c['A']}", "n"), ("the name as printed, nothing else", "")],
+    [("B. fuzzy resolver", ""), (f"{s['B']}/{total}", "n"), (f"{c['B']}", "n"), ("one edit, phonetic key, three-letter prefix", "")],
+    [("C. + mechanical aliases", ""), (f"{s['C']}/{total}", "n"), (f"{c['C']}", "n"), ("camel/split/hyphen, plural, acronym, dot-com", "")],
+    [("D. + learned aliases", ""), (f"{s['D']}/{total}", "n"), (f"{c['D']}", "n"), ("words one entity uses and the others do not", "")],
+]
+
+learned_rows = [
+    [(a["alias"], ""), (a["entity"], ""), (f"{a['score']}", "n")] for a in learned[:3]
+] or [[("none", ""), ("", ""), ("", "")]]
+
+doc = f"""<!doctype html><html><head><meta charset="utf-8"><title>Aliases at build</title><style>{STYLE}</style></head><body>
+<h1>Aliases derived at build</h1>
+<p class="sub">boaz match module, measured against the site's cards and the 520-fact handbook. Tuesday 24 November 2026.</p>
+
+<p class="lede">Your instinct is right about the shape: the library should own alias derivation, because every app would otherwise write the same list by hand. The measurement says it should ship the mechanical tier now and hold the learned tier until the corpus is dense enough to earn it. On the site's six cards, aliases added nothing over the fuzzy resolver; on a fact table they produce quantity without precision.</p>
+
+<h2>The proposal</h2>
+<p>Two tiers, both derived at compile time from data the app already ships, both emitted into the manifest so the runtime needs no extra pass:</p>
+<ul>
+<li><b>Mechanical.</b> The same name written differently: camel case split, hyphen and underscore forms, plural and singular, the acronym of a multi-word name, and the dotted form of a product name. These are spelling, not meaning, so they are safe and reversible by inspection. <code>mechanicalAliases('TypeScript')</code> gives <code>type script</code>, <code>type-script</code>, <code>typescript</code>, <code>typescripts</code>.</li>
+<li><b>Learned.</b> Words an entity's own clauses use and other entities do not: common inside the entity, rare outside it, never a word from the entity's own name, and never a schema word like <code>sla</code> or <code>role</code> that appears in every entity's facts. Every derived alias carries its discrimination score, so a caller can sort or cut them.</li>
+</ul>
+<p>The compile step writes <code>manifest.aliases</code> as a name-to-names map, and the runtime resolver accepts an alias the same way it accepts a fuzzy spelling. Nothing about the answer path changes; the vocabulary simply arrives with the build.</p>
+
+<h2>What the A/B measured</h2>
+<p>Ten questions on the site's cards: six name variants ("ground glass", "type script", "read back", "hob knob", "sho byde dot com") and four feature questions phrased with a learned-style term ("runs conformance checks", "produces speaker labels"). Two controls that should decline. The same corpus and the same evidence index for every arm, so the difference is the alias layer alone.</p>
+{table(["arm", "answered", "controls hit", "what it adds"], rows)}
+<p>Four arms, and the movement is entirely in the first step: exact names <b>3/10</b>, fuzzy resolver <b>5/10</b>, and both alias arms flat at <b>5/10</b>. The two questions the resolver won were "hob knob" and "read back", which are spelling; the alias list could not add a third because the fuzzy pass already covers the mechanical spellings it contains.</p>
+
+<h2>Where the learned tier failed, and why it is a corpus problem</h2>
+<p>On the site's six cards the derivation produced three learned aliases, and they are the wrong kind of word:</p>
+{table(["alias", "entity", "score"], learned_rows)}
+<p>Those are generic nouns from a handful of sentences; "built" describes every project on the page. With six entities and two to six clauses each, there is no statistic to learn from. On the 520-fact handbook the same code produced 177 learned aliases across 144 entities, which is quantity, and the sample shows the same failure by a different route: <code>role</code>, <code>timezone</code>, <code>platform</code> are attribute names and role words, not identities. Excluding the schema's attribute names removes some of them and not the ones that come from prose values.</p>
+
+<div class="box"><p style="margin:0"><b>What that says.</b> Alias learning is a density problem before it is an algorithm problem. Below roughly eight clauses per entity the discriminative test has nothing to discriminate with, and the words it keeps are the ones every card shares. The fix is not a cleverer scorer; it is deriving aliases from the compiled knowledge base rather than from marketing copy, and gating the tier on density so thin corpora simply do not emit it.</p></div>
+
+<h2>The gate I would put in the build</h2>
+<ul>
+<li><b>Mechanical aliases: always.</b> They cost a few hundred bytes, they are inspectable, and they make "ground glass" and "sho byde dot com" resolve without a fuzzy pass.</li>
+<li><b>Learned aliases: only when the entity has at least eight clauses</b> and the resulting alias scores at least 0.25 discrimination. Otherwise emit none.</li>
+<li><b>Exclude the schema.</b> The app passes its attribute names and its generic verbs (<code>built</code>, <code>runs</code>, <code>ships</code>) as an exclusion list; the library does not try to guess them.</li>
+<li><b>Precision before publication.</b> Hold out a fifth of the clauses, derive on the rest, and refuse to emit the tier if fewer than 80% of the learned aliases point at the right entity on the held-out questions. A build that cannot pass that test ships mechanical aliases only.</li>
+</ul>
+
+<h2>Recommendation</h2>
+<p>Ship the resolver and the evidence index as they stand; both are measured and both are library-shaped. Ship mechanical aliases at build, because they are free and they close the spelling gap that fuzzy matching only partly covers. Do not ship the learned tier yet: it needs a dense corpus, a schema exclusion list and a precision gate before it can be trusted, and the site's cards cannot supply the corpus. The first honest test of it is the handbook, where each service already has a dozen facts.</p>
+<p class="small">Tested: 22 tests in <code>packages/boaz/test/match.test.ts</code> and <code>aliases.test.ts</code>. Harnesses: <code>bench/matchlib/ab.mjs</code> and <code>bench/matchlib/run.mjs</code>. Nothing pushed.</p>
+</body></html>"""
+
+out = HERE / "results" / "aliases-approach.html"
+out.write_text(doc)
+print(f"{len(doc)} bytes written to {out}")

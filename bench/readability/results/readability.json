@@ -1,0 +1,775 @@
+{
+  "generated": "2026-11-25T03:53:52.060Z",
+  "summary": {
+    "shortSentences": {
+      "changed": 1,
+      "factsLost": 0,
+      "flesch": 72,
+      "wordsPerSentence": 5.7,
+      "longestSentence": 14
+    },
+    "answerFirst": {
+      "changed": 1,
+      "factsLost": 0,
+      "flesch": 57,
+      "wordsPerSentence": 13,
+      "longestSentence": 23
+    },
+    "plainWords": {
+      "changed": 0,
+      "factsLost": 0,
+      "flesch": null,
+      "wordsPerSentence": null,
+      "longestSentence": 0
+    },
+    "baseline": {
+      "flesch": 46,
+      "wordsPerSentence": 11.5,
+      "longestSentence": 34
+    }
+  },
+  "rows": [
+    {
+      "source": "site",
+      "question": "compare hobnob and readback",
+      "answer": "Hobnob: Meeting note-takers ship your conversations to someone else's server. It runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions. Readback: Reading-comprehension programs are closed systems: the school picks the quizzes, parents never see them, and the reading log lives on someone else's server. It runs on Python 3.10+, Flask 3, Jinja (no JS).",
+      "before": {
+        "sentences": 4,
+        "words": 54,
+        "wordsPerSentence": 13.5,
+        "longestSentence": 24,
+        "flesch": 58
+      },
+      "variants": {
+        "shortSentences": {
+          "text": "Hobnob: Meeting note-takers ship your conversations to someone else's server. It runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions. Readback: Reading-comprehension programs are closed systems: the school picks the quizzes, parents never see them, and the reading log lives on someone else's server. It runs on Python 3.10+, Flask 3, Jinja (no JS).",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 4,
+            "words": 54,
+            "wordsPerSentence": 13.5,
+            "longestSentence": 24,
+            "flesch": 58
+          },
+          "eligible": true
+        },
+        "answerFirst": {
+          "text": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions. Meeting note-takers ship your conversations to someone else's server. Readback runs on Python 3.10+, Flask 3, Jinja (no JS). Reading-comprehension programs are closed systems: the school picks the quizzes, parents never see them, and the reading log lives on someone else's server.",
+          "changed": true,
+          "lost": [],
+          "metrics": {
+            "sentences": 4,
+            "words": 52,
+            "wordsPerSentence": 13,
+            "longestSentence": 23,
+            "flesch": 57
+          },
+          "eligible": true
+        },
+        "plainWords": {
+          "text": "Hobnob: Meeting note-takers ship your conversations to someone else's server. It runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions. Readback: Reading-comprehension programs are closed systems: the school picks the quizzes, parents never see them, and the reading log lives on someone else's server. It runs on Python 3.10+, Flask 3, Jinja (no JS).",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 4,
+            "words": 54,
+            "wordsPerSentence": 13.5,
+            "longestSentence": 24,
+            "flesch": 58
+          },
+          "eligible": true
+        }
+      }
+    },
+    {
+      "source": "site",
+      "question": "what stack does hobnob use?",
+      "answer": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+      "before": {
+        "sentences": 1,
+        "words": 20,
+        "wordsPerSentence": 20,
+        "longestSentence": 20,
+        "flesch": 38
+      },
+      "variants": {
+        "shortSentences": {
+          "text": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 20,
+            "wordsPerSentence": 20,
+            "longestSentence": 20,
+            "flesch": 38
+          },
+          "eligible": true
+        },
+        "answerFirst": {
+          "text": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 20,
+            "wordsPerSentence": 20,
+            "longestSentence": 20,
+            "flesch": 38
+          },
+          "eligible": true
+        },
+        "plainWords": {
+          "text": "Hobnob runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions, macOS (Apple Silicon) and Linux (AppImage / .deb / .pacman).",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 20,
+            "wordsPerSentence": 20,
+            "longestSentence": 20,
+            "flesch": 38
+          },
+          "eligible": true
+        }
+      }
+    },
+    {
+      "source": "site",
+      "question": "which projects use python?",
+      "answer": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. Boaz takes the other route: TypeScript and Vite.",
+      "before": {
+        "sentences": 3,
+        "words": 21,
+        "wordsPerSentence": 7,
+        "longestSentence": 8,
+        "flesch": 83
+      },
+      "variants": {
+        "shortSentences": {
+          "text": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. Boaz takes the other route: TypeScript and Vite.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 21,
+            "wordsPerSentence": 7,
+            "longestSentence": 8,
+            "flesch": 83
+          },
+          "eligible": true
+        },
+        "answerFirst": {
+          "text": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. Boaz takes the other route: TypeScript and Vite.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 21,
+            "wordsPerSentence": 7,
+            "longestSentence": 8,
+            "flesch": 83
+          },
+          "eligible": true
+        },
+        "plainWords": {
+          "text": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. Boaz takes the other route: TypeScript and Vite.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 21,
+            "wordsPerSentence": 7,
+            "longestSentence": 8,
+            "flesch": 83
+          },
+          "eligible": true
+        }
+      }
+    },
+    {
+      "source": "site",
+      "question": "which projects run locally?",
+      "answer": "Two cards describe it: Hobnob and Readback. Hobnob: \"Transcribes, and summarizes meetings entirely on-device\". Readback: \"Self-hosted reading for families\".",
+      "before": {
+        "sentences": 3,
+        "words": 19,
+        "wordsPerSentence": 6.3,
+        "longestSentence": 7,
+        "flesch": 36
+      },
+      "variants": {
+        "shortSentences": {
+          "text": "Two cards describe it: Hobnob and Readback. Hobnob: \"Transcribes, and summarizes meetings entirely on-device\". Readback: \"Self-hosted reading for families\".",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 19,
+            "wordsPerSentence": 6.3,
+            "longestSentence": 7,
+            "flesch": 36
+          },
+          "eligible": true
+        },
+        "answerFirst": {
+          "text": "Two cards describe it: Hobnob and Readback. Hobnob: \"Transcribes, and summarizes meetings entirely on-device\". Readback: \"Self-hosted reading for families\".",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 19,
+            "wordsPerSentence": 6.3,
+            "longestSentence": 7,
+            "flesch": 36
+          },
+          "eligible": true
+        },
+        "plainWords": {
+          "text": "Two cards describe it: Hobnob and Readback. Hobnob: \"Transcribes, and summarizes meetings entirely on-device\". Readback: \"Self-hosted reading for families\".",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 19,
+            "wordsPerSentence": 6.3,
+            "longestSentence": 7,
+            "flesch": 36
+          },
+          "eligible": true
+        }
+      }
+    },
+    {
+      "source": "site",
+      "question": "what can you do?",
+      "answer": "I have 26 capabilities, all answered from this page: Show the newest article card; Open the full archive; Read the newest article; Log statistics; Summarise the blog; Show the contact card, and 20 more.",
+      "before": {
+        "sentences": 1,
+        "words": 34,
+        "wordsPerSentence": 34,
+        "longestSentence": 34,
+        "flesch": 43
+      },
+      "variants": {
+        "shortSentences": {
+          "text": "I have 26 capabilities, all answered from this page: Show the newest article card. Open the full archive. Read the newest article. Log statistics. Summarise the blog. Show the contact card, and 20 more.",
+          "changed": true,
+          "lost": [],
+          "metrics": {
+            "sentences": 6,
+            "words": 34,
+            "wordsPerSentence": 5.7,
+            "longestSentence": 14,
+            "flesch": 72
+          },
+          "eligible": true
+        },
+        "answerFirst": {
+          "text": "I have 26 capabilities, all answered from this page: Show the newest article card; Open the full archive; Read the newest article; Log statistics; Summarise the blog; Show the contact card, and 20 more.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 34,
+            "wordsPerSentence": 34,
+            "longestSentence": 34,
+            "flesch": 43
+          },
+          "eligible": true
+        },
+        "plainWords": {
+          "text": "I have 26 capabilities, all answered from this page: Show the newest article card; Open the full archive; Read the newest article; Log statistics; Summarise the blog; Show the contact card, and 20 more.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 34,
+            "wordsPerSentence": 34,
+            "longestSentence": 34,
+            "flesch": 43
+          },
+          "eligible": true
+        }
+      }
+    },
+    {
+      "source": "site",
+      "question": "which projects use typescript?",
+      "answer": "Just Boaz (TypeScript). The other 5 list different stacks. The closest without it is Groundglass, on Python 3.10+ and Standard library only.",
+      "before": {
+        "sentences": 3,
+        "words": 22,
+        "wordsPerSentence": 7.3,
+        "longestSentence": 13,
+        "flesch": 65
+      },
+      "variants": {
+        "shortSentences": {
+          "text": "Just Boaz (TypeScript). The other 5 list different stacks. The closest without it is Groundglass, on Python 3.10+ and Standard library only.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 22,
+            "wordsPerSentence": 7.3,
+            "longestSentence": 13,
+            "flesch": 65
+          },
+          "eligible": true
+        },
+        "answerFirst": {
+          "text": "Just Boaz (TypeScript). The other 5 list different stacks. The closest without it is Groundglass, on Python 3.10+ and Standard library only.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 22,
+            "wordsPerSentence": 7.3,
+            "longestSentence": 13,
+            "flesch": 65
+          },
+          "eligible": true
+        },
+        "plainWords": {
+          "text": "Just Boaz (TypeScript). The other 5 list different stacks. The closest without it is Groundglass, on Python 3.10+ and Standard library only.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 22,
+            "wordsPerSentence": 7.3,
+            "longestSentence": 13,
+            "flesch": 65
+          },
+          "eligible": true
+        }
+      }
+    },
+    {
+      "source": "handbook",
+      "question": "what is the incident severity policy?",
+      "answer": "Incident severity: Sev 1 is customer-visible downtime, paged immediately to the owning team. Sev 2 is degraded service, acknowledged within 30 minutes. Sev 3 is cosmetic and handled in business hours..",
+      "before": {
+        "sentences": 3,
+        "words": 31,
+        "wordsPerSentence": 10.3,
+        "longestSentence": 13,
+        "flesch": 41
+      },
+      "variants": {
+        "shortSentences": {
+          "text": "Incident severity: Sev 1 is customer-visible downtime, paged immediately to the owning team. Sev 2 is degraded service, acknowledged within 30 minutes. Sev 3 is cosmetic and handled in business hours..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 31,
+            "wordsPerSentence": 10.3,
+            "longestSentence": 13,
+            "flesch": 41
+          },
+          "eligible": true
+        },
+        "answerFirst": {
+          "text": "Incident severity: Sev 1 is customer-visible downtime, paged immediately to the owning team. Sev 2 is degraded service, acknowledged within 30 minutes. Sev 3 is cosmetic and handled in business hours..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 31,
+            "wordsPerSentence": 10.3,
+            "longestSentence": 13,
+            "flesch": 41
+          },
+          "eligible": true
+        },
+        "plainWords": {
+          "text": "Incident severity: Sev 1 is customer-visible downtime, paged immediately to the owning team. Sev 2 is degraded service, acknowledged within 30 minutes. Sev 3 is cosmetic and handled in business hours..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 31,
+            "wordsPerSentence": 10.3,
+            "longestSentence": 13,
+            "flesch": 41
+          },
+          "eligible": true
+        }
+      }
+    },
+    {
+      "source": "handbook",
+      "question": "what is the data retention policy?",
+      "answer": "Data retention: Application logs are kept 30 days. Audit logs are kept 400 days. Customer records are deleted within 30 days of a verified request..",
+      "before": {
+        "sentences": 3,
+        "words": 25,
+        "wordsPerSentence": 8.3,
+        "longestSentence": 11,
+        "flesch": 63
+      },
+      "variants": {
+        "shortSentences": {
+          "text": "Data retention: Application logs are kept 30 days. Audit logs are kept 400 days. Customer records are deleted within 30 days of a verified request..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 25,
+            "wordsPerSentence": 8.3,
+            "longestSentence": 11,
+            "flesch": 63
+          },
+          "eligible": true
+        },
+        "answerFirst": {
+          "text": "Data retention: Application logs are kept 30 days. Audit logs are kept 400 days. Customer records are deleted within 30 days of a verified request..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 25,
+            "wordsPerSentence": 8.3,
+            "longestSentence": 11,
+            "flesch": 63
+          },
+          "eligible": true
+        },
+        "plainWords": {
+          "text": "Data retention: Application logs are kept 30 days. Audit logs are kept 400 days. Customer records are deleted within 30 days of a verified request..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 25,
+            "wordsPerSentence": 8.3,
+            "longestSentence": 11,
+            "flesch": 63
+          },
+          "eligible": true
+        }
+      }
+    },
+    {
+      "source": "handbook",
+      "question": "what is the payment retries policy?",
+      "answer": "Payment retries: Failed charges retry three times over 48 hours with exponential backoff, then settle to manual review..",
+      "before": {
+        "sentences": 1,
+        "words": 18,
+        "wordsPerSentence": 18,
+        "longestSentence": 18,
+        "flesch": 52
+      },
+      "variants": {
+        "shortSentences": {
+          "text": "Payment retries: Failed charges retry three times over 48 hours with exponential backoff, then settle to manual review..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 18,
+            "wordsPerSentence": 18,
+            "longestSentence": 18,
+            "flesch": 52
+          },
+          "eligible": true
+        },
+        "answerFirst": {
+          "text": "Payment retries: Failed charges retry three times over 48 hours with exponential backoff, then settle to manual review..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 18,
+            "wordsPerSentence": 18,
+            "longestSentence": 18,
+            "flesch": 52
+          },
+          "eligible": true
+        },
+        "plainWords": {
+          "text": "Payment retries: Failed charges retry three times over 48 hours with exponential backoff, then settle to manual review..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 18,
+            "wordsPerSentence": 18,
+            "longestSentence": 18,
+            "flesch": 52
+          },
+          "eligible": true
+        }
+      }
+    },
+    {
+      "source": "handbook",
+      "question": "what is the secrets rotation policy?",
+      "answer": "Secrets rotation: Service credentials rotate every 90 days. Database credentials rotate every 30 days. A rotation that fails pages the Security oncall..",
+      "before": {
+        "sentences": 3,
+        "words": 22,
+        "wordsPerSentence": 7.3,
+        "longestSentence": 8,
+        "flesch": 30
+      },
+      "variants": {
+        "shortSentences": {
+          "text": "Secrets rotation: Service credentials rotate every 90 days. Database credentials rotate every 30 days. A rotation that fails pages the Security oncall..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 22,
+            "wordsPerSentence": 7.3,
+            "longestSentence": 8,
+            "flesch": 30
+          },
+          "eligible": true
+        },
+        "answerFirst": {
+          "text": "Secrets rotation: Service credentials rotate every 90 days. Database credentials rotate every 30 days. A rotation that fails pages the Security oncall..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 22,
+            "wordsPerSentence": 7.3,
+            "longestSentence": 8,
+            "flesch": 30
+          },
+          "eligible": true
+        },
+        "plainWords": {
+          "text": "Secrets rotation: Service credentials rotate every 90 days. Database credentials rotate every 30 days. A rotation that fails pages the Security oncall..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 3,
+            "words": 22,
+            "wordsPerSentence": 7.3,
+            "longestSentence": 8,
+            "flesch": 30
+          },
+          "eligible": true
+        }
+      }
+    },
+    {
+      "source": "handbook",
+      "question": "what is the customer escalation policy?",
+      "answer": "Customer escalation: A customer marked priority one gets an engineer on the call within 15 minutes. Priority two gets a written update within four hours..",
+      "before": {
+        "sentences": 2,
+        "words": 25,
+        "wordsPerSentence": 12.5,
+        "longestSentence": 16,
+        "flesch": 49
+      },
+      "variants": {
+        "shortSentences": {
+          "text": "Customer escalation: A customer marked priority one gets an engineer on the call within 15 minutes. Priority two gets a written update within four hours..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 2,
+            "words": 25,
+            "wordsPerSentence": 12.5,
+            "longestSentence": 16,
+            "flesch": 49
+          },
+          "eligible": true
+        },
+        "answerFirst": {
+          "text": "Customer escalation: A customer marked priority one gets an engineer on the call within 15 minutes. Priority two gets a written update within four hours..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 2,
+            "words": 25,
+            "wordsPerSentence": 12.5,
+            "longestSentence": 16,
+            "flesch": 49
+          },
+          "eligible": true
+        },
+        "plainWords": {
+          "text": "Customer escalation: A customer marked priority one gets an engineer on the call within 15 minutes. Priority two gets a written update within four hours..",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 2,
+            "words": 25,
+            "wordsPerSentence": 12.5,
+            "longestSentence": 16,
+            "flesch": 49
+          },
+          "eligible": true
+        }
+      }
+    },
+    {
+      "source": "handbook",
+      "question": "what are the steps for Atlas ingest backlog?",
+      "answer": "Atlas ingest backlog: service is ingest-api.",
+      "before": {
+        "sentences": 1,
+        "words": 6,
+        "wordsPerSentence": 6,
+        "longestSentence": 6,
+        "flesch": 17
+      },
+      "variants": {
+        "shortSentences": {
+          "text": "Atlas ingest backlog: service is ingest-api.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 6,
+            "wordsPerSentence": 6,
+            "longestSentence": 6,
+            "flesch": 17
+          },
+          "eligible": true
+        },
+        "answerFirst": {
+          "text": "Atlas ingest backlog: service is ingest-api.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 6,
+            "wordsPerSentence": 6,
+            "longestSentence": 6,
+            "flesch": 17
+          },
+          "eligible": true
+        },
+        "plainWords": {
+          "text": "Atlas ingest backlog: service is ingest-api.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 6,
+            "wordsPerSentence": 6,
+            "longestSentence": 6,
+            "flesch": 17
+          },
+          "eligible": true
+        }
+      }
+    },
+    {
+      "source": "handbook",
+      "question": "what are the steps for Ledger reconciliation?",
+      "answer": "Ledger reconciliation: service is ledger-api.",
+      "before": {
+        "sentences": 1,
+        "words": 5,
+        "wordsPerSentence": 5,
+        "longestSentence": 5,
+        "flesch": -35
+      },
+      "variants": {
+        "shortSentences": {
+          "text": "Ledger reconciliation: service is ledger-api.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 5,
+            "wordsPerSentence": 5,
+            "longestSentence": 5,
+            "flesch": -35
+          },
+          "eligible": true
+        },
+        "answerFirst": {
+          "text": "Ledger reconciliation: service is ledger-api.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 5,
+            "wordsPerSentence": 5,
+            "longestSentence": 5,
+            "flesch": -35
+          },
+          "eligible": true
+        },
+        "plainWords": {
+          "text": "Ledger reconciliation: service is ledger-api.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 5,
+            "wordsPerSentence": 5,
+            "longestSentence": 5,
+            "flesch": -35
+          },
+          "eligible": true
+        }
+      }
+    },
+    {
+      "source": "handbook",
+      "question": "who is on call for search?",
+      "answer": "Search: Ravi Shah is on call.",
+      "before": {
+        "sentences": 1,
+        "words": 6,
+        "wordsPerSentence": 6,
+        "longestSentence": 6,
+        "flesch": 102
+      },
+      "variants": {
+        "shortSentences": {
+          "text": "Search: Ravi Shah is on call.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 6,
+            "wordsPerSentence": 6,
+            "longestSentence": 6,
+            "flesch": 102
+          },
+          "eligible": true
+        },
+        "answerFirst": {
+          "text": "Search: Ravi Shah is on call.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 6,
+            "wordsPerSentence": 6,
+            "longestSentence": 6,
+            "flesch": 102
+          },
+          "eligible": true
+        },
+        "plainWords": {
+          "text": "Search: Ravi Shah is on call.",
+          "changed": false,
+          "lost": [],
+          "metrics": {
+            "sentences": 1,
+            "words": 6,
+            "wordsPerSentence": 6,
+            "longestSentence": 6,
+            "flesch": 102
+          },
+          "eligible": true
+        }
+      }
+    }
+  ]
+}

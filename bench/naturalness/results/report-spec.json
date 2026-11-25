@@ -1,0 +1,276 @@
+{
+  "title": "boaz naturalness spike: before and after",
+  "author": "Hermes, for Sho Byde",
+  "elements": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Naturalness spike: an n-gram rewriter"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Before and after, with tests. Verdict: do not ship."
+    },
+    {
+      "type": "paragraph",
+      "text": "Generated 2026-11-24 19:41 \u00b7 boaz 0.8.5 (@shobyde/boaz) \u00b7 spike branch, nothing pushed. The mechanism is a bigram model over the site's own prose, used to join two sentences that already carry the facts. It is tested, it preserves every fact, and the judge says it reads worse. This document records the numbers behind that sentence."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "1. What was built"
+    },
+    {
+      "type": "paragraph",
+      "text": "A new library entry point, boaz/text, with no model file and no network:"
+    },
+    {
+      "type": "table",
+      "header": [
+        "API",
+        "What it does"
+      ],
+      "rows": [
+        [
+          "createNgramModel(texts)",
+          "Counts bigram transitions over the host's prose; score(text) is the mean log-probability per transition, rank() and choose() order candidates, perplexity() is derived."
+        ],
+        [
+          "mergeClauses(a, b)",
+          "Joins two label or copula sentences into one, refusing any shape it does not recognise."
+        ],
+        [
+          "mergePronounClause(a, b)",
+          "Joins a pronoun-led sentence to the one before it, in participial or semicolon form."
+        ],
+        [
+          "reflowSentences(text, model)",
+          "Walks an answer and applies the pronoun join, choosing a form by score."
+        ],
+        [
+          "observedConnectives(model)",
+          "Reports which connective the corpus actually prefers, instead of inventing one."
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Test suite: 16 tests, all passing (scoring determinism, corpus-vs-invented ranking, punctuation as tokens, label joins, copula joins, refusals, both reflow styles, and a word-preservation check). Command: npx vitest run test/ngram.test.ts."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "2. Method"
+    },
+    {
+      "type": "paragraph",
+      "text": "Corpus: 964 sentences and 3116 tokens taken from the site's posts and the project cards' own copy. Cases: 13 questions answered by the real engine, unmodified. For each answer the harness generates rewrite candidates, discards any candidate that loses a number, quoted string or capitalised name, and keeps the best-scoring survivor. Two measurements are mechanical (Flesch reading ease, mean n-gram log-probability); the third is a blind judge (minimax-m3.1-flash): two answers, order randomised per case, 'which reads more like a person wrote it'."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "3. Before and after, per answer"
+    },
+    {
+      "type": "table",
+      "header": [
+        "Question",
+        "Sent. before",
+        "Sent. after",
+        "Flesch",
+        "LM score",
+        "Facts lost"
+      ],
+      "rows": [
+        [
+          "compare hobnob and readback",
+          "4",
+          "2",
+          "61 \u2192 49",
+          "-6.191 \u2192 -6.334",
+          "0"
+        ],
+        [
+          "how big is hobnob?",
+          "1",
+          "1",
+          "66 \u2192 66",
+          "-7.541 \u2192 -7.541",
+          "0"
+        ],
+        [
+          "which projects use python?",
+          "3",
+          "3",
+          "85 \u2192 85",
+          "-7.288 \u2192 -7.288",
+          "0"
+        ],
+        [
+          "what stack does hobnob use?",
+          "1",
+          "1",
+          "52 \u2192 52",
+          "-7.435 \u2192 -7.435",
+          "0"
+        ],
+        [
+          "which projects run locally?",
+          "3",
+          "3",
+          "36 \u2192 36",
+          "-6.4 \u2192 -6.4",
+          "0"
+        ],
+        [
+          "what can you do?",
+          "1",
+          "1",
+          "43 \u2192 43",
+          "-7.263 \u2192 -7.263",
+          "0"
+        ],
+        [
+          "compare boaz and groundglass",
+          "4",
+          "2",
+          "64 \u2192 54",
+          "-6.214 \u2192 -6.272",
+          "0"
+        ],
+        [
+          "compare hobnob and boaz",
+          "4",
+          "2",
+          "54 \u2192 36",
+          "-6.111 \u2192 -6.22",
+          "0"
+        ],
+        [
+          "compare readback and groundglass",
+          "4",
+          "2",
+          "70 \u2192 62",
+          "-6.267 \u2192 -6.366",
+          "0"
+        ],
+        [
+          "what has he built?",
+          "2",
+          "2",
+          "38 \u2192 38",
+          "-7.212 \u2192 -7.212",
+          "0"
+        ],
+        [
+          "which projects use typescript?",
+          "3",
+          "3",
+          "67 \u2192 67",
+          "-7.508 \u2192 -7.508",
+          "0"
+        ],
+        [
+          "how many posts has he written?",
+          "1",
+          "1",
+          "70 \u2192 70",
+          "-5.874 \u2192 -5.874",
+          "0"
+        ],
+        [
+          "what is his email?",
+          "1",
+          "1",
+          "-20 \u2192 -20",
+          "-6.46 \u2192 -6.46",
+          "0"
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Totals: 4 of 13 answers had a joinable pair; mean sentence count 2.46 \u2192 1.85; mean Flesch 52.77 \u2192 49.08; mean LM score -6.75 \u2192 -6.78; facts lost 0. On the joined subset only: Flesch 62.25 \u2192 50.25, LM -6.2 \u2192 -6.3."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "4. The judge"
+    },
+    {
+      "type": "paragraph",
+      "text": "Across the 4 rewritten answers the judge scored the original 4.75/5 and the rewrite 3.25/5, and preferred the original 4 times, the rewrite 0, with 0 ties. Its reasons, verbatim:"
+    },
+    {
+      "type": "table",
+      "header": [
+        "Question",
+        "Before",
+        "After",
+        "Judge's reason"
+      ],
+      "rows": [
+        [
+          "compare hobnob and readback",
+          "4",
+          "3",
+          "B\u2019s separate sentences clarify what runs on each stack."
+        ],
+        [
+          "compare boaz and groundglass",
+          "5",
+          "3",
+          "B's sentence breaks feel clearer and more natural."
+        ],
+        [
+          "compare hobnob and boaz",
+          "5",
+          "3",
+          "A avoids dangling modifiers and keeps each subject clear."
+        ],
+        [
+          "compare readback and groundglass",
+          "5",
+          "4",
+          "B uses complete sentences; A\u2019s trailing \u201crunning on\u201d phrases feel awkward."
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Representative rewrite, compare hobnob and readback. Before: \u201cHobnob: Meeting note-takers ship your conversations to someone else's server. It runs on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions.\u201d After: \u201c\u2026 server, running on Whisper (large-v3-turbo), Local GGUF LLMs, Live captions.\u201d The judge called the second one a dangling modifier and preferred the two sentences."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "5. Does the model's taste track the judge?"
+    },
+    {
+      "type": "paragraph",
+      "text": "Each of the 13 answers was also scored alone by the judge (mean 3.46/5). The correlation between the n-gram score and judged naturalness is -0.438 (Flesch: -0.158). With 13 cases that is not a stable estimate, and its sign is the wrong one: the more corpus-like an answer scored, the less natural the judge found it. The model is measuring topical familiarity, not prose quality."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "6. Decision"
+    },
+    {
+      "type": "paragraph",
+      "text": "Do not ship the rewriter. It is not a bug: joining two sentences shortens the answer and keeps every fact, and still reads worse, because the panel's answers already carry their own clause boundaries. The mechanism stays in the spike tree, unshipped and tested, because it is the cheapest way to answer the next question (does any auto-regressive signal help?) without pretending the answer was yes."
+    },
+    {
+      "type": "paragraph",
+      "text": "What would change the verdict: (a) a corpus ten times larger with the register the panel actually writes in, not the blog's; (b) ranking candidate realisations that the phrasing layer already generates for the same question, instead of joining finished sentences; (c) a judge-in-the-loop ordering step at build time, where the model only has to be consistent, not right."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "7. Reproduce"
+    },
+    {
+      "type": "paragraph",
+      "text": "node bench/naturalness/run.mjs \u00b7 python3 bench/naturalness/judge.py \u00b7 npx vitest run test/ngram.test.ts (in packages/boaz). Raw data: bench/naturalness/results/naturalness.json and judged.json."
+    }
+  ]
+}

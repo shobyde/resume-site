@@ -11,7 +11,7 @@ const threads = [];
 
 // Knowledge then follow-ups: the owner, then an attribute of the same thing,
 // then a second attribute. Three turns, two of them only make sense in a thread.
-for (const p of kb.products) {
+for (const p of kb.products.slice(0, 8)) {
   threads.push({
     id: `product-${p.id}`,
     title: `${p.name}: owner, then attributes`,
@@ -45,7 +45,7 @@ threads.push({
 });
 
 // Team threads: lead and channel, with the second turn pointing back.
-for (const t of kb.teams) {
+for (const t of kb.teams.slice(0, 5)) {
   threads.push({
     id: `team-${t.id}`,
     title: `${t.name}: lead and channel`,
@@ -71,7 +71,7 @@ for (const person of kb.people.slice(0, 5)) {
 }
 
 // Tools: one action per turn, the action id is the expectation.
-for (const t of kb.teams) {
+for (const t of kb.teams.slice(0, 4)) {
   threads.push({
     id: `page-${t.id}`,
     title: `Page ${t.name} oncall`,
@@ -128,8 +128,56 @@ for (const policy of kb.policies.slice(0, 4)) {
   });
 }
 
+// Customers: a plan and an owner, then a filter over the list.
+for (const customer of kb.customers.slice(0, 4)) {
+  threads.push({
+    id: `customer-${customer.id}`,
+    title: `${customer.name}: plan and owner`,
+    turns: [
+      { ask: `what plan is ${customer.name} on?`, kind: 'knowledge', expect: { include: [customer.plan] } },
+      { ask: 'and who owns that account?', kind: 'context', expect: { include: [customer.owner] } },
+    ],
+  });
+}
+
+// Incidents: severity, then its service, then that service's team.
+for (const incident of kb.incidents.slice(0, 4)) {
+  threads.push({
+    id: `incident-${incident.id}`,
+    title: `${incident.id}: severity and owner`,
+    turns: [
+      { ask: `what is the severity of ${incident.id}?`, kind: 'knowledge', expect: { include: [incident.severity] } },
+      { ask: 'which team owns it?', kind: 'context', expect: { include: [incident.team] } },
+    ],
+  });
+}
+
+// Runbooks: the procedure for a service, then who owns the runbook.
+for (const runbook of kb.runbooks.slice(0, 3)) {
+  threads.push({
+    id: `runbook-${runbook.id}`,
+    title: `Runbook: ${runbook.title}`,
+    turns: [
+      { ask: `what are the steps for ${runbook.title}?`, kind: 'knowledge', expect: { include: [runbook.steps.split(' ').slice(0, 3).join(' ')] } },
+      { ask: 'who owns that runbook?', kind: 'context', expect: { include: [runbook.owner] } },
+    ],
+  });
+}
+
+// Integrations: direction and product, then that product's owner.
+for (const integration of kb.integrations.slice(0, 3)) {
+  threads.push({
+    id: `integration-${integration.id}`,
+    title: `${integration.name}: direction and product`,
+    turns: [
+      { ask: `which direction does ${integration.name} sync?`, kind: 'knowledge', expect: { include: [integration.direction] } },
+      { ask: 'and which product does it belong to?', kind: 'context', expect: { include: [integration.product] } },
+    ],
+  });
+}
+
 const out = {
-  note: 'Generated from kb.json by suite.mjs. Thirty-eight threads over a synthetic handbook.',
+  note: 'Generated from kb.json by suite.mjs. Products, teams, people, policies, customers, incidents, runbooks and integrations.',
   threads,
 };
 fs.writeFileSync(path.join(here, 'threads.json'), JSON.stringify(out, null, 2));

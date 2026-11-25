@@ -1,0 +1,121 @@
+{
+  "judged": "2026-11-24T19:40:45",
+  "single": [
+    {
+      "question": "compare hobnob and readback",
+      "score": 3,
+      "lm": -6.191,
+      "flesch": 61
+    },
+    {
+      "question": "how big is hobnob?",
+      "score": 4,
+      "lm": -7.541,
+      "flesch": 66
+    },
+    {
+      "question": "which projects use python?",
+      "score": 4,
+      "lm": -7.288,
+      "flesch": 85
+    },
+    {
+      "question": "what stack does hobnob use?",
+      "score": 4,
+      "lm": -7.435,
+      "flesch": 52
+    },
+    {
+      "question": "which projects run locally?",
+      "score": 3,
+      "lm": -6.4,
+      "flesch": 36
+    },
+    {
+      "question": "what can you do?",
+      "score": 3,
+      "lm": -7.263,
+      "flesch": 43
+    },
+    {
+      "question": "compare boaz and groundglass",
+      "score": 3,
+      "lm": -6.214,
+      "flesch": 64
+    },
+    {
+      "question": "compare hobnob and boaz",
+      "score": 3,
+      "lm": -6.111,
+      "flesch": 54
+    },
+    {
+      "question": "compare readback and groundglass",
+      "score": 4,
+      "lm": -6.267,
+      "flesch": 70
+    },
+    {
+      "question": "what has he built?",
+      "score": 4,
+      "lm": -7.212,
+      "flesch": 38
+    },
+    {
+      "question": "which projects use typescript?",
+      "score": 3,
+      "lm": -7.508,
+      "flesch": 67
+    },
+    {
+      "question": "how many posts has he written?",
+      "score": 3,
+      "lm": -5.874,
+      "flesch": 70
+    },
+    {
+      "question": "what is his email?",
+      "score": 4,
+      "lm": -6.46,
+      "flesch": -20
+    }
+  ],
+  "correlationLmNaturalness": -0.438,
+  "correlationFleschNaturalness": -0.158,
+  "model": "minimax-m3.1-flash",
+  "cases": [
+    {
+      "question": "compare hobnob and readback",
+      "before": 4,
+      "after": 3,
+      "prefer": "before",
+      "why": "B\u2019s separate sentences clarify what runs on each stack."
+    },
+    {
+      "question": "compare boaz and groundglass",
+      "before": 5,
+      "after": 3,
+      "prefer": "before",
+      "why": "B's sentence breaks feel clearer and more natural."
+    },
+    {
+      "question": "compare hobnob and boaz",
+      "before": 5,
+      "after": 3,
+      "prefer": "before",
+      "why": "A avoids dangling modifiers and keeps each subject clear."
+    },
+    {
+      "question": "compare readback and groundglass",
+      "before": 5,
+      "after": 4,
+      "prefer": "before",
+      "why": "B uses complete sentences; A\u2019s trailing \u201crunning on\u201d phrases feel awkward."
+    }
+  ],
+  "before": 4.75,
+  "after": 3.25,
+  "preferBefore": 4,
+  "preferAfter": 0,
+  "ties": 0
+}
