@@ -1,6 +1,6 @@
 {
-  "generated": "2026-11-24T23:26:46.456Z",
-  "library": "0.8.2",
+  "generated": "2026-11-25T00:12:34.714Z",
+  "library": "0.8.3",
   "threads": {
     "memory": {
       "passed": 32,
@@ -449,12 +449,12 @@
             "baseline": true,
             "rewritten": false,
             "routed": "which projects use python and have a web interface?",
-            "text": "No project lists both Python 3.10+ and Three.js (WebGL). Readback and Groundglass list Python 3.10+; shobyde.com lists Three.js (WebGL). 3 of 6 projects match one of them.",
-            "baselineText": "No project lists both Python 3.10+ and Three.js (WebGL). Readback and Groundglass list Python 3.10+; shobyde.com lists Three.js (WebGL). 3 of 6 projects match one of them.",
+            "text": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. Boaz takes the other route: TypeScript and Vite.",
+            "baselineText": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. Boaz takes the other route: TypeScript and Vite.",
             "calls": [
               "projects.list"
             ],
-            "flesch": 91,
+            "flesch": 85,
             "missing": []
           },
           {
@@ -464,10 +464,10 @@
             "baseline": false,
             "rewritten": false,
             "routed": "why not both?",
-            "text": "No project lists both Python 3.10+ and Three.js (WebGL). Readback and Groundglass list Python 3.10+ and neither lists Three.js (WebGL); shobyde.com lists Three.js (WebGL) and not Python 3.10+.",
+            "text": "Only Python 3.10+ is a listed stack value here. \"web interface\" is not one, so no project has both. Readback and Groundglass list Python 3.10+.",
             "baselineText": "Only his email and LinkedIn are published here. For a phone number or anything else, email him and he will send it.",
             "calls": [],
-            "flesch": 89,
+            "flesch": 87,
             "missing": []
           }
         ]
@@ -970,7 +970,7 @@
     }
   ],
   "kb": {
-    "generated": "2026-11-24T23:26:46.823Z",
+    "generated": "2026-11-25T00:12:37.468Z",
     "facts": 170,
     "documents": 170,
     "threads": 40,

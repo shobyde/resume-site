@@ -100,7 +100,7 @@ for (const thread of suite.threads) {
       ? { text: exclusion.text, calls: [], plannedBy: null, steps: [] }
       : await turn(active, pointer.query);
     if (session) {
-      rememberSetAnswer(session, result.steps);
+      rememberSetAnswer(session, result.steps, pointer.query);
       session.observe(spec.ask, { entities: entitiesIn(result.text) });
     }
     const verdict = check({ ...spec, ...result }, spec.kind);

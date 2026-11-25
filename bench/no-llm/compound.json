@@ -134,6 +134,18 @@
       "q": "which projects use python sqlite",
       "expect": { "entities": ["Python 3.10+", "SQLite"], "combine": null },
       "note": "No connective: a half-written list. Answering it as a union or an intersection would be a guess."
+    },
+    {
+      "q": "which projects use python and have a web interface",
+      "expect": { "entities": ["Python 3.10+"], "combine": null },
+      "members": ["Readback", "Groundglass"],
+      "note": "Rung 24: 'web' is half of WebGL, and a fragment bound the constant. A property phrase the page does not declare must not become a technology, and the answer must not claim a project outside the term it understood."
+    },
+    {
+      "q": "which projects use webgl",
+      "expect": { "entities": [], "combine": null },
+      "members": ["shobyde.com"],
+      "note": "Rung 24, the other half: the whole spelling of a camel-case constant has to resolve. 'webgl' used to answer 'No project lists webgl' while 'web' answered with it."
     }
   ]
 }

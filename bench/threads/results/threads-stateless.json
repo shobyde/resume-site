@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-24T23:26:46.420Z",
+  "generated": "2026-11-25T00:12:34.673Z",
   "mode": "stateless",
-  "library": "0.8.2",
+  "library": "0.8.3",
   "threads": [
     {
       "id": "portfolio-stack",
@@ -644,7 +644,7 @@
               "readback"
             ]
           },
-          "text": "No project lists both Python 3.10+ and Three.js (WebGL). Readback and Groundglass list Python 3.10+; shobyde.com lists Three.js (WebGL). 3 of 6 projects match one of them.",
+          "text": "Readback and Groundglass: 2 projects name Python 3.10+. pytest shows up in both. Boaz takes the other route: TypeScript and Vite.",
           "calls": [
             {
               "id": "projects.list",
@@ -652,7 +652,7 @@
             }
           ],
           "plannedBy": "projects.using",
-          "flesch": 91,
+          "flesch": 85,
           "pass": true,
           "declined": false,
           "missing": [],

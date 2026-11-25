@@ -219,7 +219,7 @@ export function resolvePointer(memory, query) {
  * condition and the projects that held it) at the turn it was computed, so the
  * follow-up explains the exclusion instead of routing the words somewhere else.
  */
-export function rememberSetAnswer(memory, steps) {
+export function rememberSetAnswer(memory, steps, question = '') {
   if (typeof memory?.note !== 'function') return null;
   const inference = (steps ?? []).find(
     (step) =>
@@ -242,14 +242,50 @@ export function rememberSetAnswer(memory, steps) {
     const group = groups.get(term);
     if (!group.names.includes(name)) group.names.push(name);
   }
-  if (groups.size < 2) return null;
-  return memory.note({ groups: [...groups.values()], turn: memory.turns.length });
+  const turn = memory.turns.length;
+  if (groups.size >= 2) return memory.note({ groups: [...groups.values()], turn });
+  // One condition resolved and the visitor named a second one: "which projects
+  // use python and have a web interface". The page lists no such property, so
+  // the turn answers the half it has. "Why not both?" then needs to know the
+  // other half existed, or it routes the words somewhere unrelated.
+  const [only] = [...groups.keys()];
+  const unresolved = only ? unresolvedCondition(question, only) : null;
+  if (groups.size === 1 && unresolved) {
+    return memory.note({ groups: [...groups.values()], unresolved, turn });
+  }
+  return null;
 }
+
+/**
+ * The phrase a question named after a connective that no stack value accounts
+ * for. Closed: it reads the words after the first "and"/"or"/"with" that are
+ * not the resolved term, filler, or the question's own frame ("which projects
+ * use"), and gives up rather than guessing when nothing is left.
+ */
+function unresolvedCondition(question, term) {
+  const words = String(question ?? '').toLowerCase().split(/[^a-z0-9+.#]+/).filter(Boolean);
+  const connective = words.findIndex((word) => CONNECTIVES.has(word));
+  if (connective < 0) return null;
+  const termWords = new Set(String(term).toLowerCase().split(/[^a-z0-9+.#]+/).filter(Boolean));
+  const rest = words
+    .slice(connective + 1)
+    .filter((word) => !termWords.has(word) && !FILLER.has(word));
+  // A single word is not a condition ("and packages", "and tests"): the phrase
+  // has to carry at least two words to be worth answering on a follow-up.
+  return rest.length >= 2 ? rest.join(' ') : null;
+}
+
+const CONNECTIVES = new Set(['and', 'or', 'with', 'plus']);
+const FILLER = new Set([
+  'a', 'an', 'the', 'have', 'has', 'that', 'which', 'uses', 'use', 'using', 'is', 'are', 'be',
+  'its', 'it', 'they', 'them', 'their', 'also', 'both', 'either', 'on', 'in', 'for', 'of', 'to',
+  'project', 'projects', 'he', 'his', 'him', 'built', 'build', 'shipped', 'ship', 'some', 'any',
+]);
 
 /** The answer to "why not both?", read from the split the last set answer kept. */
 export function exclusionAnswer(memory, question, register = 'normal') {
   const note = typeof memory?.lastNote === 'function' ? memory.lastNote() : null;
-  if (!note || (note.groups ?? []).length < 2) return null;
+  if (!note || (note.groups ?? []).length < 1) return null;
   // Only the turn right after the set answer: a "why not both" three turns
   // later is about whatever came in between, and answering this would be a guess.
   if (note.turn + 1 !== (memory.turns ?? []).length) return null;
@@ -257,6 +293,18 @@ export function exclusionAnswer(memory, question, register = 'normal') {
 
   const groups = note.groups;
   const terms = groups.map((group) => group.term);
+  // One condition was a page value and the other was not: the honest answer is
+  // that there is no second side to compare, and naming one would invent it.
+  if (groups.length === 1) {
+    const only = groups[0];
+    const phrase = `"${note.unresolved}"`;
+    const claim = `Only ${only.term} is a listed stack value here. ${phrase} is not one, so no project has both.`;
+    const text =
+      register === 'terse'
+        ? `Only ${only.term} is listed. ${phrase} is not.`
+        : `${claim} ${joinNames(only.names)} ${only.names.length === 1 ? 'lists' : 'list'} ${only.term}.`;
+    return { text, line: `Read the two conditions of the last answer and which of them the stacks list` };
+  }
   const shared = groups[0].names.filter((name) => groups.every((group) => group.names.includes(name)));
   const claim = shared.length
     ? `${joinNames(shared)} ${shared.length === 1 ? 'is' : 'are'} the only ${shared.length === 1 ? 'one' : 'ones'} with both ${joinNames(terms)}.`

@@ -1,6 +1,6 @@
 {
-  "generated": "2026-11-24T21:32:37.699Z",
-  "library": "@shobyde/boaz 0.8.2",
+  "generated": "2026-11-25T00:14:46.458Z",
+  "library": "@shobyde/boaz 0.8.3",
   "note": "Every number here was parsed from the harness output in the same run that wrote this file. The five slot-filling classes are also graded live in the browser by /labs/no-llm/, through bench/no-llm/grade.mjs, which is the module the Node harness uses.",
   "classes": [
     {
@@ -80,24 +80,24 @@
       "rung": 4,
       "name": "Compound asks: intersection and union",
       "suite": "compound.json",
-      "tasks": 23,
+      "tasks": 25,
       "before": {
-        "passed": 5,
-        "total": 23
+        "passed": 7,
+        "total": 25
       },
       "after": {
-        "passed": 23,
-        "total": 23
+        "passed": 25,
+        "total": 25
       },
       "beforePct": null,
       "afterPct": null,
       "headline": [
-        "compound: 100% (23/23) after, 21.7% (5/23) before",
-        "compound: 100% (23/23) after, 21.7% (5/23) before",
-        "compound: 100% (23/23) after, 21.7% (5/23) before"
+        "compound: 100% (25/25) after, 28% (7/25) before",
+        "compound: 100% (25/25) after, 28% (7/25) before",
+        "compound: 100% (25/25) after, 28% (7/25) before"
       ],
       "ceiling": "three-name chains, \"neither ... nor\", and two asks joined by \"and\" are documented ceilings, not extraction errors",
-      "report": "compound: 100% (23/23) after, 21.7% (5/23) before\n\nfixed by the library: 18"
+      "report": "compound: 100% (25/25) after, 28% (7/25) before\n\nfixed by the library: 18"
     },
     {
       "id": "synonyms",
@@ -128,19 +128,19 @@
       "rung": 4,
       "name": "The real engine answers the joined set",
       "suite": "compound.json",
-      "tasks": 23,
+      "tasks": 25,
       "before": null,
       "after": {
-        "passed": 21,
-        "total": 21
+        "passed": 23,
+        "total": 23
       },
       "beforePct": null,
       "afterPct": null,
       "headline": [
-        "answers: 100% (21/21) against the real engine"
+        "answers: 100% (23/23) against the real engine"
       ],
       "ceiling": "scored on the first sentence of the answer, which is where the answered set lives",
-      "report": "answers: 100% (21/21) against the real engine"
+      "report": "answers: 100% (23/23) against the real engine"
     },
     {
       "id": "discourse",
@@ -150,17 +150,17 @@
       "tasks": 19,
       "before": null,
       "after": {
-        "passed": 15,
+        "passed": 16,
         "total": 19
       },
       "beforePct": null,
       "afterPct": null,
       "headline": [
-        "discourse: 78.9% (15/19)",
-        "  template compound: max paraphrase similarity 0.29 (want < 0.95)"
+        "discourse: 84.2% (16/19)",
+        "  template compound: max paraphrase similarity 0.39 (want < 0.95)"
       ],
       "ceiling": "a declared constant is unreachable by its first word (\"a2ui\"), a punctuated subject never reaches a rule (\"c++\"), and an unknown second name drops combine",
-      "report": "discourse: 78.9% (15/19)\n  fidelity 16/19  sentences 17/19  grounded 19/19  clean 18/19  plain 19/19  stable 19/19\n  readability: flesch 78.3, words per sentence 9.4\n  template projects.using: max paraphrase similarity 1.00 (want < 0.95)\n  template projects.list: max paraphrase similarity 0.72 (want < 0.95)\n  template compound: max paraphrase similarity 0.29 (want < 0.95)\n  template profile: max paraphrase similarity 1.00 (want < 0.95)\n  FAIL \"which projects use a2ui\" (missing Boaz, Groundglass)\n    No project on this page lists a2ui. All 6 stacks are on the page.\n  FAIL \"which projects use c++\" (missing C++ physics simulation engines; 1 sentences; banned word or em dash)\n    I can do that \u2014 Show a project card needs project.\n  FAIL \"how many projects has he built\" (missing 6)\n    I'm not sure about that. I can help with: List projects; Selected projects; Show a project card.\n  FAIL \"which projects use python and kubernetes\" (did not give the expected answer; 3 sentences)\n    Readback and Groundglass both list Python 3.10+. They share pytest as well. The closest without it is Boaz, on TypeScript and Vite."
+      "report": "discourse: 84.2% (16/19)\n  fidelity 17/19  sentences 17/19  grounded 19/19  clean 18/19  plain 19/19  stable 19/19\n  readability: flesch 78.9, words per sentence 9.4\n  template projects.using: max paraphrase similarity 1.00 (want < 0.95)\n  template projects.list: max paraphrase similarity 0.72 (want < 0.95)\n  template compound: max paraphrase similarity 0.39 (want < 0.95)\n  template profile: max paraphrase similarity 1.00 (want < 0.95)\n  FAIL \"which projects use c++\" (missing C++ physics simulation engines; 1 sentences; banned word or em dash)\n    I can do that — Show a project card needs project.\n  FAIL \"how many projects has he built\" (missing 6)\n    I'm not sure about that. I can help with: List projects; Selected projects; Show a project card.\n  FAIL \"which projects use python and kubernetes\" (did not give the expected answer; 3 sentences)\n    Readback and Groundglass both list Python 3.10+. They share pytest as well. The closest without it is Boaz, on TypeScript and Vite."
     },
     {
       "id": "summarise",
@@ -373,7 +373,7 @@
         "after: 22/24 (91.7%)"
       ],
       "ceiling": "SEND is aria-disabled until the input has text, so \"ask the panel X\" needs a plan, not one action",
-      "report": "PASS a01 click the projects link\nPASS a02 click the contact link\nPASS a03 press the send button\nPASS a04 click the close button in the ask about sho dialog\nPASS a05 fill the ask about sho box with which projects use typescript\nPASS a06 type hello into the ask about sho field\nPASS a07 click the first engineering detail button\nPASS a08 click the third engineering detail button\nPASS a09 click visit hobnob.info\nPASS a10 click download r\u00e9sum\u00e9\nPASS a11 click the email me link\nPASS a12 click the second source on github link\nPASS a13 click read the product page\nPASS a14 click the linkedin link\nPASS a15 click the skip to content link\nPASS a16 scroll to tools of the trade\nPASS a17 click ask about sho\nPASS a18 click engineering detail\nPASS a19 click the source on github link\nPASS a20 click the missing button\nPASS a21 click the terms checkbox\nFAIL a22 scroll to experience  (resolved)\nPASS a23 which projects use typescript\nFAIL a24 fill the search box with typescript  (resolved)\n\nafter: 22/24 (91.7%)"
+      "report": "PASS a01 click the projects link\nPASS a02 click the contact link\nPASS a03 press the send button\nPASS a04 click the close button in the ask about sho dialog\nPASS a05 fill the ask about sho box with which projects use typescript\nPASS a06 type hello into the ask about sho field\nPASS a07 click the first engineering detail button\nPASS a08 click the third engineering detail button\nPASS a09 click visit hobnob.info\nPASS a10 click download résumé\nPASS a11 click the email me link\nPASS a12 click the second source on github link\nPASS a13 click read the product page\nPASS a14 click the linkedin link\nPASS a15 click the skip to content link\nPASS a16 scroll to tools of the trade\nPASS a17 click ask about sho\nPASS a18 click engineering detail\nPASS a19 click the source on github link\nPASS a20 click the missing button\nPASS a21 click the terms checkbox\nFAIL a22 scroll to experience  (resolved)\nPASS a23 which projects use typescript\nFAIL a24 fill the search box with typescript  (resolved)\n\nafter: 22/24 (91.7%)"
     },
     {
       "id": "mcp",
@@ -415,7 +415,7 @@
       "afterPct": null,
       "headline": [],
       "ceiling": "\"open the boaz page\" cannot navigate because the manifest declares no route for /boaz/, and the site has no form to fill",
-      "report": "PASS  b1   read the newest post               -> blog.open_newest  [path /posts/2026-11-24-a-queued-chat-is-a-state-problem-not-a-buffer-problem/]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b2   open the archive                   -> blog.open_archive  [path /archive/]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b3   take me to the blog                -> site.blog  [hash #blog]\n         filled the panel, pressed SEND, handled any confirmation\nFAIL  b4   open the boaz page                 -> site.top  [path /]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b5   copy his email                     -> contact.copy_email  [clipboard shobyde@gmail.com]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b6   print his resume                   -> resume.print  [print calls 1]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b7   which projects use python          -> site.projects  [answer \"Checked list projectsRead the project list and matched Python 3.10+ against 2 pr\"]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b8   what is his email                  -> contact.copy_email  [answer \"Read the email address off this pageshobyde@gmail.com.\"]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b9   how many posts has he written      -> blog.open_archive  [answer \"Checked log statisticsRead the log: 60 posts, took the most recent60 posts so fa\"]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b10  show me the hobnob card            -> projects.card  [cards \"Hobnob: private meeting notes, no cloudPERSONAL PRODUCT \u00b7 MA\"]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b11  fill the contact form              -> site.contact  [refused: name-mismatch]\n         No control is named \"contact\". The Contact link has that name.\n\nagent: 10/11 = 90.9%"
+      "report": "PASS  b1   read the newest post               -> blog.open_newest  [path /posts/2026-11-24-a-queued-chat-is-a-state-problem-not-a-buffer-problem/]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b2   open the archive                   -> blog.open_archive  [path /archive/]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b3   take me to the blog                -> site.blog  [hash #blog]\n         filled the panel, pressed SEND, handled any confirmation\nFAIL  b4   open the boaz page                 -> site.top  [path /]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b5   copy his email                     -> contact.copy_email  [clipboard shobyde@gmail.com]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b6   print his resume                   -> resume.print  [print calls 1]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b7   which projects use python          -> site.projects  [answer \"Checked list projectsRead the project list and matched Python 3.10+ against 2 pr\"]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b8   what is his email                  -> contact.copy_email  [answer \"Read the email address off this pageshobyde@gmail.com.\"]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b9   how many posts has he written      -> blog.open_archive  [answer \"Checked log statisticsRead the log: 60 posts, took the most recent60 posts so fa\"]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b10  show me the hobnob card            -> projects.card  [cards \"Hobnob: private meeting notes, no cloudPERSONAL PRODUCT · MA\"]\n         filled the panel, pressed SEND, handled any confirmation\nPASS  b11  fill the contact form              -> site.contact  [refused: name-mismatch]\n         No control is named \"contact\". The Contact link has that name.\n\nagent: 10/11 = 90.9%"
     }
   ]
 }

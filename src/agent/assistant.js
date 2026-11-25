@@ -559,7 +559,7 @@ export function initAssistant({ posts = [] } = {}) {
       const result = await runtime.send(state.query);
       // Remember why the answer set was narrowed before the turn is recorded,
       // so "why not both?" can reply from this turn's own split.
-      rememberSetAnswer(session, result.steps);
+      rememberSetAnswer(session, result.steps, state.query);
       const streamed = live;
       // A host bug must not put JSON on screen: the visitor asked a question.
       const safeReply = /^\s*[[{]/.test(result.text)
