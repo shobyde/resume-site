@@ -1,5 +1,14 @@
 [
   {
+    "slug": "2026-11-26-ag-ui-s-envelope-is-the-easy-part",
+    "date": "2026-11-26",
+    "title": "AG-UI's Envelope Is the Easy Part",
+    "tag": "ui-direction",
+    "excerpt": "AG-UI standardizes typed events between agents and frontends, and the interesting part is whether that actually removes work or just moves it.",
+    "words": 261,
+    "minutes": 1
+  },
+  {
     "slug": "2026-11-25-glm-5-4-s-loop-transformer-bets-refinement-over-depth",
     "date": "2026-11-25",
     "title": "GLM-5.4's loop transformer bets refinement over depth",
