@@ -1,5 +1,14 @@
 [
   {
+    "slug": "2026-11-27-trust-in-the-validation-harness-not-the-rewrite",
+    "date": "2026-11-27",
+    "title": "Trust in the Validation Harness, Not the Rewrite",
+    "tag": "tools",
+    "excerpt": "Anthropic moved its Messages API from Python to Rust, with Claude writing the first draft in about a week and agent teams validating it against live traffic.",
+    "words": 128,
+    "minutes": 1
+  },
+  {
     "slug": "2026-11-26-ag-ui-s-envelope-is-the-easy-part",
     "date": "2026-11-26",
     "title": "AG-UI's Envelope Is the Easy Part",
