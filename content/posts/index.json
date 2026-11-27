@@ -9,6 +9,15 @@
     "minutes": 1
   },
   {
+    "slug": "2026-11-27-this-week-in-agents-three-active-parameters",
+    "date": "2026-11-27",
+    "title": "This Week in Agents: Three Active Parameters",
+    "tag": "news",
+    "excerpt": "Three releases this week moved the agent stack toward things you can actually run: an image generator with 3B active parameters, a text model trained to fit a quantization target, and a front end reduced to a single HTML file.",
+    "words": 492,
+    "minutes": 2
+  },
+  {
     "slug": "2026-11-26-ag-ui-s-envelope-is-the-easy-part",
     "date": "2026-11-26",
     "title": "AG-UI's Envelope Is the Easy Part",
